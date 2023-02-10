@@ -1,0 +1,30 @@
+{% load render_vite_bundle %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ExeChange</title>
+
+    {% if debug %}
+    <script type="module" src="http://localhost:5173/@vite/client"></script>
+    <script type="module">
+      import RefreshRuntime from "http://localhost:5173/@react-refresh";
+      if (RefreshRuntime) {
+        RefreshRuntime.injectIntoGlobalHook(window);
+        window.$RefreshReg$ = () => {};
+        window.$RefreshSig$ = () => (type) => type;
+        window.__vite_plugin_react_preamble_installed__ = true;
+      }
+    </script>
+    {% endif %}
+  </head>
+  <body>
+    <div id="root"></div>
+
+    {% if debug %}
+    <!-- This url will be different for each type of app. Point it to your main js file. -->
+    <script type="module" src="http://localhost:5173/main.tsx"></script>
+    {% else %} {% render_vite_bundle %} {% endif %}
+  </body>
+</html>

@@ -1,0 +1,16 @@
+.git
+.dockerignore
+.gitignore
+.prettierignore
+.prettierrc.json
+.venv
+backend/staticfiles
+node_moduels
+frontend/dist
+nginx
+documentation
+
+**/.log
+**/db.sqlite3
+**/db.sqlite3-journal
+**/.DS_Store

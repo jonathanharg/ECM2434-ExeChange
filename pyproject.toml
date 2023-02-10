@@ -1,0 +1,59 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = ""
+authors = ["Jonathan Hargreaves <32854503+jonathanharg@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.1.6"
+djangorestframework = "^3.14.0"
+gunicorn = "^20.1.0"
+python-dotenv = "^0.21.1"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+flake8 = "^6.0.0"
+mypy = "^0.991"
+isort = "^5.12.0"
+pytest = "^7.2.1"
+pylint = "^2.16.1"
+pylint-django = "^2.5.3"
+pytest-django = "^4.5.2"
+django-stubs = "^1.14.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+disallow_untyped_defs = true
+disallow_any_unimported = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+show_error_codes = true
+warn_unused_ignores = true
+# plugins = ["mypy_django_plugin.main"]
+
+# [tool.django-stubs]
+# django_settings_module = "backend.backend.settings"
+
+[tool.pylint.master]
+# load-plugins = ["pylint_django", "pylint_django.checkers.migrations"]
+# django-settings-module = "backend.backend.settings"
+
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.pylint.messages_control]
+disable = ["missing-docstring"]
+
+[tool.pytest.ini_options]
+## DJANGO_SETTINGS_MODULE = ["backend.settings"]
+addopts = ["--import-mode=importlib"]

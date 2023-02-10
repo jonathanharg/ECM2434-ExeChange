@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: .
+    restart: "on-failure"
+    env_file: .env
+    volumes:
+      - static-content:/app/backend/staticfiles
+
+  nginx:
+    build: ./nginx
+    restart: "always"
+    volumes:
+      - static-content:/www
+    depends_on:
+      - backend
+    ports:
+      - 80:80
+volumes:
+  static-content:
