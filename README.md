@@ -139,10 +139,10 @@ See the [Poetry documentation](https://python-poetry.org/docs/).
 
 ## Stack Diagram
 **Developer Environment:**
-![developer environment](documents/dev-diagram.png)
+![developer environment](https://raw.githubusercontent.com/jonathanharg/ExeChange-Docs/main/Diagrams/dev-diagram.png)
 
 **Production Environment:**
-![production environment](documents/production-diagram.png)
+![production environment](https://raw.githubusercontent.com/jonathanharg/ExeChange-Docs/main/Diagrams/production-diagram.png)
 
 ## TODO
 
