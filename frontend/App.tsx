@@ -1,6 +1,5 @@
 import logo from "./logo.svg";
 import React, { useEffect, useState } from "react";
-import { request } from "http";
 
 function App() {
   const [status, setStatus] = useState({ message: "Loading..." });
@@ -36,8 +35,11 @@ function App() {
           >
             GitHub
           </a>
-          <a href="/admin/" className="text-sm font-semibold text-gray-900">
-            Go to Admin Page <span aria-hidden="true">&rarr;</span>
+          {/* TODO: This should use a <Link> element
+              see https://reactrouter.com/en/main/components/link
+          */}
+          <a href="/login" className="text-sm font-semibold text-gray-900">
+            Login <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
       </div>

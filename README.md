@@ -5,7 +5,7 @@
 First **install** [poetry](#how-to-install-poetry) and Node.js/npm (steps to install Node will depend on your system, recommended to use a package manager like [brew](https://formulae.brew.sh/formula/node)).
 
 ```shell
-cd ExeChange 
+cd ExeChange
 poetry config virtualenvs.in-project true   # Enables your editor to work with the Poetry environment
 poetry install                              # Installs packages for python/django backend
 npm install                                 # Installs packages for typescript/vite/react frontend
@@ -138,6 +138,7 @@ See the [Poetry documentation](https://python-poetry.org/docs/).
 ```
 
 ## Stack Diagram
+
 **Developer Environment:**
 ![developer environment](https://raw.githubusercontent.com/jonathanharg/ExeChange-Docs/main/Diagrams/dev-diagram.png)
 
