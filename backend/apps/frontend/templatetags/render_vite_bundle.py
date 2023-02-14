@@ -1,6 +1,6 @@
 # This template tag is needed for production
 # Add it to one of your django apps (/appdir/templatetags/render_vite_bundle.py, for example)
-
+# pylint: skip-file
 import json
 import os
 

@@ -45,15 +45,15 @@ warn_unused_ignores = true
 # django_settings_module = "backend.backend.settings"
 
 [tool.pylint.master]
-# load-plugins = ["pylint_django", "pylint_django.checkers.migrations"]
-# django-settings-module = "backend.backend.settings"
+load-plugins = ["pylint_django"]
+django-settings-module = "backend.settings"
 
 [tool.pylint.format]
-max-line-length = 120
+max-line-length = 125
 
 [tool.pylint.messages_control]
-disable = ["missing-docstring"]
+disable = ["missing-docstring", "invalid-name"]
 
 [tool.pytest.ini_options]
-## DJANGO_SETTINGS_MODULE = ["backend.settings"]
-addopts = ["--import-mode=importlib"]
+DJANGO_SETTINGS_MODULE = "backend.settings"
+python_files = ["tests.py", "tests_*.py", "*_tests.py", "test_*.py", "*_test.py"]

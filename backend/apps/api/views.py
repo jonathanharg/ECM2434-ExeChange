@@ -3,6 +3,6 @@ from rest_framework.response import Response
 
 
 @api_view(["GET"])
-def getData(request):
-    data = {"name": "Steve"}
+def status(request):
+    data = {"status": "OK", "message": "Coming soon..."}
     return Response(data)
