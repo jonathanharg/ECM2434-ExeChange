@@ -5,7 +5,7 @@
 First **install** [poetry](#how-to-install-poetry) and Node.js/npm (steps to install Node will depend on your system, recommended to use a package manager like [brew](https://formulae.brew.sh/formula/node)).
 
 ```shell
-cd ExeChange 
+cd ExeChange
 poetry config virtualenvs.in-project true   # Enables your editor to work with the Poetry environment
 poetry install                              # Installs packages for python/django backend
 npm install                                 # Installs packages for typescript/vite/react frontend
@@ -136,28 +136,3 @@ See the [Poetry documentation](https://python-poetry.org/docs/).
 ├── tsconfig.node.json
 └── vite.config.ts    - Vite configs
 ```
-
-## Stack Diagram
-**Developer Environment:**
-![developer environment](https://raw.githubusercontent.com/jonathanharg/ExeChange-Docs/main/Diagrams/dev-diagram.png)
-
-**Production Environment:**
-![production environment](https://raw.githubusercontent.com/jonathanharg/ExeChange-Docs/main/Diagrams/production-diagram.png)
-
-## TODO
-
-- [x] Create a docker file for building a docker image
-- [x] Get gunicorn working
-- [x] clean django app files for frontend / less boilerplate
-- [x] Images/static files Working on DEV and in Production
-- [x] Get Nginx working
-- [x] Create a docker-compose.yml
-- [x] Use environemnt variables / create an .env.example file
-- [ ] scripts for poetry/npm for linting/formatting/running in dev/running in prod
-- [ ] github actions
-- [ ] aws deployment & database (for dev & prod)
-- [ ] get a domain name working
-- [ ] Setup sensible gunicorn defaults
-- [ ] Testing in both python and ts
-- [ ] Test linting in both python and ts
-- [ ] typecheck python with mypy

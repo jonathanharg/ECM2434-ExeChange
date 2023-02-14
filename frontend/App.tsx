@@ -1,6 +1,5 @@
 import logo from "./logo.svg";
 import React, { useEffect, useState } from "react";
-import { request } from "http";
 
 function App() {
   const [status, setStatus] = useState({ message: "Loading..." });
