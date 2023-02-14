@@ -11,8 +11,10 @@
     "lint": "prettier --write ."
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.5.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.1"
   },
   "devDependencies": {
     "@types/node": "^18.13.0",
