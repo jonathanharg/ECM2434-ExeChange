@@ -1,4 +1,4 @@
-name: linting
+name: pytest
 
 on:
   push:
@@ -31,3 +31,6 @@ jobs:
       - name: Run Linting
         run: |
           PYTHONPATH=$PYTHONPATH:$PWD/backend poetry run pylint backend/apps
+      - name: Run pytest
+        run: |
+          PYTHONPATH=$PYTHONPATH:$PWD/backend poetry run pytest

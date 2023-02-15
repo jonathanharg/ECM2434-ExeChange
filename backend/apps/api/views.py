@@ -1,8 +1,9 @@
+import typing
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 
 @api_view(["GET"])
-def status(request):
+def status(request: typing.Any) -> Response:
     data = {"status": "OK", "message": "Coming soon..."}
     return Response(data)

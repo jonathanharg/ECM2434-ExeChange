@@ -15,12 +15,13 @@ import json
 from django import template
 from django.conf import settings
 from django.utils.safestring import mark_safe
+from django.utils.safestring import SafeText #SafeText is return type for mark_safe.
 
 register = template.Library()
 
 
 @register.simple_tag
-def render_vite_bundle():
+def render_vite_bundle() -> SafeText:
     """
     Template tag to render a vite bundle.
     Supposed to only be used in production.
@@ -29,13 +30,13 @@ def render_vite_bundle():
 
     try:
         with open(
-            f"{settings.VITE_APP_DIR}/dist/manifest.json", "r", encoding="utf-8"
+            f"{settings.VITE_APP_DIR}/dist/manifest.json", "r", encoding="utf-8" # type: ignore
         ) as fd:
             manifest = json.load(fd)
     except:
         raise Exception(
-            f"Vite manifest file not found or invalid. Maybe your {settings.VITE_APP_DIR}/dist/manifest.json file is empty?"
-        )
+            f"Vite manifest file not found or invalid. Maybe your {settings.VITE_APP_DIR}/dist/manifest.json file is empty?" 
+        ) # type: ignore
 
     imports_files = "".join(
         [

@@ -24,6 +24,7 @@ pylint-django = "^2.5.3"
 pytest-django = "^4.5.2"
 django-stubs = "^1.14.0"
 autopep8 = "^2.0.1"
+djangorestframework-stubs = "^1.8.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -51,10 +52,10 @@ check_untyped_defs = true
 warn_return_any = true
 show_error_codes = true
 warn_unused_ignores = true
-# plugins = ["mypy_django_plugin.main"]
+plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
 
-# [tool.django-stubs]
-# django_settings_module = "backend.backend.settings"
+[tool.django-stubs]
+django_settings_module = "backend.settings"
 
 [tool.pylint.master]
 load-plugins = ["pylint_django"]
