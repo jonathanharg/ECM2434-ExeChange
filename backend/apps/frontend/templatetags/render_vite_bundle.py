@@ -1,3 +1,12 @@
+# This file is largely based off the gist "Using Vite with Django, the simple way"
+# https://gist.github.com/lucianoratamero/7fc9737d24229ea9219f0987272896a2
+
+# Credit for this file, base.html and some various settings goes to
+# Luciano Ratamero (https://gist.github.com/lucianoratamero) for his original work and further credit goes to
+# Fábio C. Barrionuevo da Luz (https://gist.github.com/luzfcb), Sina K (https://gist.github.com/incognos),
+# Pedro Viana (https://gist.github.com/pedrovgp) and Alex Sousa (https://gist.github.com/alxroots) for their
+# suggestions, edits and amendments.
+
 # This template tag is needed for production
 # Add it to one of your django apps (/appdir/templatetags/render_vite_bundle.py, for example)
 # pylint: disable=locally-disabled, raise-missing-from, broad-exception-raised

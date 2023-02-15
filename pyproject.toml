@@ -23,6 +23,7 @@ pylint = "^2.16.1"
 pylint-django = "^2.5.3"
 pytest-django = "^4.5.2"
 django-stubs = "^1.14.0"
+autopep8 = "^2.0.1"
 
 [build-system]
 requires = ["poetry-core"]
