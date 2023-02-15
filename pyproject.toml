@@ -28,6 +28,17 @@ django-stubs = "^1.14.0"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry.scripts]
+dev = "backend.scripts:runserver"
+format = "backend.scripts:black"
+check-format = "backend.scripts:black_check"
+migrate = "backend.scripts:migrate"
+build = "backend.scripts:build"
+prod = "backend.scripts:run_prod"
+lint = "backend.scripts:pylint"
+test = "backend.scripts:pytest"
+coverage = "backend.scripts:pytest_coverage"
+
 [tool.isort]
 profile = "black"
 

@@ -20,8 +20,8 @@ In **two seperate** terminal windows run the following commands:
 First terminal:
 
 ```shell
-poetry run python backend/manage.py migrate     # Updates the Django database
-poetry run python backend/manage.py runserver   # Run the backend Django server (API & Database interface)
+poetry run migrate  # Updates the Django database
+poetry run dev      # Run the backend Django server (API & Database interface)
 ```
 
 Second terminal:
@@ -32,13 +32,15 @@ npm run dev     # Render the React frontend (.tsx, css, react components)
 
 Now visit <http://127.0.0.1:8000/> to view the website
 
+> Note, to run any other commands from manage.py use `poetry run python backend/manage.py`
+
 ## Running Production Locally
 
 ```shell
-npm run build                                       # Compiles the frontend into singular .js & .css files
-poetry run python backend/manage.py migrate         # Updates the Django database
-poetry run python backend/manage.py collectstatic   # Collects all the static files Django needs to serve
-poetry run gunicorn --chdir backend backend.wsgi     # Runs the dynamic Django routes with gunicorn
+npm run build           # Compiles the frontend into singular .js & .css files
+poetry run migrate      # Updates the Django database
+poetry run build        # Collects all the static files Django needs to serve
+poetry run prod         # Runs the dynamic Django routes with gunicorn
 ```
 
 Now visit <http://127.0.0.1:8000/> to view the website.
