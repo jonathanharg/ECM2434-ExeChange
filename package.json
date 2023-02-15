@@ -9,7 +9,9 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "check-format": "prettier --check .",
+    "check-test": "vitest run"
   },
   "dependencies": {
     "react": "^18.2.0",
