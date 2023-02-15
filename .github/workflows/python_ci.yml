@@ -1,4 +1,4 @@
-name: pytest
+name: python ci
 
 on:
   push:
