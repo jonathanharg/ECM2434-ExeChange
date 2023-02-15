@@ -1,8 +1,0 @@
-name: "Linting TypeScript"
-
-on: workflow_call
-
-jobs:
-  lint:
-    steps:
-      - run: npm run lint
