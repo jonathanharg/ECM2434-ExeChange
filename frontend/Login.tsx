@@ -1,36 +1,48 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
+import axios from "axios";
 import logo from "./logo.svg";
 
+axios.defaults.xsrfHeaderName = "X-CSRFToken"
+axios.defaults.xsrfCookieName = "csrftoken"
 //import { LockClosedIcon } from '@heroicons/react/20/solid'
 
-export default function Login() {
-  const userReference = useRef<HTMLDivElement>(null); // I'm using useRef here to hold state reference that is not needed for render
-  const errorReference = useRef<HTMLDivElement>(null);
 
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
-  const [err, setErr] = useState("");
+
+export default function Login() {
+  const userReference = useRef<HTMLDivElement>(null); // I'm using useRef here to hold state reference that is not needed to render
+  const errorReference = useRef<HTMLDivElement>(null); 
+
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+  const [err, setErr] = useState('');
   const [success, setSuccess] = useState(false);
 
-  if (userReference.current) {
-    useEffect(() => {
-      userReference.current!.focus();
-    }, []); // the ! is to avoid a "possible null" error - very annoying
+  if(userReference.current){
+  useEffect(() => {userReference.current!.focus()}, []); // the ! is to avoid a "possible null" error 
   }
 
-  useEffect(() => {
-    setErr(""), [user, password];
-  });
+  useEffect(() => {setErr(''), [user, password] }); // clear error msg if user starts typing
 
-  const handlesubmit = async (e) => {
-    //TODO: the json submission to backend
-
+  const handlesubmit = async (e) => { // this function sends form data to /api/login 
     e.preventDefault();
-    setUser("");
-    setPassword("");
-    setSuccess(false);
-  };
 
+    const response = await axios.post('/api/login', JSON.stringify({user, password}), 
+    {
+      headers: {'Content-Type': 'application/json'},
+      withCredentials: true
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+    setUser('');
+    setPassword('');
+    setSuccess(true);
+  }
+  
+  
   return (
     <>
       <div className="flex min-h-full items-center justify-center py-24 px-4 sm:px-6 lg:px-8">
@@ -42,51 +54,24 @@ export default function Login() {
               alt="ExeChange Logo"
             />
           </div>
-          {success ? (
-            <div>
-              <h2 className="mt-6 text-center text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl">
+          {success ? 
+          <div>
+            <h2 className="mt-6 text-center text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl">
                 Welcome!
+            </h2>
+          </div> :
+          <><div>
+              <h2 className="mt-6 text-center text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl">
+                Sign in
               </h2>
-            </div>
-          ) : (
-            <>
-              <div>
-                <h2 className="mt-6 text-center text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl">
-                  Sign in
-                </h2>
-              </div>
-              <div
-                ref={errorReference}
-                className={
-                  err
-                    ? "relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700"
-                    : "visibility: hidden"
-                }
-                role="alert"
-              >
+            </div><div ref={errorReference} className={err ? "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" : "visibility: hidden"} role="alert">
                 <strong className="font-bold"> Error! </strong>
-                <span className="block sm:inline">
-                  {" "}
-                  Incorrect username or password!{" "}
-                </span>
+                <span className="block sm:inline"> Incorrect username or password. </span>
                 <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
-                  <svg
-                    className="h-6 w-6 fill-current text-red-500"
-                    role="button"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                  >
-                    <title>Close</title>
-                    <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-                  </svg>
+                  <svg className="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
                 </span>
-              </div>
-              <form
-                className="mt-8 space-y-6"
-                action="#"
-                method="POST"
-                onSubmit={handlesubmit}
-              >
+              </div><form className="mt-8 space-y-6" action="#" method="POST" onSubmit={handlesubmit}>
+
                 <input type="hidden" name="remember" defaultValue="true" />
                 <div className="-space-y-px rounded-md shadow-sm">
                   <div>
@@ -102,8 +87,7 @@ export default function Login() {
                       className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-green-800 focus:outline-none focus:ring-green-800 sm:text-sm"
                       placeholder="you@exeter.ac.uk"
                       onChange={(e) => setUser(e.target.value)}
-                      value={user}
-                    />
+                      value={user} />
                   </div>
                   <div>
                     <label htmlFor="password" className="sr-only">
@@ -118,8 +102,7 @@ export default function Login() {
                       className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-green-800 focus:outline-none focus:ring-green-800 sm:text-sm"
                       placeholder="Password"
                       onChange={(e) => setPassword(e.target.value)}
-                      value={password}
-                    />
+                      value={password} />
                   </div>
                 </div>
 
@@ -129,8 +112,7 @@ export default function Login() {
                       id="remember-me"
                       name="remember-me"
                       type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-green-800 focus:ring-green-700"
-                    />
+                      className="h-4 w-4 rounded border-gray-300 text-green-800 focus:ring-green-700" />
                     <label
                       htmlFor="remember-me"
                       className="ml-2 block text-sm text-gray-900"
@@ -160,9 +142,7 @@ export default function Login() {
                     Sign in
                   </button>
                 </div>
-              </form>
-            </>
-          )}
+              </form></>}
         </div>
       </div>
     </>
