@@ -22,7 +22,7 @@ export default function Login() {
   }
 
   useEffect(() => {setErr(''), [user, password] }); // clear error msg if user starts typing
-
+ 
   const handlesubmit = async (e) => { // this function sends form data to /api/login 
     e.preventDefault();
 
@@ -62,7 +62,7 @@ export default function Login() {
           </div> :
           <><div>
               <h2 className="mt-6 text-center text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl">
-                Sign in
+                Log in
               </h2>
             </div><div ref={errorReference} className={err ? "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" : "visibility: hidden"} role="alert">
                 <strong className="font-bold"> Error! </strong>
@@ -139,7 +139,7 @@ export default function Login() {
                     <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                       {/* <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" /> */}
                     </span>
-                    Sign in
+                    Log in
                   </button>
                 </div>
               </form></>}

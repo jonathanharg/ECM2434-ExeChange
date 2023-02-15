@@ -41,6 +41,9 @@ function App() {
           <a href="/login" className="text-sm font-semibold text-gray-900">
             Login <span aria-hidden="true">&rarr;</span>
           </a>
+          <a href="/register" className="text-sm font-semibold text-gray-900">
+            Register <span aria-hidden="true">&rarr;</span>
+          </a>
         </div>
       </div>
     </main>
