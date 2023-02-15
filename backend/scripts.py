@@ -1,4 +1,5 @@
-import subprocess, os
+import os
+import subprocess
 
 
 def runserver():
@@ -11,6 +12,7 @@ def runserver():
 def black():
     try:
         subprocess.run(["black", "."])
+        subprocess.run(["isort", "."])
     except KeyboardInterrupt:
         pass
 
@@ -18,6 +20,7 @@ def black():
 def black_check():
     try:
         subprocess.run(["black", "--check", "."])
+        subprocess.run(["isort", "--check", "."])
     except KeyboardInterrupt:
         pass
 

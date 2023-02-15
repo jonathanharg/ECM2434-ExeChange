@@ -1,8 +1,7 @@
 # This template tag is needed for production
 # Add it to one of your django apps (/appdir/templatetags/render_vite_bundle.py, for example)
-# pylint: skip-file
+# pylint: disable=locally-disabled, raise-missing-from, broad-exception-raised
 import json
-import os
 
 from django import template
 from django.conf import settings
@@ -20,8 +19,10 @@ def render_vite_bundle():
     """
 
     try:
-        fd = open(f"{settings.VITE_APP_DIR}/dist/manifest.json", "r")
-        manifest = json.load(fd)
+        with open(
+            f"{settings.VITE_APP_DIR}/dist/manifest.json", "r", encoding="utf-8"
+        ) as fd:
+            manifest = json.load(fd)
     except:
         raise Exception(
             f"Vite manifest file not found or invalid. Maybe your {settings.VITE_APP_DIR}/dist/manifest.json file is empty?"
