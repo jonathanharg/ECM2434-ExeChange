@@ -20,8 +20,8 @@ In **two seperate** terminal windows run the following commands:
 First terminal:
 
 ```shell
-poetry run python backend/manage.py migrate     # Updates the Django database
-poetry run python backend/manage.py runserver   # Run the backend Django server (API & Database interface)
+poetry run migrate  # Updates the Django database
+poetry run dev      # Run the backend Django server (API & Database interface)
 ```
 
 Second terminal:
@@ -32,13 +32,15 @@ npm run dev     # Render the React frontend (.tsx, css, react components)
 
 Now visit <http://127.0.0.1:8000/> to view the website
 
+> Note, to run any other commands from manage.py use `poetry run python backend/manage.py`
+
 ## Running Production Locally
 
 ```shell
-npm run build                                       # Compiles the frontend into singular .js & .css files
-poetry run python backend/manage.py migrate         # Updates the Django database
-poetry run python backend/manage.py collectstatic   # Collects all the static files Django needs to serve
-poetry run gunicorn --chdir backend backend.wsgi     # Runs the dynamic Django routes with gunicorn
+npm run build           # Compiles the frontend into singular .js & .css files
+poetry run migrate      # Updates the Django database
+poetry run build        # Collects all the static files Django needs to serve
+poetry run prod         # Runs the dynamic Django routes with gunicorn
 ```
 
 Now visit <http://127.0.0.1:8000/> to view the website.
@@ -136,29 +138,3 @@ See the [Poetry documentation](https://python-poetry.org/docs/).
 ├── tsconfig.node.json
 └── vite.config.ts    - Vite configs
 ```
-
-## Stack Diagram
-
-**Developer Environment:**
-![developer environment](https://raw.githubusercontent.com/jonathanharg/ExeChange-Docs/main/Diagrams/dev-diagram.png)
-
-**Production Environment:**
-![production environment](https://raw.githubusercontent.com/jonathanharg/ExeChange-Docs/main/Diagrams/production-diagram.png)
-
-## TODO
-
-- [x] Create a docker file for building a docker image
-- [x] Get gunicorn working
-- [x] clean django app files for frontend / less boilerplate
-- [x] Images/static files Working on DEV and in Production
-- [x] Get Nginx working
-- [x] Create a docker-compose.yml
-- [x] Use environemnt variables / create an .env.example file
-- [ ] scripts for poetry/npm for linting/formatting/running in dev/running in prod
-- [ ] github actions
-- [ ] aws deployment & database (for dev & prod)
-- [ ] get a domain name working
-- [ ] Setup sensible gunicorn defaults
-- [ ] Testing in both python and ts
-- [ ] Test linting in both python and ts
-- [ ] typecheck python with mypy
