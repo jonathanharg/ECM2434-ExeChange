@@ -22,7 +22,7 @@ function Register(){
 
 
     useEffect(()=> {
-        const result = USER_REGEX.test(user);
+        const result = USER_REGEX.test(user) && user.includes("@exeter.ac.uk");
         console.log(result);
         console.log(user);
         setValidUser(result);
