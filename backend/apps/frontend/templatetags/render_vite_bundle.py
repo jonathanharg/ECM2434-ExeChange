@@ -30,13 +30,13 @@ def render_vite_bundle() -> SafeText:
 
     try:
         with open(
-            f"{settings.VITE_APP_DIR}/dist/manifest.json", "r", encoding="utf-8" # type: ignore
+            f"{settings.VITE_APP_DIR}/dist/manifest.json", "r", encoding="utf-8"
         ) as fd:
             manifest = json.load(fd)
     except:
         raise Exception(
-            f"Vite manifest file not found or invalid. Maybe your {settings.VITE_APP_DIR}/dist/manifest.json file is empty?" 
-        ) # type: ignore
+            f"Vite manifest file not found or invalid. Maybe your {settings.VITE_APP_DIR}/dist/manifest.json file is empty?"
+        )
 
     imports_files = "".join(
         [
