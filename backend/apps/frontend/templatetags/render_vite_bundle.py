@@ -14,8 +14,8 @@ import json
 
 from django import template
 from django.conf import settings
+from django.utils.safestring import SafeText  # SafeText is return type for mark_safe.
 from django.utils.safestring import mark_safe
-from django.utils.safestring import SafeText #SafeText is return type for mark_safe.
 
 register = template.Library()
 
