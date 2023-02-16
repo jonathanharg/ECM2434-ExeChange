@@ -18,7 +18,7 @@ function App() {
     <main className="grid min-h-full place-items-center bg-white py-24 px-6 sm:py-32 lg:px-8">
       <img
         src={logo}
-        className="h-16 w-16 fill-green-800"
+        className="animate-slow h-16 w-16 fill-green-800"
         alt="ExeChange logo"
       />
       <div className="text-center">
@@ -35,8 +35,11 @@ function App() {
           >
             GitHub
           </a>
-          <a href="/admin/" className="text-sm font-semibold text-gray-900">
-            Go to Admin Page <span aria-hidden="true">&rarr;</span>
+          {/* TODO: This should use a <Link> element
+              see https://reactrouter.com/en/main/components/link
+          */}
+          <a href="/login" className="text-sm font-semibold text-gray-900">
+            Login <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
       </div>
