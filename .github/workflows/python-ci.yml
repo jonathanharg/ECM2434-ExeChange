@@ -1,6 +1,7 @@
-name: linting
+name: Backend Continuous Integration
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main", "dev"]
   pull_request:
@@ -11,23 +12,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  python-ci:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
-      matrix:
-        python-version: [3.11]
 
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.11
         uses: actions/setup-python@v3
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.11
       - name: Install Dependencies
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           poetry install
+      - name: Run pytest
+        run: |
+          PYTHONPATH=$PYTHONPATH:$PWD/backend poetry run pytest
+      - name: Run mypy
+        run: |
+          PYTHONPATH=$PYTHONPATH:$PWD/backend poetry run mypy backend
       - name: Run Linting
         run: |
           PYTHONPATH=$PYTHONPATH:$PWD/backend poetry run pylint backend/apps
+          PYTHONPATH=$PYTHONPATH:$PWD/backend poetry run pylint backend/backend
+      - name: Formatting
+        run: |
+          poetry run black --check .
+      - name: Sorting
+        run: |
+          poetry run isort --check .

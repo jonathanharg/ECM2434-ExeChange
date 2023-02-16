@@ -9,7 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 @api_view(["GET"])
-def status(request):
+def status(request: HttpRequest) -> Response:
     data = {"status": "OK", "message": "Coming soon..."}
     return Response(data)
 

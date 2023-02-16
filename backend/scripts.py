@@ -2,14 +2,14 @@ import os
 import subprocess
 
 
-def runserver():
+def runserver() -> None:
     try:
         subprocess.run(["python", "./backend/manage.py", "runserver"])
     except KeyboardInterrupt:
         pass
 
 
-def black():
+def black() -> None:
     try:
         subprocess.run(["black", "."])
         subprocess.run(["isort", "."])
@@ -17,7 +17,7 @@ def black():
         pass
 
 
-def black_check():
+def black_check() -> None:
     try:
         subprocess.run(["black", "--check", "."])
         subprocess.run(["isort", "--check", "."])
@@ -25,21 +25,21 @@ def black_check():
         pass
 
 
-def migrate():
+def migrate() -> None:
     try:
         subprocess.run(["python", "./backend/manage.py", "migrate"])
     except KeyboardInterrupt:
         pass
 
 
-def build():
+def build() -> None:
     try:
         subprocess.run(["python", "./backend/manage.py", "collectstatic"])
     except KeyboardInterrupt:
         pass
 
 
-def run_prod():
+def run_prod() -> None:
     try:
         subprocess.run(["gunicorn", "--chdir", "backend", "backend.wsgi"])
     except KeyboardInterrupt:

@@ -1,4 +1,4 @@
-def inc(x):
+def inc(x: int) -> int:
     return x + 1
 
 
@@ -6,5 +6,5 @@ def inc(x):
 # assert inc(3) == 5
 
 
-def test_inc_pass():
+def test_inc_pass() -> None:
     assert inc(4) == 5
