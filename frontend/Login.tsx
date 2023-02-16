@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import logo from "./logo.svg";
+import {z, ZodError} from "zod";
 
 axios.defaults.xsrfHeaderName = "X-CSRFToken"
 axios.defaults.xsrfCookieName = "csrftoken"
@@ -15,11 +16,19 @@ export default function Login() {
   const [err, setErr] = useState('');
   const [success, setSuccess] = useState(false);
 
-
-  useEffect(() => {setErr(''), [user, password] }); // clear error msg if user starts typing
-
-  const handlesubmit = async (e) => { // this function sends form data to /api/login 
+  const handlesubmit = async (e: React.ChangeEvent<HTMLInputElement>) => { // this function sends form data to /api/login 
     e.preventDefault();
+
+    const emailSchema = z.string().email().endsWith("@exeter.ac.uk");
+    const passwordSchema = z.string();
+    try{
+      var emailcheck = emailSchema.parse(user);
+      var passwordcheck = passwordSchema.parse(password);
+    } catch (err) {
+      setErr(err.message);
+      console.log(err);
+      return;
+    }
 
     const response = await axios.post('/api/login', JSON.stringify({user, password}), 
     {

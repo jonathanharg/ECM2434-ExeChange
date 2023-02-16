@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useState, useEffect} from "react";
 import logo from "./logo.svg";
+import { z } from "zod";
 
-
-const USER_REGEX = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$'); //email constraint
-const PWD_REGEX = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+//General password rules.
+const PWD_REGEX = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])");
 
 function Register(){
     const [user, setUser] = useState('');
@@ -19,26 +19,8 @@ function Register(){
    
     const [err, setErr] = useState('');
     const [success, setSuccess] = useState(false);
-
-
-    useEffect(()=> {
-        const result = USER_REGEX.test(user) && user.includes("@exeter.ac.uk");
-        console.log(result);
-        console.log(user);
-        setValidUser(result);
-    }, [user])
-
-    useEffect(()=> {
-        const result = PWD_REGEX.test(password);
-        console.log(result);
-        console.log(password);
-        setValidPwd(result);
-        const validP = password === confirmPwd;
-        setvalidCpwd(validP)
-        console.log(validP);
-    }, [password, confirmPwd])
-
-    useEffect(() => {setErr(''), [user, password, confirmPwd] }); // clear error msg if user starts typing
+    
+    //useEffect(() => {setErr(''), [user, password, confirmPwd] }); // clear error msg if user starts typing
 
     let scheme = false;                         //this is for alternating button styles on disable
     const btnTheme= ()=> {   
@@ -49,7 +31,28 @@ function Register(){
     }
 
     const handlesubmit = async (e) => { // this function sends form data to /api/login 
+
         e.preventDefault();
+
+        const emailSchema = z.string().email().endsWith("@exeter.ac.uk", {message: "Use a valid Exeter University email!"});
+        const passwordSchema = z.object({password: z.string(),
+        // password: z.string().min(8).regex(PWD_REGEX, 
+        // {message: "Your password must have 8 or more characters. It must contain numbers and lowercase, uppercase, and special characters."}), 
+        /*confirmPwd: z.string().min(8).regex(PWD_REGEX)*/ confirmPwd: z.string()})
+        .refine((data) => data.password === data.confirmPwd, {message: "Your passwords must match!"});
+
+        const passInfo = {
+            password: password,
+            confirmPwd: confirmPwd
+        }
+        try{
+            var emailcheck = emailSchema.parse(user);
+            var passwordcheck = passwordSchema.parse(passInfo);
+          } catch (err) {
+            setErr(err.message);
+            console.log(err.message);
+            return;
+          }
         
         const response = await axios.post('/api/login', JSON.stringify({user, password, confirmPwd}), 
         {
@@ -110,10 +113,6 @@ function Register(){
                             onChange={(e) => setUser(e.target.value)}
                             value={user}
                             />
-                            <div className={!validUser && user ? "bg-lime-100 border-t border-b border-lime-900 text-stone-700 px-4 py-3":"visibility: hidden"} role="alert">
-                                <p className="font-bold">Info</p>
-                                <p className="text-sm">Email address must be a valid Exeter University email! </p>
-                            </div>
                         </div>
                         
                         <div>
@@ -131,11 +130,6 @@ function Register(){
                             onChange={(e) => setPassword(e.target.value)}
                             value={password}
                             />
-                            <div className={!validPwd && password ? "bg-lime-100 border-t border-b border-lime-900 text-stone-700 px-4 py-3":"visibility: hidden"} role="alert">
-                                <p className="font-bold">Info</p>
-                                <p className="text-sm"> Your password must have 8 or more characters. 
-                                    It must contain numbers and lowercase, uppercase, and special characters.  </p>
-                            </div>
                         </div>
                         <div>
                             <label htmlFor="password" className="sr-only">
@@ -152,15 +146,11 @@ function Register(){
                             onChange={(e) => setConfirmPwd(e.target.value)}
                             value={confirmPwd}
                             />
-                            <div className={!validCPwd && confirmPwd && password ? "bg-lime-100 border-t border-b border-lime-900 text-stone-700 px-4 py-3":"visibility: hidden"} role="alert">
-                                <p className="font-bold">Info</p>
-                                <p className="text-sm"> Your passwords must match. </p>
-                            </div>
                         </div>
                     </div>
                     <div>
-                        <button disabled = {!validUser|| !validPwd || !validCPwd ? true: false} 
-                            className= { btnTheme() ?" group relative flex w-full justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2 opacity-50 cursor-not-allowed" : "group relative flex w-full justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2"
+                        <button 
+                            className= { btnTheme() ?" group relative flex w-full justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2" : "group relative flex w-full justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2"
     }>
                             <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                             </span>
