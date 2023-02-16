@@ -4,3 +4,4 @@ backend/staticfiles
 frontend/dist
 documentation
 .venv
+.mypy_cache
