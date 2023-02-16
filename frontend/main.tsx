@@ -22,10 +22,6 @@ const router = createBrowserRouter([
     path: "/marketplace",
     element: <Marketplace />,
   },
-  {
-    path: "/debug",
-    element: <div className="w-10 h-20"><Itemtile id={undefined} name={undefined} href={undefined} imageSrc={undefined} tag={undefined}/></div>,
-  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
