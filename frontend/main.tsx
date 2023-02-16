@@ -5,6 +5,8 @@ import App from "./App";
 import Login from "./login";
 
 import "./index.css";
+import Marketplace from "./Marketplace/Marketplace";
+import Itemtile from "./Marketplace/Itemtile";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +18,14 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+  {
+    path: "/marketplace",
+    element: <Marketplace />,
+  },
+  {
+    path: "/debug",
+    element: <div className="w-10 h-20"><Itemtile/></div>,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
