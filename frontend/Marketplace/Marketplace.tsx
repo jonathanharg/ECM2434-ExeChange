@@ -71,6 +71,19 @@ function Marketplace() {
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div className="max-w-2xl mx-auto">
+
+        <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-200 dark:text-gray-400">Filter</label>
+              <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-green-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <option selected>Choose a category</option>
+              <option value="US">Cowboy</option>
+              <option value="CA">Fairy</option>
+              <option value="FR">Princess</option>
+              <option value="DE">Disco</option>
+          </select>
+
+        <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>
+        </div>
         <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
             <Itemtile
