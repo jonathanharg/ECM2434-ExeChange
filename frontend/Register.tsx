@@ -8,81 +8,90 @@ const PWD_REGEX = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\
 
 function Register(){
     const [user, setUser] = useState('');
-    const [validUser, setValidUser] = useState(false);
-    
+
     const [password, setPassword] = useState('');
-    const [validPwd, setValidPwd] = useState(false);
+    
     
 
     const [confirmPwd, setConfirmPwd] = useState('');
-    const [validCPwd, setvalidCpwd] = useState(false);
+  
    
     const [err, setErr] = useState('');
     const [success, setSuccess] = useState(false);
     
+    
     //useEffect(() => {setErr(''), [user, password, confirmPwd] }); // clear error msg if user starts typing
-
-    let scheme = false;                         //this is for alternating button styles on disable
-    const btnTheme= ()=> {   
-    if (!validUser|| !validPwd || !validCPwd) {
-        scheme = true; 
-    }
-    return scheme;
-    }
+    // let scheme = false;                         //this is for alternating button styles on disable
+    // const btnTheme= ()=> {   
+    // if (!validUser|| !validPwd || !validCPwd) {
+    //     scheme = true; 
+    // }
+    // return scheme;
+    // }
 
     const handlesubmit = async (e) => { // this function sends form data to /api/login 
 
         e.preventDefault();
 
-        const emailSchema = z.string().email().endsWith("@exeter.ac.uk", {message: "Use a valid Exeter University email!"});
-        // const passwordSchema = z.object({
-        // password: z.string().min(8).regex(PWD_REGEX, 
-        // {message: "Your password must have 8 or more characters. It must contain numbers and lowercase, uppercase, and special characters."}), 
-        // confirmPwd: z.string().min(8).regex(PWD_REGEX)})
+        const emailSchema = z.string().email().endsWith("@exeter.ac.uk");
+        const passwordSchema = z.string().min(8).regex(PWD_REGEX);
+        const passwordMatchSchema = z.object({
+            password: z.string(), 
+            confirmPwd: z.string()})
 
-        const passwordSchema = z.object({
-            password: z.string(),
-            confirmPwd: z.string()
-        })
-        .refine((data) => data.password === data.confirmPwd, {message: "Your passwords must match!"});
+        // const passwordSchema = z.object({
+        //     password: z.string(),
+        //     confirmPwd: z.string()
+        // })
+        .refine((data) => data.password === data.confirmPwd);
 
         const passInfo = {
             password: password,
             confirmPwd: confirmPwd
         }
-        try{
-            var emailcheck = emailSchema.parse(user);
-            var passwordcheck = passwordSchema.parse(passInfo);
-          } catch (err) {
-            setErr(err.message);
-            console.log(err.message);
-            return;
-          }
-        
-        const response = await axios.post('/api/login', JSON.stringify({user, password, confirmPwd}), 
-        {
-          headers: {'Content-Type': 'application/json'},
-          withCredentials: true
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-        setUser('');
-        setPassword('');
-        setConfirmPwd('');
-        setSuccess(true);
+       
+        var emailcheck = emailSchema.safeParse(user);
+        var passwordcheck = passwordSchema.safeParse(password);
+        var pwdMatchcheck = passwordMatchSchema.safeParse(passInfo);
+
+        if (!emailcheck.success) {
+            setErr("You need a valid University of Exeter email address to sign in.")
+        }
+        if (!passwordcheck.success && emailcheck.success) {
+            setErr("Your password must have 8 or more characters. It must contain numbers, lowercase, uppercase, and special characters.");
+        }
+        if (!pwdMatchcheck.success && passwordcheck.success) {
+            setErr("Passwords must match.")
+        }
+
+
+        if (emailcheck.success && passwordcheck.success && pwdMatchcheck.success) {
+            const response = await axios.post('/api/login', JSON.stringify({user, password, confirmPwd}), 
+            {
+            headers: {'Content-Type': 'application/json'},
+            withCredentials: true
+            })
+            .then(function (response) {
+            console.log(response);
+            })
+            .catch(function (error) {
+            console.log(error);
+            });
+            setErr('');
+            setUser('');
+            setPassword('');
+            setConfirmPwd('');
+            setSuccess(true);
+        }
       }
 
     return (
-        <>
+        <> 
         <div className="flex min-h-full items-center justify-center py-24 px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-md space-y-8">
                 <div>
                     <img
-                    className="mx-auto h-16 w-16 fill-green-800"
+                    className="animate-slow mx-auto h-16 w-16 fill-green-800"
                     src={logo}
                     alt="ExeChange Logo"
                     />
@@ -92,13 +101,15 @@ function Register(){
                 <h2 className="mt-6 text-center text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl">
                     Register
                 </h2>
-
-                <div className={err ? "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" : "visibility: hidden"} role="alert">
-                    <strong className="font-bold"> Error! </strong>
-                    <span className="block sm:inline"> {err} </span>
-                    <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
-                    <svg className="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
-                    </span>
+           
+                <div className={err? "bg-teal-100 border-t-4 border-teal-500 rounded-b inset-x-0 top-0 absolute text-teal-900 px-4 py-3 shadow-md":"visibility: hidden"} role="alert">
+                    <div className="flex">
+                        <div className={err? "py-1": "visibility: hidden"}><svg className={err?"fill-current h-6 w-6 text-teal-500 mr-4":"visibility: hidden"} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div>
+                        <div>
+                        <p className={"font-bold"}>Info</p>
+                        <p className="text-sm">{err}</p>
+                        </div>
+                    </div>
                 </div>
                 <form className="mt-8 space-y-6" action="#" method="POST" onSubmit={handlesubmit}>
                     <input type="hidden" name="remember" defaultValue="true" />
@@ -155,8 +166,7 @@ function Register(){
                     </div>
                     <div>
                         <button 
-                            className= { btnTheme() ?" group relative flex w-full justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2" : "group relative flex w-full justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2"
-    }>
+                            className= {" group relative flex w-full justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2"   }>
                             <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                             </span>
                             Register
