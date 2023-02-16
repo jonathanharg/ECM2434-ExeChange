@@ -14,13 +14,14 @@ import json
 
 from django import template
 from django.conf import settings
+from django.utils.safestring import SafeText  # SafeText is return type for mark_safe.
 from django.utils.safestring import mark_safe
 
 register = template.Library()
 
 
 @register.simple_tag
-def render_vite_bundle():
+def render_vite_bundle() -> SafeText:
     """
     Template tag to render a vite bundle.
     Supposed to only be used in production.
