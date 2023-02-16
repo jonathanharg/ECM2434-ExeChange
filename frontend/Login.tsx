@@ -25,7 +25,7 @@ export default function Login() {
       var emailcheck = emailSchema.parse(user);
       var passwordcheck = passwordSchema.parse(password);
     } catch (err) {
-      setErr(err.message);
+      setErr(err.message)
       console.log(err);
       return;
     }

@@ -31,7 +31,7 @@ function Register(){
     }
 
     const handlesubmit = async (e) => { // this function sends form data to /api/login 
-
+        
         e.preventDefault();
 
         const emailSchema = z.string().email().endsWith("@exeter.ac.uk", {message: "Use a valid Exeter University email!"});
