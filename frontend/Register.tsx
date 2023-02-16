@@ -31,14 +31,19 @@ function Register(){
     }
 
     const handlesubmit = async (e) => { // this function sends form data to /api/login 
-        
+
         e.preventDefault();
 
         const emailSchema = z.string().email().endsWith("@exeter.ac.uk", {message: "Use a valid Exeter University email!"});
-        const passwordSchema = z.object({password: z.string(),
+        // const passwordSchema = z.object({
         // password: z.string().min(8).regex(PWD_REGEX, 
         // {message: "Your password must have 8 or more characters. It must contain numbers and lowercase, uppercase, and special characters."}), 
-        /*confirmPwd: z.string().min(8).regex(PWD_REGEX)*/ confirmPwd: z.string()})
+        // confirmPwd: z.string().min(8).regex(PWD_REGEX)})
+
+        const passwordSchema = z.object({
+            password: z.string(),
+            confirmPwd: z.string()
+        })
         .refine((data) => data.password === data.confirmPwd, {message: "Your passwords must match!"});
 
         const passInfo = {

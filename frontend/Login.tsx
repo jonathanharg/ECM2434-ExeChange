@@ -16,7 +16,7 @@ export default function Login() {
   const [err, setErr] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const handlesubmit = async (e: React.ChangeEvent<HTMLInputElement>) => { // this function sends form data to /api/login 
+  const handlesubmit = async (e) => { // this function sends form data to /api/login 
     e.preventDefault();
 
     const emailSchema = z.string().email().endsWith("@exeter.ac.uk");
