@@ -36,6 +36,7 @@ jobs:
       - name: Run Linting
         run: |
           PYTHONPATH=$PYTHONPATH:$PWD/backend poetry run pylint backend/apps
+          PYTHONPATH=$PYTHONPATH:$PWD/backend poetry run pylint backend/backend
       - name: Formatting
         run: |
           poetry run black --check .

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
-import Login from "./login";
+import Login from "./Login";
 
 import "./index.css";
 import Marketplace from "./Marketplace/Marketplace";
