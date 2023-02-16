@@ -18,7 +18,7 @@ function App() {
     <main className="grid min-h-full place-items-center bg-white py-24 px-6 sm:py-32 lg:px-8">
       <img
         src={logo}
-        className="h-16 w-16 fill-green-800"
+        className="animate-slow h-16 w-16 fill-green-800"
         alt="ExeChange logo"
       />
       <div className="text-center">

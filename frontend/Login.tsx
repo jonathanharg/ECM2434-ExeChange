@@ -10,7 +10,7 @@ export default function Login() {
         <div className="w-full max-w-md space-y-8">
           <div>
             <img
-              className="mx-auto h-16 w-16 fill-green-800"
+              className="animate-slow mx-auto h-16 w-16 fill-green-800"
               src={logo}
               alt="ExeChange Logo"
             />
