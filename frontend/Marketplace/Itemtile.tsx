@@ -1,39 +1,30 @@
 import React from "react";
 
-var ID = 1;
-var name = 'Basic Tee';
-var href = '#';
-var imageSrc = 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg';
-var tag = 'Cowboy';
-
-var product =
-{
+function Itemtile({
     id: ID,
     name: name,
     href: href,
     imageSrc: imageSrc,
     tag: tag
-}
-
-function Itemtile() {
+}) {
     return (
 
-        <div key={product.id} className="group relative">
+        <div key={ID} className="group relative">
             <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
                 <img
-                    src={product.imageSrc}
+                    src={imageSrc}
                     className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                 />
             </div>
             <div className="mt-4 flex justify-between">
                 <div>
                     <h3 className="text-sm text-gray-700">
-                        <a href={product.href}>
+                        <a href={href}>
                             <span aria-hidden="true" className="absolute inset-0" />
-                            {product.name}
+                            {name}
                         </a>
                     </h3>
-                    <p className="mt-1 text-sm text-gray-500">{product.tag}</p>
+                    <p className="mt-1 text-sm text-gray-500">{tag}</p>
                 </div>
             </div>
         </div>

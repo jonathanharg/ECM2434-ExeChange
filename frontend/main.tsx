@@ -24,7 +24,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/debug",
-    element: <div className="w-10 h-20"><Itemtile/></div>,
+    element: <div className="w-10 h-20"><Itemtile id={undefined} name={undefined} href={undefined} imageSrc={undefined} tag={undefined}/></div>,
   }
 ]);
 
