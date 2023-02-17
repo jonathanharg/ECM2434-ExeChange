@@ -62,7 +62,7 @@ function Register(){
 
 
 
-    const handlesubmit = async (e) => { // this function sends form data to /api/login 
+    const handlesubmit = async (e) => { // this function sends form data to /api/register 
 
         e.preventDefault();
 
