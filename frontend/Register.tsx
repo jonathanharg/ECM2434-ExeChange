@@ -69,7 +69,7 @@ function Register(){
        
 
         if (emailcheck.success && passwordcheck.success && pwdMatchcheck.success) {
-            const response = await axios.post('/api/login', JSON.stringify({user, password, confirmPwd}), 
+            const response = await axios.post('/api/register', JSON.stringify({user, password, confirmPwd}), 
             {
             headers: {'Content-Type': 'application/json'},
             withCredentials: true
