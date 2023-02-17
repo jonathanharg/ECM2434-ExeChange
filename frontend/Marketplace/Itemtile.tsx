@@ -5,7 +5,8 @@ function Itemtile({
   name: name,
   href: href,
   imageSrc: imageSrc,
-  tag: tag,
+  tag1: tag1,
+  tag2: tag2,
 }) {
   return (
     <div key={ID} className="group relative">
@@ -23,7 +24,7 @@ function Itemtile({
               {name}
             </a>
           </h3>
-          <p className="mt-1 text-sm text-gray-500">{tag}</p>
+          <p className="mt-1 text-sm text-gray-500">{tag1},{tag2}</p>
         </div>
       </div>
     </div>

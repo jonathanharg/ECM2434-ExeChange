@@ -8,7 +8,8 @@ const products = [
     href: "#",
     imageSrc:
       "https://d3kbgunirza9ax.cloudfront.net/8BHR3LYrGqw/f:jpg/c:3024:3024:nowe:0:504/rs:fill:720:720:0/aW1hZ2UvcHJvZHVjdC8yZTdkNzZlZS1lNjRkLTQ1YWMtYmI3MC0yZWY5MGZkMzVjYmMuanBlZw",
-    tag: "Cowboy",
+    tag1: "Cowboy",
+    tag2: "Hat",
   },
   {
     id: 2,
@@ -16,14 +17,16 @@ const products = [
     href: "#",
     imageSrc:
       "https://images1.vinted.net/t/01_00e2f_3VtNiLoFd6iQbzDKPheUqZsX/f800/1668927158.jpeg?s=f1de2fa266d24ce5744857d66b167b5ec541e6a7",
-    tag: "Fairy",
+    tag1: "Fairy",
+    tag2: "Dress",
   },
   {
     id: 3,
     name: "Bald Mask",
     href: "#",
     imageSrc: "https://m.media-amazon.com/images/I/61CiEy804cL._AC_SL1500_.jpg",
-    tag: "Baldy",
+    tag1: "Baldy",
+    tag2: "Headware",
   },
   {
     id: 4,
@@ -31,7 +34,8 @@ const products = [
     href: "#",
     imageSrc:
       "https://da1urhpfd469z.cloudfront.net/uploads/advertphotos/21/1023/46416668-971-640x1028.jpg",
-    tag: "Superhero",
+    tag1: "Superhero",
+    tag2: "Onesie",
   },
   {
     id: 1,
@@ -39,7 +43,8 @@ const products = [
     href: "#",
     imageSrc:
       "https://d3kbgunirza9ax.cloudfront.net/8BHR3LYrGqw/f:jpg/c:3024:3024:nowe:0:504/rs:fill:720:720:0/aW1hZ2UvcHJvZHVjdC8yZTdkNzZlZS1lNjRkLTQ1YWMtYmI3MC0yZWY5MGZkMzVjYmMuanBlZw",
-    tag: "Cowboy",
+    tag1: "Cowboy",
+    tag2: "Hat",
   },
   {
     id: 2,
@@ -47,14 +52,16 @@ const products = [
     href: "#",
     imageSrc:
       "https://images1.vinted.net/t/01_00e2f_3VtNiLoFd6iQbzDKPheUqZsX/f800/1668927158.jpeg?s=f1de2fa266d24ce5744857d66b167b5ec541e6a7",
-    tag: "Fairy",
+    tag1: "Fairy",
+    tag2: "Dress",
   },
   {
     id: 3,
     name: "Bald Mask",
     href: "#",
     imageSrc: "https://m.media-amazon.com/images/I/61CiEy804cL._AC_SL1500_.jpg",
-    tag: "Baldy",
+    tag1: "Baldy",
+    tag2: "Headware",
   },
   {
     id: 4,
@@ -62,7 +69,8 @@ const products = [
     href: "#",
     imageSrc:
       "https://da1urhpfd469z.cloudfront.net/uploads/advertphotos/21/1023/46416668-971-640x1028.jpg",
-    tag: "Superhero",
+    tag1: "Superhero",
+    tag2: "Onesie",
   },
   // More products...
 ];
@@ -80,6 +88,7 @@ function Marketplace() {
               <option value="Fairy">Fairy</option>
               <option value="Princess">Princess</option>
               <option value="Disco">Disco</option>
+              <option value="Valentines">Valentines</option> 
           </select>
 
         <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>
@@ -91,7 +100,8 @@ function Marketplace() {
               name={product.name}
               href={product.href}
               imageSrc={product.imageSrc}
-              tag={"#" + product.tag}
+              tag1={"#" + product.tag1}
+              tag2={"#" + product.tag2}
             />
           ))}
         </div>
