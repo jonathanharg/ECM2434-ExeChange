@@ -29,7 +29,9 @@ sys.path.insert(0, APPS_DIR)
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+# First secret key is used for docker testing, docker not correctly picking up the .env!
+SECRET_KEY = os.getenv("SECRET_KEY", 'default_secret_key')
+# SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
@@ -103,9 +105,8 @@ REST_FRAMEWORK = {
 
 # Simple JWT Options
 # SIMPLE_JWT = {
-
+#     "SIGNING_KEY": SECRET_KEY,
 # }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
