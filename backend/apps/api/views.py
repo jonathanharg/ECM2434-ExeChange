@@ -2,9 +2,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 def gen_token(user: User) -> RefreshToken:
@@ -24,6 +22,18 @@ def status(request: HttpRequest) -> Response:
 
 @api_view(["POST"])
 def login(request: HttpRequest) -> Response:
+    """
+    Login view that takes data from the frontend and inputs it into the django supplied User database using
+    the User model, again supplied by Django.
+
+    Links to Docs: https://docs.djangoproject.com/en/4.1/topics/auth/default/#django.contrib.auth
+
+    Args:
+        request (HttpRequest): Contains the JSON data sent from the frontend.
+
+    Returns:
+        Response: Include the JSON data that needs to be sent back to the frontend, i.e. STATUS good or STATUS bad.
+    """
     email_address = request.data["user"]
     user_password = request.data["password"]
 
@@ -52,6 +62,18 @@ def login(request: HttpRequest) -> Response:
 
 @api_view(["POST"])
 def register(request: HttpRequest) -> Response:
+    """
+    Registering a user:
+    Taking data sent from the frontend and using the supplied Django user model and save the new_user to the User database.
+
+    Required docs: https://docs.djangoproject.com/en/4.1/topics/auth/default/#django.contrib.auth
+
+    Args:
+        request (HttpRequest): JSON data from the frontend
+
+    Returns:
+        Response: Include the JSON data that needs to be sent back to the frontend
+    """
     email_address = request.data["user"]
     user_password = request.data["password"]
     user_confirm_password = request.data["confirmPwd"]
