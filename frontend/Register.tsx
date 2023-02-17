@@ -10,60 +10,63 @@ function Register(){
     const [user, setUser] = useState('');
 
     const [password, setPassword] = useState('');
-    
-    
 
+    
     const [confirmPwd, setConfirmPwd] = useState('');
   
    
     const [err, setErr] = useState('');
     const [success, setSuccess] = useState(false);
     
+    const emailSchema = z.string().email().endsWith("@exeter.ac.uk");
+    const passwordSchema = z.string().min(8).regex(PWD_REGEX);
+    const passwordMatchSchema = z.object({
+        password: z.string(), 
+        confirmPwd: z.string()})
+
+    // const passwordSchema = z.object({
+    //     password: z.string(),
+    //     confirmPwd: z.string()
+    // })
+    .refine((data) => data.password === data.confirmPwd);
+
+    const passInfo = {
+        password: password,
+        confirmPwd: confirmPwd
+    }
+   
+    var emailcheck = emailSchema.safeParse(user);
+    var passwordcheck = passwordSchema.safeParse(password);
+    var pwdMatchcheck = passwordMatchSchema.safeParse(passInfo);
     
+    useEffect(() => {
+        if (!emailcheck.success && user) {
+            setErr("You need a valid University of Exeter email address to sign in.")
+        } else { setErr('')}
+        
+    }, [user, password, confirmPwd]);
+
+    useEffect(() => {
+        if (!passwordcheck.success && emailcheck.success && password) {
+            setErr("Your password must have 8 or more characters. It must contain numbers, lowercase, uppercase, and special characters.");
+        } else { setErr('')}
+    }, [password, confirmPwd]);
+
+    useEffect(() => {
+        if (!pwdMatchcheck.success && passwordcheck.success && confirmPwd) {
+            setErr("Passwords must match.")
+        } else { setErr('')}
+    }, [confirmPwd]);
+
     //useEffect(() => {setErr(''), [user, password, confirmPwd] }); // clear error msg if user starts typing
-    // let scheme = false;                         //this is for alternating button styles on disable
-    // const btnTheme= ()=> {   
-    // if (!validUser|| !validPwd || !validCPwd) {
-    //     scheme = true; 
-    // }
-    // return scheme;
-    // }
+
+
 
     const handlesubmit = async (e) => { // this function sends form data to /api/login 
 
         e.preventDefault();
 
-        const emailSchema = z.string().email().endsWith("@exeter.ac.uk");
-        const passwordSchema = z.string().min(8).regex(PWD_REGEX);
-        const passwordMatchSchema = z.object({
-            password: z.string(), 
-            confirmPwd: z.string()})
-
-        // const passwordSchema = z.object({
-        //     password: z.string(),
-        //     confirmPwd: z.string()
-        // })
-        .refine((data) => data.password === data.confirmPwd);
-
-        const passInfo = {
-            password: password,
-            confirmPwd: confirmPwd
-        }
        
-        var emailcheck = emailSchema.safeParse(user);
-        var passwordcheck = passwordSchema.safeParse(password);
-        var pwdMatchcheck = passwordMatchSchema.safeParse(passInfo);
-
-        if (!emailcheck.success) {
-            setErr("You need a valid University of Exeter email address to sign in.")
-        }
-        if (!passwordcheck.success && emailcheck.success) {
-            setErr("Your password must have 8 or more characters. It must contain numbers, lowercase, uppercase, and special characters.");
-        }
-        if (!pwdMatchcheck.success && passwordcheck.success) {
-            setErr("Passwords must match.")
-        }
-
 
         if (emailcheck.success && passwordcheck.success && pwdMatchcheck.success) {
             const response = await axios.post('/api/login', JSON.stringify({user, password, confirmPwd}), 
@@ -128,6 +131,7 @@ function Register(){
                             placeholder="you@exeter.ac.uk"
                             onChange={(e) => setUser(e.target.value)}
                             value={user}
+                         
                             />
                         </div>
                         
@@ -145,6 +149,7 @@ function Register(){
                             placeholder="Password"
                             onChange={(e) => setPassword(e.target.value)}
                             value={password}
+                       
                             />
                         </div>
                         <div>
@@ -161,6 +166,7 @@ function Register(){
                             placeholder="Confirm Password"
                             onChange={(e) => setConfirmPwd(e.target.value)}
                             value={confirmPwd}
+                         
                             />
                         </div>
                     </div>
