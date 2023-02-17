@@ -20,7 +20,7 @@ export default function Login() {
     e.preventDefault();
 
     const emailSchema = z.string().email().endsWith("@exeter.ac.uk");
-    const passwordSchema = z.string().min(8);
+    const passwordSchema = z.string();
 
     var emailcheck = emailSchema.safeParse(user);
     var passwordcheck = passwordSchema.safeParse(password);
