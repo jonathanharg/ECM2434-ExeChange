@@ -33,6 +33,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 dev = "backend.scripts:runserver"
+shell = "backend.scripts:runshell"
 format = "backend.scripts:black"
 check-format = "backend.scripts:black_check"
 migrate = "backend.scripts:migrate"
