@@ -10,13 +10,14 @@ axios.defaults.xsrfCookieName = "csrftoken"
 
 
 export default function Login() {
-
+  //user, password, and error states that are updated when user types in anything
+  //https://reactjs.org/docs/hooks-state.html
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const [err, setErr] = useState('');
-  const [success, setSuccess] = useState(false);
 
   const handlesubmit = async (e) => { // this function sends form data to /api/login 
+    // Zod validation for email, password, and password matching
     e.preventDefault();
 
     const emailSchema = z.string().email().endsWith("@exeter.ac.uk");
@@ -44,7 +45,6 @@ export default function Login() {
       setErr('')
       setUser('');
       setPassword('');
-      setSuccess(true);
     }
   }
   
