@@ -6,25 +6,23 @@ import { z } from "zod";
 //General password rules.
 const PWD_REGEX = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])");
 
-function Register(){
+function Register(){    
+    //user, password, and error states that are updated when user types in anything 
+    //https://reactjs.org/docs/hooks-state.html
     const [user, setUser] = useState('');
-
     const [password, setPassword] = useState('');
-
-    
     const [confirmPwd, setConfirmPwd] = useState('');
-  
-   
+
     const [err, setErr] = useState('');
-    const [success, setSuccess] = useState(false);
     
+    // Zod validation for email, password, and password matching
     const emailSchema = z.string().email().endsWith("@exeter.ac.uk");
     const passwordSchema = z.string().min(8).regex(PWD_REGEX);
     const passwordMatchSchema = z.object({
         password: z.string(), 
         confirmPwd: z.string()})
 
-    // const passwordSchema = z.object({
+    // const passwordSchema = z.object({ <- simple version to make backend testing easier
     //     password: z.string(),
     //     confirmPwd: z.string()
     // })
@@ -34,11 +32,13 @@ function Register(){
         password: password,
         confirmPwd: confirmPwd
     }
-   
+    // safeParse allows validation success to be checked easily and zod doesn't throw errors on failure 
+    // https://zod.dev/?id=safeparse
     var emailcheck = emailSchema.safeParse(user);
     var passwordcheck = passwordSchema.safeParse(password);
     var pwdMatchcheck = passwordMatchSchema.safeParse(passInfo);
     
+    //These constantly check user input and validate them
     useEffect(() => {
         if (!emailcheck.success && user) {
             setErr("You need a valid University of Exeter email address to sign in.")
@@ -58,7 +58,6 @@ function Register(){
         } else { setErr('')}
     }, [confirmPwd]);
 
-    //useEffect(() => {setErr(''), [user, password, confirmPwd] }); // clear error msg if user starts typing
 
 
 
@@ -84,7 +83,6 @@ function Register(){
             setUser('');
             setPassword('');
             setConfirmPwd('');
-            setSuccess(true);
         }
       }
 
@@ -166,7 +164,6 @@ function Register(){
                             placeholder="Confirm Password"
                             onChange={(e) => setConfirmPwd(e.target.value)}
                             value={confirmPwd}
-                         
                             />
                         </div>
                     </div>

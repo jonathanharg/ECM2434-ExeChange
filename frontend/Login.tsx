@@ -18,6 +18,7 @@ export default function Login() {
 
   const handlesubmit = async (e) => { // this function sends form data to /api/login 
     // Zod validation for email, password, and password matching
+    //https://zod.dev/
     e.preventDefault();
 
     const emailSchema = z.string().email().endsWith("@exeter.ac.uk");
@@ -25,6 +26,8 @@ export default function Login() {
 
     var emailcheck = emailSchema.safeParse(user);
     var passwordcheck = passwordSchema.safeParse(password);
+
+    // currently used for the generic error message on login failure
 
     if(!emailcheck.success || !passwordcheck.success){
       setErr('exists');
