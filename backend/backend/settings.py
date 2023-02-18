@@ -14,6 +14,7 @@ import os
 import sys
 from pathlib import Path
 
+# Load environment variables from the users .env file
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -29,9 +30,19 @@ sys.path.insert(0, APPS_DIR)
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# First secret key is used for docker testing, docker not correctly picking up the .env!
-SECRET_KEY = os.getenv("SECRET_KEY", 'default_secret_key')
-# SECRET_KEY = os.getenv("SECRET_KEY")
+DEFAULT_SECRET_KEY = (
+    "django-insecure-ep*!1h*9o8wd936&ys3qws35j3f1at@ncqfdld@)i25!kp77-l"
+)
+SECRET_KEY = os.getenv("SECRET_KEY", DEFAULT_SECRET_KEY)
+
+if SECRET_KEY == DEFAULT_SECRET_KEY:
+    # Building the docker image errors when it builds if there is no SECRET_KEY set
+    # Here we set the secret key to a default, this is overwritten by environment variables
+    # Warn the user if the default secret key is not overwritten.
+    print("WARNING! No SECRET_KEY set!")
+    print(
+        "If you are running in production stop the server IMMEDIATELY and set the SECRET_KEY using an environment variable!"
+    )
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
@@ -141,14 +152,14 @@ USE_TZ = True
 # These are the settings you should have for everything to work properly.
 # Add these to your main settings.py file, or modify it accordingly.
 
-# Needed for production. Avoid using '*'.
+# Hosts that Django will accept requests to
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(" ")
 
 # Needed for 'debug' to be available inside templates.
 # https://docs.djangoproject.com/en/3.2/ref/templates/api/#django-template-context-processors-debug
 INTERNAL_IPS = ["127.0.0.1"]
 
-# Vite App Dir: point it to the folder your vite app is in.
+# Vite App Dir: Let Django know where the frontend files are
 VITE_APP_DIR = BASE_DIR_FRONTEND / "frontend"
 
 # Static files (CSS, JavaScript, Images)
@@ -163,6 +174,7 @@ STATICFILES_DIRS = [
 ]
 
 if DEBUG:
+    # Serve all static files from the frontend in debug mode
     STATICFILES_DIRS.append(VITE_APP_DIR)
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
