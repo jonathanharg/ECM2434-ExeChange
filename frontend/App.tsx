@@ -1,5 +1,6 @@
 import logo from "./logo.svg";
 import React, { useEffect, useState } from "react";
+import { AuthProvider } from "react-auth-kit";
 
 function App() {
   const [status, setStatus] = useState({ message: "Loading..." });
@@ -15,6 +16,10 @@ function App() {
   }, []);
 
   return (
+    <AuthProvider authType={'cookie'}
+                  authName={'_auth'}
+                  cookieDomain={window.location.hostname}
+                  cookieSecure={window.location.protocol === "https:"}> 
     <main className="grid min-h-full place-items-center bg-white py-24 px-6 sm:py-32 lg:px-8">
       <img
         src={logo}
@@ -47,6 +52,7 @@ function App() {
         </div>
       </div>
     </main>
+    </AuthProvider>
   );
 }
 
