@@ -1,17 +1,17 @@
 import axios from "axios";
-import React, { useState, useEffect} from "react";
+import React, { useRef, useState, useEffect} from "react";
 import logo from "./logo.svg";
-import { z } from "zod";
+import { boolean, z } from "zod";
 
 //General password rules.
 const PWD_REGEX = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])");
 
-function Register(){    
+function Register(){
     //user, password, and error states that are updated when user types in anything 
     //https://reactjs.org/docs/hooks-state.html
-    const [user, setUser] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPwd, setConfirmPwd] = useState('');
+    const [confirmPwd, setConfirmPassword] = useState('');
 
     const [err, setErr] = useState('');
     
@@ -34,27 +34,41 @@ function Register(){
     }
     // safeParse allows validation success to be checked easily and zod doesn't throw errors on failure 
     // https://zod.dev/?id=safeparse
-    var emailcheck = emailSchema.safeParse(user);
+    var emailcheck = emailSchema.safeParse(email);
     var passwordcheck = passwordSchema.safeParse(password);
     var pwdMatchcheck = passwordMatchSchema.safeParse(passInfo);
     
     //These constantly check user input and validate them
     useEffect(() => {
-        if (!emailcheck.success && user) {
-            setErr("You need a valid University of Exeter email address to sign in.")
-        } else { setErr('')}
+        if (!emailcheck.success && email) {
+            var timer = setTimeout(function() {
+                setErr("You need a valid University of Exeter email address to sign in.");
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        } else { 
+            setErr('');
+        }
         
-    }, [user, password, confirmPwd]);
+    }, [email, password, confirmPwd]);
 
     useEffect(() => {
         if (!passwordcheck.success && emailcheck.success && password) {
-            setErr("Your password must have 8 or more characters. It must contain numbers, lowercase, uppercase, and special characters.");
+            var timer = setTimeout(function() {
+                setErr("Your password must have 8 or more characters. It must contain numbers, lowercase, uppercase, and special characters.");
+            }, 3000);
+
+            return () => clearTimeout(timer);
         } else { setErr('')}
     }, [password, confirmPwd]);
 
     useEffect(() => {
         if (!pwdMatchcheck.success && passwordcheck.success && confirmPwd) {
-            setErr("Passwords must match.")
+            var timer = setTimeout(function() {
+                setErr("Passwords must match.")
+            }, 3000)
+            
+            return () => clearTimeout(timer);
         } else { setErr('')}
     }, [confirmPwd]);
 
@@ -65,9 +79,10 @@ function Register(){
 
         e.preventDefault();
 
-       
-
         if (emailcheck.success && passwordcheck.success && pwdMatchcheck.success) {
+            //backend takes user as a JSON key, hence setting user to email and then passing user in below
+            //JSON stringify.
+            const user = email;
             const response = await axios.post('/api/register', JSON.stringify({user, password, confirmPwd}), 
             {
             headers: {'Content-Type': 'application/json'},
@@ -80,9 +95,9 @@ function Register(){
             console.log(error);
             });
             setErr('');
-            setUser('');
+            setEmail('');
             setPassword('');
-            setConfirmPwd('');
+            setConfirmPassword('');
         }
       }
 
@@ -127,8 +142,8 @@ function Register(){
                             required
                             className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-green-800 focus:outline-none focus:ring-green-800 sm:text-sm"
                             placeholder="you@exeter.ac.uk"
-                            onChange={(e) => setUser(e.target.value)}
-                            value={user}
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
                          
                             />
                         </div>
@@ -162,7 +177,7 @@ function Register(){
                             required
                             className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-green-800 focus:outline-none focus:ring-green-800 sm:text-sm"
                             placeholder="Confirm Password"
-                            onChange={(e) => setConfirmPwd(e.target.value)}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             value={confirmPwd}
                             />
                         </div>

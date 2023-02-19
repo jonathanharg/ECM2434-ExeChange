@@ -37,6 +37,8 @@ def login(request: HttpRequest) -> Response:
     email_address = request.data["user"]
     user_password = request.data["password"]
 
+    #username is a required parameter.
+    #potentially write a get_username function that splits email in a file that we can import from in login and register.
     user = authenticate(username=email_address, password=user_password)
 
     if user is not None:
