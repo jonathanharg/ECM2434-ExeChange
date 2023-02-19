@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import axios from "axios";
 import logo from "./logo.svg";
 import {z, ZodError} from "zod";
+import { useSignIn } from "react-auth-kit";
 
 axios.defaults.xsrfHeaderName = "X-CSRFToken"
 axios.defaults.xsrfCookieName = "csrftoken"
@@ -10,6 +11,9 @@ axios.defaults.xsrfCookieName = "csrftoken"
 
 
 export default function Login() {
+  //react-auth-kit functions
+  //const signIn = useSignIn()
+
   //user, password, and error states that are updated when user types in anything
   //https://reactjs.org/docs/hooks-state.html
   const [user, setUser] = useState('');
@@ -40,7 +44,8 @@ export default function Login() {
         withCredentials: true
       })
       .then(function (response) {
-        console.log(response);
+        /*This is where the react-auth-kit can be set up, when it works, at the moment it is erroring*/
+        console.log(response.data.access);
       })
       .catch(function (error) {
         console.log(error);
