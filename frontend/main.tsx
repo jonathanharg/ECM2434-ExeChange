@@ -7,23 +7,29 @@ import Navbar from "./Navbar";
 
 import "./index.css";
 
-
 //for using nested routes check out: https://reactrouter.com/en/main/start/tutorial
-//info is under the   " nested routes " title, you pretty much need to use an <outlet> to mark 
+//info is under the   " nested routes " title, you pretty much need to use an <outlet> to mark
 //where in the parent route you want the children to render
 const router = createBrowserRouter([
-  { 
+  {
     path: "/",
     element: <Navbar />,
-    children:[
-      {path: "/login/:login",
-      element: <Login />,},
+    children: [
+      { path: "/", element: <App /> },
+      { path: "/login", element: <Login /> },
       {
-        path: "/test/:test",
-        element: <App />,
-        errorElement: <App />,
+        path: "/test1",
+        element: <div>Test 1!</div>,
       },
-    ]
+      {
+        path: "/test2",
+        element: <div>Test 2!</div>,
+      },
+      {
+        path: "/test3",
+        element: <div>Test 3!</div>,
+      },
+    ],
   },
 ]);
 
