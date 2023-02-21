@@ -54,7 +54,7 @@ export default function Login() {
     // currently used for the generic error message on login failure
 
     if (!emailcheck.success || !passwordcheck.success) {
-      setErr("exists");
+      setEmailErr("exists");
     }
 
     if (emailcheck.success && passwordcheck.success) {
@@ -72,7 +72,7 @@ export default function Login() {
                 expiresIn: 5,
                 tokenType: "Bearer", //not sure what this is yet.
                 authState: { name: user, email: user },
-                // refreshToken: response.data.refresh,
+                // refreshToken: response.data.refresh, // TODO: refreshToken working
                 // refreshTokenExpireIn: 1440,
               })
             ) {
@@ -90,7 +90,8 @@ export default function Login() {
         .catch(function (error) {
           console.log(error);
         });
-      setErr("");
+      setEmailErr("");
+      setPassErr("");
       setUser("");
       setPassword("");
     }

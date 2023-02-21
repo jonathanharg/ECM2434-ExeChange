@@ -102,7 +102,7 @@ def register(request: HttpRequest) -> Response:
                 "access": str(token.access_token),
                 "refresh": str(token),
             }
-        except IntegrityError as e:
+        except IntegrityError:
             data = {
                 "status": "UNIQUE_ERROR",
                 "message": "User already signed up!"
