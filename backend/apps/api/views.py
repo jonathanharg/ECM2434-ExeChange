@@ -17,7 +17,7 @@ def products(request: HttpRequest) -> Response:
             "id": 1,
             "name": "Cowboy Hat",
             "href": "#",
-            "imageSrc": "https://d3kbgunirza9ax.cloudfront.net/8BHR3LYrGqw/f:jpg/c:3024:3024:nowe:0:504/rs:fill:720:720:0/aW1hZ2UvcHJvZHVjdC8yZTdkNzZlZS1lNjRkLTQ1YWMtYmI3MC0yZWY5MGZkMzVjYmMuanBlZw",
+            "imageSrc": "https://i.ebayimg.com/images/g/csYAAOSwl9xePWGM/s-l500.jpg",
             "tags": ["Cowboy", "Hat"],
         }
     ] * 13
