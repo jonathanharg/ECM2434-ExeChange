@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ArrowPathIcon from "@heroicons/react/24/outline/ArrowPathIcon";
+import { Link } from "react-router-dom";
 
-function App() {
+function Hero() {
   const [status, setStatus] = useState({ message: "Loading..." });
 
   const fetchStatus = () => {
@@ -31,16 +32,13 @@ function App() {
           >
             GitHub
           </a>
-          {/* TODO: This should use a <Link> element
-              see https://reactrouter.com/en/main/components/link
-          */}
-          <a href="/login" className="text-sm font-semibold text-gray-900">
+          <Link to="/login" className="text-sm font-semibold text-gray-900">
             Login <span aria-hidden="true">&rarr;</span>
-          </a>
+          </Link>
         </div>
       </div>
     </main>
   );
 }
 
-export default App;
+export default Hero;

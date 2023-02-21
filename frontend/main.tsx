@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from "./App";
-import Login from "./Login";
-import Navbar from "./Navbar";
+import Hero from "./pages/Hero/Hero";
+import Login from "./pages/Login/Login";
+import Navbar from "./components/Navbar";
 
 import "./index.css";
 
@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <Navbar />,
     children: [
-      { path: "/", element: <App /> },
+      { path: "/", element: <Hero /> },
       { path: "/login", element: <Login /> },
       {
         path: "/test1",
