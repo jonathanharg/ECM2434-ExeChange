@@ -2,15 +2,20 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import { z, ZodError } from "zod";
-import { useSignIn } from "react-auth-kit";
+import { useIsAuthenticated,useSignIn } from "react-auth-kit";
 
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 import { ArrowPathIcon, LockClosedIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   //react-auth-kit functions
   const signIn = useSignIn();
+  const isAuthenticated = useIsAuthenticated();
+
+  //react routing
+  const navigate = useNavigate();
 
   //user, password, and error states that are updated when user types in anything
   //https://reactjs.org/docs/hooks-state.html
@@ -59,7 +64,6 @@ export default function Login() {
     }
 
     if (emailcheck.success && passwordcheck.success) {
-      const email = user;
       const response = await axios
         .post("/api/login", JSON.stringify({ user, password }), {
           headers: { "Content-Type": "application/json" },
@@ -80,6 +84,7 @@ export default function Login() {
             ) {
               //Logged in !
               console.log("USER LOGGED IN!");
+              navigate("/");
             } else {
               //Throw error as react-auth-kit broke!
               console.log("oopsy :O");
