@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
 import logo from "./logo.svg";
 import { boolean, z } from "zod";
+import { useSignIn } from "react-auth-kit";
 
 //General password rules.
 const PWD_REGEX = new RegExp(
@@ -9,6 +10,9 @@ const PWD_REGEX = new RegExp(
 );
 
 function Register() {
+  // Needed for logging the user in once registered
+  const signIn = useSignIn();
+
   //user, password, and error states that are updated when user types in anything
   //https://reactjs.org/docs/hooks-state.html
   const [email, setEmail] = useState("");
@@ -16,6 +20,7 @@ function Register() {
   const [confirmPwd, setConfirmPassword] = useState("");
 
   const [emailErr, setEmailErr] = useState("");
+  const [uniqueErr, setUniqueErr] = useState("");
   const [passErr, setPassErr] = useState("");
   const [cPassErr, setcPassErr] = useState("");
 
@@ -43,6 +48,7 @@ function Register() {
   //Check user input and validate them
   useEffect(() => {
     if (!emailcheck.success && email) {
+      setUniqueErr("");
       setEmailErr(
         "You need a valid University of Exeter email address to sign in."
       );
@@ -50,6 +56,7 @@ function Register() {
       setEmailErr("");
     }
   }, [email, password, confirmPwd]);
+
   useEffect(() => {
     if (!passwordcheck.success && password) {
       setPassErr(
@@ -83,11 +90,34 @@ function Register() {
           withCredentials: true,
         })
         .then(function (response) {
-          console.log(response);
+          // If response status UNIQUE_ERROR -> then show error message.
+          if(response.data.status == "UNIQUE_ERROR") {
+            console.log("You are already signed up!");
+            setUniqueErr("You seem to be already signed up ! Want to <log in> ? Or have you <forgot password ?>");
+          }
+          else if(response.data.status == "OK") {
+            // SIGN UP WAS SUCCESSFUL -> proceed to 'sign the user in' by using the tokens returned to them
+            // from the django register view !
+            console.log("SIGN UP WAS SUCCESSFUL!");
+
+            if(signIn (
+              {
+                token: response.data.token,
+                expiresIn: 5,
+                tokenType: "bearer",
+                authState: {name: email, user: email}
+                // TODO: refresh tokens working !
+              }
+            )) {
+              //Registered user has been successfully signed in!
+              console.log("USER HAS BEEN SIGNED IN !");
+            }        
+          }
         })
         .catch(function (error) {
           console.log(error);
         });
+      
       setEmailErr("");
       setPassErr("");
       setcPassErr("");
@@ -149,7 +179,6 @@ function Register() {
                     {emailErr}
                   </p>
                 </div>
-
                 <div className="mb-6">
                   <label
                     htmlFor="password"
@@ -226,6 +255,16 @@ function Register() {
                   <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
                   Register
                 </button>
+                <br />
+                <p
+                    className={
+                      uniqueErr
+                        ? "mt-2 text-sm text-red-600 dark:text-red-500"
+                        : "visibility: none"
+                    }
+                  >
+                    {uniqueErr}
+                  </p>
               </div>
             </form>
           </div>

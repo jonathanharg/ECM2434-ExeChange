@@ -98,7 +98,7 @@ def register(request: HttpRequest) -> Response:
 
             data = {
                 "status": "OK",
-                "message": "User authentication excepted",
+                "message": "User authentication accepted",
                 "access": str(token.access_token),
                 "refresh": str(token),
             }
