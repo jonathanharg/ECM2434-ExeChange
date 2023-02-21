@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 import sys
 from pathlib import Path
+from datetime import timedelta
 
 # Load environment variables from the users .env file
 from dotenv import load_dotenv
@@ -115,9 +116,10 @@ REST_FRAMEWORK = {
 }
 
 # Simple JWT Options
-# SIMPLE_JWT = {
-#     "SIGNING_KEY": SECRET_KEY,
-# }
+SIMPLE_JWT = {
+    # "SIGNING_KEY": SECRET_KEY,
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120)
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

@@ -4,15 +4,18 @@ from django.db.utils import IntegrityError
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication # type: ignore
+from rest_framework_simplejwt.tokens import RefreshToken # type: ignore
+#Above are type ignored, as they have no type stubs written for them.
 
 
-def gen_token(user: User) -> RefreshToken:
+def gen_token(user: User) -> RefreshToken: #type: ignore
     """
     Generate JWT token
     Args:
         user: Passed user to generate token for.
+    Returns:
+        new_token: RefreshToken including access token for given user.
     """
     new_token = RefreshToken.for_user(user)
     return new_token
@@ -52,8 +55,9 @@ def login(request: HttpRequest) -> Response:
     Returns:
         Response: Include the JSON data that needs to be sent back to the frontend, i.e. STATUS good or STATUS bad.
     """
-    email_address = request.data["user"]
-    user_password = request.data["password"]
+    # Ignoring types here, as mypy throws errors but these are valid attributes.
+    email_address = request.data["user"] # type: ignore
+    user_password = request.data["password"] # type: ignore
 
     username = get_username(email_address)
 
@@ -63,11 +67,11 @@ def login(request: HttpRequest) -> Response:
     )
 
     if user is not None:
-        # This print statement should be removed.
-        print("LOG IN SUCCESSFULL")
+        print("LOG IN SUCCESSFULL!")
 
         # Creating JWT Access token
-        token = gen_token(user)
+        # Ignoring type as libraries have no included type stubs
+        token = gen_token(user) #type: ignore
 
         data = {
             "status": "OK",
@@ -77,7 +81,7 @@ def login(request: HttpRequest) -> Response:
             "refresh": str(token),
         }
     else:
-        print("User not in database")
+        print("LOGIN UNSUCCESSFUL, USER NOT FOUND IN DATABASE!")
         data = {"status": "BAD", "message": "User not authenticated"}
 
     return Response(data)
@@ -97,9 +101,10 @@ def register(request: HttpRequest) -> Response:
     Returns:
         Response: Include the JSON data that needs to be sent back to the frontend
     """
-    email_address = request.data["user"]
-    user_password = request.data["password"]
-    user_confirm_password = request.data["confirmPwd"]
+    # Ignoring types here, as mypy throws errors but these are valid attributes.
+    email_address = request.data["user"] # type: ignore
+    user_password = request.data["password"] #type: ignore
+    user_confirm_password = request.data["confirmPwd"] #type: ignore
 
     if user_password == user_confirm_password:
         try:
@@ -110,7 +115,7 @@ def register(request: HttpRequest) -> Response:
             )
             new_user.save()
 
-            print("USER ADDED TO DATABASE!")
+            print("REGISTRATION SUCCESSFULL AND USER ADDED TO DATABASE!")
 
             # Generating new JWT token for registered user, this means that they do not need to log in after registering
             token = gen_token(new_user)
@@ -123,6 +128,9 @@ def register(request: HttpRequest) -> Response:
                 "refresh": str(token),
             }
         except IntegrityError:
+            print(
+                "NON UNIQUE EMAIL OR USERNAME USED THEREFORE, REGISTRATION UNSUCCESSFUL!"
+            )
             data = {"status": "UNIQUE_ERROR", "message": "User already signed up!"}
     else:
         data = {
@@ -149,7 +157,8 @@ def refresh(request: HttpRequest) -> Response:
     response = jwt_authenticator.authenticate(request)
 
     if response is not None:
-        user, token = response
+        # Unpacking response, token is not needed hence _.
+        user, _ = response
         # generate new access token and send back to the user !
         new_token = gen_token(user)
         return Response(
@@ -160,13 +169,12 @@ def refresh(request: HttpRequest) -> Response:
             }
         )
 
-    else:
-        return Response(
-            {
-                "status": "TOKEN_AUTHENTICATION_FAILED",
-                "message": "Refresh token for given user was not accepted!",
-            }
-        )
+    return Response(
+        {
+            "status": "TOKEN_AUTHENTICATION_FAILED",
+            "message": "Refresh token for given user was not accepted!",
+        }
+    )
 
 
 @api_view(["GET"])
