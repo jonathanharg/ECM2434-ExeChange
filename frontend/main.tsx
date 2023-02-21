@@ -5,6 +5,7 @@ import App from "./App";
 import Login from "./Login";
 
 import "./index.css";
+import Marketplace from "./Marketplace/Marketplace";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/marketplace",
+    element: <Marketplace />,
   },
 ]);
 
