@@ -23,6 +23,20 @@ def status(request: HttpRequest) -> Response:
     return Response(data)
 
 
+def get_username(email: str) -> str:
+    """
+    Generates a username for a given email address, simply by removing the email.
+
+    Args:
+        email (str): The given email address to generate a username for
+
+    Returns:
+        str: The username as a string.
+    """
+    username = email.split("@")[0]
+    return username
+
+
 @api_view(["POST"])
 def login(request: HttpRequest) -> Response:
     """
@@ -40,21 +54,27 @@ def login(request: HttpRequest) -> Response:
     email_address = request.data["user"]
     user_password = request.data["password"]
 
+    username = get_username(email_address)
+
     # username is a required parameter.
     # potentially write a get_username function that splits email in a file that we can import from in login and register.
-    user = authenticate(username=email_address, password=user_password)
+    
+    user = authenticate(
+        username=username,
+        password=user_password,
+    )
 
     if user is not None:
-        print("USER IN DATABASE")
+        # This print statement should be removed.
+        print("LOG IN SUCCESSFULL")
 
         # Creating JWT Access token
         token = gen_token(user)
-        print("Access token: " + str(token.access_token)),
-        print("Refresh token:" + str(token))
 
         data = {
             "status": "OK",
             "message": "User authentication excepted",
+            "username": username,
             "access": str(token.access_token),
             "refresh": str(token),
         }
@@ -87,8 +107,12 @@ def register(request: HttpRequest) -> Response:
        
         try:
             # Generate new user and add to User database using django.auth User model
+            new_user_username = get_username(email_address)
             new_user = User.objects.create_user(
-            username=email_address, email=email_address, password=user_password)
+                username= new_user_username, 
+                email=email_address, 
+                password=user_password
+            )
             new_user.save()
 
             print("USER ADDED TO DATABASE!")
@@ -99,6 +123,7 @@ def register(request: HttpRequest) -> Response:
             data = {
                 "status": "OK",
                 "message": "User authentication accepted",
+                "username": new_user_username,
                 "access": str(token.access_token),
                 "refresh": str(token),
             }
@@ -109,6 +134,8 @@ def register(request: HttpRequest) -> Response:
             }
     else:
         data = {"status": "CREDENTIAL_ERROR", "message": "Password and confirm do not match"}
+
+    return Response(data)
 
 @api_view(["GET"])
 def products(request: HttpRequest) -> Response:

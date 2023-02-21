@@ -209,7 +209,7 @@ export default function Navbar() {
           </nav>
         </header>
       </div>
-      <div>
+      <div className="mt-16">
         <Outlet />
       </div>
     </>

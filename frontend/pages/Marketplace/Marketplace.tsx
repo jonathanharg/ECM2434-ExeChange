@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Itemtile from "./Itemtile";
 import { Product } from "./Itemtile";
-import { useIsAuthenticated } from "react-auth-kit";
+import { useIsAuthenticated, useAuthUser } from "react-auth-kit";
 
 // const products = [
 //   {
@@ -39,7 +39,8 @@ import { useIsAuthenticated } from "react-auth-kit";
 // ];
 
 function Marketplace() {
-  const isAuthenticated = useIsAuthenticated()
+  const isAuthenticated = useIsAuthenticated();
+  const auth = useAuthUser();
 
   if(isAuthenticated()) {
     const [products, setProducts] = useState<Product[]>([]);
@@ -78,6 +79,7 @@ function Marketplace() {
 
             <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>
           </div>
+          <h1>Hello {auth().user}</h1>
           <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {products.map((product) => (
               <Itemtile key={product.id} {...product} />
@@ -88,6 +90,7 @@ function Marketplace() {
     );
   } else {
     //SHOULD REDIRECT TO LOGIN!
+    console.log("YOU ARE NOT LOGGED!");
     return (
       <h1>YOU ARE NOT LOGGED IN!!!!!</h1>
     );

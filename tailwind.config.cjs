@@ -2,9 +2,9 @@
 
 module.exports = {
   content: [
-    "./index.html",
-    "./*.{js,ts,jsx,tsx}",
-    "./*/*.{js,ts,jsx,tsx}",
+    "./frontend/index.html",
+    "./frontend/*.{js,ts,jsx,tsx}",
+    "./frontend/**/*.{js,ts,jsx,tsx}",
     "./node_modules/flowbite/**/*.js",
   ],
   theme: {

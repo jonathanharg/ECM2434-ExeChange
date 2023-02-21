@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
-import logo from "./logo.svg";
+// import logo from "./logo.svg";
 import { boolean, z } from "zod";
 import { useSignIn } from "react-auth-kit";
 
@@ -98,14 +98,12 @@ function Register() {
           else if(response.data.status == "OK") {
             // SIGN UP WAS SUCCESSFUL -> proceed to 'sign the user in' by using the tokens returned to them
             // from the django register view !
-            console.log("SIGN UP WAS SUCCESSFUL!");
-
             if(signIn (
               {
                 token: response.data.token,
                 expiresIn: 5,
                 tokenType: "bearer",
-                authState: {name: email, user: email}
+                authState: {user: response.data.username}
                 // TODO: refresh tokens working !
               }
             )) {
@@ -132,13 +130,12 @@ function Register() {
       <div className="flex min-h-full items-center justify-center py-24 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div>
-            <img
+            {/* <img
               className="animate-slow mx-auto h-16 w-16 fill-green-800"
               src={logo}
               alt="ExeChange Logo"
-            />
+            /> */}
           </div>
-
           <div>
             <h2 className="mt-6 text-center text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl">
               Register

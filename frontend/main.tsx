@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Hero from "./pages/Hero/Hero";
 import Login from "./pages/Login/Login";
-import Register from "./pages/Login/Register";
+import Register from "./pages/Register/Register";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "react-auth-kit";
 
@@ -38,7 +38,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     authType={"cookie"}
     authName={"_auth"}
     cookieDomain={window.location.hostname}
-    cookieSecure={window.location.protocol === "https:"}
+    cookieSecure={window.location.protocol === "https:"} //should this be http for now ?
   >
     <React.StrictMode>
       <RouterProvider router={router} />

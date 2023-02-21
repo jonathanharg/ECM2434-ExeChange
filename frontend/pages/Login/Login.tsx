@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import logo from "./logo.svg";
+
 import { z, ZodError } from "zod";
 import { useSignIn } from "react-auth-kit";
 
@@ -59,6 +59,7 @@ export default function Login() {
     }
 
     if (emailcheck.success && passwordcheck.success) {
+      const email = user;
       const response = await axios
         .post("/api/login", JSON.stringify({ user, password }), {
           headers: { "Content-Type": "application/json" },
@@ -71,8 +72,8 @@ export default function Login() {
               signIn({
                 token: response.data.access,
                 expiresIn: 5,
-                tokenType: "Bearer", //not sure what this is yet.
-                authState: { name: user, email: user },
+                tokenType: "Bearer",
+                authState: { user: response.data.username }, // state passed in cannot be called user, hence const email = user.
                 // refreshToken: response.data.refresh, // TODO: refreshToken working
                 // refreshTokenExpireIn: 1440,
               })
@@ -103,11 +104,11 @@ export default function Login() {
       <div className="flex min-h-full items-center justify-center py-24 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div>
-            <img
+            {/* <img
               className="animate-slow mx-auto h-16 w-16 fill-green-800"
-              src={logo}
+              // src={logo}
               alt="ExeChange Logo"
-            />
+            /> */}
           </div>
           <div>
             <h2 className="mt-6 text-center text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl">
