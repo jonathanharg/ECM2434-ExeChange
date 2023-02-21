@@ -1,5 +1,5 @@
-import logo from "./logo.svg";
 import React, { useEffect, useState } from "react";
+import ArrowPathIcon from "@heroicons/react/24/outline/ArrowPathIcon";
 
 function App() {
   const [status, setStatus] = useState({ message: "Loading..." });
@@ -16,11 +16,7 @@ function App() {
 
   return (
     <main className="grid min-h-full place-items-center bg-white py-24 px-6 sm:py-32 lg:px-8">
-      <img
-        src={logo}
-        className="animate-slow h-16 w-16 fill-green-800"
-        alt="ExeChange logo"
-      />
+      <ArrowPathIcon className="animate-slow mx-auto h-16 w-16" />
       <div className="text-center">
         <h1 className="mt-16 text-5xl font-bold tracking-tight text-gray-900 sm:text-9xl">
           E<span className="text-green-800">x</span>eChange
