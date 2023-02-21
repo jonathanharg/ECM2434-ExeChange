@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Hero from "./pages/Hero/Hero";
 import Login from "./pages/Login/Login";
-import Register from "./Register";
+import Register from "./pages/Login/Register";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "react-auth-kit";
 
