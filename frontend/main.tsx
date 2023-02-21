@@ -6,7 +6,7 @@ import Login from "./pages/Login/Login";
 import Navbar from "./components/Navbar";
 
 import "./index.css";
-import Marketplace from "./Marketplace/Marketplace";
+import Marketplace from "./Pages/Marketplace/Marketplace";
 
 //for using nested routes check out: https://reactrouter.com/en/main/start/tutorial
 //info is under the   " nested routes " title, you pretty much need to use an <outlet> to mark
