@@ -6,7 +6,6 @@ import Login from "./Login";
 
 import "./index.css";
 import Marketplace from "./Marketplace/Marketplace";
-import Itemtile from "./Marketplace/Itemtile";
 
 const router = createBrowserRouter([
   {
