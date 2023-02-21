@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import { z, ZodError } from "zod";
-import { useIsAuthenticated, useSignIn } from "react-auth-kit";
+import { useIsAuthenticated, useSignIn, createRefresh } from "react-auth-kit";
 
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -89,7 +89,7 @@ export default function Login() {
                 expiresIn: 5,
                 tokenType: "Bearer",
                 authState: { user: response.data.username }, // state passed in cannot be called user, hence const email = user.
-                // refreshToken: response.data.refresh, // TODO: refreshToken working
+                // refreshToken: response.data.refresh,
                 // refreshTokenExpireIn: 1440,
               })
             ) {

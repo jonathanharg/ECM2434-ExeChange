@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from django.http import HttpRequest
 from django.db.utils import IntegrityError
+from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -56,9 +57,6 @@ def login(request: HttpRequest) -> Response:
 
     username = get_username(email_address)
 
-    # username is a required parameter.
-    # potentially write a get_username function that splits email in a file that we can import from in login and register.
-    
     user = authenticate(
         username=username,
         password=user_password,
@@ -104,14 +102,11 @@ def register(request: HttpRequest) -> Response:
     user_confirm_password = request.data["confirmPwd"]
 
     if user_password == user_confirm_password:
-       
         try:
             # Generate new user and add to User database using django.auth User model
             new_user_username = get_username(email_address)
             new_user = User.objects.create_user(
-                username= new_user_username, 
-                email=email_address, 
-                password=user_password
+                username=new_user_username, email=email_address, password=user_password
             )
             new_user.save()
 
@@ -128,14 +123,51 @@ def register(request: HttpRequest) -> Response:
                 "refresh": str(token),
             }
         except IntegrityError:
-            data = {
-                "status": "UNIQUE_ERROR",
-                "message": "User already signed up!"
-            }
+            data = {"status": "UNIQUE_ERROR", "message": "User already signed up!"}
     else:
-        data = {"status": "CREDENTIAL_ERROR", "message": "Password and confirm do not match"}
+        data = {
+            "status": "CREDENTIAL_ERROR",
+            "message": "Password and confirm do not match",
+        }
 
     return Response(data)
+
+
+@api_view(["POST"])
+def refresh(request: HttpRequest) -> Response:
+    """
+    This function returns a new access token for a given refresh token.
+
+    Args:
+        request (HttpRequest): Includes the passed refresh token.
+
+    Returns:
+        Response: Includes the new access token
+    """
+    jwt_authenticator = JWTAuthentication()
+
+    response = jwt_authenticator.authenticate(request)
+
+    if response is not None:
+        user, token = response
+        # generate new access token and send back to the user !
+        new_token = gen_token(user)
+        return Response(
+            {
+                "status": "OK",
+                "access": str(new_token.access_token),
+                "refresh": str(new_token),
+            }
+        )
+
+    else:
+        return Response(
+            {
+                "status": "TOKEN_AUTHENTICATION_FAILED",
+                "message": "Refresh token for given user was not accepted!",
+            }
+        )
+
 
 @api_view(["GET"])
 def products(request: HttpRequest) -> Response:
