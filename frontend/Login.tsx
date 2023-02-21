@@ -6,11 +6,10 @@ import { useSignIn } from "react-auth-kit";
 
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
-//import { LockClosedIcon } from '@heroicons/react/20/solid'
 
 export default function Login() {
   //react-auth-kit functions
-  //const signIn = useSignIn()
+  const signIn = useSignIn();
 
   //user, password, and error states that are updated when user types in anything
   //https://reactjs.org/docs/hooks-state.html
@@ -46,6 +45,18 @@ export default function Login() {
     //https://zod.dev/
     e.preventDefault();
 
+    const emailSchema = z.string().email().endsWith("@exeter.ac.uk");
+    const passwordSchema = z.string();
+
+    var emailcheck = emailSchema.safeParse(user);
+    var passwordcheck = passwordSchema.safeParse(password);
+
+    // currently used for the generic error message on login failure
+
+    if (!emailcheck.success || !passwordcheck.success) {
+      setErr("exists");
+    }
+
     if (emailcheck.success && passwordcheck.success) {
       const response = await axios
         .post("/api/login", JSON.stringify({ user, password }), {
@@ -54,13 +65,32 @@ export default function Login() {
         })
         .then(function (response) {
           /*This is where the react-auth-kit can be set up, when it works, at the moment it is erroring*/
-          console.log(response.data.access);
+          if (response.data.status == "OK") {
+            if (
+              signIn({
+                token: response.data.access,
+                expiresIn: 5,
+                tokenType: "Bearer", //not sure what this is yet.
+                authState: { name: user, email: user },
+                // refreshToken: response.data.refresh,
+                // refreshTokenExpireIn: 1440,
+              })
+            ) {
+              //Logged in !
+              console.log("USER LOGGED IN!");
+            } else {
+              //Throw error as react-auth-kit broke!
+              console.log("oopsy :O");
+            }
+          } else {
+            //Sign in was bad
+            console.log("USERNAME OR PASSWORD WRONG!");
+          }
         })
         .catch(function (error) {
           console.log(error);
         });
-      setEmailErr("");
-      setPassErr("");
+      setErr("");
       setUser("");
       setPassword("");
     }
