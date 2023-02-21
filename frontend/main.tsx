@@ -3,8 +3,9 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Hero from "./pages/Hero/Hero";
-import Login from "./pages/Login/Login";
-import Register from "./pages/Register/Register";
+import Login from "./pages/Authentication/Login";
+import Logout from "./pages/Authentication/Logout";
+import Register from "./pages/Authentication/Register";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "react-auth-kit";
 
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Hero /> },
       { path: "/login", element: <Login /> },
+      { path: "/logout", element: <Logout />},
       {
         path: "/register",
         element: <Register />

@@ -10,6 +10,7 @@ import {
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import { Link, Outlet } from "react-router-dom";
+import { useIsAuthenticated, useAuthUser, useSignOut } from "react-auth-kit";
 
 const navigation = [
   { name: "Home", to: "/" },
@@ -18,6 +19,17 @@ const navigation = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [loggedIn, setLogIn] = useState(false);
+
+  const isAuthenticated = useIsAuthenticated();
+  const auth = useAuthUser();
+  const signOut = useSignOut();
+
+  // if(isAuthenticated()) {
+  //   setLogIn(true);
+  // } else {
+  //   setLogIn(false);
+  // }
 
   return (
     <>
@@ -148,8 +160,8 @@ export default function Navbar() {
                     ))}
                   </div>
                 </Popover.Group>
-
                 <div className="ml-auto flex items-center">
+                {!isAuthenticated() &&
                   <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                     <Link
                       to="/login"
@@ -165,7 +177,25 @@ export default function Navbar() {
                       Register
                     </Link>
                   </div>
-
+                  }
+                  {isAuthenticated() &&
+                  <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                    <button
+                      type="button"
+                      onClick={() => signOut()}
+                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                    > 
+                    Logout
+                    </button>
+                    <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
+                    <Link
+                      to="/register"
+                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                    >
+                      Register
+                    </Link>
+                  </div>
+                  }
                   <div className="hidden lg:ml-8 lg:flex">
                     <Link
                       to="#"
@@ -173,7 +203,11 @@ export default function Navbar() {
                     >
                       <UserCircleIcon className="block h-auto w-5 flex-shrink-0" />
                       <span className="ml-3 block text-sm font-medium">
-                        Your Profile
+                        {
+                          isAuthenticated()
+                          ? auth().user
+                          : "Your Profile"
+                        }
                       </span>
                       <span className="sr-only">, change currency</span>
                     </Link>
