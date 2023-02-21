@@ -1,31 +1,35 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import Hero from "./pages/Hero/Hero";
+import Login from "./pages/Login/Login";
 import Register from "./Register";
-import App from "./App";
-import Login from "./Login";
+import Navbar from "./components/Navbar";
 import { AuthProvider } from "react-auth-kit";
 
 import "./index.css";
-import Marketplace from "./Marketplace/Marketplace";
+import Marketplace from "./pages/Marketplace/Marketplace";
 
+//for using nested routes check out: https://reactrouter.com/en/main/start/tutorial
+//info is under the   " nested routes " title, you pretty much need to use an <outlet> to mark
+//where in the parent route you want the children to render
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
-    errorElement: <App />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/marketplace",
-    element: <Marketplace />,
+    element: <Navbar />,
+    children: [
+      { path: "/", element: <Hero /> },
+      { path: "/login", element: <Login /> },
+      {
+        path: "/register",
+        element: <Register />
+      },
+      {
+        path: "/marketplace",
+        element: <Marketplace />,
+      },
+    ],
   },
 ]);
 
