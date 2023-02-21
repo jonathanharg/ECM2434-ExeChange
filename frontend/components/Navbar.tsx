@@ -14,6 +14,7 @@ import { Link, Outlet } from "react-router-dom";
 const navigation = [
   { name: "Home", to: "/" },
   { name: "Marketplace", to: "/marketplace" },
+  { name: "Upload", to: "/upload" },
 ];
 
 export default function Navbar() {
@@ -209,7 +210,7 @@ export default function Navbar() {
           </nav>
         </header>
       </div>
-      <div>
+      <div className="mt-16">
         <Outlet />
       </div>
     </>

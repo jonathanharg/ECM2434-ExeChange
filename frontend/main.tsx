@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 
 import "./index.css";
 import Marketplace from "./pages/Marketplace/Marketplace";
+import Upload from "./pages/Upload/Upload";
 
 //for using nested routes check out: https://reactrouter.com/en/main/start/tutorial
 //info is under the   " nested routes " title, you pretty much need to use an <outlet> to mark
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "/marketplace",
         element: <Marketplace />,
+      },
+      {
+        path: "/upload",
+        element: <Upload />,
       },
     ],
   },
