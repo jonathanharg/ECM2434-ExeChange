@@ -1,55 +1,57 @@
-import os
 import subprocess
 
 
 def runserver() -> None:
     try:
-        subprocess.run(["python", "./backend/manage.py", "runserver"])
+        subprocess.run(["poetry", "run", "python", "./backend/manage.py", "runserver"])
     except KeyboardInterrupt:
         pass
 
 
 def black() -> None:
     try:
-        subprocess.run(["black", "."])
-        subprocess.run(["isort", "."])
+        subprocess.run(["poetry", "run", "black", "."])
+        subprocess.run(["poetry", "run", "isort", "."])
     except KeyboardInterrupt:
         pass
 
 
 def black_check() -> None:
     try:
-        subprocess.run(["black", "--check", "."])
-        subprocess.run(["isort", "--check", "."])
+        subprocess.run(["poetry", "run", "black", "--check", "."])
+        subprocess.run(["poetry", "run", "isort", "--check", "."])
     except KeyboardInterrupt:
         pass
 
 
 def migrate() -> None:
     try:
-        subprocess.run(["python", "./backend/manage.py", "migrate"])
+        subprocess.run(["poetry", "run", "python", "./backend/manage.py", "migrate"])
     except KeyboardInterrupt:
         pass
 
 
 def build() -> None:
     try:
-        subprocess.run(["python", "./backend/manage.py", "collectstatic"])
+        subprocess.run(
+            ["poetry", "run", "python", "./backend/manage.py", "collectstatic"]
+        )
     except KeyboardInterrupt:
         pass
 
 
 def run_prod() -> None:
     try:
-        subprocess.run(["gunicorn", "--chdir", "backend", "backend.wsgi"])
+        subprocess.run(
+            ["poetry", "run", "gunicorn", "--chdir", "backend", "backend.wsgi"]
+        )
     except KeyboardInterrupt:
         pass
 
 
 # def pylint():
-#     lint_env = os.environ.copy()
-#     lint_env["PYTHONPATH"] = lint_env["PYTHONPATH"] + ":" + list_env["PWD"] + "/backend"
-#     subprocess.run(["PYTHONPATH=$PYTHONPATH:$PWD/backend", "pylint", "backend/apps"], env=lint_env)
+#     os.chdir(os.environ["PWD"] + "/backend")
+#     subprocess.run(["poetry", "run", "pylint", "apps/api"])
 
 # def pytest():
 #     subprocess.run(["pytest"])
