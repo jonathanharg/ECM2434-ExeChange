@@ -1,7 +1,5 @@
 import React from "react";
-import logo from "./logo.svg";
-
-//import { LockClosedIcon } from '@heroicons/react/20/solid'
+import { ArrowPathIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 
 export default function Login() {
   return (
@@ -9,11 +7,7 @@ export default function Login() {
       <div className="flex min-h-full items-center justify-center py-24 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div>
-            <img
-              className="animate-slow mx-auto h-16 w-16 fill-green-800"
-              src={logo}
-              alt="ExeChange Logo"
-            />
+            <ArrowPathIcon className="animate-slow mx-auto h-16 w-16" />
             <h2 className="mt-6 text-center text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl">
               Sign in
             </h2>
@@ -83,7 +77,10 @@ export default function Login() {
                 className="group relative flex w-full justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2"
               >
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                  {/* <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" /> */}
+                  <LockClosedIcon
+                    className="h-5 w-5 stroke-white group-hover:text-indigo-400"
+                    aria-hidden="true"
+                  />
                 </span>
                 Sign in
               </button>

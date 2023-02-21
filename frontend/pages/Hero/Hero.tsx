@@ -1,7 +1,8 @@
-import logo from "./logo.svg";
 import React, { useEffect, useState } from "react";
+import ArrowPathIcon from "@heroicons/react/24/outline/ArrowPathIcon";
+import { Link } from "react-router-dom";
 
-function App() {
+function Hero() {
   const [status, setStatus] = useState({ message: "Loading..." });
 
   const fetchStatus = () => {
@@ -16,11 +17,7 @@ function App() {
 
   return (
     <main className="grid min-h-full place-items-center bg-white py-24 px-6 sm:py-32 lg:px-8">
-      <img
-        src={logo}
-        className="animate-slow h-16 w-16 fill-green-800"
-        alt="ExeChange logo"
-      />
+      <ArrowPathIcon className="animate-slow mx-auto h-16 w-16" />
       <div className="text-center">
         <h1 className="mt-16 text-5xl font-bold tracking-tight text-gray-900 sm:text-9xl">
           E<span className="text-green-800">x</span>eChange
@@ -35,16 +32,13 @@ function App() {
           >
             GitHub
           </a>
-          {/* TODO: This should use a <Link> element
-              see https://reactrouter.com/en/main/components/link
-          */}
-          <a href="/login" className="text-sm font-semibold text-gray-900">
+          <Link to="/login" className="text-sm font-semibold text-gray-900">
             Login <span aria-hidden="true">&rarr;</span>
-          </a>
+          </Link>
         </div>
       </div>
     </main>
   );
 }
 
-export default App;
+export default Hero;
