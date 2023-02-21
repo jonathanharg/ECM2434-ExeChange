@@ -115,7 +115,7 @@ export default function Navbar() {
         <header className="relative bg-white">
           <nav
             aria-label="Top"
-            className="mx-auto px-4 sm:px-6 lg:px-8"
+            className="w-full fixed top-0 mx-auto px-4 sm:px-6 lg:px-8 z-50 bg-white"
           >
             <div className="border-b border-gray-200">
               <div className="flex h-16 items-center">
