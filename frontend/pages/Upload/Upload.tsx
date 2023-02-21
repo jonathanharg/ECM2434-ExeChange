@@ -8,17 +8,25 @@ function Upload() {
   return (
     <>
       <div>
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex h-screen items-center justify-center">
           <div className="mt-5 md:col-span-2 md:mt-0">
             <form action="#" method="POST">
               <div className="shadow sm:overflow-hidden sm:rounded-md">
                 <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                   <div>
+                    <label className="block py-2 text-sm font-medium text-gray-700">
+                      Pick a category
+                    </label>
+                    <div>
+                      <Taglist />
+                    </div>
+                  </div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Upload Image
                     </label>
                     <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
-                      <div className="content-center space-y-1 text-center px-4">
+                      <div className="content-center space-y-1 px-4 text-center">
                         <DocuemntPlusIcon className="h-16 w-16" />
                         <div className="flex text-sm text-gray-600">
                           <label
@@ -44,7 +52,7 @@ function Upload() {
                 </div>
                 <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 py-2">
+                    <label className="block py-2 text-sm font-medium text-gray-700">
                       Caption Image
                     </label>
                     <div>
@@ -56,18 +64,6 @@ function Upload() {
                     </div>
                   </div>
                 </div>
-                <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 py-2">
-                      Pick a category
-                    </label>
-                    <div>
-                     <Taglist/>
-                    </div>
-                  </div>
-                </div>
-                
-                
                 <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                   <button
                     type="submit"
