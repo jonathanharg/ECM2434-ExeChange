@@ -15,7 +15,9 @@ function Register() {
   const [password, setPassword] = useState("");
   const [confirmPwd, setConfirmPassword] = useState("");
 
-  const [err, setErr] = useState("");
+  const [emailErr, setEmailErr] = useState("");
+  const [passErr, setPassErr] = useState("");
+  const [cPassErr, setcPassErr] = useState("");
 
   // Zod validation for email, password, and password matching
   const emailSchema = z.string().email().endsWith("@exeter.ac.uk");
@@ -26,10 +28,6 @@ function Register() {
       confirmPwd: z.string(),
     })
 
-    // const passwordSchema = z.object({ <- simple version to make backend testing easier
-    //     password: z.string(),
-    //     confirmPwd: z.string()
-    // })
     .refine((data) => data.password === data.confirmPwd);
 
   const passInfo = {
@@ -42,44 +40,31 @@ function Register() {
   var passwordcheck = passwordSchema.safeParse(password);
   var pwdMatchcheck = passwordMatchSchema.safeParse(passInfo);
 
-  //These constantly check user input and validate them
+  //Check user input and validate them
   useEffect(() => {
     if (!emailcheck.success && email) {
-      var timer = setTimeout(function () {
-        setErr(
-          "You need a valid University of Exeter email address to sign in."
-        );
-      }, 3000);
-
-      return () => clearTimeout(timer);
+      setEmailErr(
+        "You need a valid University of Exeter email address to sign in."
+      );
     } else {
-      setErr("");
+      setEmailErr("");
     }
   }, [email, password, confirmPwd]);
-
   useEffect(() => {
-    if (!passwordcheck.success && emailcheck.success && password) {
-      var timer = setTimeout(function () {
-        setErr(
-          "Your password must have 8 or more characters. It must contain numbers, lowercase, uppercase, and special characters."
-        );
-      }, 3000);
-
-      return () => clearTimeout(timer);
+    if (!passwordcheck.success && password) {
+      setPassErr(
+        "Your password must have 8 or more characters. It must contain numbers, lowercase, uppercase, and special characters."
+      );
     } else {
-      setErr("");
+      setPassErr("");
     }
   }, [password, confirmPwd]);
 
   useEffect(() => {
-    if (!pwdMatchcheck.success && passwordcheck.success && confirmPwd) {
-      var timer = setTimeout(function () {
-        setErr("Passwords must match.");
-      }, 3000);
-
-      return () => clearTimeout(timer);
+    if (!pwdMatchcheck.success && confirmPwd) {
+      setcPassErr("Passwords must match.");
     } else {
-      setErr("");
+      setcPassErr("");
     }
   }, [confirmPwd]);
 
@@ -103,7 +88,9 @@ function Register() {
         .catch(function (error) {
           console.log(error);
         });
-      setErr("");
+      setEmailErr("");
+      setPassErr("");
+      setcPassErr("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
@@ -126,94 +113,111 @@ function Register() {
             <h2 className="mt-6 text-center text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl">
               Register
             </h2>
-
-            <div
-              className={
-                err
-                  ? "absolute inset-x-0 top-0 rounded-b border-t-4 border-teal-500 bg-teal-100 px-4 py-3 text-teal-900 shadow-md"
-                  : "visibility: hidden"
-              }
-              role="alert"
-            >
-              <div className="flex">
-                <div className={err ? "py-1" : "visibility: hidden"}>
-                  <svg
+            <form method="POST" onSubmit={handlesubmit}>
+              <div>
+                <div className="mb-6">
+                  <label
+                    htmlFor="email"
                     className={
-                      err
-                        ? "mr-4 h-6 w-6 fill-current text-teal-500"
-                        : "visibility: hidden"
+                      emailErr
+                        ? "mb-2 block text-sm font-medium text-red-700 dark:text-red-500"
+                        : "mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     }
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
                   >
-                    <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
-                  </svg>
-                </div>
-                <div>
-                  <p className={"font-bold"}>Info</p>
-                  <p className="text-sm">{err}</p>
-                </div>
-              </div>
-            </div>
-            <form
-              className="mt-8 space-y-6"
-              action="#"
-              method="POST"
-              onSubmit={handlesubmit}
-            >
-              <input type="hidden" name="remember" defaultValue="true" />
-              <div className="-space-y-px rounded-md shadow-sm">
-                <div>
-                  <label htmlFor="email-address" className="sr-only">
-                    you@exeter.ac.uk
+                    Email address
                   </label>
                   <input
-                    id="email-address"
-                    name="email"
                     type="email"
-                    autoComplete="email"
-                    required
-                    className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-green-800 focus:outline-none focus:ring-green-800 sm:text-sm"
+                    id="email"
+                    className={
+                      emailErr
+                        ? "block w-full rounded-lg border border-red-500 bg-red-50 p-2.5 text-sm text-red-900 placeholder-red-700 focus:border-red-500 focus:ring-red-500 dark:border-red-500 dark:bg-gray-700 dark:text-red-500 dark:placeholder-red-500"
+                        : "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    }
                     placeholder="you@exeter.ac.uk"
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
+                    required
                   />
+                  <p
+                    className={
+                      emailErr
+                        ? "mt-2 text-sm text-red-600 dark:text-red-500"
+                        : "visibility: none"
+                    }
+                  >
+                    {emailErr}
+                  </p>
                 </div>
 
-                <div>
-                  <label htmlFor="password" className="sr-only">
+                <div className="mb-6">
+                  <label
+                    htmlFor="password"
+                    className={
+                      passErr
+                        ? "mb-2 block text-sm font-medium text-red-700 dark:text-red-500"
+                        : "mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    }
+                  >
                     Password
                   </label>
                   <input
-                    id="password"
-                    name="password"
                     type="password"
-                    autoComplete="current-password"
-                    required
-                    className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-green-800 focus:outline-none focus:ring-green-800 sm:text-sm"
-                    placeholder="Password"
+                    id="password"
+                    className={
+                      passErr
+                        ? "block w-full rounded-lg border border-red-500 bg-red-50 p-2.5 text-sm text-red-900 placeholder-red-700 focus:border-red-500 focus:ring-red-500 dark:border-red-500 dark:bg-gray-700 dark:text-red-500 dark:placeholder-red-500"
+                        : "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    }
+                    placeholder="•••••••••"
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
+                    required
                   />
+                  <p
+                    className={
+                      passErr
+                        ? "mt-2 text-sm text-red-600 dark:text-red-500"
+                        : "visibility: none"
+                    }
+                  >
+                    {passErr}
+                  </p>
                 </div>
-                <div>
-                  <label htmlFor="password" className="sr-only">
-                    Confirm Password
+                <div className="mb-6">
+                  <label
+                    htmlFor="confirm_password"
+                    className={
+                      cPassErr
+                        ? "mb-2 block text-sm font-medium text-red-700 dark:text-red-500"
+                        : "mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    }
+                  >
+                    Confirm password
                   </label>
                   <input
-                    id="repeatpassword"
-                    name="repeatpassword"
                     type="password"
-                    autoComplete="current-password"
-                    required
-                    className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-green-800 focus:outline-none focus:ring-green-800 sm:text-sm"
-                    placeholder="Confirm Password"
+                    id="confirm_password"
+                    className={
+                      cPassErr
+                        ? "block w-full rounded-lg border border-red-500 bg-red-50 p-2.5 text-sm text-red-900 placeholder-red-700 focus:border-red-500 focus:ring-red-500 dark:border-red-500 dark:bg-gray-700 dark:text-red-500 dark:placeholder-red-500"
+                        : "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    }
+                    placeholder="•••••••••"
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     value={confirmPwd}
+                    required
                   />
+                  <p
+                    className={
+                      cPassErr
+                        ? "mt-2 text-sm text-red-600 dark:text-red-500"
+                        : "visibility: none"
+                    }
+                  >
+                    {cPassErr}
+                  </p>
                 </div>
-              </div>
-              <div>
                 <button
                   className={
                     " group relative flex w-full justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2"
