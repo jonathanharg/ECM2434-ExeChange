@@ -8,11 +8,13 @@ def runserver() -> None:
     except KeyboardInterrupt:
         pass
 
+
 def runshell() -> None:
     try:
         subprocess.run(["python", "./backend/manage.py", "shell"])
     except KeyboardInterrupt:
         pass
+
 
 def black() -> None:
     try:
