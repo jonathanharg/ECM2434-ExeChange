@@ -1,6 +1,6 @@
 import React from "react";
 import { Fragment, useState } from "react";
-import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
+import { Dialog, Popover, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   MagnifyingGlassIcon,
@@ -11,10 +11,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link, Outlet } from "react-router-dom";
 
-
 const navigation = [
   { name: "Home", to: "/" },
-    { name: "Marketplace", to: "/marketplace" },
+  { name: "Marketplace", to: "/marketplace" },
 ];
 
 export default function Navbar() {
@@ -113,10 +112,7 @@ export default function Navbar() {
         </Transition.Root>
 
         <header className="relative bg-white">
-          <nav
-            aria-label="Top"
-            className="w-full fixed top-0 mx-auto px-4 sm:px-6 lg:px-8 z-50 bg-white"
-          >
+          <nav aria-label="Top" className="w-full fixed top-0 mx-auto px-4 sm:px-6 lg:px-8">
             <div className="border-b border-gray-200">
               <div className="flex h-16 items-center">
                 <button
@@ -131,7 +127,6 @@ export default function Navbar() {
                 {/* Logo */}
                 <div className="ml-4 flex lg:ml-0">
                   <Link to="#">
-
                     <ArrowPathIcon className="h-8 w-auto" />
                   </Link>
                 </div>
@@ -139,7 +134,6 @@ export default function Navbar() {
                 {/* Flyout menus */}
                 <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
                   <div className="flex h-full space-x-8">
-
                     {navigation.map((page) => (
                       <Link
                         key={page.name}
