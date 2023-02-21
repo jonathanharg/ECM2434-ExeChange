@@ -110,4 +110,16 @@ def register(request: HttpRequest) -> Response:
     else:
         data = {"status": "CREDENTIAL_ERROR", "message": "Password and confirm do not match"}
 
+@api_view(["GET"])
+def products(request: HttpRequest) -> Response:
+    # time.sleep(5)
+    data = [
+        {
+            "id": 1,
+            "name": "Cowboy Hat",
+            "href": "#",
+            "imageSrc": "https://i.ebayimg.com/images/g/csYAAOSwl9xePWGM/s-l500.jpg",
+            "tags": ["Cowboy", "Hat"],
+        }
+    ] * 13
     return Response(data)

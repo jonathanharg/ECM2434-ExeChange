@@ -7,6 +7,7 @@ import Login from "./Login";
 import { AuthProvider } from "react-auth-kit";
 
 import "./index.css";
+import Marketplace from "./Marketplace/Marketplace";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/marketplace",
+    element: <Marketplace />,
   },
 ]);
 
