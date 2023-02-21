@@ -1,6 +1,7 @@
 import React from "react";
 import DocuemntPlusIcon from "@heroicons/react/24/outline/DocumentPlusIcon";
-import Taglist from "./taglist";
+import Taglist from "./TagSelector";
+import TagSearch from "./TagSearch";
 
 function Upload() {
   const handleUpload = () => {};
