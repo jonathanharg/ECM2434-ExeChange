@@ -27,13 +27,13 @@ import { Product } from "./Itemtile";
 //     tags: ["Baldy","Hat"],
 //   },
 //   {
-  //   id: 4,
-  //   name: "Spiderman Costume",
-  //   href: "#",
-  //   imageSrc:
-  //     "https://da1urhpfd469z.cloudfront.net/uploads/advertphotos/21/1023/46416668-971-640x1028.jpg",
-  //   tags: ["Superhero"],
-  // },
+//   id: 4,
+//   name: "Spiderman Costume",
+//   href: "#",
+//   imageSrc:
+//     "https://da1urhpfd469z.cloudfront.net/uploads/advertphotos/21/1023/46416668-971-640x1028.jpg",
+//   tags: ["Superhero"],
+// },
 //   // More products...
 // ];
 
@@ -76,7 +76,7 @@ function Marketplace() {
         </div>
         <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
-              <Itemtile key={product.id} {...product}/>
+            <Itemtile key={product.id} {...product} />
           ))}
         </div>
       </div>
