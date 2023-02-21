@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Itemtile from "./Itemtile";
 import { Product } from "./Itemtile";
+import { useIsAuthenticated } from "react-auth-kit";
 
 // const products = [
 //   {
@@ -38,50 +39,59 @@ import { Product } from "./Itemtile";
 // ];
 
 function Marketplace() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const isAuthenticated = useIsAuthenticated()
 
-  const fetchProducts = () => {
-    return fetch("/api/products")
-      .then((response) => response.json())
-      .then((data) => setProducts(data));
-  };
+  if(isAuthenticated()) {
+    const [products, setProducts] = useState<Product[]>([]);
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+    const fetchProducts = () => {
+      return fetch("/api/products")
+        .then((response) => response.json())
+        .then((data) => setProducts(data));
+    };
 
-  return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <div className="mx-auto max-w-2xl">
-          <label
-            htmlFor="countries"
-            className="mb-2 block text-sm font-medium text-gray-200 dark:text-green-700"
-          >
-            Filter
-          </label>
-          <select
-            id="countries"
-            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-200 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-200 dark:text-green-900 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-          >
-            <option selected>Choose a category</option>
-            <option value="Cowboy">Cowboy</option>
-            <option value="Fairy">Fairy</option>
-            <option value="Princess">Princess</option>
-            <option value="Disco">Disco</option>
-            <option value="Valentines">Valentines</option>
-          </select>
+    useEffect(() => {
+      fetchProducts();
+    }, []);
 
-          <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>
-        </div>
-        <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
-            <Itemtile key={product.id} {...product} />
-          ))}
+    return (
+      <div className="bg-white">
+        <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+          <div className="mx-auto max-w-2xl">
+            <label
+              htmlFor="countries"
+              className="mb-2 block text-sm font-medium text-gray-200 dark:text-green-700"
+            >
+              Filter
+            </label>
+            <select
+              id="countries"
+              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-200 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-200 dark:text-green-900 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+            >
+              <option selected>Choose a category</option>
+              <option value="Cowboy">Cowboy</option>
+              <option value="Fairy">Fairy</option>
+              <option value="Princess">Princess</option>
+              <option value="Disco">Disco</option>
+              <option value="Valentines">Valentines</option>
+            </select>
+
+            <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>
+          </div>
+          <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            {products.map((product) => (
+              <Itemtile key={product.id} {...product} />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    //SHOULD REDIRECT TO LOGIN!
+    return (
+      <h1>YOU ARE NOT LOGGED IN!!!!!</h1>
+    );
+  }
 }
 
 export default Marketplace;
