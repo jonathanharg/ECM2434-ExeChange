@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
 // import logo from "./logo.svg";
 import { boolean, z } from "zod";
-import { useSignIn } from "react-auth-kit";
+import { useSignIn, useIsAuthenticated } from "react-auth-kit";
+import { Navigate, useNavigate } from "react-router-dom";
 
 //General password rules.
 const PWD_REGEX = new RegExp(
@@ -10,8 +11,22 @@ const PWD_REGEX = new RegExp(
 );
 
 function Register() {
-  // Needed for logging the user in once registered
+  // Needed for logging the user in once registered, and checking if logged in
   const signIn = useSignIn();
+  const isAuthenticated = useIsAuthenticated();
+
+  // React router redirect
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    onLoad();
+  }, []);
+
+  async function onLoad() {
+    if(isAuthenticated()) {
+      navigate("/");
+    }
+  }
 
   //user, password, and error states that are updated when user types in anything
   //https://reactjs.org/docs/hooks-state.html
@@ -91,31 +106,32 @@ function Register() {
         })
         .then(function (response) {
           // If response status UNIQUE_ERROR -> then show error message.
-          if(response.data.status == "UNIQUE_ERROR") {
+          if (response.data.status == "UNIQUE_ERROR") {
             console.log("You are already signed up!");
-            setUniqueErr("You seem to be already signed up ! Want to <log in> ? Or have you <forgot password ?>");
-          }
-          else if(response.data.status == "OK") {
+            setUniqueErr(
+              "You seem to be already signed up ! Want to <log in> ? Or have you <forgot password ?>"
+            );
+          } else if (response.data.status == "OK") {
             // SIGN UP WAS SUCCESSFUL -> proceed to 'sign the user in' by using the tokens returned to them
             // from the django register view !
-            if(signIn (
-              {
+            if (
+              signIn({
                 token: response.data.token,
                 expiresIn: 5,
                 tokenType: "bearer",
-                authState: {user: response.data.username}
+                authState: { user: response.data.username },
                 // TODO: refresh tokens working !
-              }
-            )) {
+              })
+            ) {
               //Registered user has been successfully signed in!
               console.log("USER HAS BEEN SIGNED IN !");
-            }        
+            }
           }
         })
         .catch(function (error) {
           console.log(error);
         });
-      
+
       setEmailErr("");
       setPassErr("");
       setcPassErr("");
@@ -254,14 +270,14 @@ function Register() {
                 </button>
                 <br />
                 <p
-                    className={
-                      uniqueErr
-                        ? "mt-2 text-sm text-red-600 dark:text-red-500"
-                        : "visibility: none"
-                    }
-                  >
-                    {uniqueErr}
-                  </p>
+                  className={
+                    uniqueErr
+                      ? "mt-2 text-sm text-red-600 dark:text-red-500"
+                      : "visibility: none"
+                  }
+                >
+                  {uniqueErr}
+                </p>
               </div>
             </form>
           </div>

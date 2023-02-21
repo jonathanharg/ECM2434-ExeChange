@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import { z, ZodError } from "zod";
-import { useIsAuthenticated,useSignIn } from "react-auth-kit";
+import { useIsAuthenticated, useSignIn } from "react-auth-kit";
 
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -13,9 +13,20 @@ export default function Login() {
   //react-auth-kit functions
   const signIn = useSignIn();
   const isAuthenticated = useIsAuthenticated();
+  const [loggedIn, setLogIn] = useState(false);
 
   //react routing
   const navigate = useNavigate();
+
+  useEffect(() => {
+    onLoad();
+  }, []);
+
+  async function onLoad() {
+    if(isAuthenticated()) {
+      navigate("/");
+    }
+  }
 
   //user, password, and error states that are updated when user types in anything
   //https://reactjs.org/docs/hooks-state.html
@@ -34,14 +45,14 @@ export default function Login() {
     if (!emailcheck.success && user) {
       setEmailErr("Invalid email");
     } else {
-      setEmailErr('')
+      setEmailErr("");
     }
   }, [user]);
   useEffect(() => {
     if (!passwordcheck.success && password) {
       setPassErr("Invalid password");
-    }else {
-      setPassErr('')
+    } else {
+      setPassErr("");
     }
   }, [password]);
 

@@ -42,7 +42,6 @@ function Marketplace() {
   const isAuthenticated = useIsAuthenticated();
   const auth = useAuthUser();
 
-  if(isAuthenticated()) {
     const [products, setProducts] = useState<Product[]>([]);
 
     const fetchProducts = () => {
@@ -88,13 +87,6 @@ function Marketplace() {
         </div>
       </div>
     );
-  } else {
-    //SHOULD REDIRECT TO LOGIN!
-    console.log("YOU ARE NOT LOGGED!");
-    return (
-      <h1>YOU ARE NOT LOGGED IN!!!!!</h1>
-    );
-  }
 }
 
 export default Marketplace;

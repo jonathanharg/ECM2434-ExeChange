@@ -161,41 +161,37 @@ export default function Navbar() {
                   </div>
                 </Popover.Group>
                 <div className="ml-auto flex items-center">
-                {!isAuthenticated() &&
-                  <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                    <Link
-                      to="/login"
-                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      Login
-                    </Link>
-                    <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                    <Link
-                      to="/register"
-                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      Register
-                    </Link>
-                  </div>
-                  }
-                  {isAuthenticated() &&
-                  <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                    <button
-                      type="button"
-                      onClick={() => signOut()}
-                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                    > 
-                    Logout
-                    </button>
-                    <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                    <Link
-                      to="/register"
-                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      Register
-                    </Link>
-                  </div>
-                  }
+                  {!isAuthenticated() && (
+                    <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                      <Link
+                        to="/login"
+                        className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                      >
+                        Login
+                      </Link>
+                      <span
+                        className="h-6 w-px bg-gray-200"
+                        aria-hidden="true"
+                      />
+                      <Link
+                        to="/register"
+                        className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                      >
+                        Register
+                      </Link>
+                    </div>
+                  )}
+                  {isAuthenticated() && (
+                    <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                      <button
+                        type="button"
+                        onClick={() => signOut()}
+                        className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
                   <div className="hidden lg:ml-8 lg:flex">
                     <Link
                       to="#"
@@ -203,11 +199,7 @@ export default function Navbar() {
                     >
                       <UserCircleIcon className="block h-auto w-5 flex-shrink-0" />
                       <span className="ml-3 block text-sm font-medium">
-                        {
-                          isAuthenticated()
-                          ? auth().user
-                          : "Your Profile"
-                        }
+                        {isAuthenticated() ? auth().user : "Your Profile"}
                       </span>
                       <span className="sr-only">, change currency</span>
                     </Link>

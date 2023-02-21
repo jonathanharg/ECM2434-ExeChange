@@ -6,7 +6,7 @@ import Hero from "./pages/Hero/Hero";
 import Login from "./pages/Authentication/Login";
 import Register from "./pages/Authentication/Register";
 import Navbar from "./components/Navbar";
-import { AuthProvider } from "react-auth-kit";
+import { AuthProvider, RequireAuth } from "react-auth-kit";
 
 import "./index.css";
 import Marketplace from "./pages/Marketplace/Marketplace";
@@ -20,14 +20,21 @@ const router = createBrowserRouter([
     element: <Navbar />,
     children: [
       { path: "/", element: <Hero /> },
-      { path: "/login", element: <Login /> },
+      {
+        path: "/login",
+        element: <Login />
+      },
       {
         path: "/register",
-        element: <Register />
+        element: <Register />,
       },
       {
         path: "/marketplace",
-        element: <Marketplace />,
+        element: (
+          // <RequireAuth loginPath={"/login"}>
+            <Marketplace />
+          // </RequireAuth>
+        )
       },
     ],
   },
