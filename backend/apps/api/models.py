@@ -1,3 +1,17 @@
-# from django.db import models
+from django.db import models
 
 # Create your models here.
+class ClothingItem(models.Model):
+    #TODO: add image field and tag field 
+    caption = models.TextField(max_length=500) 
+
+    def __str__(self):
+        return self.caption
+
+class ClothingOwner(models.Model):
+    username = models.CharField(max_length=200)
+    email = models.EmailField()
+    items = models.ManyToManyField(ClothingItem) # A clothing owner can post many clothing items
+
+    def __str__(self):
+        return self.username
