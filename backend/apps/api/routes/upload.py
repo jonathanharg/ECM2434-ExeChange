@@ -9,5 +9,13 @@ from rest_framework_simplejwt.tokens import RefreshToken  # type: ignore
 
 @api_view(["POST"])
 def post(request: HttpRequest) -> Response:
-    print(request.data)
-    return Response("OK")
+
+    caption = request.data["caption"]
+    # tags = request.data["tags"] currently recieveing null 
+    
+    data = {"status": "OK", 
+            "message": "Submission accepted",
+            "caption":{caption},
+            }
+    
+    return Response(data)
