@@ -5,7 +5,7 @@ authentication.py test file!
 import ast
 
 import pytest
-from api.authentication import gen_token 
+from api.authentication import gen_token
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.test import TestCase
@@ -59,7 +59,7 @@ class RequestTests(TestCase):
         response_dict = response.content.decode("UTF-8")
         response_dict = ast.literal_eval(response_dict)
 
-        self.assertEqual(response_dict["status"], "OK") #type: ignore
+        self.assertEqual(response_dict["status"], "OK")  # type: ignore
 
     def test_register_unqiue_error(self) -> None:
         # send login data
@@ -78,7 +78,7 @@ class RequestTests(TestCase):
         response_dict = response.content.decode("UTF-8")
         response_dict = ast.literal_eval(response_dict)
 
-        self.assertEqual(response_dict["status"], "UNIQUE_ERROR") #type: ignore
+        self.assertEqual(response_dict["status"], "UNIQUE_ERROR")  # type: ignore
 
     def test_login(self) -> None:
         # send login data
@@ -92,7 +92,7 @@ class RequestTests(TestCase):
         response_dict = response.content.decode("UTF-8")
         response_dict = ast.literal_eval(response_dict)
 
-        self.assertEqual(response_dict["status"], "OK") #type: ignore
+        self.assertEqual(response_dict["status"], "OK")  # type: ignore
 
     def test_login_fail(self) -> None:
         response = self.client.post(
@@ -105,4 +105,4 @@ class RequestTests(TestCase):
         response_dict = response.content.decode("UTF-8")
         response_dict = ast.literal_eval(response_dict)
 
-        self.assertEqual(response_dict["status"], "BAD") #type: ignore
+        self.assertEqual(response_dict["status"], "BAD")  # type: ignore
