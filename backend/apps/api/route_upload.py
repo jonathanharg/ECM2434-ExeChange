@@ -11,7 +11,6 @@ from rest_framework_simplejwt.tokens import RefreshToken  # type: ignore
 def post(request: HttpRequest) -> Response:
 
     caption = request.data["caption"]
-    # tags = request.data["tags"] currently recieveing null 
     
     data = {"status": "OK", 
             "message": "Submission accepted",
