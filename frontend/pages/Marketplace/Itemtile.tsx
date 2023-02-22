@@ -1,4 +1,5 @@
 import React from "react";
+import { useAuthUser } from "react-auth-kit";
 
 export interface Product {
   id: number;
@@ -9,12 +10,15 @@ export interface Product {
 }
 
 function Itemtile(product: Product) {
+  const auth = useAuthUser();
   return (
     <div key={product.id} className="group relative">
       <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
         <img
           src={product.imageSrc}
-          className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+          className={`h-full w-full object-cover object-center ${
+            auth() ? "" : "blur-lg"
+          } lg:h-full lg:w-full`}
         />
       </div>
       <div className="mt-4 flex justify-between">
