@@ -1,12 +1,11 @@
 from django.urls import path
 
-from apps.api.routes import upload
-from . import views
+from . import route_login, route_register, route_upload, views
 
 urlpatterns = [
     path("status", views.status),
-    path("login", views.login),
-    path("register", views.register),
+    path("login", route_login.login),
+    path("register", route_register.register),
     path("products", views.products),
-    path("upload", upload.post)
+    path("upload", route_upload.post)
 ]

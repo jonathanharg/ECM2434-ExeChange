@@ -117,8 +117,10 @@ REST_FRAMEWORK = {
 
 # Simple JWT Options
 SIMPLE_JWT = {
-    # "SIGNING_KEY": SECRET_KEY,
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120)
+    "SIGNING_KEY": SECRET_KEY,
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
+    "AUTH_HEADER_TYPES": ("Bearer"),
+    "AUTH_HEADER_NAME": "_auth",
 }
 
 # Password validation
