@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User 
 from django.db.utils import IntegrityError
-from django.http import HttpRequest
+from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -42,18 +42,21 @@ def authenticate_user(request: HttpRequest) -> User:
     try:
         valid_token = jwt_authenticator.get_validated_token(input_token)
         token_user = jwt_authenticator.get_user(valid_token)
-
-        print(token_user)
-
-        #TODO: get User object from returned user_id in the token!
-        user_object = get_user(token_user)
-
-        
-    
+        user_object = get_object_or_404(User, username=token_user)
+        return user_object
+  
     except InvalidToken as _:
         print("That is not a valid token, user is not logged in!")
+        return None
 
     except AuthenticationFailed as _:
         print("User has not been found in the token!")
+        return None
+
+    except Http404:
+        # User object cannot be found from username
+        # meaning, error in the database
+        print("There have been no matches to the given query")
+        return None
 
 
