@@ -1,11 +1,11 @@
-from apps.api.routes import login, register
+from apps.api.custom_routes import user_login, user_register
 from django.urls import path
 
 from . import views
 
 urlpatterns = [
     path("status", views.status),
-    path("login", login.login),
-    path("register", register.register),
+    path("login", user_login.login),
+    path("register", user_register.register),
     path("products", views.products),
 ]
