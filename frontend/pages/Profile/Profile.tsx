@@ -11,8 +11,9 @@ function Profile(){
             </div>
             <div className="flex items-center px-4 pt-12 justify-between">
                 <div className="w-24 h-24 bg-blue-600 flex items-center rounded-full">
-                    <img className="h-20 w-20 mx-auto" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
-                    </img></div>
+                    {/* <img className="h-20 w-20 mx-auto" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
+                    </img> */}
+                </div>
                 <div className="w-9/12 flex items-center">
                     <div className="w-10/12 flex flex-col leading-none pl-4">
                         <p className="text-2xl font-bold">David</p>
