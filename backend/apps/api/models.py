@@ -2,15 +2,9 @@ from django.db import models
 
 # Create your models here.
 
-
-class Tags(models.Model):
-    pass
-
-
 class ClothingItem(models.Model):
     # TODO: add image field and tag field
     caption = models.CharField(max_length=100)
-    tags = models.ManyToManyField(Tags)
 
     def __str__(self):
         return self.caption
