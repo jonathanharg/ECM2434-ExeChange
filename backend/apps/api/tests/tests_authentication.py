@@ -3,6 +3,7 @@ authentication.py test file!
 """
 
 import ast
+
 import pytest
 from apps.api.authentication import gen_token
 from django.contrib.auth import authenticate
