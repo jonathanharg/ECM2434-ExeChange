@@ -36,8 +36,8 @@ function TagSearch() {
   };
 
   const deleteTag = (index) => {
-    setTags(prevState => prevState.filter((tag, i) => i !== index))
-  }
+    setTags((prevState) => prevState.filter((tag, i) => i !== index));
+  };
 
   const onKeyUp = () => {
     setIsKeyReleased(true);
