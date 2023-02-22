@@ -5,9 +5,11 @@ from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication, InvalidToken  # type: ignore
-from rest_framework_simplejwt.tokens import RefreshToken  # type: ignore
+from rest_framework_simplejwt.tokens import RefreshToken   # type: ignore
 # Above are type ignored, as they have no type stubs written for them.
 
+from apps.api.authenticate import authenticate_user
+from apps.api.authenticate import gen_token 
 
 @api_view(["GET"])
 def status(request: HttpRequest) -> Response:
@@ -51,28 +53,8 @@ def refresh(request: HttpRequest) -> Response:
 
 @api_view(["POST"])
 def logged_in(request):
-    print("HELLO")
-
-    jwt_authenticator = JWTAuthentication()
-
-    # auth_header = jwt_authenticator.get_header(request)
-
-    # print(auth_header)
-
-    # print(request.COOKIES.get('_auth'))
-
-    cookie_token = request.COOKIES.get('_auth')
-    cookie_token = cookie_token.replace("I", "y")
-
-    try:
-        valid_token = jwt_authenticator.get_validated_token(cookie_token)
-        print("VALID TOKEN:", valid_token)
-    except InvalidToken as e:
-        print("There has been an error with your token!")
-        print(e)
-
-    #print("VALID TOKEN: ", valid_token)
-
+    print("test")
+    authenticate_user(request)
     return Response("BOO")
 
 
