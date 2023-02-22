@@ -11,6 +11,8 @@ import { AuthProvider } from "react-auth-kit";
 import "./index.css";
 import Marketplace from "./pages/Marketplace/Marketplace";
 
+import Profile from "./pages/Profile/Profile";
+
 //for using nested routes check out: https://reactrouter.com/en/main/start/tutorial
 //info is under the   " nested routes " title, you pretty much need to use an <outlet> to mark
 //where in the parent route you want the children to render
@@ -35,6 +37,10 @@ const router = createBrowserRouter([
           <Marketplace />
           // </RequireAuth>
         ),
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
       },
     ],
   },
