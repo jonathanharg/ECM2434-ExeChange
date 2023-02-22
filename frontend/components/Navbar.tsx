@@ -12,6 +12,7 @@ import {
 import { Link, Outlet } from "react-router-dom";
 import { useIsAuthenticated, useAuthUser, useSignOut } from "react-auth-kit";
 
+// TODO: Mobile login/register/profile
 const navigation = [
   { name: "Home", to: "/" },
   { name: "Marketplace", to: "/marketplace" },
@@ -19,17 +20,10 @@ const navigation = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [loggedIn, setLogIn] = useState(false);
 
   const isAuthenticated = useIsAuthenticated();
   const auth = useAuthUser();
   const signOut = useSignOut();
-
-  // if(isAuthenticated()) {
-  //   setLogIn(true);
-  // } else {
-  //   setLogIn(false);
-  // }
 
   return (
     <>
