@@ -8,6 +8,13 @@ def runserver() -> None:
         pass
 
 
+def runshell() -> None:
+    try:
+        subprocess.run(["poetry", "run", "python", "./backend/manage.py", "shell"])
+    except KeyboardInterrupt:
+        pass
+
+
 def black() -> None:
     try:
         subprocess.run(["poetry", "run", "black", "."])

@@ -5,6 +5,7 @@ module.exports = {
     "./frontend/index.html",
     "./frontend/*.{js,ts,jsx,tsx}",
     "./frontend/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/flowbite/**/*.js",
   ],
   theme: {
     extend: {},
