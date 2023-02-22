@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 import sys
-from pathlib import Path
 from datetime import timedelta
+from pathlib import Path
 
 # Load environment variables from the users .env file
 from dotenv import load_dotenv
@@ -120,7 +120,7 @@ SIMPLE_JWT = {
     "SIGNING_KEY": SECRET_KEY,
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
     "AUTH_HEADER_TYPES": ("Bearer"),
-    "AUTH_HEADER_NAME": "_auth", 
+    "AUTH_HEADER_NAME": "_auth",
 }
 
 # Password validation

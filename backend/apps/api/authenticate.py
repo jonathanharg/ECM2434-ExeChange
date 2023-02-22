@@ -1,11 +1,11 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User 
-from django.db.utils import IntegrityError
+from django.contrib.auth.models import User
 from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework_simplejwt.authentication import JWTAuthentication, InvalidToken, AuthenticationFailed  # type: ignore
+from rest_framework_simplejwt.authentication import (  # type: ignore
+    AuthenticationFailed,
+    InvalidToken,
+    JWTAuthentication,
+)
 from rest_framework_simplejwt.tokens import RefreshToken  # type: ignore
 
 
@@ -34,22 +34,34 @@ def get_username(email: str) -> str:
     username = email.split("@")[0]
     return username
 
+
 def authenticate_user(request: HttpRequest) -> User:
+    """
+    Authenticate a request with a given access token that is sent in the cookies.
+
+    Args:
+        request (HttpRequest): Request sent from the frontend.
+
+    Returns:
+        User: User object that the token is valid for.
+    """
     jwt_authenticator = JWTAuthentication()
 
-    input_token = request.COOKIES.get('_auth')
+    input_token = request.COOKIES.get("_auth")
 
     try:
         valid_token = jwt_authenticator.get_validated_token(input_token)
         token_user = jwt_authenticator.get_user(valid_token)
         user_object = get_object_or_404(User, username=token_user)
         return user_object
-  
+
     except InvalidToken as _:
+        # Token is not valid.
         print("That is not a valid token, user is not logged in!")
         return None
 
     except AuthenticationFailed as _:
+        # Valud user object cannot be found in the given token.
         print("User has not been found in the token!")
         return None
 
@@ -58,5 +70,3 @@ def authenticate_user(request: HttpRequest) -> User:
         # meaning, error in the database
         print("There have been no matches to the given query")
         return None
-
-
