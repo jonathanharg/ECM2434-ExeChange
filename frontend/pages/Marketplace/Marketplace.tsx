@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Itemtile from "./Itemtile";
 import { Product } from "./Itemtile";
+import { useAuthUser } from "react-auth-kit";
 
 // const products = [
 //   {
@@ -38,6 +39,8 @@ import { Product } from "./Itemtile";
 // ];
 
 function Marketplace() {
+  const auth = useAuthUser();
+
   const [products, setProducts] = useState<Product[]>([]);
 
   const fetchProducts = () => {
@@ -74,6 +77,7 @@ function Marketplace() {
 
           <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>
         </div>
+        {/* <h1>Hello {auth().user}</h1> */}
         <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
             <Itemtile key={product.id} {...product} />
