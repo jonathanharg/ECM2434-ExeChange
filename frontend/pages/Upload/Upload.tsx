@@ -11,6 +11,15 @@ function Upload() {
   const [tags, setTags] = useState<string[]>();
   const [image, setImage] = useState<File>();
 
+  const validateTags = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const split = event.target.value.split(/[ ,]+/)
+    setTags(split)
+  }
+
+  const formatTags = () => {
+    return tags?.join(", ")
+  }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = {
@@ -25,6 +34,9 @@ function Upload() {
       // headers: { "Content-Type": "application/json" },
       headers: {'Content-Type': 'multipart/form-data'}
     });
+    setCaption("")
+    setTags([])
+    //TODO: Clear image
   };
 
   return (
@@ -43,6 +55,13 @@ function Upload() {
                       <Taglist />
                     </div>
                   </div> */}
+                  <input
+                        required
+                        onChange={validateTags}
+                        value={formatTags()}
+                        className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-green-800 focus:outline-none focus:ring-green-800 sm:text-sm"
+                        placeholder="Tags"
+                      />
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Upload Image
