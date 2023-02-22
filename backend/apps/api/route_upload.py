@@ -2,6 +2,7 @@ from apps.api.models import ClothingItem, ClothingOwner
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
+from django.core.exceptions import ValidationError
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -11,19 +12,31 @@ from rest_framework_simplejwt.tokens import RefreshToken  # type: ignore
 
 @api_view(["POST"])
 def post(request: HttpRequest) -> Response:
+    '''
+    Taking upload data and using the ClothingItem model, this saves caption, image, and tag data using the save method. 
+
+    Args:
+        request (HttpRequest): JSON data from frontend 
+
+    Returns: 
+        Tbd...
+
+    '''
     caption = request.data["caption"]
     try:
         item = ClothingItem.objects.create(caption=caption)
         item.save()
+        item.full_clean()                                       # Validation check for the request data 
+        print(ClothingItem.objects.all().values())
         data = {
             "status": "OK",
             "message": "Submission accepted",
             "caption": {caption},
         }
-    except TypeError as e:
+    except ValidationError as e:
         data = {
-            "status": "BAD",
-            "message": "Submission Denied",
+            "status": "INVALID_LENGTH",
+            "message": "Submission Denied, Caption must be under a 100 characters! ",
             "caption": {caption},
         }
         print(e)
