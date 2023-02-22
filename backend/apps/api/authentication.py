@@ -35,7 +35,7 @@ def get_username(email: str) -> str:
     return username
 
 
-def authenticate_user(request: HttpRequest) -> User:
+def authenticate_user(request: HttpRequest) -> User | None:
     """
     Authenticate a request with a given access token that is sent in the cookies.
 

@@ -1,11 +1,10 @@
-from apps.api.custom_routes import user_login, user_register
 from django.urls import path
 
-from . import views
+from . import route_login, route_register, views
 
 urlpatterns = [
     path("status", views.status),
-    path("login", user_login.login),
-    path("register", user_register.register),
+    path("login", route_login.login),
+    path("register", route_register.register),
     path("products", views.products),
 ]

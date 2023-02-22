@@ -1,8 +1,9 @@
-from apps.api.authenticate import gen_token, get_username  # type: ignore
 from django.contrib.auth import authenticate
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
+from .authentication import gen_token, get_username
 
 
 @api_view(["POST"])
