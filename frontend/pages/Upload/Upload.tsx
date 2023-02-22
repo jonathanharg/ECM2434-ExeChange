@@ -1,27 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import DocuemntPlusIcon from "@heroicons/react/24/outline/DocumentPlusIcon";
 import Taglist from "./TagSelector";
 import TagSearch from "./TagSearch";
+import axios from "axios";
+axios.defaults.xsrfHeaderName = "X-CSRFToken";
+axios.defaults.xsrfCookieName = "csrftoken";
 
 function Upload() {
-  const handleUpload = () => {};
+  const [caption, setCaption] = useState("");
+  const [tags, setTags] = useState<string[]>();
+  const [image, setImage] = useState<File>();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = {
+      caption: caption,
+      tags: tags,
+      image: image,
+    };
+
+    console.log(formData);
+    console.log("Form submitted");
+    await axios.post("/api/upload", formData, {
+      // headers: { "Content-Type": "application/json" },
+      headers: {'Content-Type': 'multipart/form-data'}
+    });
+  };
 
   return (
     <>
       <div>
         <div className="flex h-screen items-center justify-center">
           <div className="mt-5 md:col-span-2 md:mt-0">
-            <form action="#" method="POST">
+            <form method="POST" onSubmit={handleSubmit}>
               <div className="shadow sm:overflow-hidden sm:rounded-md">
                 <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
-                  <div>
+                  {/* <div>
                     <label className="block py-2 text-sm font-medium text-gray-700">
                       Pick a category
                     </label>
                     <div>
                       <Taglist />
                     </div>
-                  </div>
+                  </div> */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Upload Image
@@ -40,6 +61,12 @@ function Upload() {
                               name="file-upload"
                               type="file"
                               className="sr-only"
+                              onChange={(e) => {
+                                setImage(e.target.files[0]);
+                                console.log(e.target.files[0].type);
+                                
+                              }}
+                              required
                             />
                           </label>
                           <p className="pl-1">or drag and drop</p>
@@ -59,6 +86,10 @@ function Upload() {
                     <div>
                       <input
                         required
+                        onChange={(e) => {
+                          setCaption(e.target.value);
+                        }}
+                        value={caption}
                         className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-green-800 focus:outline-none focus:ring-green-800 sm:text-sm"
                         placeholder="Caption"
                       />
