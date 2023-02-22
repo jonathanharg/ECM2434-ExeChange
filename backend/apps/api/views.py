@@ -4,12 +4,13 @@ from django.db.utils import IntegrityError
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework_simplejwt.authentication import JWTAuthentication # type: ignore
-from rest_framework_simplejwt.tokens import RefreshToken # type: ignore
-#Above are type ignored, as they have no type stubs written for them.
+from rest_framework_simplejwt.authentication import JWTAuthentication  # type: ignore
+from rest_framework_simplejwt.tokens import RefreshToken  # type: ignore
+
+# Above are type ignored, as they have no type stubs written for them.
 
 
-def gen_token(user: User) -> RefreshToken: #type: ignore
+def gen_token(user: User) -> RefreshToken:  # type: ignore
     """
     Generate JWT token
     Args:
@@ -56,8 +57,8 @@ def login(request: HttpRequest) -> Response:
         Response: Include the JSON data that needs to be sent back to the frontend, i.e. STATUS good or STATUS bad.
     """
     # Ignoring types here, as mypy throws errors but these are valid attributes.
-    email_address = request.data["user"] # type: ignore
-    user_password = request.data["password"] # type: ignore
+    email_address = request.data["user"]  # type: ignore
+    user_password = request.data["password"]  # type: ignore
 
     username = get_username(email_address)
 
@@ -71,7 +72,7 @@ def login(request: HttpRequest) -> Response:
 
         # Creating JWT Access token
         # Ignoring type as libraries have no included type stubs
-        token = gen_token(user) #type: ignore
+        token = gen_token(user)  # type: ignore
 
         data = {
             "status": "OK",
@@ -102,9 +103,9 @@ def register(request: HttpRequest) -> Response:
         Response: Include the JSON data that needs to be sent back to the frontend
     """
     # Ignoring types here, as mypy throws errors but these are valid attributes.
-    email_address = request.data["user"] # type: ignore
-    user_password = request.data["password"] #type: ignore
-    user_confirm_password = request.data["confirmPwd"] #type: ignore
+    email_address = request.data["user"]  # type: ignore
+    user_password = request.data["password"]  # type: ignore
+    user_confirm_password = request.data["confirmPwd"]  # type: ignore
 
     if user_password == user_confirm_password:
         try:
