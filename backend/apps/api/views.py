@@ -19,6 +19,41 @@ def products(request: HttpRequest) -> Response:
             "href": "#",
             "imageSrc": "https://i.ebayimg.com/images/g/csYAAOSwl9xePWGM/s-l500.jpg",
             "tags": ["Cowboy", "Hat"],
-        }
-    ] * 13
+        },
+        {
+            "id": 2,
+            "name": "Cowboy Hat",
+            "href": "#",
+            "imageSrc": "https://i.ebayimg.com/images/g/csYAAOSwl9xePWGM/s-l500.jpg",
+            "tags": ["Cowboy", "Hat"],
+        },
+        {
+            "id": 3,
+            "name": "Cowboy Hat",
+            "href": "#",
+            "imageSrc": "https://i.ebayimg.com/images/g/csYAAOSwl9xePWGM/s-l500.jpg",
+            "tags": ["Cowboy", "Hat"],
+        },
+        {
+            "id": 4,
+            "name": "Cowboy Hat",
+            "href": "#",
+            "imageSrc": "https://i.ebayimg.com/images/g/csYAAOSwl9xePWGM/s-l500.jpg",
+            "tags": ["Cowboy", "Hat"],
+        },
+        {
+            "id": 5,
+            "name": "Cowboy Hat",
+            "href": "#",
+            "imageSrc": "https://i.ebayimg.com/images/g/csYAAOSwl9xePWGM/s-l500.jpg",
+            "tags": ["Cowboy", "Hat"],
+        },
+        {
+            "id": 6,
+            "name": "Cowboy Hat",
+            "href": "#",
+            "imageSrc": "https://i.ebayimg.com/images/g/csYAAOSwl9xePWGM/s-l500.jpg",
+            "tags": ["Cowboy", "Hat"],
+        },
+    ]
     return Response(data)
