@@ -18,6 +18,10 @@ function Profile(){
                     <div className="w-10/12 flex flex-col leading-none pl-4">
                         <p className="text-2xl font-bold">David</p>
                         <p className="text-sm pt-1 font-light text-gray-700">Level 5</p>
+                        <div className="mb-1 text-base font-medium text-green-700 dark:text-green-500"></div>
+                        <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700">
+                        <div className="bg-green-600 h-2.5 rounded-full dark:bg-green-500" style={{width: '45%'}}></div>
+                        </div>
                     </div>
                     <div className="w-2/12">
                         <div>
