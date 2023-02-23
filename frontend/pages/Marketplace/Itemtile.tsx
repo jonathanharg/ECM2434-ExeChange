@@ -12,7 +12,7 @@ export interface Product {
 function Itemtile(product: Product) {
   const auth = useAuthUser();
   return (
-    <div key={product.id} className="group relative">
+    <div key={product.id} className="group relative rounded-md p-4 shadow">
       <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
         <img
           src={product.imageSrc}
@@ -21,7 +21,7 @@ function Itemtile(product: Product) {
           } lg:h-full lg:w-full`}
         />
       </div>
-      <div className="mt-4 flex justify-between">
+      <div className="mt-2 flex justify-between">
         <div>
           <h3 className="text-sm text-gray-700">
             <a href={product.href}>
@@ -29,7 +29,9 @@ function Itemtile(product: Product) {
               {product.name}
             </a>
           </h3>
-          <p className="mt-1 text-sm text-gray-500">{product.tags}</p>
+          <p className="mt-1 text-sm text-gray-500">
+            {product.tags.join(", ")}
+          </p>
         </div>
       </div>
     </div>
