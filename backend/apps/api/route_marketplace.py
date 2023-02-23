@@ -24,6 +24,8 @@ def products(request: HttpRequest) -> Response:
             "tags": ["Cowboy", "Hat"],
         }
     ] * 13
-
-    return Response(data)
-    # return Response(data)
+    products = ClothingItem.objects.filter(tags__in=ItemTag.objects.all()).select_related('ItemTag').values_list('id', 'caption', 'tags__tag')
+    product_captions = list(ClothingItem.objects.values())
+    print(products)
+    return JsonResponse(list(products), safe=False)
+    # return 

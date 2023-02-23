@@ -40,7 +40,7 @@ def post(request: HttpRequest) -> Response:
         # for item in ClothingItem.objects.all(): 
         #     print(item.tags.all())
 
-        # print(ClothingItem.objects.all().values())
+        # print()
 
         data = {
             "status": "OK",
