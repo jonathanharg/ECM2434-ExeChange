@@ -39,6 +39,7 @@ const router = createBrowserRouter([
           // <RequireAuth loginPath={"/login"}>
           <Marketplace />
           // </RequireAuth>
+
         ),
       },
     ],
