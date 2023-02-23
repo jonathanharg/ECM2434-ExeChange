@@ -29,8 +29,12 @@ def post(request: HttpRequest) -> Response:
         item.save()
         item.full_clean()
 
-        for tag in tags:
-            taggedItem = item.tags.create(tag= tag) #create and add tags (tag objects) to existing item object
+        for tag_to_add in tags:
+
+            taggedItem = ItemTag.objects.create(tag = tag_to_add)
+            taggedItem.save()
+            taggedItem.full_clean()
+            item.tags.add(taggedItem)
 
         print(item.tags.all())
         print(ClothingItem.objects.all().values())

@@ -8,7 +8,7 @@ class ItemTag(models.Model):
         return self.tag
 
 class ClothingItem(models.Model):
-    # TODO: add image field and tag field
+    # TODO: add image field
     caption = models.CharField(max_length=100)
     tags = models.ManyToManyField(ItemTag)
     def __str__(self):
