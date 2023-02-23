@@ -10,7 +10,6 @@ import { AuthProvider } from "react-auth-kit";
 
 import "./index.css";
 import Marketplace from "./pages/Marketplace/Marketplace";
-import Trade from "./pages/trading/TradeRequest";
 
 //for using nested routes check out: https://reactrouter.com/en/main/start/tutorial
 //info is under the   " nested routes " title, you pretty much need to use an <outlet> to mark
@@ -28,10 +27,6 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
-      },
-      {
-        path: "/trade",
-        element: <Trade />,
       },
       {
         path: "/marketplace",
