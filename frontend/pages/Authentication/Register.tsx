@@ -144,6 +144,7 @@ function Register() {
         if (attemptAuth) {
           //Registered user has been successfully signed in!
           console.log("User logged in!");
+          navigate("/");
         }
       })
       .catch((error) => {
