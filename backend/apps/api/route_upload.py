@@ -8,6 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication  # type: ignore
 from rest_framework_simplejwt.tokens import RefreshToken  # type: ignore
+from django.http import JsonResponse
 
 
 @api_view(["POST"])
@@ -35,9 +36,11 @@ def post(request: HttpRequest) -> Response:
             taggedItem.save()
             taggedItem.full_clean()
             item.tags.add(taggedItem)
+        
+        # for item in ClothingItem.objects.all(): 
+        #     print(item.tags.all())
 
-        print(item.tags.all())
-        print(ClothingItem.objects.all().values())
+        # print(ClothingItem.objects.all().values())
 
         data = {
             "status": "OK",
@@ -47,7 +50,7 @@ def post(request: HttpRequest) -> Response:
     except ValidationError as e:
         data = {
             "status": "INVALID_LENGTH",
-            "message": "Submission Denied, Caption must be under a 100 characters! ",
+            "message": "Submission Denied, {e}",
             "caption": {caption},
         }
         print(e)

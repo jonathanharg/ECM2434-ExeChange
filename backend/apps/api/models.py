@@ -13,6 +13,3 @@ class ClothingItem(models.Model):
     tags = models.ManyToManyField(ItemTag)
     def __str__(self):
         return self.caption
-
-    def __str__(self):
-        return self.username

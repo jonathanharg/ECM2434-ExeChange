@@ -31,9 +31,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-
   const emailSchema = z.string().email();
-  const passwordSchema = z.string().min(8);
+  const passwordSchema = z.string();
 
   const EmailValidation = emailSchema.safeParse(user);
   const PasswordValidation = passwordSchema.safeParse(password);
@@ -59,12 +58,6 @@ export default function Login() {
     // Zod validation for email, password, and password matching
     //https://zod.dev/
     e.preventDefault();
-
-    const emailSchema = z.string().email().endsWith("@exeter.ac.uk");
-    const passwordSchema = z.string();
-
-    const EmailValidation = emailSchema.safeParse(user);
-    const PasswordValidation = passwordSchema.safeParse(password);
 
     if (!EmailValidation.success || !PasswordValidation.success) {
       return;
