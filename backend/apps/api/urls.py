@@ -8,4 +8,5 @@ urlpatterns = [
     path("register", route_register.register),
     path("products", route_marketplace.products),
     path("upload", route_upload.post),
+    path("tags", route_upload.tags),
 ]

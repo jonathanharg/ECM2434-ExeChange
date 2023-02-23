@@ -1,14 +1,8 @@
 from apps.api.models import ClothingItem, ItemTag
-from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.db.models import Model
-from django.db.utils import IntegrityError
 from django.http import HttpRequest, JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework_simplejwt.authentication import JWTAuthentication  # type: ignore
-from rest_framework_simplejwt.tokens import RefreshToken  # type: ignore
 
 from .authentication import authenticate_user
 
@@ -16,8 +10,7 @@ from .authentication import authenticate_user
 @api_view(["POST"])
 def post(request: HttpRequest) -> Response:
     authenticated_user = authenticate_user(request)
-
-    if authenticated_user == None:
+    if authenticated_user is None:
         return Response(
             {
                 "status": "NOT_LOGGED_IN",
@@ -25,36 +18,42 @@ def post(request: HttpRequest) -> Response:
             }
         )
 
-    caption = request.data["caption"]
-    tags = request.data.getlist("tags[]")  # gets tags from user input
+    upload_caption = request.data["caption"]
+    upload_tags = request.data.getlist("tags[]")
+    data = {}
     try:
-        item = ClothingItem.objects.create(caption=caption, owner=authenticated_user)
-        item.save()
+        item = ClothingItem.objects.create(
+            caption=upload_caption, owner=authenticated_user
+        )
         item.full_clean()
+        item.save()
 
-        for tag in tags:
-            try:
-                tag_object = ItemTag.objects.get(tag=tag)
-            except Exception as e:
-                print(e)
-                print(
-                    "Create a TAG object, this is DEBUG ONLY and should NOT be done in PROD"
-                )
-                # NOTE: You should only be able to add existing tags, this is for DEBUG ONLY!
-                tag_object = ItemTag.objects.create(tag=tag)
-                tag_object.save()
-                tag_object.full_clean()
-            item.tags.add(tag_object)
-
-        data = {
-            "status": "OK",
-            "message": "Submission accepted",
-        }
     except ValidationError as e:
-        # TODO:  Format error message
         data = {
             "status": "INVALID_LENGTH",
-            "message": "Submission Denied, {e}",
+            "message": "Submission Denied",
         }
         print(e)
+
+    for tag in upload_tags:
+        try:
+            tag_object = ItemTag.objects.get(name=tag)
+            item.tags.add(tag_object)
+            data = {
+                "status": "OK",
+                "message": "Submission accepted",
+            }
+
+        except ItemTag.DoesNotExist as e:
+            item.delete()
+            data = {
+                "status": "INVALID_TAG",
+                "message": "This tag is invalid!",
+            }
+            print(e)
     return Response(data)
+
+
+@api_view(["GET"])
+def tags(request: HttpRequest) -> Response:
+    return JsonResponse(list(ItemTag.objects.values()), safe=False)

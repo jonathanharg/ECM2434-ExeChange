@@ -5,10 +5,10 @@ from django.db import models
 
 
 class ItemTag(models.Model):
-    tag = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=20, unique=True)
 
     def __str__(self):
-        return self.tag
+        return self.name
 
 
 class ClothingItem(models.Model):
