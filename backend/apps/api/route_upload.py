@@ -1,57 +1,60 @@
 from apps.api.models import ClothingItem, ItemTag
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.models import User
-from django.db.utils import IntegrityError
 from django.core.exceptions import ValidationError
-from django.http import HttpRequest
+from django.db.models import Model
+from django.db.utils import IntegrityError
+from django.http import HttpRequest, JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication  # type: ignore
 from rest_framework_simplejwt.tokens import RefreshToken  # type: ignore
-from django.http import JsonResponse
+
+from .authentication import authenticate_user
 
 
 @api_view(["POST"])
 def post(request: HttpRequest) -> Response:
-    '''
-    Taking upload data and using the ClothingItem model, this saves caption, image, and tag data using the save method. 
+    authenticated_user = authenticate_user(request)
 
-    Args:
-        request (HttpRequest): JSON data from frontend 
+    if authenticated_user == None:
+        return Response(
+            {
+                "status": "NOT_LOGGED_IN",
+                "message": "You need to be logged in to upload.",
+            }
+        )
 
-    Returns: 
-        Tbd...
-
-    '''
     caption = request.data["caption"]
-    tags = request.data.getlist("tags[]") #gets tags from user input 
-    try:            
-        item = ClothingItem.objects.create(caption=caption) #create an item object
+    tags = request.data.getlist("tags[]")  # gets tags from user input
+    try:
+        item = ClothingItem.objects.create(caption=caption, owner=authenticated_user)
         item.save()
         item.full_clean()
 
-        for tag_to_add in tags:
-
-            taggedItem = ItemTag.objects.create(tag = tag_to_add)
-            taggedItem.save()
-            taggedItem.full_clean()
-            item.tags.add(taggedItem)
-        
-        # for item in ClothingItem.objects.all(): 
-        #     print(item.tags.all())
-
-        # print()
+        for tag in tags:
+            try:
+                tag_object = ItemTag.objects.get(tag=tag)
+            except Exception as e:
+                print(e)
+                print(
+                    "Create a TAG object, this is DEBUG ONLY and should NOT be done in PROD"
+                )
+                # NOTE: You should only be able to add existing tags, this is for DEBUG ONLY!
+                tag_object = ItemTag.objects.create(tag=tag)
+                tag_object.save()
+                tag_object.full_clean()
+            item.tags.add(tag_object)
 
         data = {
             "status": "OK",
             "message": "Submission accepted",
-            "caption": {caption},
         }
     except ValidationError as e:
+        # TODO:  Format error message
         data = {
             "status": "INVALID_LENGTH",
             "message": "Submission Denied, {e}",
-            "caption": {caption},
         }
         print(e)
     return Response(data)

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import route_login, route_register, route_upload, views, route_marketplace
+from . import route_login, route_marketplace, route_register, route_upload, views
 
 urlpatterns = [
     path("status", views.status),
