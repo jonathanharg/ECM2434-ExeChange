@@ -23,7 +23,6 @@
     <div id="root"></div>
 
     {% if debug %}
-    <!-- This url will be different for each type of app. Point it to your main js file. -->
     <script type="module" src="http://localhost:5173/main.tsx"></script>
     {% else %} {% render_vite_bundle %} {% endif %}
   </body>
