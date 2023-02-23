@@ -3,11 +3,22 @@ import { useAuthUser } from "react-auth-kit";
 
 export interface Product {
   id: number;
-  name: string;
+  caption: string;
   href: string;
   imageSrc: string;
-  tags: string[];
+  tags: tag[];
+  owner: owner;
 }
+
+export type owner = {
+  id: number;
+  username: string;
+};
+
+export type tag = {
+  id: number;
+  name: string;
+};
 
 function Itemtile(product: Product) {
   const auth = useAuthUser();
@@ -26,11 +37,11 @@ function Itemtile(product: Product) {
           <h3 className="text-sm text-gray-700">
             <a href={product.href}>
               <span aria-hidden="true" className="absolute inset-0" />
-              {product.name}
+              {product.caption}
             </a>
           </h3>
           <p className="mt-1 text-sm text-gray-500">
-            {product.tags.join(", ")}
+            {product.tags.map((t) => t.name).join(", ")}
           </p>
         </div>
       </div>
