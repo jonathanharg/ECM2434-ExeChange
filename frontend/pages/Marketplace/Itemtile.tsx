@@ -16,8 +16,8 @@ export type owner = {
 };
 
 export type tag = {
-  id: number;
-  name: string;
+  id?: number;
+  name?: string;
 };
 
 function Itemtile(product: Product) {
