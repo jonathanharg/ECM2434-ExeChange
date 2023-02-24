@@ -1,6 +1,5 @@
+from apps.api.models import ExeChangeUser # type: ignore
 from django.contrib import admin
-
-from .models import ExeChangeUser
 
 # Register your models here.
 

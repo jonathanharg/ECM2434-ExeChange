@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from apps.api.models import ExeChangeUser # type: ignore
 from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.authentication import (  # type: ignore
@@ -8,10 +8,8 @@ from rest_framework_simplejwt.authentication import (  # type: ignore
 )
 from rest_framework_simplejwt.tokens import RefreshToken  # type: ignore
 
-from .models import ExeChangeUser
 
-
-def gen_token(user: User) -> RefreshToken:  # type: ignore
+def gen_token(user: ExeChangeUser) -> RefreshToken:  # type: ignore
     """
     Generate JWT token
     Args:
@@ -37,7 +35,7 @@ def get_username(email: str) -> str:
     return username
 
 
-def authenticate_user(request: HttpRequest) -> User | None:
+def authenticate_user(request: HttpRequest) -> ExeChangeUser | None: # type: ignore
     """
     Authenticate a request with a given access token that is sent in the cookies.
 

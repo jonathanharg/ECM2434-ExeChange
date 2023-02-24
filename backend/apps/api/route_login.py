@@ -1,9 +1,8 @@
+from apps.api.user_authentication import gen_token, get_username # type: ignore
 from django.contrib.auth import authenticate
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-from .authentication import gen_token, get_username
 
 
 @api_view(["POST"])
@@ -36,7 +35,7 @@ def login(request: HttpRequest) -> Response:
 
         # Creating JWT Access token
         # Ignoring type as libraries have no included type stubs
-        token = gen_token(user)  # type: ignore
+        token = gen_token(user)
 
         data = {
             "status": "OK",

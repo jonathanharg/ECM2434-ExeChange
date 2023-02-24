@@ -1,6 +1,5 @@
+from apps.api import route_login, route_register, views # type: ignore
 from django.urls import path
-
-from . import route_login, route_register, views
 
 urlpatterns = [
     path("status", views.status),

@@ -1,10 +1,9 @@
+from apps.api.user_authentication import gen_token, get_username # type: ignore
+from apps.api.models import ExeChangeUser # type: ignore
 from django.db.utils import IntegrityError
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-from .authentication import gen_token, get_username
-from .models import ExeChangeUser
 
 
 @api_view(["POST"])
