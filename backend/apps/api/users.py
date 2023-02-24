@@ -1,46 +1,33 @@
 from django.contrib.auth.models import User
+from backend.settings import XP_IN_LEVEL
 
-from .models import ExeChangeUser
-
-def get_user_level(user: ExeChangeUser) -> int:
+def get_user_level(user: User) -> int:
     return user.profile_level
 
 
 def update_user_level(user: User) -> int:
-    """
-    Takes and authenticated user, and updates the level of that user.
+    user.profile_level = user.profile_level + 1
+    user.save()
 
-    Args:
-        user (User): An "authenticated" User object
+    return user.profile_level
 
-    Returns:
-        int: The new updated level of the user.
-    """
-    pass
 
 def get_user_xp(user: User) -> int:
-    """
-    Takes an authenticated user, and returns the current xp of the user.
+    return user.current_xp
 
-    Args:
-        user (User): An "authenticated" User object.
 
-    Returns:
-        int: The current xp of the user.
-    """
-    pass
-
-def update_user_xp(user: User) -> int:
+def update_user_xp(user: User, xp_to_add: int) -> int:
     """
     Takes an authenticated user, and updates the xp of that user.
 
     If a lower xp is returned than what a user started with, this also means that the user level has increased,
     as on a user level increase, xp is reset to zero.
-
-    Args:
-        user (User): An "authenticated" User object.
-
-    Returns:
-        int: The new xp of a user.
     """
-    pass
+    new_xp = user.current_xp + xp_to_add
+
+    while new_xp > XP_IN_LEVEL:
+        update_user_level(user)
+        new_xp = new_xp - 100
+
+    user.current_xp = new_xp
+    user.save()
