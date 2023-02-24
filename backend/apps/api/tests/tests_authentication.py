@@ -4,15 +4,11 @@ authentication.py test file!
 
 import ast
 
-import requests
-
 import pytest
-from api.authentication import gen_token
+from apps.api.authentication import gen_token
 from apps.api.models import ExeChangeUser
 from django.contrib.auth import authenticate
 from django.test import TestCase
-
-from api.authentication import authenticate_user
 
 
 @pytest.mark.django_db
