@@ -5,8 +5,8 @@ authentication.py test file!
 import ast
 
 import pytest
-from apps.api.user_authentication import gen_token # type: ignore
-from apps.api.models import ExeChangeUser # type: ignore
+from apps.api.models import ExeChangeUser  # type: ignore
+from apps.api.user_authentication import gen_token  # type: ignore
 from django.contrib.auth import authenticate
 from django.test import TestCase
 

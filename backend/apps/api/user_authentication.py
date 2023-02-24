@@ -1,4 +1,4 @@
-from apps.api.models import ExeChangeUser # type: ignore
+from apps.api.models import ExeChangeUser  # type: ignore
 from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.authentication import (  # type: ignore
@@ -35,7 +35,7 @@ def get_username(email: str) -> str:
     return username
 
 
-def authenticate_user(request: HttpRequest) -> ExeChangeUser | None: # type: ignore
+def authenticate_user(request: HttpRequest) -> ExeChangeUser | None:  # type: ignore
     """
     Authenticate a request with a given access token that is sent in the cookies.
 

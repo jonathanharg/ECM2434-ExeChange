@@ -1,4 +1,4 @@
-from apps.api import route_login, route_register, views # type: ignore
+from apps.api import route_login, route_register, views  # type: ignore
 from django.urls import path
 
 urlpatterns = [
