@@ -124,7 +124,7 @@ SIMPLE_JWT = {
 }
 
 # Setting AUTH_USER_MODEL to customer made model
-AUTH_USER_MODEL = 'api.ExeChangeUser'
+AUTH_USER_MODEL = "api.ExeChangeUser"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

@@ -33,7 +33,7 @@ def register(request: HttpRequest) -> Response:
             new_user = ExeChangeUser.objects.create_user(
                 username=new_user_username, email=email_address, password=user_password
             )
-            new_user.save()     
+            new_user.save()
 
             print("REGISTRATION SUCCESSFULL AND USER ADDED TO DATABASE!")
 

@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
+
 from backend.settings import XP_IN_LEVEL
+
 
 def get_user_level(user: User) -> int:
     return user.profile_level

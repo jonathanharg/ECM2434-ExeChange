@@ -4,8 +4,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .authentication import gen_token, get_username
-from .users import get_user_level, update_user_level, get_user_xp, update_user_xp
-from .models import ExeChangeUser
 
 
 @api_view(["POST"])
@@ -35,9 +33,6 @@ def login(request: HttpRequest) -> Response:
 
     if user is not None:
         print("LOG IN SUCCESSFULL!")
-        
-        # users.py testing
-        print("User level: ", get_user_level(user))
 
         # Creating JWT Access token
         # Ignoring type as libraries have no included type stubs
