@@ -8,6 +8,8 @@ from rest_framework_simplejwt.authentication import (  # type: ignore
 )
 from rest_framework_simplejwt.tokens import RefreshToken  # type: ignore
 
+from .models import ExeChangeUser
+
 
 def gen_token(user: User) -> RefreshToken:  # type: ignore
     """
@@ -52,7 +54,7 @@ def authenticate_user(request: HttpRequest) -> User | None:
     try:
         valid_token = jwt_authenticator.get_validated_token(input_token)
         token_user = jwt_authenticator.get_user(valid_token)
-        user_object = get_object_or_404(User, username=token_user)
+        user_object = get_object_or_404(ExeChangeUser, username=token_user)
         return user_object
 
     except InvalidToken as _:
