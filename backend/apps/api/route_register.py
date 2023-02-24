@@ -1,5 +1,5 @@
 from apps.api.models import ExeChangeUser  # type: ignore
-from apps.api.user_authentication import gen_token, get_username  # type: ignore
+from apps.api.authentication import gen_token, get_username  # type: ignore
 from django.db.utils import IntegrityError
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
