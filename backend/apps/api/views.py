@@ -24,7 +24,10 @@ def status(request: HttpRequest) -> Response:
         "where's the map???",
         "Tell your friends!",
         "Now with 10% more React!",
-        "Is this useState?",
+        "ExeChanging the game since 2023",
+        "Est. 2023",
+        "\"Be the ExeChange you want to see in the world.\" - Mahatma Gandhi",
+        "ExeChange!"
     ]
     data = {"status": "OK", "message": {random.choice(msgArray)}}
     return Response(data)
