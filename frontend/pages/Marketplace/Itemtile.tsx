@@ -5,7 +5,7 @@ export interface Product {
   id: number;
   caption: string;
   href: string;
-  imageSrc: string;
+  image: string;
   tags: tag[];
   owner: owner;
 }
@@ -26,7 +26,7 @@ function Itemtile(product: Product) {
     <div key={product.id} className="group relative rounded-md p-4 shadow">
       <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
         <img
-          src={product.imageSrc}
+          src={product.image}
           className={`h-full w-full object-cover object-center ${
             auth() ? "" : "blur-lg"
           } lg:h-full lg:w-full`}

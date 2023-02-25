@@ -27,7 +27,10 @@ def status(request: HttpRequest) -> Response:
         "ExeChanging the game since 2023",
         "Est. 2023",
         "\"Be the ExeChange you want to see in the world.\" - Mahatma Gandhi",
-        "ExeChange!"
+        "ExeChange!",
+        "\"I got bored one day, then I put everything on ExeChange... everything.\"",
+        "\"I'm Learning To Recycle Like You.\"",
+        "Reduce, Reuse & React!",
     ]
     data = {"status": "OK", "message": {random.choice(msgArray)}}
     return Response(data)

@@ -18,12 +18,12 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.generic import TemplateView
 from django.views.static import serve
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("apps.api.urls")),
     re_path(r"^.*$", TemplateView.as_view(template_name="base.html")),
-    # path("", TemplateView.as_view(template_name="base.html")),
 ]
 
 if settings.DEBUG | settings.FORCE_SERVE_STATIC:
@@ -33,3 +33,12 @@ if settings.DEBUG | settings.FORCE_SERVE_STATIC:
             r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}
         ),
     )
+    ## TODO: THis is very janky, & get this working outside of debug
+    # urlpatterns.insert(3, re_path(
+    #         r"^posts/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT / "posts"}
+    #     ),)
+    urlpatterns.insert(3, re_path(
+            r"^posts/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT / "posts"}
+        ),)
+
+    # path("posts/", static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))

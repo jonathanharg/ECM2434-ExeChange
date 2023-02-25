@@ -14,6 +14,7 @@ class ItemTag(models.Model):
 class ClothingItem(models.Model):
     # TODO: add image field
     caption = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='posts/', blank=True)
     tags = models.ManyToManyField(ItemTag)
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,

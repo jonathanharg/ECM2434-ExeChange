@@ -17,13 +17,14 @@ def post(request: HttpRequest) -> Response:
                 "message": "You need to be logged in to upload.",
             }
         )
-
+    
     upload_caption = request.data["caption"]
     upload_tags = request.data.getlist("tags[]")
+    upload_file = request.data["image"]
     data = {}
     try:
         item = ClothingItem.objects.create(
-            caption=upload_caption, owner=authenticated_user
+            caption=upload_caption, owner=authenticated_user, image=upload_file
         )
         item.full_clean()
         item.save()
