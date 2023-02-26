@@ -42,7 +42,7 @@ def update_user_xp(user: ExeChangeUser, xp_to_add: int) -> int | None:
 
     while new_xp > XP_IN_LEVEL:
         update_user_level(user)
-        new_xp = new_xp - 100
+        new_xp = new_xp - XP_IN_LEVEL
 
     user.current_xp = new_xp
     user.save()
