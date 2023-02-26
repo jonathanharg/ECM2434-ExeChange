@@ -16,4 +16,4 @@ class ClothingItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClothingItem
         depth = 1
-        fields = ["caption", "tags", "owner", "id", "image"]
+        fields = ["caption", "tags", "owner", "id", "image", "created_at", "updated_at"]

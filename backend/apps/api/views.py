@@ -26,11 +26,15 @@ def status(request: HttpRequest) -> Response:
         "Now with 10% more React!",
         "ExeChanging the game since 2023",
         "Est. 2023",
-        "\"Be the ExeChange you want to see in the world.\" - Mahatma Gandhi",
+        '"Be the ExeChange you want to see in the world." - Mahatma Gandhi',
         "ExeChange!",
-        "\"I got bored one day, then I put everything on ExeChange... everything.\"",
-        "\"I'm Learning To Recycle Like You.\"",
+        '"I got bored one day, then I put everything on ExeChange... everything."',
+        '"I\'m Learning To Recycle Like You."',
         "Reduce, Reuse & React!",
+        "Featuring a better login system & navbar than ELE!",
+        "Ring ring!",
+        "🩳 🔄 👕  👉👈🥺",
+        "♻️",
     ]
     data = {"status": "OK", "message": {random.choice(msgArray)}}
     return Response(data)

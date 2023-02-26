@@ -24,7 +24,7 @@ function Itemtile(product: Product) {
   const auth = useAuthUser();
   return (
     <div key={product.id} className="group relative rounded-md p-4 shadow">
-      <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+      <div className="min-h-80 aspect-w-3 aspect-h-4 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-80">
         <img
           src={product.image}
           className={`h-full w-full object-cover object-center ${
