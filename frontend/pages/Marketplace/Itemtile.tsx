@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import axios from "axios";
 import {
   DatePickerStateProvider,
   useContextCalendars,
@@ -9,6 +10,8 @@ import {
 } from "@rehookify/datepicker";
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 import { Button, Calendar, Time } from '../../components';
+axios.defaults.xsrfHeaderName = "X-CSRFToken";
+axios.defaults.xsrfCookieName = "csrftoken";
 
 export interface Product {
   id: number;
@@ -17,6 +20,43 @@ export interface Product {
   imageSrc: string;
   tags: string[];
 }
+
+const handleSubmit = async (e) => {
+  // this function sends form data to /api/login
+  // Zod validation for email, password, and password matching
+  //https://zod.dev/
+  e.preventDefault();
+
+
+  await axios
+    .post("/api/login", JSON.stringify({ user, password }), {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    })
+    .then((response) => {
+      // TODO: Handle more responses than just OK
+      if (response.data.status != "OK") {
+        setEmailError("Incorrect username or password");
+        setPasswordError("Incorrect username or password");
+        console.log("Incorrect username or password!");
+        return;
+      }
+
+      if (attemptAuth) {
+        console.log("User logged in!");
+        navigate("/");
+      } else {
+        //Print error as react-auth-kit broke!
+        console.log("React-auth-kit error!");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+
+
 
 function Root() {
   const { calendars } = useContextCalendars();
@@ -115,7 +155,7 @@ function Itemtile(product: Product) {
                         following code was used for the date/time picker from the @rehookify headlessui thing.
 
                         */}
-                        <form method="POST">
+                        <form method="POST" onSubmit={handleSubmit}>
                           <DatePickerStateProvider config={{
                             selectedDates,
                             onDatesChange,
