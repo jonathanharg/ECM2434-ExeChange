@@ -14,3 +14,6 @@
     transform: rotate(360deg);
   }
 }
+.select-input {
+  color: transparent;
+}

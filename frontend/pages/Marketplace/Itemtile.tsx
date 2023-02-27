@@ -16,8 +16,9 @@ export type owner = {
 };
 
 export type tag = {
-  id?: number;
-  name?: string;
+  id: number;
+  readonly value: string;
+  label: string;
 };
 
 function Itemtile(product: Product) {
@@ -41,7 +42,7 @@ function Itemtile(product: Product) {
             </a>
           </h3>
           <p className="mt-1 text-sm text-gray-500">
-            {product.tags.map((t) => t.name).join(", ")}
+            {product.tags.map((t) => t.value).join(", ")}
           </p>
         </div>
       </div>

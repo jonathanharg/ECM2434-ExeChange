@@ -50,7 +50,7 @@ def post(request: HttpRequest) -> Response:
 
     try:
         # Ignore the types, we have already returned a response if the incorrect types are not present
-        item_tags = list(map(lambda x: ItemTag.objects.get(name=x), item_tags))  # type: ignore
+        item_tags = list(map(lambda x: ItemTag.objects.get(value=x), item_tags))  # type: ignore
     except ItemTag.DoesNotExist as _:
         return Response(
             INVALID_TAG,
