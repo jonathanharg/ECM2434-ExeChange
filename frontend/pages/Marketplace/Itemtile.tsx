@@ -21,47 +21,11 @@ export interface Product {
   tags: string[];
 }
 
-const handleSubmit = async (e) => {
-  // this function sends form data to /api/login
-  // Zod validation for email, password, and password matching
-  //https://zod.dev/
-  e.preventDefault();
-
-
-  await axios
-    .post("/api/login", JSON.stringify({ user, password }), {
-      headers: { "Content-Type": "application/json" },
-      withCredentials: true,
-    })
-    .then((response) => {
-      // TODO: Handle more responses than just OK
-      if (response.data.status != "OK") {
-        setEmailError("Incorrect username or password");
-        setPasswordError("Incorrect username or password");
-        console.log("Incorrect username or password!");
-        return;
-      }
-
-      if (attemptAuth) {
-        console.log("User logged in!");
-        navigate("/");
-      } else {
-        //Print error as react-auth-kit broke!
-        console.log("React-auth-kit error!");
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
-
-
-
-
 function Root() {
   const { calendars } = useContextCalendars();
   const { formattedDates } = useContextDays();
   const { previousMonthButton, nextMonthButton } = useContextMonthsPropGetters()
+
 
   return (
     <div>
@@ -95,6 +59,41 @@ function Root() {
 function Itemtile(product: Product) {
   const [open, setOpen] = useState(false)
   const [selectedDates, onDatesChange] = useState<Date[]>([]);
+  /* const [ date, setDate] = useState("");
+  const [ time, setTime] = useState(""); */
+
+
+  const handleSubmit = async (e) => {
+    // this function sends form data to /api/trading
+    e.preventDefault();
+  
+    await axios
+      .post("/api/trading", JSON.stringify({ selectedDates }), {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      })
+      .then((response) => {
+        // TODO: Handle more responses than just OK
+        if (response.data.status != "OK") {
+          /* setEmailError("Incorrect username or password");
+          setPasswordError("Incorrect username or password"); */
+          console.log("Incorrect username or password!");
+          return;
+        }
+  
+        /* if (attemptAuth) {
+          console.log("User logged in!");
+          navigate("/");
+        } else {
+          //Print error as react-auth-kit broke!
+          console.log("React-auth-kit error!");
+        } */
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
 
   return (
     <div className="group relative">
