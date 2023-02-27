@@ -2,8 +2,9 @@ from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import PendingTrade
-from api.models import ExeChangeUser
+from apps.api.models import PendingTrade
+from apps.api.models import ExeChangeUser
+from apps.api.authentication import authenticate_user
 '''
 def trading
 
@@ -13,12 +14,27 @@ Recieves a trade request and adds it to a pending trades model.
 '''
 @api_view(["POST"])
 def trading(request: HttpRequest) -> Response:
-    initiator = request.data["user_acceptor"]
+    authenticated_initiator = authenticate_user(request)
+
+    if authenticated_initiator is None:
+        return Response({
+            "STATUS": "USER_NOT_AUTHENTICATED",
+            "message": "Token sent was not valid",
+        })
+    
     acceptor = request.data["user_initiator"]
+    acceptor_object = ExeChangeUser.objects.get(username=str(acceptor))
 
-    initiator_object = ExeChangeUser.objects.get()
+    #Gather list of items initator wants to trade
 
-    pending_trade = PendingTrade.objects.create()
+    #Gather list of items acceptor wants to trade
+
+    pending_trade = PendingTrade.objects.create(
+        initiator=authenticated_initiator, 
+        acceptor=acceptor_object,
+        # Link to initiator items
+        # Link to acceptor items
+        )
 
 
 
