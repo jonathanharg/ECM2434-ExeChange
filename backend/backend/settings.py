@@ -173,17 +173,15 @@ VITE_APP_DIR = BASE_DIR_FRONTEND / "frontend"
 # If it's not, collectstatic won't copy your bundle to production.
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    VITE_APP_DIR / "dist",
-]
+STATICFILES_DIRS = [VITE_APP_DIR / "dist", BASE_DIR / "media"]
 
 if DEBUG:
     # Serve all static files from the frontend in debug mode
     STATICFILES_DIRS.append(VITE_APP_DIR)
-    STATICFILES_DIRS.append(BASE_DIR / "media")
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

@@ -36,8 +36,8 @@ if settings.DEBUG | settings.FORCE_SERVE_STATIC:
     urlpatterns.insert(
         3,
         re_path(
-            r"^posts/(?P<path>.*)$",
+            r"^media/(?P<path>.*)$",
             serve,
-            {"document_root": settings.MEDIA_ROOT / "posts"},
+            {"document_root": settings.MEDIA_ROOT},
         ),
     )
