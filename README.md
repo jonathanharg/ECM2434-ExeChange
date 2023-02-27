@@ -56,8 +56,6 @@ Make sure [Docker](https://docs.docker.com/get-docker/) (and docker-compose) are
 
 ```shell
 docker-compose up   # Build and run the required Docker images.
-# or alternatively, using the SQLite database
-docker-compose up -e FORCE_DEBUG_DB=True
 ```
 
 Now visit <http://localhost> to view the website. If you make any changes to the source code you may have to **delete the ExeChange docker volume** and force rebuild the images.

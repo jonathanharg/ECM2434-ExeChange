@@ -1,5 +1,3 @@
-# Clear git files first with git clean -dfX
-
 # SETUP Python base
 FROM python:3.11.1-slim as python-base
 
@@ -17,7 +15,7 @@ ENV PYTHONUNBUFFERED=1 \
 
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
-RUN apt-get update && apt-get install --no-install-recommends -y curl build-essential
+RUN apt-get update && apt-get install --no-install-recommends -y curl build-essential libpq-dev gcc
 
 RUN curl -sSL https://install.python-poetry.org | python
 
@@ -37,7 +35,6 @@ RUN npm i && npm run build # TODO: Lint & Test
 # SETUP Backend
 FROM python-base as production
 EXPOSE 8000
-# CMD ["python", "./backend/manage.py", "runserver", "0.0.0.0:8000"]
 CMD ["gunicorn", "--chdir", "backend", "backend.wsgi", "--bind=0.0.0.0"]
 
 RUN rm -rf /app/backend/staticfiles
@@ -45,4 +42,5 @@ COPY --from=python-base $PYSETUP_PATH $PYSETUP_PATH
 COPY --from=node-base /src/frontend/dist/ /app/frontend/dist/
 COPY --from=node-base /src/backend/ /app/backend/
 WORKDIR /app
-RUN python ./backend/manage.py migrate && python ./backend/manage.py collectstatic
+# RUN python ./backend/manage.py migrate && python ./backend/manage.py collectstatic
+RUN python ./backend/manage.py collectstatic
