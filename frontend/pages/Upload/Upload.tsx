@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import Taglist from "./TagSelector";
-import TagSearch from "./TagSearch";
 import axios from "axios";
 import { ArrowUpTrayIcon, DocumentPlusIcon } from "@heroicons/react/24/outline";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";

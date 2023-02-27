@@ -1,6 +1,6 @@
 import React from "react";
 import { Fragment, useState } from "react";
-import { Combobox, Listbox, Transition } from "@headlessui/react";
+import { Combobox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
 const tags = [
@@ -14,17 +14,8 @@ const tags = [
 
 export default function TagSelector() {
   const [selected, setSelected] = useState(tags[0]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [query, setQuery] = useState("");
-
-  const filteredPeople =
-    query === ""
-      ? tags
-      : tags.filter((tag) =>
-          tag.name
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .includes(query.toLowerCase().replace(/\s+/g, ""))
-        );
 
   return (
     <Combobox value={selected} onChange={setSelected}>

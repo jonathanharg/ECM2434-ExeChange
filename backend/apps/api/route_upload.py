@@ -1,6 +1,7 @@
 import re
 
-from apps.api.models import ClothingItem, ItemTag
+# This file is checked to be typesafe, Django does not correctly import the types
+from apps.api.models import ClothingItem, ItemTag  # type: ignore
 from django.http import HttpRequest, JsonResponse
 from PIL import Image, ImageOps, UnidentifiedImageError
 from rest_framework.decorators import api_view
@@ -23,15 +24,14 @@ def post(request: HttpRequest) -> Response:
             status=HTTP_401_UNAUTHORIZED,
         )
 
-    form = request.data
+    # We can ignore the type here since Django doesn't include it
+    form = request.data  # type: ignore
 
     if ("image" not in form) | ("caption" not in form) | ("tags[]" not in form):
         return Response(
             INVALID_SUBMISSION,
             status=HTTP_400_BAD_REQUEST,
         )
-
-    # TODO ADD DESCRIPTION
 
     caption = form["caption"]
     # Removes most non alpha numeric characters
@@ -46,10 +46,11 @@ def post(request: HttpRequest) -> Response:
             status=HTTP_400_BAD_REQUEST,
         )
 
-    tags = form.getlist("tags[]")
+    item_tags = form.getlist("tags[]")
 
     try:
-        tags = list(map(lambda x: ItemTag.objects.get(name=x), tags))
+        # Ignore the types, we have already returned a response if the incorrect types are not present
+        item_tags = list(map(lambda x: ItemTag.objects.get(name=x), item_tags))  # type: ignore
     except ItemTag.DoesNotExist as _:
         return Response(
             INVALID_TAG,
@@ -60,7 +61,7 @@ def post(request: HttpRequest) -> Response:
 
     try:
         img = Image.open(image)
-    except UnidentifiedImageError as e:
+    except UnidentifiedImageError as _:
         return Response(IMAGE_FORMAT_ERROR, status=HTTP_400_BAD_REQUEST)
 
     if (img.width < 375) | (img.height < 500):
@@ -78,7 +79,7 @@ def post(request: HttpRequest) -> Response:
     item.full_clean()
     item.save()
 
-    for tag in tags:
+    for tag in item_tags:
         item.tags.add(tag)
 
     return Response(
@@ -88,7 +89,7 @@ def post(request: HttpRequest) -> Response:
 
 
 @api_view(["GET"])
-def tags(request: HttpRequest) -> Response:
+def tags(request: HttpRequest) -> JsonResponse:
     return JsonResponse(list(ItemTag.objects.values()), safe=False)
 
 

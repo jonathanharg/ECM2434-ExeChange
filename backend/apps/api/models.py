@@ -4,18 +4,18 @@ from django.conf import settings
 from django.db import models
 
 
-def image_post_path(instance, filename):
-    return f"posts/{uuid4().hex}"
-
-
 class ItemTag(models.Model):
     name = models.CharField(max_length=20, unique=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
 class ClothingItem(models.Model):
+    # Ignore the argument since Django errors without a filename variable.
+    def image_post_path(self, filename: str) -> str:  # pylint: disable=unused-argument
+        return f"posts/{uuid4().hex}"
+
     caption = models.CharField(max_length=100)
     image = models.ImageField(upload_to=image_post_path)
     tags = models.ManyToManyField(ItemTag)
@@ -27,5 +27,5 @@ class ClothingItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.caption

@@ -985,6 +985,18 @@ files = [
 ]
 
 [[package]]
+name = "types-pillow"
+version = "9.4.0.17"
+description = "Typing stubs for Pillow"
+category = "dev"
+optional = false
+python-versions = "*"
+files = [
+    {file = "types-Pillow-9.4.0.17.tar.gz", hash = "sha256:7f0e871d2d46fbb6bc7deca3e02dc552cf9c1e8b49deb9595509551be3954e49"},
+    {file = "types_Pillow-9.4.0.17-py3-none-any.whl", hash = "sha256:f8b848a05f17cb4d53d245c59bf560372b9778d4cfaf9705f6245009bf9f65f3"},
+]
+
+[[package]]
 name = "types-pytz"
 version = "2022.7.1.0"
 description = "Typing stubs for pytz"
@@ -1153,4 +1165,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "bb43664337cb6ea5de5977924ab3a5ccb2b4a0e5b1858a82eb4736a8f2c18a7e"
+content-hash = "820f97af1471f5fe9dd3029e4a2644cabf7cbeb6d3439ca9e4a7dd35715fa1fb"

@@ -27,6 +27,7 @@ pytest-django = "^4.5.2"
 django-stubs = "^1.14.0"
 autopep8 = "^2.0.1"
 djangorestframework-stubs = "^1.8.0"
+types-pillow = "^9.4.0.17"
 
 [build-system]
 requires = ["poetry-core"]
@@ -68,7 +69,7 @@ django-settings-module = "backend.settings"
 max-line-length = 125
 
 [tool.pylint.messages_control]
-disable = ["missing-docstring", "invalid-name", "imported-auth-user"]
+disable = ["missing-docstring", "invalid-name", "imported-auth-user", "too-many-return-statements"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "backend.settings"

@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 @api_view(["GET"])
 def status(request: HttpRequest) -> Response:
-    msgArray = [
+    WELCOME_MESSAGES = [
         "<h1>Wow! This code is so good!</h1>",
         "Exeter is Changing...",
         "Exchange with ExeChange",
@@ -24,7 +24,7 @@ def status(request: HttpRequest) -> Response:
         "where's the map???",
         "Tell your friends!",
         "Now with 10% more React!",
-        "ExeChanging the game since 2023",
+        "ExeChanging the game.",
         "Est. 2023",
         '"Be the ExeChange you want to see in the world." - Mahatma Gandhi',
         "ExeChange!",
@@ -36,5 +36,5 @@ def status(request: HttpRequest) -> Response:
         "🩳 🔄 👕  👉👈🥺",
         "♻️",
     ]
-    data = {"status": "OK", "message": {random.choice(msgArray)}}
+    data = {"status": "OK", "message": {random.choice(WELCOME_MESSAGES)}}
     return Response(data)
