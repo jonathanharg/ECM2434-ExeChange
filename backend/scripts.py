@@ -55,13 +55,18 @@ def run_prod() -> None:
     except KeyboardInterrupt:
         pass
 
+def make_migrations() -> None:
+    try:
+        subprocess.run(
+            ["poetry", "run", "python", "./backend/manage.py", "makemigrations"]
+        )
+    except KeyboardInterrupt:
+        pass
 
-# def pylint():
-#     os.chdir(os.environ["PWD"] + "/backend")
-#     subprocess.run(["poetry", "run", "pylint", "apps/api"])
-
-# def pytest():
-#     subprocess.run(["pytest"])
-
-# def pytest_coverage():
-#     subprocess.run(["pytest"])
+def migrate() -> None:
+    try:
+        subprocess.run(
+            ["poetry", "run", "python", "./backend/manage.py", "migrate"]
+        )
+    except KeyboardInterrupt:
+        pass
