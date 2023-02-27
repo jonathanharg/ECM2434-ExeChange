@@ -10,7 +10,7 @@ function Marketplace() {
   const [products, setProducts] = useState<Product[]>([]);
 
   async function fetchProducts() {
-    return await fetch("/api/products")
+    return await fetch("/api/marketplace")
       .then((response) => response.json())
       .then((data) => setProducts(data));
   };

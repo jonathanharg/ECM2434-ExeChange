@@ -2,7 +2,7 @@ import re
 
 # This file is checked to be typesafe, Django does not correctly import the types
 from apps.api.models import ClothingItem, ItemTag  # type: ignore
-from django.http import HttpRequest, JsonResponse
+from django.http import HttpRequest
 from PIL import Image, ImageOps, UnidentifiedImageError
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -12,7 +12,7 @@ from rest_framework.status import (
     HTTP_401_UNAUTHORIZED,
 )
 
-from .authentication import authenticate_user
+from apps.api.authentication import authenticate_user
 
 
 @api_view(["POST"])
@@ -88,9 +88,7 @@ def post(request: HttpRequest) -> Response:
     )
 
 
-@api_view(["GET"])
-def tags(request: HttpRequest) -> JsonResponse:
-    return JsonResponse(list(ItemTag.objects.values()), safe=False)
+
 
 
 NOT_LOGGED_IN = {
