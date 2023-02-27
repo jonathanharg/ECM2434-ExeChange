@@ -101,12 +101,29 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+FORCE_DEBUG_DB = os.getenv("FORCE_DEBUG_DB", "False") == "True"
+POSTGRES_NAME = os.getenv("POSTGRES_NAME")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT")
+POSTGRES_USER = os.getenv("POSTGRES_USER")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+
 DATABASES = {
-    "default": {
+    "dev": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
-    }
+    },
+    "production": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": POSTGRES_NAME,
+        "HOST": POSTGRES_HOST,
+        "PORT": POSTGRES_PORT,
+        "USER": POSTGRES_USER,
+        "PASSWORD": POSTGRES_PASSWORD,
+    },
 }
+
+DATABASES["default"] = DATABASES["dev" if (DEBUG | FORCE_DEBUG_DB) else "production"]
 
 # Rest Framework Options
 REST_FRAMEWORK = {

@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "backend"
 version = "0.1.0"
-description = ""
-authors = ["Jonathan Hargreaves <32854503+jonathanharg@users.noreply.github.com>"]
+description = "The Django based backend for ExeChange"
+authors = ["Jonathan Hargreaves <jih208@exeter.ac.uk>", "Harry Findlay <hf362@exeter.ac.uk>", "Augustijn Vrolijk av407@exeter.ac.uk", "Maddie Hansford mh1047@exeter.ac.uk", "Vihan Sharma vs378@exeter.ac.uk", "Gabriella Clifton gmc217@exeter.ac.uk"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -13,6 +13,7 @@ gunicorn = "^20.1.0"
 python-dotenv = "^0.21.1"
 djangorestframework-simplejwt = "^5.2.2"
 pillow = "^9.4.0"
+psycopg2 = "^2.9.5"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -42,6 +43,7 @@ migrate = "backend.scripts:migrate"
 build = "backend.scripts:build"
 prod = "backend.scripts:run_prod"
 makemigrations = "backend.scripts:make_migrations"
+admin = "backend.scripts:create_super_user"
 
 [tool.isort]
 profile = "black"

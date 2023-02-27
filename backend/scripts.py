@@ -55,6 +55,13 @@ def run_prod() -> None:
     except KeyboardInterrupt:
         pass
 
+def create_super_user() -> None:
+    try:
+        subprocess.run(
+            ["poetry", "run", "python", "./backend/manage.py", "createsuperuser"]
+        )
+    except KeyboardInterrupt:
+        pass
 
 def make_migrations() -> None:
     try:
