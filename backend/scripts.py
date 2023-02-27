@@ -55,6 +55,7 @@ def run_prod() -> None:
     except KeyboardInterrupt:
         pass
 
+
 def make_migrations() -> None:
     try:
         subprocess.run(
