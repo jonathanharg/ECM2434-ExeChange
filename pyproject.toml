@@ -41,9 +41,7 @@ check-format = "backend.scripts:black_check"
 migrate = "backend.scripts:migrate"
 build = "backend.scripts:build"
 prod = "backend.scripts:run_prod"
-# lint = "backend.scripts:pylint"
-# test = "backend.scripts:pytest"
-# coverage = "backend.scripts:pytest_coverage"
+makemigrations = "backend.scripts:make_migrations"
 
 [tool.isort]
 profile = "black"

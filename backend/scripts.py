@@ -62,11 +62,3 @@ def make_migrations() -> None:
         )
     except KeyboardInterrupt:
         pass
-
-def migrate() -> None:
-    try:
-        subprocess.run(
-            ["poetry", "run", "python", "./backend/manage.py", "migrate"]
-        )
-    except KeyboardInterrupt:
-        pass
