@@ -1,16 +1,14 @@
 import React, { Fragment, useState } from "react";
-import { Combobox, Dialog, RadioGroup, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronUpDownIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Dialog, Transition } from '@headlessui/react'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 import {
   DatePickerStateProvider,
   useContextCalendars,
   useContextDays,
   useContextMonthsPropGetters,
 } from "@rehookify/datepicker";
-
-/* import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
-import { Button, Calendar, Time } from './components'; */
-
+import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
+import { Button, Calendar, Time } from '../../components';
 
 export interface Product {
   id: number;
@@ -20,11 +18,43 @@ export interface Product {
   tags: string[];
 }
 
-function Itemtile(product: Product) {
-  const [open, setOpen] = useState(false)
+function Root() {
   const { calendars } = useContextCalendars();
   const { formattedDates } = useContextDays();
   const { previousMonthButton, nextMonthButton } = useContextMonthsPropGetters()
+
+  return (
+    <div>
+      <h1 className="text-2xl w-full text-center mb-6">
+        {formattedDates[formattedDates.length - 1]}
+      </h1>
+      <main className="grid grid-cols-main-time gap-x-6">
+        <div className="block p-4 border border-slate-300 rounded shadow-xs shadow shadow-slate-300">
+          <Calendar
+            prevButton={
+              <Button className="w-8" {...previousMonthButton()}>
+                <IoChevronBack />
+              </Button>
+            }
+            nextButton={
+              <Button className="w-8" {...nextMonthButton()}>
+                <IoChevronForward />
+              </Button>
+            }
+            calendar={calendars[0]}
+          />
+        </div>
+        <div className="block p-4 border border-slate-300 rounded shadow-xs shadow shadow-slate-300">
+          <Time />
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function Itemtile(product: Product) {
+  const [open, setOpen] = useState(false)
+  const [selectedDates, onDatesChange] = useState<Date[]>([]);
 
   return (
     <div className="group relative">
@@ -86,33 +116,26 @@ function Itemtile(product: Product) {
 
                         */}
                         <form method="POST">
-                        <div>
-                          <h1 className="text-2xl w-full text-center mb-6">
-                            {formattedDates[formattedDates.length - 1]}
-                          </h1>
-                          <main className="grid grid-cols-main-time gap-x-6">
-                            <div className="block p-4 border border-slate-300 rounded shadow-xs shadow shadow-slate-300">
-                              <Calendar
-                                prevButton={
-                                  <Button className="w-8" {...previousMonthButton()}>
-                                    <IoChevronBack />
-                                  </Button>
-                                }
-                                nextButton={
-                                  <Button className="w-8" {...nextMonthButton()}>
-                                    <IoChevronForward />
-                                  </Button>
-                                }
-                                calendar={calendars[0]}
-                              />
-                            </div>
-                            <div className="block p-4 border border-slate-300 rounded shadow-xs shadow shadow-slate-300">
-                              <Time />
-                            </div>
-                          </main>
-                        </div>
-
-
+                          <DatePickerStateProvider config={{
+                            selectedDates,
+                            onDatesChange,
+                            dates: {
+                              mode: 'multiple',
+                              toggle: true,
+                            },
+                            locale: {
+                              options: {
+                                day: '2-digit',
+                                month: 'long',
+                                year: 'numeric',
+                                hour12: true,
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              },
+                            },
+                          }}>
+                            <Root />
+                          </DatePickerStateProvider>
                             <button
                             type="submit"
                             className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
