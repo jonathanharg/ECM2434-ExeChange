@@ -4,13 +4,6 @@ from apps.api.models import ExeChangeUser
 from backend.settings import XP_IN_LEVEL
 
 
-def get_user_level(user: ExeChangeUser) -> int | None:
-    if user is None:
-        return None
-
-    return user.profile_level
-
-
 def update_user_level(user: ExeChangeUser) -> int | None:
     if user is None:
         return None
@@ -19,13 +12,6 @@ def update_user_level(user: ExeChangeUser) -> int | None:
     user.save()
 
     return user.profile_level
-
-
-def get_user_xp(user: ExeChangeUser) -> int | None:
-    if user is None:
-        return None
-
-    return user.current_xp
 
 
 def update_user_xp(user: ExeChangeUser, xp_to_add: int) -> int | None:
