@@ -60,9 +60,6 @@ export default function Login() {
     //https://zod.dev/
     e.preventDefault();
 
-    const emailSchema = z.string().email().endsWith("@exeter.ac.uk");
-    const passwordSchema = z.string();
-
     const EmailValidation = emailSchema.safeParse(user);
     const PasswordValidation = passwordSchema.safeParse(password);
 
