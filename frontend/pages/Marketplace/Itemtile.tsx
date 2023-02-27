@@ -1,6 +1,16 @@
 import React, { Fragment, useState } from "react";
 import { Combobox, Dialog, RadioGroup, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import {
+  DatePickerStateProvider,
+  useContextCalendars,
+  useContextDays,
+  useContextMonthsPropGetters,
+} from "@rehookify/datepicker";
+
+/* import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
+import { Button, Calendar, Time } from './components'; */
+
 
 export interface Product {
   id: number;
@@ -12,6 +22,9 @@ export interface Product {
 
 function Itemtile(product: Product) {
   const [open, setOpen] = useState(false)
+  const { calendars } = useContextCalendars();
+  const { formattedDates } = useContextDays();
+  const { previousMonthButton, nextMonthButton } = useContextMonthsPropGetters()
 
   return (
     <div className="group relative">
@@ -63,8 +76,43 @@ function Itemtile(product: Product) {
                         <h3 id="options-heading">
                           {product.tags}
                         </h3>
-                      
+                        {/* All form questions down here - stuff above is responsible for the pop up window when clicking on an item 
+                        
+                        
+                        https://codesandbox.io/p/sandbox/time-picker-with-multiple-dates-lf36qc?file=%2Fsrc%2Fclassnames-utils.ts
+                        https://github.com/rehookify/datepicker
+                        
+                        following code was used for the date/time picker from the @rehookify headlessui thing.
+
+                        */}
                         <form method="POST">
+                        <div>
+                          <h1 className="text-2xl w-full text-center mb-6">
+                            {formattedDates[formattedDates.length - 1]}
+                          </h1>
+                          <main className="grid grid-cols-main-time gap-x-6">
+                            <div className="block p-4 border border-slate-300 rounded shadow-xs shadow shadow-slate-300">
+                              <Calendar
+                                prevButton={
+                                  <Button className="w-8" {...previousMonthButton()}>
+                                    <IoChevronBack />
+                                  </Button>
+                                }
+                                nextButton={
+                                  <Button className="w-8" {...nextMonthButton()}>
+                                    <IoChevronForward />
+                                  </Button>
+                                }
+                                calendar={calendars[0]}
+                              />
+                            </div>
+                            <div className="block p-4 border border-slate-300 rounded shadow-xs shadow shadow-slate-300">
+                              <Time />
+                            </div>
+                          </main>
+                        </div>
+
+
                             <button
                             type="submit"
                             className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
