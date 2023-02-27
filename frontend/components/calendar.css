@@ -1,0 +1,61 @@
+.day {
+    --border-color: rgb(51 65 85); /* slate-700 */
+    --in-range-bg: rgb(148 163 184); /* slate-400 */
+    --border-radius: 4px;
+}
+
+.will-be-in-range,
+.will-be-range-end,
+.will-be-range-start {
+  border-top: 1px dashed var(--border-color);
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.will-be-range-end,
+.will-be-in-range:nth-child(7n),
+.will-be-range-start:nth-child(7n) {
+  border-right: 1px dashed var(--border-color);
+}
+
+.will-be-in-range:nth-child(7n+1),
+.will-be-range-start,
+.will-be-range-end:nth-child(7n+1) {
+  border-left: 1px dashed var(--border-color);
+}
+
+.in-range,
+.range-start,
+.range-end {
+  color: white;
+}
+
+.in-range {
+  background-color: var(--in-range-bg);
+}
+
+.will-be-in-range,
+.in-range {
+  border-radius: 0 !important;
+}
+
+
+.will-be-in-range:nth-child(7n),
+.in-range:nth-child(7n),
+.range-end,
+.will-be-range-end {
+  border-radius: 0 var(--border-radius) var(--border-radius) 0 !important;
+}
+
+.will-be-in-range:nth-child(7n+1),
+.in-range:nth-child(7n+1),
+.range-start,
+.will-be-range-start {
+  border-radius: var(--border-radius) 0 0 var(--border-radius) !important;
+}
+
+.range-start:nth-child(7n),
+.range-end:nth-child(7n+1),
+.will-be-range-start:nth-child(7n),
+.will-be-range-end:nth-child(7n+1) {
+  border-radius: var(--border-radius) !important;
+}
