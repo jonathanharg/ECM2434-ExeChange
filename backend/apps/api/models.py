@@ -2,14 +2,15 @@ from uuid import uuid4
 
 from django.conf import settings
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 
 class ItemTag(models.Model):
     value = models.CharField(max_length=20, unique=True)
 
     def __str__(self) -> str:
         return self.value
-
 
 class ClothingItem(models.Model):
     # Ignore the argument since Django errors without a filename variable.
@@ -29,3 +30,13 @@ class ClothingItem(models.Model):
 
     def __str__(self) -> str:
         return self.caption
+
+class ExeChangeUser(AbstractUser):
+    profile_level = models.PositiveIntegerField(
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
+    )
+
+    # current_xp will get reset on a level up, [tbd]XP per level, a [tbd] number of xp per trade.
+    current_xp = models.PositiveIntegerField(
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
+    )

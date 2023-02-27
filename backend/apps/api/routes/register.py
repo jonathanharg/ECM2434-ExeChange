@@ -1,10 +1,9 @@
-from django.contrib.auth.models import User
+from apps.api.authentication import gen_token, get_username  # type: ignore
+from apps.api.models import ExeChangeUser  # type: ignore
 from django.db.utils import IntegrityError
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-from apps.api.authentication import gen_token, get_username
 
 
 @api_view(["POST"])
@@ -30,7 +29,7 @@ def register(request: HttpRequest) -> Response:
         try:
             # Generate new user and add to User database using django.auth User model
             new_user_username = get_username(email_address)
-            new_user = User.objects.create_user(
+            new_user = ExeChangeUser.objects.create_user(
                 username=new_user_username, email=email_address, password=user_password
             )
             new_user.save()
