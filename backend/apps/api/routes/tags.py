@@ -1,5 +1,5 @@
-from django.http import HttpRequest, JsonResponse
 from apps.api.models import ItemTag
+from django.http import HttpRequest, JsonResponse
 from rest_framework.decorators import api_view
 
 

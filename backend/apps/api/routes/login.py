@@ -1,4 +1,4 @@
-from apps.api.authentication import gen_token, get_username  # type: ignore
+from apps.api.authentication import gen_token, get_username
 from django.contrib.auth import authenticate
 from django.http import HttpRequest
 from rest_framework.decorators import api_view

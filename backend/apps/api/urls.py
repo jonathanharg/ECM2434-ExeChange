@@ -1,6 +1,5 @@
+from apps.api.routes import login, marketplace, register, status, tags, upload
 from django.urls import path
-
-from apps.api.routes import tags, login, marketplace, register, upload, status
 
 urlpatterns = [
     path("status", status.status),

@@ -1,5 +1,4 @@
-from django.contrib import admin
-from apps.api.models import ExeChangeUser, ClothingItem, ItemTag
+from apps.api.models import ClothingItem, ExeChangeUser, ItemTag
 from django.contrib import admin
 
 admin.site.register(ExeChangeUser)

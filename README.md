@@ -2,7 +2,7 @@
 
 ## Installation
 
-First **install** [poetry](https://python-poetry.org/docs/#installing-with-the-official-installer) and [Node.js/npm v19.6.0](https://nodejs.org/en/) (steps to install Node will depend on your system, recommended to use a package manager like [brew](https://formulae.brew.sh/formula/node)). 
+First **install** [poetry](https://python-poetry.org/docs/#installing-with-the-official-installer) and [Node.js/npm v19.6.0](https://nodejs.org/en/) (steps to install Node will depend on your system, recommended to use a package manager like [brew](https://formulae.brew.sh/formula/node)).
 
 Windows can encounter some issues installing Poetry, therefore if you are not intending to contribute towards it is recommended to run ExeChange using [docker](#running-production-with-docker).
 

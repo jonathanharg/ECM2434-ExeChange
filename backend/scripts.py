@@ -55,6 +55,7 @@ def run_prod() -> None:
     except KeyboardInterrupt:
         pass
 
+
 def create_super_user() -> None:
     try:
         subprocess.run(
@@ -62,6 +63,7 @@ def create_super_user() -> None:
         )
     except KeyboardInterrupt:
         pass
+
 
 def make_migrations() -> None:
     try:

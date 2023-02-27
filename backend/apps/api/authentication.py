@@ -1,12 +1,12 @@
-from apps.api.models import ExeChangeUser  # type: ignore
+from apps.api.models import ExeChangeUser
 from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
-from rest_framework_simplejwt.authentication import (  # type: ignore
+from rest_framework_simplejwt.authentication import (
     AuthenticationFailed,
     InvalidToken,
     JWTAuthentication,
 )
-from rest_framework_simplejwt.tokens import RefreshToken  # type: ignore
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 def gen_token(user: ExeChangeUser) -> RefreshToken:  # type: ignore
