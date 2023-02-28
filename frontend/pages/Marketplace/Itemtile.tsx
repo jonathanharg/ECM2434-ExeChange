@@ -44,6 +44,26 @@ const locations = [
     id: 5,
     locationName: 'Business School',
   },
+  {
+    id: 6,
+    locationName: 'Physics Building',
+  },
+  {
+    id: 7,
+    locationName: 'Innovation One',
+  },
+  {
+    id: 8,
+    locationName: 'East Park',
+  },
+  {
+    id: 9,
+    locationName: 'Pret',
+  },
+  {
+    id: 10,
+    locationName: 'The Ram',
+  },
 ]
 
 
@@ -53,8 +73,6 @@ function Root() {
   const { formattedDates } = useContextDays();
   const { previousMonthButton, nextMonthButton } = useContextMonthsPropGetters();
   
-
-
   return (
     <div>
       <h1 className="text-2xl w-full text-center mb-6">
@@ -88,7 +106,7 @@ function Itemtile(product: Product) {
   const [open, setOpen] = useState(false)
   const [selectedDates, onDatesChange] = useState<Date[]>([]);
   
-  const [selected, setSelected] = useState(locations[0]);
+  const [selectedLocation, setSelectedLocation] = useState(locations[0]);
   
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -102,7 +120,7 @@ function Itemtile(product: Product) {
     e.preventDefault();
   
     await axios
-      .post("/api/trading", JSON.stringify({ selectedDates }), {
+      .post("/api/trading", JSON.stringify({ selectedDates, selectedLocation, product }), {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
@@ -174,11 +192,10 @@ function Itemtile(product: Product) {
 
                     <div className="mt-10 sm:col-span-8 lg:col-span-7">
                         <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{product.name}</h2>
-
-                        <section aria-labelledby="options-heading" className="mt-10">
                         <h3 id="options-heading">
                           {product.tags}
                         </h3>
+                        <section aria-labelledby="options-heading" className="mt-10">
                         {/* All form questions down here - stuff above is responsible for the pop up window when clicking on an item 
                         
                         
@@ -189,36 +206,16 @@ function Itemtile(product: Product) {
 
                         */}
                         <form method="POST" onSubmit={handleSubmit}>
-                          <DatePickerStateProvider config={{
-                            selectedDates,
-                            onDatesChange,
-                            dates: {
-                              mode: 'multiple',
-                              toggle: true,
-                            },
-                            locale: {
-                              options: {
-                                day: '2-digit',
-                                month: 'long',
-                                year: 'numeric',
-                                hour12: true,
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              },
-                            },
-                          }}>
-                            <Root />
-                          </DatePickerStateProvider>
-
                           {/*Location drop down menu*/}
-                          <Listbox value={selected} onChange={setSelected}>
+                          <div>
+                          <Listbox value={selectedLocation} onChange={setSelectedLocation}>
                             {({ open }) => (
                             <>
-                            <Listbox.Label className="block text-sm font-medium text-gray-700">Select trade location</Listbox.Label>
+                            <Listbox.Label  className="block text-sm font-medium text-gray-700">Select trade location</Listbox.Label>
                             <div className="relative mt-1">
-                              <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+                              <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-green-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
                                 <span className="flex items-center">
-                                  <span className="ml-3 block truncate">{selected.locationName}</span>
+                                  <span className="ml-3 block truncate">{selectedLocation.locationName}</span>
                                   </span>
                                   <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                                     <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -236,7 +233,7 @@ function Itemtile(product: Product) {
                                   key={location.id}
                                   className={({ active }) =>
                                     classNames(
-                                      active ? 'bg-indigo-600 text-white' : 'text-gray-900','relative cursor-default select-none py-2 pl-3 pr-9'
+                                      active ? 'bg-green-700 text-white' : 'text-gray-900','relative cursor-default select-none py-2 pl-3 pr-9'
                                     )
                                   }
                                   value={location}
@@ -253,7 +250,7 @@ function Itemtile(product: Product) {
                                     {selected ? (
                                     <span
                                     className={classNames(
-                                      active ? 'text-white' : 'text-indigo-600','absolute inset-y-0 right-0 flex items-center pr-4'
+                                      active ? 'text-white' : 'text-green-800','absolute inset-y-0 right-0 flex items-center pr-4'
                                     )}
                                     >
                                     <CheckIcon className="h-5 w-5" aria-hidden="true" />
@@ -269,12 +266,39 @@ function Itemtile(product: Product) {
                             </>
                             )}
                           </Listbox>
-
+                          </div>
+                          <h2 className="block text-sm font-medium text-gray-700 mt-5">
+                            Select date and time of trade
+                          </h2>
+                          
+                          <div>
+                          <DatePickerStateProvider config={{
+                            selectedDates,
+                            onDatesChange,
+                            dates: {
+                              mode: 'single',
+                              toggle: true,
+                            },
+                            locale: {
+                              options: {
+                                day: '2-digit',
+                                month: 'long',
+                                year: 'numeric',
+                                hour12: true,
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              },
+                            },
+                          }}>
+                            <Root />
+                          </DatePickerStateProvider>
+                          </div>
+            
                           <button
                           type="submit"
-                          className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                          className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-green-800 py-3 px-8 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2"
                           >
-                          Request trade!
+                          Send trade request
                           </button>
                         </form>
                         </section>
