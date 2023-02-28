@@ -1,7 +1,5 @@
 import React from "react";
-import {
-  LightBulbIcon,
-} from "@heroicons/react/24/outline";
+import { LightBulbIcon } from "@heroicons/react/24/outline";
 
 interface Location {
   colour: string;
