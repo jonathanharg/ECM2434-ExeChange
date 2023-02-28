@@ -101,7 +101,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-FORCE_DEBUG_DB = os.getenv("FORCE_DEBUG_DB", "False") == "True"
+USE_POSTGRES_DB = os.getenv("USE_POSTGRES_DB", "False") == "True"
 POSTGRES_NAME = os.getenv("POSTGRES_NAME")
 POSTGRES_HOST = os.getenv("POSTGRES_HOST")
 POSTGRES_PORT = os.getenv("POSTGRES_PORT")
@@ -123,7 +123,7 @@ DATABASES = {
     },
 }
 
-DATABASES["default"] = DATABASES["dev" if (DEBUG | FORCE_DEBUG_DB) else "production"]
+DATABASES["default"] = DATABASES["production" if (USE_POSTGRES_DB) else "dev"]
 
 # Rest Framework Options
 REST_FRAMEWORK = {
