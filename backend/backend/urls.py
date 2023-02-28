@@ -23,7 +23,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("apps.api.urls")),
     re_path(r"^.*$", TemplateView.as_view(template_name="base.html")),
-    # path("", TemplateView.as_view(template_name="base.html")),
 ]
 
 if settings.DEBUG | settings.FORCE_SERVE_STATIC:
@@ -31,5 +30,13 @@ if settings.DEBUG | settings.FORCE_SERVE_STATIC:
         2,
         re_path(
             r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}
+        ),
+    )
+    urlpatterns.insert(
+        3,
+        re_path(
+            r"^media/(?P<path>.*)$",
+            serve,
+            {"document_root": settings.MEDIA_ROOT},
         ),
     )

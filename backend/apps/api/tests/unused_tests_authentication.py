@@ -5,13 +5,13 @@ authentication.py test file!
 import ast
 
 import pytest
-from apps.api.authentication import gen_token  # type: ignore
-from apps.api.models import ExeChangeUser  # type: ignore
+from apps.api.authentication import gen_token
+from apps.api.models import ExeChangeUser
 from django.contrib.auth import authenticate
 from django.test import TestCase
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db()
 def test_user_create() -> None:
     ExeChangeUser.objects.create_user("test_user", "test@test.com", "testpassword")
     assert ExeChangeUser.objects.count() == 1
