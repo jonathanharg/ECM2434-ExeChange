@@ -65,6 +65,7 @@ django_settings_module = "backend.settings"
 [tool.pylint.master]
 load-plugins = ["pylint_django"]
 django-settings-module = "backend.settings"
+ignore="apps/api/migrations"
 
 [tool.pylint.format]
 max-line-length = 125
