@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/upload",
-        element: <Logo className="h-16 w-16 stroke-red-500 text-pink-400" />,
+        element: <UploadPage />,
       },
     ],
   },
