@@ -1,12 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, RadioGroup, Transition } from "@headlessui/react";
-import {
-  XMarkIcon,
-  Bars3Icon,
-  ArrowPathIcon,
-} from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
 
 const product = {
   name: "Basic Tee 6-Pack ",

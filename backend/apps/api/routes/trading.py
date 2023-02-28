@@ -1,8 +1,5 @@
-from datetime import datetime
-
 from apps.api.authentication import authenticate_user
 from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade
-from django.conf import settings
 from django.http import HttpRequest
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
@@ -15,16 +12,17 @@ def trade(request: HttpRequest) -> Response:
     authenticated_user = authenticate_user(request)
 
     if authenticated_user is None:
-        return {"status": "BAD_REQUEST", "message": "user not authenticated"}
+        return Response({"status": "BAD_REQUEST", "message": "user not authenticated"})
 
-    acceptor = request.data["productOwnerId"]
-    time = request.data["selectedTime"]["time"]
-    date = request.data["selectedDates"]
-    item_id = request.data["itemId"]
-    location = request.data["selectedLocation"]["locationName"]
+    acceptor = request.data["productOwnerId"]  # type: ignore
+    time = request.data["selectedTime"]["time"]  # type: ignore
+    date = request.data["selectedDates"]  # type: ignore
+    item_id = request.data["itemId"]  # type: ignore
+    location = request.data["selectedLocation"]["locationName"]  # type: ignore
 
-    date = date.split("T")[0]
-    date = date + " " + time + "Z"
+    # time verification is still todo
+    # date = date.split("T")[0]
+    # date = date + " " + time + "Z"
 
     # date_object = datetime.strptime(date, "%Y-%m-%d %H:%M%Z")
 

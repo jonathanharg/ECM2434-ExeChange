@@ -35,10 +35,6 @@ interface ProfileData {
 }
 
 function Profile() {
-  const levelPercent = 55;
-  const name = "David";
-  const level = 5;
-
   const [trades, setTrades] = useState<Trade[]>([]);
   const [profileData, setProfileData] = useState<ProfileData>();
 

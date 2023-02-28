@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Listbox } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
@@ -8,9 +8,6 @@ import axios from "axios";
 /* import 'react-calendar/dist/Calendar.css';
  */ axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
-import { useAuthUser } from "react-auth-kit";
-
-import { ProfileData } from "../Profile/Profile";
 
 export interface Product {
   id: number;
@@ -76,30 +73,15 @@ const times = [
 ];
 
 function Itemtile(product: Product) {
-  const auth = useAuthUser();
   const [open, setOpen] = useState(false);
   const [selectedDates, onDatesChange] = useState(new Date());
 
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
   const [selectedTime, setSelectedTime] = useState(times[0]);
 
-  const [profileData, setProfileData] = useState<ProfileData>();
-
-  function fetchProfileData() {
-    return fetch("/api/profiledata")
-      .then((response) => response.json())
-      .then((data) => setProfileData(data));
-  }
-
-  useEffect(() => {
-    fetchProfileData();
-  }, []);
-
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
-  /* const [ date, setDate] = useState("");
-  const [ time, setTime] = useState(""); */
 
   const handleSubmit = async (e) => {
     // this function sends form data to /api/trade
