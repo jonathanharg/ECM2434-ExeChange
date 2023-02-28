@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Itemtile from "./Itemtile";
 import { Product, tag } from "./Itemtile";
-import Select from "react-select";
+import Select, { SelectOptionActionMeta ,RemoveValueActionMeta, InputActionMeta } from "react-select";
+
 
 function Marketplace() {
-  const [searchState, setSearchState] = useState("");
+  const [searchState, setSearchState] = useState(new Set<string>());
   const [tags, setTags] = useState<tag[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
 
-  async function fetchProducts() {
-    return await fetch("/api/marketplace")
+  function fetchProducts() {
+    return fetch("/api/products")
       .then((response) => response.json())
       .then((data) => setProducts(data));
   }
 
-  async function fetchTags() {
-    return await fetch("/api/tags")
+   function fetchTags() {
+    return  fetch("/api/tags")
       .then((response) => response.json())
       .then((data) => setTags(data));
   }
@@ -26,6 +27,24 @@ function Marketplace() {
   }, []);
 
   tags.map((i) => (i.label = i.value));
+
+
+
+  function handleTag(e, meta) {
+    //TODO: fix the set tag update delay and removing values is fully broken
+  
+    if (meta.action === "select-option") {
+      e.map((i) => setSearchState(searchState => new Set([...searchState, i.value])))
+  }
+    else if ( meta.action === "pop-value" || meta.action === "remove-value"){
+     
+      e.map(i => setSearchState(searchState =>new Set([...searchState].filter(x => x !== i.value))))
+    }
+    else if ( meta.action === "clear") {
+      setSearchState(new Set())
+    }
+    console.log(searchState)
+  }
 
   return (
     <div className="bg-white">
@@ -42,14 +61,14 @@ function Marketplace() {
             options={tags}
             className="basic-multi-select"
             classNamePrefix="select"
-            onChange={(e) => e.map((i) => setSearchState(i.value))}
+            onChange={(e, actionMeta) => handleTag(e, actionMeta)}
           />
         </div>
         <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-6">
-          {searchState != ""
+          {searchState.size != 0
             ? products
                 .filter((product) =>
-                  product.tags.map((t) => t.value).includes(searchState)
+                  product.tags.every((t) => searchState.has(t.value))
                 )
                 .map((product) => <Itemtile key={product.id} {...product} />)
             : products.map((product) => (
