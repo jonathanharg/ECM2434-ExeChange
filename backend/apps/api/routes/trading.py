@@ -27,13 +27,6 @@ def trade(request: HttpRequest) -> Response:
     item_id = request.data["itemId"]
     location = request.data["selectedLocation"]["locationName"]
 
-    time_test = datetime.strptime(time, "%H%M")
-    if time_test < datetime.now():
-        return Response({
-            "status": "BAD_REQUEST",
-            "message": "You are trying to trade in the past!",
-        })
-
     try:
         acceptor_object = get_object_or_404(ExeChangeUser, id=acceptor)
 
