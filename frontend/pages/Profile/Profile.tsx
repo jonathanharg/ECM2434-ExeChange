@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {ChatBubbleLeftRightIcon, PowerIcon, CameraIcon, UserGroupIcon, BookOpenIcon, CloudIcon,
         DocumentChartBarIcon, BuildingLibraryIcon, RocketLaunchIcon, NewspaperIcon, BuildingOffice2Icon,
         FilmIcon, MoonIcon, BeakerIcon, LightBulbIcon, TicketIcon} from "@heroicons/react/24/outline";
+import Tradealert from "./Tradealert";
 
 export interface Trade {
     id: number,
@@ -20,7 +21,7 @@ function Profile(){
     const [trades, setTrades] = useState<Trade[]>([]);
 
     function fetchTrades() {
-        return fetch("/api/gettrade")
+        return fetch("/api/profile")
           .then((response) => response.json())
           .then((data) => setTrades(data));
     }
@@ -30,7 +31,7 @@ function Profile(){
     }, []);
       
     return(
-        <><div className="min-h-screen flex flex-col max-w-lg lg:max-w-5xl mx-auto bg-white opacity-100 font-poppins px-4 bg-no-repeat bg-cover bg-center">
+        <div className="min-h-screen flex flex-col max-w-lg lg:max-w-5xl mx-auto bg-white opacity-100 font-poppins px-4 bg-no-repeat bg-cover bg-center">
             <div className="flex justify-between px-1 pt-4 items-center">
                 <div>
                     <p className="font-semibold">My Profile</p>
@@ -309,22 +310,13 @@ function Profile(){
                         </div>
                     </div>
                 </div>
-                
+            <div className="pt-12 px-4 w-full flex flex-col">     
+                {trades.map((trade) => (
+                    <Tradealert {...trade} /> 
+                ))}
             </div>
-            <div className="pt-12 px-4 w-full flex flex-col">    
-                <div id="alert-border-3" className="flex p-4 mb-4 text-green-800 border-t-4 border-green-600 bg-white light:text-green-400 light:bg-gray-800 light:border-green-800" role="alert">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5" />
-                    </svg>
-                    <div className="ml-3 text-sm font-medium">
-                    Trade Alert! Username, Location, Time 
-                    </div>
-                    <button type="button" className="ml-auto -mx-4.0 -my-1.5 bg-white text-green-700 rounded-lg focus:ring-2 focus:ring-green-700 p-1.5 hover:bg-white inline-flex h-8 w-23 light:bg-gray-800 light:text-green-400 light:hover:bg-gray-700"  data-dismiss-target="#alert-border-3" aria-label="Close">
-                    <div className="ml-1 text-sm font-medium">View</div>
-                    </button>
-                </div>
-            </div>   
-        </div></>
+            </div>
+        </div>
     );
 }
 
