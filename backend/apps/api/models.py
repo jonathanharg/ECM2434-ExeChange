@@ -57,6 +57,30 @@ class ClothingItem(models.Model):
 #     initiator_verification = models.BooleanField(default=False)
 #     acceptor_verification = models.BooleanField(default=False)
 
+class PendingTrade(models.Model):
+    initator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        default=None,
+    )
+
+    acceptor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        default=None,
+    )
+
+    location = models.CharField(max=255)
+
+    time = models.CharField(max=255)
+
+    date = models.DateTimeField()
+
+    item = models.ForeignKey(
+        ClothingItem,
+        on_delete=models.CASCADE,
+        default=None,
+    )
 
 
 class ExeChangeUser(AbstractUser):
