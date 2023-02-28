@@ -1,27 +1,22 @@
+from datetime import datetime
+
+from apps.api.authentication import authenticate_user
+from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade
+from django.conf import settings
 from django.http import HttpRequest
+from django.http.response import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from apps.api.models import PendingTrade
-from apps.api.models import ExeChangeUser
-from apps.api.models import ClothingItem
-from apps.api.authentication import authenticate_user
-from django.shortcuts import get_object_or_404
-from django.http.response import Http404
-from django.conf import settings
-
-from datetime import datetime
 
 @api_view(["POST"])
 def trade(request: HttpRequest) -> Response:
     authenticated_user = authenticate_user(request)
 
     if authenticated_user is None:
-        return({
-            "status": "BAD_REQUEST",
-            "message": "user not authenticated"
-        })
-    
+        return {"status": "BAD_REQUEST", "message": "user not authenticated"}
+
     acceptor = request.data["productOwnerId"]
     time = request.data["selectedTime"]["time"]
     date = request.data["selectedDates"]
@@ -44,10 +39,12 @@ def trade(request: HttpRequest) -> Response:
 
         # A user cannot request their own item.
         if acceptor_object == authenticated_user:
-            return Response({
-                "status": "BAD_REQUEST",
-                "message": "A user cannot request their own item!",
-            })
+            return Response(
+                {
+                    "status": "BAD_REQUEST",
+                    "message": "A user cannot request their own item!",
+                }
+            )
 
         item_object = get_object_or_404(ClothingItem, id=item_id)
 
@@ -57,18 +54,22 @@ def trade(request: HttpRequest) -> Response:
             time=time,
             date=date,
             item=item_object,
-            location=location
+            location=location,
         )
 
         new_trade.full_clean()
         new_trade.save()
-        return Response({
-            "status": "OK",
-            "message": "trade saved successfully",
-        })
-    
+        return Response(
+            {
+                "status": "OK",
+                "message": "trade saved successfully",
+            }
+        )
+
     except Http404:
-        return Response({
-            "status": "BAD_REQUEST",
-            "message": "item or acceptor object not found!",
-        })
+        return Response(
+            {
+                "status": "BAD_REQUEST",
+                "message": "item or acceptor object not found!",
+            }
+        )

@@ -1,4 +1,13 @@
-from apps.api.routes import login, marketplace, register, status, tags, upload, trading, upload, profile
+from apps.api.routes import (
+    login,
+    marketplace,
+    profile,
+    register,
+    status,
+    tags,
+    trading,
+    upload,
+)
 from django.urls import path
 
 urlpatterns = [
@@ -10,5 +19,5 @@ urlpatterns = [
     path("tags", tags.tags),
     path("trade", trading.trade),
     path("pendingtrades", profile.trade_requests),
-    path("profiledata", profile.get_profile_data)
+    path("profiledata", profile.get_profile_data),
 ]

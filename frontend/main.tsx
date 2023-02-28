@@ -37,15 +37,14 @@ const router = createBrowserRouter([
           // <RequireAuth loginPath={"/login"}>
           <Marketplace />
           // </RequireAuth>
-
         ),
       },
       {
         path: "/profile",
         element: (
-        <RequireAuth loginPath={"/login"}>
-        <Profile />
-        </RequireAuth>
+          <RequireAuth loginPath={"/login"}>
+            <Profile />
+          </RequireAuth>
         ),
       },
       {

@@ -17,7 +17,7 @@ import {
   LightBulbIcon,
   TicketIcon,
 } from "@heroicons/react/24/outline";
-import { UserCircleIcon } from "@heroicons/react/24/outline"
+import { UserCircleIcon } from "@heroicons/react/24/outline";
 import Tradealert from "./Tradealert";
 
 export interface Trade {
@@ -29,9 +29,9 @@ export interface Trade {
 }
 
 interface ProfileData {
-  levelPercent: number,
-  name: string,
-  level: number,
+  levelPercent: number;
+  name: string;
+  level: number;
 }
 
 function Profile() {
@@ -50,8 +50,8 @@ function Profile() {
 
   function fetchProfileData() {
     return fetch("/api/profiledata")
-    .then((response) => response.json())
-    .then((data) => setProfileData(data));
+      .then((response) => response.json())
+      .then((data) => setProfileData(data));
   }
 
   useEffect(() => {
@@ -92,9 +92,9 @@ function Profile() {
         </div>
       </div>
       <div className="flex w-full flex-col px-4 pt-12">
-          {trades.map((trade) => (
-            <Tradealert key={trade.id} {...trade} />
-          ))}
+        {trades.map((trade) => (
+          <Tradealert key={trade.id} {...trade} />
+        ))}
       </div>
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">My Achievements</p>
