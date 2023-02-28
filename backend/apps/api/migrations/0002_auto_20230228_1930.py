@@ -5,7 +5,7 @@ from django.db import migrations
 
 def defaultTags(apps, schema_editor):
     tags = ["Small", "Medium", "Large",
-             "Top", "Trouser", "Shirt", "Hat", "Dress", "Accessories" 
+             "Top", "Trouser", "Shirt", "Hat", "Dress", "Accessories", 
              "Vintage", "Retro", "Streetwear", "Gorpcore"]
     Tag = apps.get_model('api', 'ItemTag')
     for tag in tags:
