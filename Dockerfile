@@ -34,8 +34,8 @@ RUN npm i && npm run build # TODO: Lint & Test
 
 # SETUP Backend
 FROM python-base as production
-EXPOSE 8000
-CMD ["gunicorn", "--chdir", "backend", "backend.wsgi", "--bind=0.0.0.0"]
+EXPOSE 5000
+CMD ["gunicorn", "--chdir", "backend", "backend.wsgi", "--bind=0.0.0.0:5000"]
 
 RUN rm -rf /app/backend/staticfiles
 COPY --from=python-base $PYSETUP_PATH $PYSETUP_PATH
