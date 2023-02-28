@@ -1,4 +1,5 @@
 import React from "react";
+import Logo from "./Logo";
 import { Fragment, useState } from "react";
 import Upload from "../pages/Upload/Upload";
 import { usePopper } from "react-popper";
@@ -8,13 +9,11 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
   UserCircleIcon,
-  ArrowPathIcon,
   ArrowUpTrayIcon,
 } from "@heroicons/react/24/outline";
 import { Link, Outlet } from "react-router-dom";
 import { useIsAuthenticated, useAuthUser, useSignOut } from "react-auth-kit";
 
-// TODO: Mobile login/register/profile
 const navigation = [
   { name: "Home", to: "/" },
   { name: "Marketplace", to: "/marketplace" },
@@ -67,10 +66,10 @@ export default function Navbar() {
                 leaveTo="-translate-x-full"
               >
                 <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
-                  <div className="flex px-4 pt-5 pb-2">
+                  <div className="flex h-16 px-4 pt-4 pb-2">
                     <button
                       type="button"
-                      className="-m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                      className="group -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
                       onClick={() => setOpenMenu(false)}
                     >
                       <span className="sr-only">Close menu</span>
@@ -162,7 +161,7 @@ export default function Navbar() {
                 {/* Logo */}
                 <div className="ml-4 flex lg:ml-0">
                   <Link to="/">
-                    <ArrowPathIcon className="h-8 w-auto" />
+                    <Logo className="h-6 w-6" />
                   </Link>
                 </div>
 
@@ -247,16 +246,15 @@ export default function Navbar() {
                   {/* Upload */}
                   {isAuthenticated() && (
                     <div className="ml-4 flow-root lg:ml-6">
-                      {/* INSERT */}
                       <Popover className="relative">
                         {() => (
                           <>
                             <Popover.Button
                               ref={setUploadButtonReference}
-                              className="group -m-2 flex items-center p-2"
+                              className="group -m-2 flex items-center p-2 rounded-md bg-green-800 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-800"
                             >
                               <ArrowUpTrayIcon
-                                className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                                className="h-5 w-5 flex-shrink-0 stroke-2 stroke-white-800 group-hover:stroke-white-600"
                                 aria-hidden="true"
                               />
                             </Popover.Button>

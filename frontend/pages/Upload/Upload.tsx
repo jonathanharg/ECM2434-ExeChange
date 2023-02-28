@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {
-  ArrowUpTrayIcon,
-  DocumentPlusIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import TagSelect from "../../components/TagSelect";
-import Src from "react-select/dist/declarations/src";
+import { ArrowUpTrayIcon, DocumentPlusIcon } from "@heroicons/react/24/outline";
+import TagSelect from "../../components/TagSelect"
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -14,12 +9,7 @@ function Upload() {
   const [caption, setCaption] = useState("");
   const [searchState, setSearchState] = useState(new Set());
   const [image, setImage] = useState<File>();
-  const [file, setFile] = useState<string>();
-
-  const resetFile = () => {
-    document.getElementById("file-upload").value = null;
-  };
-
+  
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = {
