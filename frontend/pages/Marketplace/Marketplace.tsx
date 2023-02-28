@@ -3,7 +3,6 @@ import Itemtile from "./Itemtile";
 import { Product, tag } from "./Itemtile";
 import TagSelect from "../../components/TagSelect";
 
-
 function Marketplace() {
   const [searchState, setSearchState] = useState(new Set<string>());
 
@@ -38,7 +37,7 @@ function Marketplace() {
           >
             Search by tag
           </label>
-          <TagSelect setState= {setSearchState} state = {searchState}/>
+          <TagSelect setState={setSearchState} state={searchState} />
         </div>
         <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-6">
           {searchState.size != 0

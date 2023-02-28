@@ -1,28 +1,25 @@
-import React, { useEffect, useState }  from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { tag } from "../pages/Marketplace/Itemtile";
 
-// the TagSelect function needs a the state of search and a setter for search 
-export default function TagSelect({setState, state}) {
-    const [tags, setTags] = useState<tag[]>([]);
+// the TagSelect function needs a the state of search and a setter for search
+export default function TagSelect({ setState, state }) {
+  const [tags, setTags] = useState<tag[]>([]);
 
-    function handleTag(e, meta) {
-        if (meta.action === "select-option") {
-          e.map((i) =>
-            setState((state) => new Set([...state, i.value]))
-          );
-        } else if (meta.action === "pop-value" || meta.action === "remove-value") {
-          console.log(e.map((i) => i.value));
-          setState(
-            (state) =>
-              new Set([...state].filter((x) => x == e.map((i) => i.value)))
-          );
-        } else if (meta.action === "clear") {
-          setState(new Set());
-        }
-        console.log(e)
-        return state
-      }
+  function handleTag(e, meta) {
+    if (meta.action === "select-option") {
+      e.map((i) => setState((state) => new Set([...state, i.value])));
+    } else if (meta.action === "pop-value" || meta.action === "remove-value") {
+      console.log(e.map((i) => i.value));
+      setState(
+        (state) => new Set([...state].filter((x) => x == e.map((i) => i.value)))
+      );
+    } else if (meta.action === "clear") {
+      setState(new Set());
+    }
+    console.log(e);
+    return state;
+  }
 
   function fetchTags() {
     return fetch("/api/tags")
@@ -34,23 +31,23 @@ export default function TagSelect({setState, state}) {
     fetchTags();
   }, []);
 
-  tags.map((i) => (i.label = i.value)); //sets the dropdown labels values to value 
+  tags.map((i) => (i.label = i.value)); //sets the dropdown labels values to value
 
-    return (
-        <Select
-            isMulti
-            options={tags}
-            styles={{
-              input: (base) => ({
-                ...base,
-                'input:focus': {
-                  boxShadow: 'none',
-                },
-              }),
-            }}
-            className="basic-multi-select"
-            classNamePrefix="select"
-            onChange={(e, actionMeta) => handleTag(e, actionMeta)}
-          />
-    )
+  return (
+    <Select
+      isMulti
+      options={tags}
+      styles={{
+        input: (base) => ({
+          ...base,
+          "input:focus": {
+            boxShadow: "none",
+          },
+        }),
+      }}
+      className="basic-multi-select"
+      classNamePrefix="select"
+      onChange={(e, actionMeta) => handleTag(e, actionMeta)}
+    />
+  );
 }

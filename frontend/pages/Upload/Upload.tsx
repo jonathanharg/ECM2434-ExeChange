@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { ArrowUpTrayIcon, DocumentPlusIcon } from "@heroicons/react/24/outline";
-import TagSelect from "../../components/TagSelect"
+import {
+  ArrowUpTrayIcon,
+  DocumentPlusIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import TagSelect from "../../components/TagSelect";
+import Src from "react-select/dist/declarations/src";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -9,7 +14,12 @@ function Upload() {
   const [caption, setCaption] = useState("");
   const [searchState, setSearchState] = useState(new Set());
   const [image, setImage] = useState<File>();
-  
+  const [file, setFile] = useState<string>();
+
+  const resetFile = () => {
+    document.getElementById("file-upload").value = null;
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = {
@@ -25,7 +35,7 @@ function Upload() {
       headers: { "Content-Type": "multipart/form-data" },
     });
     setCaption("");
-    setSearchState(new Set())
+    setSearchState(new Set());
     //TODO: Clear image
   };
 
@@ -35,42 +45,63 @@ function Upload() {
         <form method="POST" onSubmit={handleSubmit}>
           <div className="shadow sm:overflow-hidden sm:rounded-md">
             <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
-                <div id="tags">
-                  <label className="mb-2 block text-sm font-medium text-gray-700">
-                    Add tags
-                  </label>
-                    <TagSelect setState={setSearchState} state = {searchState}/>
-                </div>
+              <div id="tags">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Add tags
+                </label>
+                <TagSelect setState={setSearchState} state={searchState} />
+              </div>
               <div id="upload">
                 <label className="mb-2 block text-sm font-medium text-gray-700">
                   Upload Image
                 </label>
                 <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                   <div className="content-center space-y-1 px-4 text-center">
-                    <DocumentPlusIcon className="m-auto h-16 w-16 stroke-gray-500 stroke-1" />
-                    <div className="flex text-sm text-gray-600">
-                      <label
-                        htmlFor="file-upload"
-                        className="relative cursor-pointer rounded-md bg-white font-medium text-green-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-green-700 focus-within:ring-offset-2 hover:text-green-700"
-                      >
-                        <span>Upload a file</span>
-                        <input
-                          id="file-upload"
-                          name="file-upload"
-                          type="file"
-                          className="sr-only"
-                          onChange={(e) => {
-                            setImage(e.target.files[0]);
-                            console.log(e.target.files[0].type);
+                    {image && (
+                      // Image viewer div
+                      <div>
+                        <button
+                          onClick={() => {
+                            setImage(undefined);
+                            setFile("");
+                            resetFile();
                           }}
-                          required
-                        />
-                      </label>
-                      <p className="pl-1">or drag and drop</p>
+                        >
+                          <XMarkIcon className="m-auto h-16 w-16 text-gray-700" />
+                        </button>
+                        <div className="aspect-[3/4] w-64 h-auto overflow-hidden">
+                          <img className="object-cover" src={file} />
+                        </div>
+                      </div>
+                    )}
+                    <div className={image ? "hidden" : "block"}>
+                      <DocumentPlusIcon className="m-auto h-16 w-16 stroke-gray-500 stroke-1" />
+
+                      <div className="flex text-sm text-gray-600">
+                        <label
+                          htmlFor="file-upload"
+                          className="relative cursor-pointer rounded-md bg-white font-medium text-green-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-green-700 focus-within:ring-offset-2 hover:text-green-700"
+                        >
+                          <span>Upload a file</span>
+                          <input
+                            id="file-upload"
+                            name="file-upload"
+                            type="file"
+                            className="sr-only"
+                            onChange={(e) => {
+                              setImage(e.target.files[0]);
+                              setFile(URL.createObjectURL(e.target.files[0]));
+                              console.log(e.target.files[0].type);
+                            }}
+                            required
+                          />
+                        </label>
+                        <p className="pl-1">or drag and drop</p>
+                      </div>
+                      <p className="text-xs text-gray-500">
+                        PNG, JPG, GIF up to 10MB
+                      </p>
                     </div>
-                    <p className="text-xs text-gray-500">
-                      PNG, JPG, GIF up to 10MB
-                    </p>
                   </div>
                 </div>
               </div>
