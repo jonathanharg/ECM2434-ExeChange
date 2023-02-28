@@ -3,16 +3,10 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Listbox} from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import Calendar from 'react-calendar';
 import axios from "axios";
-import {
-  DatePickerStateProvider,
-  useContextCalendars,
-  useContextDays,
-  useContextMonthsPropGetters,
-} from "@rehookify/datepicker";
-import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
-import { Button, Calendar, Time } from '../../components';
-axios.defaults.xsrfHeaderName = "X-CSRFToken";
+/* import 'react-calendar/dist/Calendar.css';
+ */axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
 export interface Product {
@@ -44,26 +38,6 @@ const locations = [
     id: 5,
     locationName: 'Business School',
   },
-  {
-    id: 6,
-    locationName: 'Physics Building',
-  },
-  {
-    id: 7,
-    locationName: 'Innovation One',
-  },
-  {
-    id: 8,
-    locationName: 'East Park',
-  },
-  {
-    id: 9,
-    locationName: 'Pret',
-  },
-  {
-    id: 10,
-    locationName: 'The Ram',
-  },
 ]
 
 const times = [
@@ -87,47 +61,13 @@ const times = [
 ]
 
 
-
-function Root() {
-  const { calendars } = useContextCalendars();
-  const { formattedDates } = useContextDays();
-  const { previousMonthButton, nextMonthButton } = useContextMonthsPropGetters();
-  
-  return (
-    <div>
-      <h1 className="text-2xl w-full text-center mb-6">
-        {formattedDates[formattedDates.length - 1]}
-      </h1>
-      <main className="grid grid-cols-main-time gap-x-6">
-        <div className="block p-4 border border-slate-300 rounded shadow-xs shadow shadow-slate-300">
-          <Calendar
-            prevButton={
-              <Button className="w-8" {...previousMonthButton()}>
-                <IoChevronBack />
-              </Button>
-            }
-            nextButton={
-              <Button className="w-8" {...nextMonthButton()}>
-                <IoChevronForward />
-              </Button>
-            }
-            calendar={calendars[0]}
-          />
-        </div>
-        <div className="block p-4 border border-slate-300 rounded shadow-xs shadow shadow-slate-300">
-          <Time />
-        </div>
-      </main>
-    </div>
-  );
-}
-
 function Itemtile(product: Product) {
   const [open, setOpen] = useState(false)
-  const [selectedDates, onDatesChange] = useState<Date[]>([]);
+  const [selectedDates, onDatesChange] = useState(new Date());
   
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
   const [selectedTime, setSelectedTime] = useState(times[0]);
+
   
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -141,7 +81,7 @@ function Itemtile(product: Product) {
     e.preventDefault();
   
     await axios
-      .post("/api/trading", JSON.stringify({ selectedDates, selectedLocation, product }), {
+      .post("/api/trading", JSON.stringify({ selectedDates }), {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
@@ -213,28 +153,24 @@ function Itemtile(product: Product) {
 
                     <div className="mt-10 sm:col-span-8 lg:col-span-7">
                         <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{product.name}</h2>
+
+                        <section aria-labelledby="options-heading" className="mt-10">
                         <h3 id="options-heading">
                           {product.tags}
                         </h3>
-                        <section aria-labelledby="options-heading" className="mt-10">
                         {/* All form questions down here - stuff above is responsible for the pop up window when clicking on an item 
-                        
-                        
-                        https://codesandbox.io/p/sandbox/time-picker-with-multiple-dates-lf36qc?file=%2Fsrc%2Fclassnames-utils.ts
-                        https://github.com/rehookify/datepicker
-                        
+
                         following code was used for the date/time picker from the @rehookify headlessui thing.
 
                         */}
                         <form method="POST" onSubmit={handleSubmit}>
                           {/*Location drop down menu*/}
-                          <div>
                           <Listbox value={selectedLocation} onChange={setSelectedLocation}>
                             {({ open }) => (
                             <>
-                            <Listbox.Label  className="block text-sm font-medium text-gray-700">Select trade location</Listbox.Label>
+                            <Listbox.Label className="block text-sm font-medium text-gray-700">Select trade location</Listbox.Label>
                             <div className="relative mt-1">
-                              <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-green-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+                              <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
                                 <span className="flex items-center">
                                   <span className="ml-3 block truncate">{selectedLocation.locationName}</span>
                                   </span>
@@ -254,7 +190,7 @@ function Itemtile(product: Product) {
                                   key={location.id}
                                   className={({ active }) =>
                                     classNames(
-                                      active ? 'bg-green-700 text-white' : 'text-gray-900','relative cursor-default select-none py-2 pl-3 pr-9'
+                                      active ? 'bg-indigo-600 text-white' : 'text-gray-900','relative cursor-default select-none py-2 pl-3 pr-9'
                                     )
                                   }
                                   value={location}
@@ -271,7 +207,7 @@ function Itemtile(product: Product) {
                                     {selected ? (
                                     <span
                                     className={classNames(
-                                      active ? 'text-white' : 'text-green-800','absolute inset-y-0 right-0 flex items-center pr-4'
+                                      active ? 'text-white' : 'text-indigo-600','absolute inset-y-0 right-0 flex items-center pr-4'
                                     )}
                                     >
                                     <CheckIcon className="h-5 w-5" aria-hidden="true" />
@@ -287,36 +223,10 @@ function Itemtile(product: Product) {
                             </>
                             )}
                           </Listbox>
-                          </div>
-                          {/*
-                          <h2 className="block text-sm font-medium text-gray-700 mt-5">
-                            Select date and time of trade
-                          </h2>
-                          <DatePickerStateProvider config={{
-                            selectedDates,
-                            onDatesChange,
-                            dates: {
-                              mode: 'single',
-                              toggle: true,
-                            },
-                            locale: {
-                              options: {
-                                day: '2-digit',
-                                month: 'long',
-                                year: 'numeric',
-                                hour12: true,
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              },
-                            },
-                          }}>
-                            <Root />
-                          </DatePickerStateProvider>
-                        </div>*/}
+                       
 
                           {/*Time picker*/}
-                          
-                          <div>
+                        
                           <Listbox value={selectedTime} onChange={setSelectedTime}>
                             {({ open }) => (
                             <>
@@ -375,13 +285,15 @@ function Itemtile(product: Product) {
                             </>
                             )}
                           </Listbox>
+                          <div>
+                            <Calendar onChange={onDatesChange} value={selectedDates} minDate={new Date()}/>
                           </div>
 
                           <button
                           type="submit"
-                          className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-green-800 py-3 px-8 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2"
+                          className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                           >
-                          Send trade request
+                          Request trade!
                           </button>
                         </form>
                         </section>
