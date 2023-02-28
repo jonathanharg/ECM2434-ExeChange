@@ -1,28 +1,21 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { ArrowUpTrayIcon, DocumentPlusIcon } from "@heroicons/react/24/outline";
+import TagSelect from "../../components/TagSelect";
+
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
 function Upload() {
   const [caption, setCaption] = useState("");
-  const [tags, setTags] = useState<string[]>();
+  const [searchState, setSearchState] = useState(new Set<string>());
   const [image, setImage] = useState<File>();
-
-  const validateTags = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const split = event.target.value.split(/[ ,]+/);
-    setTags(split);
-  };
-
-  const formatTags = () => {
-    return tags?.join(", ");
-  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = {
       caption: caption,
-      tags: tags,
+      tags: Array.from(searchState),
       image: image,
     };
 
@@ -33,7 +26,7 @@ function Upload() {
       headers: { "Content-Type": "multipart/form-data" },
     });
     setCaption("");
-    setTags([]);
+    setSearchState(new Set());
     //TODO: Clear image
   };
 
@@ -45,6 +38,12 @@ function Upload() {
             <form method="POST" onSubmit={handleSubmit}>
               <div className="shadow sm:overflow-hidden sm:rounded-md">
                 <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
+                  <div id="tags">
+                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                      Add tags
+                    </label>
+                      <TagSelect setState={setSearchState} state = {searchState}/>
+                  </div>
                   <div id="upload">
                     <label className="mb-2 block text-sm font-medium text-gray-700">
                       Upload Image
@@ -100,18 +99,6 @@ function Upload() {
                       <Taglist />
                     </div>
                   </div> */}
-                  <div id="tags">
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
-                      Add tags
-                    </label>
-                    <input
-                      required
-                      onChange={validateTags}
-                      value={formatTags()}
-                      className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-green-800 focus:outline-none focus:ring-green-800 sm:text-sm"
-                      placeholder="Tags"
-                    />
-                  </div>
                 </div>
                 <div className="bg-gray-100 px-4 py-3 text-right sm:px-6">
                   <button
