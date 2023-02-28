@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from '@headlessui/react'
 import { Listbox} from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
@@ -9,6 +9,8 @@ import axios from "axios";
  */axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 import { useAuthUser } from "react-auth-kit";
+
+import { ProfileData } from "../Profile/Profile";
 
 export interface Product {
   id: number;
@@ -83,6 +85,18 @@ function Itemtile(product: Product) {
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
   const [selectedTime, setSelectedTime] = useState(times[0]);
 
+  const [profileData, setProfileData] = useState<ProfileData>();
+
+  function fetchProfileData() {
+    return fetch("/api/profiledata")
+    .then((response) => response.json())
+    .then((data) => setProfileData(data));
+  }
+
+  useEffect(() => {
+    fetchProfileData();
+  }, []);
+
   
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -132,7 +146,6 @@ function Itemtile(product: Product) {
         >
             <div className="fixed inset-0 hidden bg-gray-500 bg-opacity-75 transition-opacity md:block" />
         </Transition.Child>
-
         <div className="fixed inset-0 z-10 overflow-y-auto">
             <div className="flex min-h-full items-stretch justify-center text-center md:items-center md:px-2 lg:px-4">
             <Transition.Child
@@ -158,6 +171,9 @@ function Itemtile(product: Product) {
                     <div className="grid w-full grid-cols-1 items-start gap-y-8 gap-x-6 sm:grid-cols-12 lg:gap-x-8">
                     <div className="aspect-w-2 aspect-h-3 overflow-hidden rounded-lg bg-gray-100 sm:col-span-4 lg:col-span-5">
                         <img src={product.image} className="object-cover object-center" />
+                        <div>
+                          <h1>{product.owner.username}</h1>
+                        </div>
                     </div>
 
                     <div className="mt-10 sm:col-span-8 lg:col-span-7">
