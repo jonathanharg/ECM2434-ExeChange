@@ -17,11 +17,13 @@ def use_sqlite3_db(settings):
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": settings.BASE_DIR / "db.sqlite3",
     }
-    
+
+
 @pytest.mark.django_db()
 def test_user_create() -> None:
     ExeChangeUser.objects.create_user("test_user", "test@test.com", "testpassword")
     assert ExeChangeUser.objects.count() == 1
+
 
 @pytest.mark.django_db
 def test_user_authenticate() -> None:
@@ -33,6 +35,7 @@ def test_user_authenticate() -> None:
 def test_user_not_authenticated() -> None:
     ExeChangeUser.objects.create_user("test_user", "test@test.com", "testpassword")
     assert authenticate(username="test_user", password="WRONG_PASSWORD") is None
+
 
 class RequestTests(TestCase):
     """
