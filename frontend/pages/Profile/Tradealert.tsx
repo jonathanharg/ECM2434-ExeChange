@@ -1,27 +1,47 @@
 import React from "react";
 
 interface Trade {
-    id: number,
-    initiator: string,
-    location: string,
-    time: string,
-    date: string,
+  id: number;
+  initiator: string;
+  location: string;
+  time: string;
+  date: string;
 }
 
 function Tradealert(trade: Trade) {
   return (
-   
-        <div id="alert-border-3" className="flex p-4 mb-4 text-green-800 border-t-4 border-green-600 bg-white light:text-green-400 light:bg-gray-800 light:border-green-800" role="alert">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5" />
-            </svg>
-            <div className="ml-3 text-sm font-medium">
-            Trade Alert! User {trade.initiator} would like to trade at {trade.location}, {trade.date} {trade.time} 
-            </div>
-            <button type="button" className="ml-auto -mx-4.0 -my-1.5 bg-white text-green-700 rounded-lg focus:ring-2 focus:ring-green-700 p-1.5 hover:bg-white inline-flex h-8 w-23 light:bg-gray-800 light:text-green-400 light:hover:bg-gray-700"  data-dismiss-target="#alert-border-3" aria-label="Close">
-            <div className="ml-1 text-sm font-medium">View</div>
-            </button>
-        </div>
+    <div
+      id="alert-border-3"
+      className="light:text-green-400 light:bg-gray-800 light:border-green-800 mb-4 flex border-t-4 border-green-600 bg-white p-4 text-green-800"
+      role="alert"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        className="h-6 w-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5"
+        />
+      </svg>
+      <div className="ml-3 text-sm font-medium">
+        Trade Alert! User {trade.initiator} would like to trade at{" "}
+        {trade.location}, {trade.date} {trade.time}
+      </div>
+      <button
+        type="button"
+        className="-mx-4.0 w-23 light:bg-gray-800 light:text-green-400 light:hover:bg-gray-700 -my-1.5 ml-auto inline-flex h-8 rounded-lg bg-white p-1.5 text-green-700 hover:bg-white focus:ring-2 focus:ring-green-700"
+        data-dismiss-target="#alert-border-3"
+        aria-label="Close"
+      >
+        <div className="ml-1 text-sm font-medium">View</div>
+      </button>
+    </div>
   );
 }
 
