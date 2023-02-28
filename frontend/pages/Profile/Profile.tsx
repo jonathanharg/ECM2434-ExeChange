@@ -17,6 +17,7 @@ import {
   LightBulbIcon,
   TicketIcon,
 } from "@heroicons/react/24/outline";
+import { UserCircleIcon } from "@heroicons/react/24/outline"
 import Tradealert from "./Tradealert";
 
 export interface Trade {
@@ -27,21 +28,35 @@ export interface Trade {
   date: string;
 }
 
+interface ProfileData {
+  levelPercent: number,
+  name: string,
+  level: number,
+}
+
 function Profile() {
   const levelPercent = 55;
   const name = "David";
   const level = 5;
 
   const [trades, setTrades] = useState<Trade[]>([]);
+  const [profileData, setProfileData] = useState<ProfileData>();
 
   function fetchTrades() {
-    return fetch("/api/profile")
+    return fetch("/api/pendingtrades")
       .then((response) => response.json())
       .then((data) => setTrades(data));
   }
 
+  function fetchProfileData() {
+    return fetch("/api/profiledata")
+    .then((response) => response.json())
+    .then((data) => setProfileData(data));
+  }
+
   useEffect(() => {
     fetchTrades();
+    fetchProfileData();
   }, []);
 
   return (
@@ -52,21 +67,20 @@ function Profile() {
         </div>
       </div>
       <div className="flex items-center justify-between px-4 pt-12">
-        <div className="flex h-24 w-24 items-center rounded-full bg-blue-600">
-          {/* <img className="h-20 w-20 mx-auto" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
-                    </img> */}
-        </div>
+        {/* <div className="flex h-24 w-24 items-center rounded-full bg-blue-600">
+        </div> */}
+        <UserCircleIcon className="h-32 w-32" />
         <div className="flex w-9/12 items-center">
           <div className="flex w-10/12 flex-col pl-4 leading-none">
-            <p className="text-2xl font-bold">{name}</p>
+            <p className="text-2xl font-bold">{profileData?.name}</p>
             <p className="pt-1 text-sm font-light text-gray-700">
-              Level {level}
+              Level {profileData?.level}
             </p>
             <div className="mb-1 text-base font-medium text-green-700 dark:text-green-500"></div>
             <div className="mb-4 h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
               <div
                 className="h-2.5 rounded-full bg-green-600 dark:bg-green-500"
-                style={{ width: levelPercent + "%" }}
+                style={{ width: profileData?.levelPercent + "%" }}
               ></div>
             </div>
           </div>
@@ -76,6 +90,11 @@ function Profile() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="flex w-full flex-col px-4 pt-12">
+          {trades.map((trade) => (
+            <Tradealert key={trade.id} {...trade} />
+          ))}
       </div>
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">My Achievements</p>
@@ -366,11 +385,6 @@ function Profile() {
               </button>
             </div>
           </div>
-        </div>
-        <div className="flex w-full flex-col px-4 pt-12">
-          {trades.map((trade) => (
-            <Tradealert key={trade.id} {...trade} />
-          ))}
         </div>
       </div>
     </div>

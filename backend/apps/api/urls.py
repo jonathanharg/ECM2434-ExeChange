@@ -9,5 +9,6 @@ urlpatterns = [
     path("upload", upload.post),
     path("tags", tags.tags),
     path("trade", trading.trade),
-    path("profile", profile.trade_requests),
+    path("pendingtrades", profile.trade_requests),
+    path("profiledata", profile.get_profile_data)
 ]

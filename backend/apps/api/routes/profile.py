@@ -9,19 +9,6 @@ from apps.api.models import PendingTrade, ExeChangeUser
 
 
 @api_view(["GET"])
-def trades(request: HttpRequest) -> Response:
-    data = [
-        {
-            "id": 1,
-            "initiator": "madsalad",
-            "location": "Forum",
-            "time": "12:00",
-            "date": "03/02/23",
-        }
-    ] * 2
-    return Response(data)
-
-@api_view(["GET"])
 def trade_requests(request: HttpRequest) -> Response:
     authenticated_user = authenticate_user(request)
 
@@ -49,3 +36,19 @@ def trade_requests(request: HttpRequest) -> Response:
 
     return Response(data)
     
+@api_view(["GET"])
+def get_profile_data(request: HttpRequest) -> Response:
+    authenticated_user = authenticate_user(request)
+
+    if authenticated_user is None:
+        return Response({
+            "status": "BAD_REQUEST",
+            "message": "User credentials not correct!"
+        })
+    
+    
+    return Response({
+        "name": authenticated_user.username,
+        "level": authenticated_user.profile_level,
+        "levelPercent": authenticated_user.current_xp
+    })
