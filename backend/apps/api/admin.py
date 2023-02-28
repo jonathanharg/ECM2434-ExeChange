@@ -1,3 +1,6 @@
-# from django.contrib import admin
+from apps.api.models import ClothingItem, ExeChangeUser, ItemTag
+from django.contrib import admin
 
-# Register your models here.
+admin.site.register(ExeChangeUser)
+admin.site.register(ClothingItem)
+admin.site.register(ItemTag)

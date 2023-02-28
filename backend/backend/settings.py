@@ -101,12 +101,29 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+USE_POSTGRES_DB = os.getenv("USE_POSTGRES_DB", "False") == "True"
+POSTGRES_NAME = os.getenv("POSTGRES_NAME")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT")
+POSTGRES_USER = os.getenv("POSTGRES_USER")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+
 DATABASES = {
-    "default": {
+    "dev": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
-    }
+    },
+    "production": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": POSTGRES_NAME,
+        "HOST": POSTGRES_HOST,
+        "PORT": POSTGRES_PORT,
+        "USER": POSTGRES_USER,
+        "PASSWORD": POSTGRES_PASSWORD,
+    },
 }
+
+DATABASES["default"] = DATABASES["production" if (USE_POSTGRES_DB) else "dev"]
 
 # Rest Framework Options
 REST_FRAMEWORK = {
@@ -122,6 +139,9 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer"),
     "AUTH_HEADER_NAME": "_auth",
 }
+
+# Setting AUTH_USER_MODEL to customer made model
+AUTH_USER_MODEL = "api.ExeChangeUser"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -173,17 +193,21 @@ VITE_APP_DIR = BASE_DIR_FRONTEND / "frontend"
 # If it's not, collectstatic won't copy your bundle to production.
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    VITE_APP_DIR / "dist",
-]
+STATICFILES_DIRS = [VITE_APP_DIR / "dist", BASE_DIR / "media"]
 
 if DEBUG:
     # Serve all static files from the frontend in debug mode
     STATICFILES_DIRS.append(VITE_APP_DIR)
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Custom setting values
+
+XP_IN_LEVEL = 100

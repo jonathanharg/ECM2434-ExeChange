@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useIsAuthenticated, useSignIn } from "react-auth-kit";
 import { LockClosedIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import z from "zod";
 import { useNavigate } from "react-router-dom";
+import { Popover, Transition } from "@headlessui/react";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -32,8 +33,28 @@ export default function Login() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+  const messages = [
+    "Go for a walk, that may help jog your memory.",
+    "Unlucky I guess.",
+    "Maybe try Password123?",
+    "Eating a healthy diet can help improve your memory!",
+    "Sorry! I don't remember your password either.",
+    "Set your password to a random 100 character long string. Good luck!",
+    "Maybe try type it in again.",
+  ];
+  const [forgotMessage, setForgotMessage] = useState(messages[0]);
+  const [quickDisable, setQuickDisable] = useState(false);
+
+  const changeForgotMessage = async () => {
+    setForgotMessage(messages[Math.floor(Math.random() * messages.length)]);
+    setQuickDisable(true);
+    setTimeout(() => {
+      setQuickDisable(false);
+    }, 1500);
+  };
+
   const emailSchema = z.string().email();
-  const passwordSchema = z.string().min(8);
+  const passwordSchema = z.string();
 
   const EmailValidation = emailSchema.safeParse(user);
   const PasswordValidation = passwordSchema.safeParse(password);
@@ -59,9 +80,6 @@ export default function Login() {
     // Zod validation for email, password, and password matching
     //https://zod.dev/
     e.preventDefault();
-
-    const EmailValidation = emailSchema.safeParse(user);
-    const PasswordValidation = passwordSchema.safeParse(password);
 
     if (!EmailValidation.success || !PasswordValidation.success) {
       return;
@@ -188,12 +206,30 @@ export default function Login() {
               </p>
             </div>
             <div className="-mt-2 mb-4 text-right text-sm">
-              <a
-                href="#"
-                className="font-medium text-green-800 hover:text-green-700"
-              >
-                Forgot your password?
-              </a>
+              <Popover className="">
+                <Popover.Button
+                  className="content-end font-medium text-green-800 hover:text-green-700 focus:outline-none"
+                  onClick={() => changeForgotMessage()}
+                  disabled={quickDisable}
+                >
+                  Forgot your password?
+                </Popover.Button>
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-200"
+                  enterFrom="opacity-0 translate-y-1"
+                  enterTo="opacity-100 translate-y-0"
+                  leave="transition ease-in duration-150"
+                  leaveFrom="opacity-100 translate-y-0"
+                  leaveTo="opacity-0 translate-y-1"
+                >
+                  <Popover.Panel className="absolute z-10 w-full max-w-md -translate-y-20 transform">
+                    <div className="mr-0 ml-auto w-min min-w-fit transform rounded-md border border-gray-100 bg-white p-4 text-left shadow-xl outline-1">
+                      {forgotMessage}
+                    </div>
+                  </Popover.Panel>
+                </Transition>
+              </Popover>
             </div>
 
             <div>

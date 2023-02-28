@@ -5,27 +5,27 @@ authentication.py test file!
 import ast
 
 import pytest
-from api.authentication import gen_token
+from apps.api.authentication import gen_token
+from apps.api.models import ExeChangeUser
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
 from django.test import TestCase
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db()
 def test_user_create() -> None:
-    User.objects.create_user("test_user", "test@test.com", "testpassword")
-    assert User.objects.count() == 1
+    ExeChangeUser.objects.create_user("test_user", "test@test.com", "testpassword")
+    assert ExeChangeUser.objects.count() == 1
 
 
 @pytest.mark.django_db
 def test_user_authenticate() -> None:
-    User.objects.create_user("test_user", "test@test.com", "testpassword")
+    ExeChangeUser.objects.create_user("test_user", "test@test.com", "testpassword")
     assert authenticate(username="test_user", password="testpassword") is not None
 
 
 @pytest.mark.django_db
 def test_user_not_authenticated() -> None:
-    User.objects.create_user("test_user", "test@test.com", "testpassword")
+    ExeChangeUser.objects.create_user("test_user", "test@test.com", "testpassword")
     assert authenticate(username="test_user", password="WRONG_PASSWORD") is None
 
 
@@ -35,7 +35,7 @@ class RequestTests(TestCase):
     """
 
     def setUp(self) -> None:
-        self.user = User.objects.create_user(
+        self.user = ExeChangeUser.objects.create_user(
             username="test_harry", password="SUPER_SECURE"
         )
 

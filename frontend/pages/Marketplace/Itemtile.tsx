@@ -8,14 +8,28 @@ import axios from "axios";
 /* import 'react-calendar/dist/Calendar.css';
  */axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
+import { useAuthUser } from "react-auth-kit";
 
 export interface Product {
   id: number;
-  name: string;
+  caption: string;
   href: string;
-  imageSrc: string;
-  tags: string[];
+  image: string;
+  tags: tag[];
+  owner: owner;
 }
+
+export type owner = {
+  id: number;
+  username: string;
+};
+
+export type tag = {
+  id: number;
+  readonly value: string;
+  label: string;
+};
+
 
 const locations = [
   {
@@ -41,6 +55,7 @@ const locations = [
 ]
 
 function Itemtile(product: Product) {
+  const auth = useAuthUser();
   const [open, setOpen] = useState(false)
   const [selectedDates, onDatesChange] = useState(new Date());
   
@@ -65,19 +80,8 @@ function Itemtile(product: Product) {
       .then((response) => {
         // TODO: Handle more responses than just OK
         if (response.data.status != "OK") {
-          /* setEmailError("Incorrect username or password");
-          setPasswordError("Incorrect username or password"); */
-          console.log("Incorrect username or password!");
           return;
         }
-  
-        /* if (attemptAuth) {
-          console.log("User logged in!");
-          navigate("/");
-        } else {
-          //Print error as react-auth-kit broke!
-          console.log("React-auth-kit error!");
-        } */
       })
       .catch((error) => {
         console.log(error);
@@ -125,15 +129,15 @@ function Itemtile(product: Product) {
 
                     <div className="grid w-full grid-cols-1 items-start gap-y-8 gap-x-6 sm:grid-cols-12 lg:gap-x-8">
                     <div className="aspect-w-2 aspect-h-3 overflow-hidden rounded-lg bg-gray-100 sm:col-span-4 lg:col-span-5">
-                        <img src={product.imageSrc} className="object-cover object-center" />
+                        <img src={product.image} className="object-cover object-center" />
                     </div>
 
                     <div className="mt-10 sm:col-span-8 lg:col-span-7">
-                        <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{product.name}</h2>
+                        <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{product.caption}</h2>
 
                         <section aria-labelledby="options-heading" className="mt-10">
                         <h3 id="options-heading">
-                          {product.tags}
+                          {product.tags.map((t) => t.value)}
                         </h3>
                         {/* All form questions down here - stuff above is responsible for the pop up window when clicking on an item 
 
@@ -229,7 +233,7 @@ function Itemtile(product: Product) {
       <div key={product.id} className="group relative">
         <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
           <img
-            src={product.imageSrc}
+            src={product.image}
             className="h-full w-full object-cover object-center lg:h-full lg:w-full"
           />
         </div>
@@ -238,17 +242,15 @@ function Itemtile(product: Product) {
             <h3 className="text-sm text-gray-700">
               <a href={product.href}>
                 <span aria-hidden="true" className="absolute inset-0" />
-                {product.name}
+                {product.caption}
               </a>
             </h3>
-            <p className="mt-1 text-sm text-gray-500">{product.tags}</p>
+            <p className="mt-1 text-sm text-gray-500">{product.tags.map((t)=> t.value).join(", ")}</p>
           </div>
         </div>
       </div>
       </button>
     </div>
-
-    
   );
 }
 
