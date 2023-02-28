@@ -92,17 +92,23 @@ function Itemtile(product: Product) {
 
 
   const handleSubmit = async (e) => {
-    // this function sends form data to /api/trading
+    // this function sends form data to /api/trade
     e.preventDefault();
+
+    const productOwnerId = product.owner.id
+    const itemId = product.id
   
     await axios
-      .post("/api/trading", JSON.stringify({ selectedDates }), {
+      .post("/api/trade", JSON.stringify({
+        productOwnerId, selectedDates, selectedTime, selectedLocation, itemId
+       }), {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
       .then((response) => {
         // TODO: Handle more responses than just OK
         if (response.data.status != "OK") {
+          console.log("THIS WORKED!!")
           return;
         }
       })

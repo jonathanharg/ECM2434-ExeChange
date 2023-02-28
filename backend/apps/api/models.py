@@ -58,21 +58,23 @@ class ClothingItem(models.Model):
 #     acceptor_verification = models.BooleanField(default=False)
 
 class PendingTrade(models.Model):
-    initator = models.ForeignKey(
+    initiator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         default=None,
+        related_name="initiator"
     )
 
     acceptor = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         default=None,
+        related_name="acceptor"
     )
 
-    location = models.CharField(max=255)
+    location = models.CharField(max_length=255)
 
-    time = models.CharField(max=255)
+    time = models.CharField(max_length=255)
 
     date = models.DateTimeField()
 

@@ -6,6 +6,7 @@ from apps.api.models import PendingTrade
 from apps.api.models import ExeChangeUser
 from apps.api.models import ClothingItem
 from apps.api.authentication import authenticate_user
+from django.shortcuts import get_object_or_404
 
 @api_view(["POST"])
 def trade(request: HttpRequest) -> Response:
@@ -17,27 +18,28 @@ def trade(request: HttpRequest) -> Response:
             "message": "user not authenticated"
         })
     
-    acceptor = request.data["acceptor"]
-    time = request.data["time"]
-    date = request.data["date"]
-    item_id = request.data["item_id"]
+    acceptor = request.data["productOwnerId"]
+    time = request.data["selectedTime"]["time"]
+    date = request.data["selectedDates"]
+    item_id = request.data["itemId"]
+    location = request.data["selectedLocation"]["locationName"]
 
-    #Should only return one value !
-    acceptor_object = ExeChangeUser.objects.filter(username=str(acceptor)).values()
-    item_object = ClothingItem.objects.filter(id=str(item_id)).values()
+    acceptor_object = get_object_or_404(ExeChangeUser, id=acceptor)
+    item_object = get_object_or_404(ClothingItem, id=item_id)
 
-    PendingTrade.objects.create(
+    new_trade = PendingTrade.objects.create(
         initiator=authenticated_user,
         acceptor=acceptor_object,
         time=time,
         date=date,
-        item=item_object
+        item=item_object,
+        location=location
     )
 
-    PendingTrade.full_clean()
-    PendingTrade.save()
+    new_trade.full_clean()
+    new_trade.save()
 
     return Response({
-        "status": "GOOD",
+        "status": "OK",
         "message": "trade saved successfully",
     })
