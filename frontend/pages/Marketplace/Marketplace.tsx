@@ -37,7 +37,6 @@ function Marketplace() {
   }
 
   function handleTag(e, meta) {
-    //TODO: fix removing tags and product filter
 
     if (meta.action === "select-option") {
       e.map((i) =>
@@ -47,7 +46,7 @@ function Marketplace() {
       console.log(e.map((i) => i.value));
       setSearchState(
         (searchState) =>
-          new Set([...searchState].filter((x) => x !== e.map((i) => i.value)))
+          new Set([...searchState].filter((x) => x == e.map((i) => i.value)))
       );
     } else if (meta.action === "clear") {
       setSearchState(new Set());
