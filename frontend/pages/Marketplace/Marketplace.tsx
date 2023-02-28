@@ -3,7 +3,6 @@ import Itemtile from "./Itemtile";
 import { Product, tag } from "./Itemtile";
 import Select from "react-select";
 
-
 function Marketplace() {
   const [searchState, setSearchState] = useState(new Set<string>());
   const [tags, setTags] = useState<tag[]>([]);
@@ -15,8 +14,8 @@ function Marketplace() {
       .then((data) => setProducts(data));
   }
 
-   function fetchTags() {
-    return  fetch("/api/tags")
+  function fetchTags() {
+    return fetch("/api/tags")
       .then((response) => response.json())
       .then((data) => setTags(data));
   }
@@ -28,22 +27,31 @@ function Marketplace() {
 
   tags.map((i) => (i.label = i.value));
 
-
+  function isSuperset(set, subset) {
+    for (const elem of subset) {
+      if (!set.has(elem)) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   function handleTag(e, meta) {
-    //TODO: fix the set tag update delay and removing values is fully broken
-  
+    //TODO: fix removing tags and product filter
+
     if (meta.action === "select-option") {
-      e.map((i) => setSearchState(searchState => new Set([...searchState, i.value])))
-  }
-    else if ( meta.action === "pop-value" || meta.action === "remove-value"){
-     
-      e.map(i => setSearchState(searchState =>new Set([...searchState].filter(x => x !== i.value))))
+      e.map((i) =>
+        setSearchState((searchState) => new Set([...searchState, i.value]))
+      );
+    } else if (meta.action === "pop-value" || meta.action === "remove-value") {
+      console.log(e.map((i) => i.value));
+      setSearchState(
+        (searchState) =>
+          new Set([...searchState].filter((x) => x !== e.map((i) => i.value)))
+      );
+    } else if (meta.action === "clear") {
+      setSearchState(new Set());
     }
-    else if ( meta.action === "clear") {
-      setSearchState(new Set())
-    }
-    console.log(searchState)
   }
 
   return (
@@ -68,7 +76,10 @@ function Marketplace() {
           {searchState.size != 0
             ? products
                 .filter((product) =>
-                  product.tags.every((t) => searchState.has(t.value))
+                  isSuperset(
+                    new Set(product.tags.map((i) => i.value)),
+                    searchState
+                  )
                 )
                 .map((product) => <Itemtile key={product.id} {...product} />)
             : products.map((product) => (
