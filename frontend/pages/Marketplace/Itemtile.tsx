@@ -108,7 +108,6 @@ function Itemtile(product: Product) {
       .then((response) => {
         // TODO: Handle more responses than just OK
         if (response.data.status != "OK") {
-          console.log("THIS WORKED!!")
           return;
         }
       })
