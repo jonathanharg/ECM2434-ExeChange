@@ -10,6 +10,7 @@ import { AuthProvider } from "react-auth-kit";
 
 import "./index.css";
 import Marketplace from "./pages/Marketplace/Marketplace";
+import Upload from "./pages/Upload/Upload";
 
 import Profile from "./pages/Profile/Profile";
 
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path: "/upload",
+        element: <Upload />,
       },
     ],
   },

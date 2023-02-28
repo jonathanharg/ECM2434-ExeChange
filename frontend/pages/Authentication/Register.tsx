@@ -135,7 +135,7 @@ function Register() {
         // from the django register view !
 
         const attemptAuth = signIn({
-          token: response.data.token,
+          token: response.data.access,
           expiresIn: 120,
           tokenType: "bearer",
           authState: { user: response.data.username },
@@ -144,6 +144,7 @@ function Register() {
         if (attemptAuth) {
           //Registered user has been successfully signed in!
           console.log("User logged in!");
+          navigate("/");
         }
       })
       .catch((error) => {

@@ -56,12 +56,19 @@ def run_prod() -> None:
         pass
 
 
-# def pylint():
-#     os.chdir(os.environ["PWD"] + "/backend")
-#     subprocess.run(["poetry", "run", "pylint", "apps/api"])
+def create_super_user() -> None:
+    try:
+        subprocess.run(
+            ["poetry", "run", "python", "./backend/manage.py", "createsuperuser"]
+        )
+    except KeyboardInterrupt:
+        pass
 
-# def pytest():
-#     subprocess.run(["pytest"])
 
-# def pytest_coverage():
-#     subprocess.run(["pytest"])
+def make_migrations() -> None:
+    try:
+        subprocess.run(
+            ["poetry", "run", "python", "./backend/manage.py", "makemigrations"]
+        )
+    except KeyboardInterrupt:
+        pass
