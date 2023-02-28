@@ -11,14 +11,6 @@ from django.contrib.auth import authenticate
 from django.test import TestCase
 
 
-@pytest.fixture(autouse=True)
-def use_sqlite3_db(settings):
-    settings.DATABASES = {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": settings.BASE_DIR / "db.sqlite3",
-    }
-
-
 @pytest.mark.django_db()
 def test_user_create() -> None:
     ExeChangeUser.objects.create_user("test_user", "test@test.com", "testpassword")
