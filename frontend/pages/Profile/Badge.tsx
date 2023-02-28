@@ -19,6 +19,7 @@ function Badge(location: Location) {
     <div className="w-2/12 h-full">
         <div className={thiscolour}>
           <LightBulbIcon className="stroke-white stroke-[1.9]" />
+          {/* above will be location.icon */}
         </div>
         </div>
         <div className="w-6/12 h-full flex items-start">
