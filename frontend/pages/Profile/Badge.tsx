@@ -3,7 +3,7 @@ import {ChatBubbleLeftRightIcon, PowerIcon, CameraIcon, UserGroupIcon, BookOpenI
   DocumentChartBarIcon, BuildingLibraryIcon, RocketLaunchIcon, NewspaperIcon, EyeDropperIcon,
   FilmIcon, MoonIcon, BeakerIcon, LightBulbIcon} from "@heroicons/react/24/outline";
 
-export interface Location {
+interface Location {
   colour: string;
   place: string;
   icon: string;

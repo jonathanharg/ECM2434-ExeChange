@@ -6,7 +6,6 @@ from rest_framework.decorators import api_view
 
 @api_view(["GET"])
 def trades(request:HttpRequest) -> Response:
-    print("TESLTKADL?KSJD")
     data = [{
         "id": 1,
         "initiator":"madsalad",
