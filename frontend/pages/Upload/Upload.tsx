@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { ArrowUpTrayIcon, DocumentPlusIcon } from "@heroicons/react/24/outline";
-import TagSelect from "../../components/TagSelect"
+import TagSelect from "../../components/TagSelect";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -9,7 +9,7 @@ function Upload() {
   const [caption, setCaption] = useState("");
   const [searchState, setSearchState] = useState(new Set());
   const [image, setImage] = useState<File>();
-  
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = {
@@ -25,7 +25,7 @@ function Upload() {
       headers: { "Content-Type": "multipart/form-data" },
     });
     setCaption("");
-    setSearchState(new Set())
+    setSearchState(new Set());
     //TODO: Clear image
   };
 
@@ -35,12 +35,12 @@ function Upload() {
         <form method="POST" onSubmit={handleSubmit}>
           <div className="shadow sm:overflow-hidden sm:rounded-md">
             <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
-                <div id="tags">
-                  <label className="mb-2 block text-sm font-medium text-gray-700">
-                    Add tags
-                  </label>
-                    <TagSelect setState={setSearchState} state = {searchState}/>
-                </div>
+              <div id="tags">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Add tags
+                </label>
+                <TagSelect setState={setSearchState} state={searchState} />
+              </div>
               <div id="upload">
                 <label className="mb-2 block text-sm font-medium text-gray-700">
                   Upload Image

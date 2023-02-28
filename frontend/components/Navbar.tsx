@@ -1,4 +1,5 @@
 import React from "react";
+import Logo from "./Logo";
 import { Fragment, useState } from "react";
 import Upload from "../pages/Upload/Upload";
 import { usePopper } from "react-popper";
@@ -8,13 +9,11 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
   UserCircleIcon,
-  ArrowPathIcon,
   ArrowUpTrayIcon,
 } from "@heroicons/react/24/outline";
 import { Link, Outlet } from "react-router-dom";
 import { useIsAuthenticated, useAuthUser, useSignOut } from "react-auth-kit";
 
-// TODO: Mobile login/register/profile
 const navigation = [
   { name: "Home", to: "/" },
   { name: "Marketplace", to: "/marketplace" },
@@ -162,7 +161,8 @@ export default function Navbar() {
                 {/* Logo */}
                 <div className="ml-4 flex lg:ml-0">
                   <Link to="/">
-                    <ArrowPathIcon className="h-8 w-auto" />
+                    {/* <ArrowPathIcon className="h-8 w-auto" /> */}
+                    <Logo className="h-8 w-auto" />
                   </Link>
                 </div>
 
@@ -247,7 +247,6 @@ export default function Navbar() {
                   {/* Upload */}
                   {isAuthenticated() && (
                     <div className="ml-4 flow-root lg:ml-6">
-                      {/* INSERT */}
                       <Popover className="relative">
                         {() => (
                           <>
@@ -256,7 +255,7 @@ export default function Navbar() {
                               className="group -m-2 flex items-center p-2"
                             >
                               <ArrowUpTrayIcon
-                                className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                                className="h-6 w-6 flex-shrink-0 stroke-green-800 group-hover:stroke-green-600"
                                 aria-hidden="true"
                               />
                             </Popover.Button>
