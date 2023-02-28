@@ -8,6 +8,7 @@ from apps.api.models import ClothingItem
 from apps.api.authentication import authenticate_user
 from django.shortcuts import get_object_or_404
 from django.http.response import Http404
+from django.conf import settings
 
 from datetime import datetime
 
@@ -26,6 +27,17 @@ def trade(request: HttpRequest) -> Response:
     date = request.data["selectedDates"]
     item_id = request.data["itemId"]
     location = request.data["selectedLocation"]["locationName"]
+
+    date = date.split("T")[0]
+    date = date + " " + time + "Z"
+
+    date_object = datetime.strptime(date, "%Y-%m-%d %H:%M%Z")
+
+    if date_object <= datetime.now():
+        return Response({
+            "status": "BAD_REQUEST",
+            "message": "Cannot trade in the past!"
+        })
 
     try:
         acceptor_object = get_object_or_404(ExeChangeUser, id=acceptor)
@@ -50,7 +62,6 @@ def trade(request: HttpRequest) -> Response:
 
         new_trade.full_clean()
         new_trade.save()
-
         return Response({
             "status": "OK",
             "message": "trade saved successfully",
