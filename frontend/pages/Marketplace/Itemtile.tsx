@@ -180,7 +180,7 @@ function Itemtile(product: Product) {
                             <>
                             <Listbox.Label className="block text-sm font-medium text-gray-700">Select trade location</Listbox.Label>
                             <div className="relative mt-1">
-                              <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+                              <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-[#1d8d35] focus:outline-none focus:ring-1 focus:ring-[#1d8d35]  sm:text-sm">
                                 <span className="flex items-center">
                                   <span className="ml-3 block truncate">{selectedLocation.locationName}</span>
                                   </span>
@@ -200,7 +200,7 @@ function Itemtile(product: Product) {
                                   key={location.id}
                                   className={({ active }) =>
                                     classNames(
-                                      active ? 'bg-indigo-600 text-white' : 'text-gray-900','relative cursor-default select-none py-2 pl-3 pr-9'
+                                      active ? 'bg-[#17742b] text-white' : 'text-gray-900','relative cursor-default select-none py-2 pl-3 pr-9'
                                     )
                                   }
                                   value={location}
@@ -217,7 +217,7 @@ function Itemtile(product: Product) {
                                     {selected ? (
                                     <span
                                     className={classNames(
-                                      active ? 'text-white' : 'text-indigo-600','absolute inset-y-0 right-0 flex items-center pr-4'
+                                      active ? 'text-white' : 'text-[#17742b]','absolute inset-y-0 right-0 flex items-center pr-4'
                                     )}
                                     >
                                     <CheckIcon className="h-5 w-5" aria-hidden="true" />
@@ -240,9 +240,9 @@ function Itemtile(product: Product) {
                           <Listbox value={selectedTime} onChange={setSelectedTime}>
                             {({ open }) => (
                             <>
-                            <Listbox.Label  className="block text-sm font-medium text-gray-700">Select trade location</Listbox.Label>
+                            <Listbox.Label  className="block text-sm font-medium text-gray-700">Select time</Listbox.Label>
                             <div className="relative mt-1">
-                              <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-green-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+                              <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-[#1d8d35]  focus:outline-none focus:ring-1 focus:ring-[#1d8d35] sm:text-sm">
                                 <span className="flex items-center">
                                   <span className="ml-3 block truncate">{selectedTime.time}</span>
                                   </span>
@@ -301,7 +301,7 @@ function Itemtile(product: Product) {
 
                           <button
                           type="submit"
-                          className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                          className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-[#17742b] py-3 px-8 text-base font-medium text-white hover:bg-[#17742b] focus:outline-none focus:ring-2 focus:ring-[#1d8d35] focus:ring-offset-2"
                           >
                           Request trade!
                           </button>
