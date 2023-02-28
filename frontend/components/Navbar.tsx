@@ -69,7 +69,7 @@ export default function Navbar() {
                   <div className="flex h-16 px-4 pt-4 pb-2">
                     <button
                       type="button"
-                      className="group -m-2 mt-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                      className="group -m-2 -mt-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
                       onClick={() => setOpenMenu(false)}
                     >
                       <span className="sr-only">Close menu</span>
