@@ -1,2 +1,2 @@
 def test_dummy() -> None:
-    assert 1 == 1
+    assert True
