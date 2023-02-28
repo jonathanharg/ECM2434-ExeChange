@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from '@headlessui/react'
+import { Listbox} from '@headlessui/react'
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import axios from "axios";
 import {
@@ -21,10 +23,36 @@ export interface Product {
   tags: string[];
 }
 
+const locations = [
+  {
+    id: 1,
+    locationName: 'Lafrowda',
+  },
+  {
+    id: 2,
+    locationName: 'Forum',
+  },
+  {
+    id: 3,
+    locationName: 'Holland Hall',
+  },
+  {
+    id: 4,
+    locationName: 'Sanctuary',
+  },
+  {
+    id: 5,
+    locationName: 'Business School',
+  },
+]
+
+
+
 function Root() {
   const { calendars } = useContextCalendars();
   const { formattedDates } = useContextDays();
-  const { previousMonthButton, nextMonthButton } = useContextMonthsPropGetters()
+  const { previousMonthButton, nextMonthButton } = useContextMonthsPropGetters();
+  
 
 
   return (
@@ -59,6 +87,12 @@ function Root() {
 function Itemtile(product: Product) {
   const [open, setOpen] = useState(false)
   const [selectedDates, onDatesChange] = useState<Date[]>([]);
+  
+  const [selected, setSelected] = useState(locations[0]);
+  
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+  }
   /* const [ date, setDate] = useState("");
   const [ time, setTime] = useState(""); */
 
@@ -175,12 +209,73 @@ function Itemtile(product: Product) {
                           }}>
                             <Root />
                           </DatePickerStateProvider>
-                            <button
-                            type="submit"
-                            className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                            >
-                            Request trade!
-                            </button>
+
+                          {/*Location drop down menu*/}
+                          <Listbox value={selected} onChange={setSelected}>
+                            {({ open }) => (
+                            <>
+                            <Listbox.Label className="block text-sm font-medium text-gray-700">Select trade location</Listbox.Label>
+                            <div className="relative mt-1">
+                              <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+                                <span className="flex items-center">
+                                  <span className="ml-3 block truncate">{selected.locationName}</span>
+                                  </span>
+                                  <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                                    <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                  </span>
+                              </Listbox.Button>
+                              <Transition
+                              show={open}
+                              as={Fragment}
+                              leave="transition ease-in duration-100"
+                              leaveFrom="opacity-100"
+                              leaveTo="opacity-0">
+                                <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                  {locations.map((location) => (
+                                  <Listbox.Option
+                                  key={location.id}
+                                  className={({ active }) =>
+                                    classNames(
+                                      active ? 'bg-indigo-600 text-white' : 'text-gray-900','relative cursor-default select-none py-2 pl-3 pr-9'
+                                    )
+                                  }
+                                  value={location}
+                                  >
+                                    {({ selected, active }) => (
+                                    <>
+                                    <div className="flex items-center">
+                                      <span
+                                      className={classNames(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
+                                      >
+                                      {location.locationName}
+                                      </span>
+                                    </div>
+                                    {selected ? (
+                                    <span
+                                    className={classNames(
+                                      active ? 'text-white' : 'text-indigo-600','absolute inset-y-0 right-0 flex items-center pr-4'
+                                    )}
+                                    >
+                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                    </span>
+                                    ) : null}
+                                    </>
+                                    )}
+                                  </Listbox.Option>
+                                  ))}
+                                </Listbox.Options>
+                              </Transition>
+                            </div>
+                            </>
+                            )}
+                          </Listbox>
+
+                          <button
+                          type="submit"
+                          className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                          >
+                          Request trade!
+                          </button>
                         </form>
                         </section>
                     </div>
