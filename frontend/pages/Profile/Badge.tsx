@@ -1,19 +1,5 @@
 import React from "react";
 import {
-  ChatBubbleLeftRightIcon,
-  PowerIcon,
-  CameraIcon,
-  UserGroupIcon,
-  BookOpenIcon,
-  CloudIcon,
-  DocumentChartBarIcon,
-  BuildingLibraryIcon,
-  RocketLaunchIcon,
-  NewspaperIcon,
-  EyeDropperIcon,
-  FilmIcon,
-  MoonIcon,
-  BeakerIcon,
   LightBulbIcon,
 } from "@heroicons/react/24/outline";
 

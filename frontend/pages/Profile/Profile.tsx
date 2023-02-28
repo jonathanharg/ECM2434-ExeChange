@@ -256,7 +256,7 @@ function Profile() {
               </div>
             </div>
             <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Queen's</p>
+              <p className="my-auto text-lg font-semibold">Queen&apos;s</p>
             </div>
             <div className="flex h-full w-4/12 items-end justify-end">
               <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
@@ -369,7 +369,7 @@ function Profile() {
         </div>
         <div className="flex w-full flex-col px-4 pt-12">
           {trades.map((trade) => (
-            <Tradealert {...trade} />
+            <Tradealert key={trade.id} {...trade} />
           ))}
         </div>
       </div>
