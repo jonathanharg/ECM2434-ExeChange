@@ -40,6 +40,14 @@ export default function TagSelect({setState, state}) {
         <Select
             isMulti
             options={tags}
+            styles={{
+              input: (base) => ({
+                ...base,
+                'input:focus': {
+                  boxShadow: 'none',
+                },
+              }),
+            }}
             className="basic-multi-select"
             classNamePrefix="select"
             onChange={(e, actionMeta) => handleTag(e, actionMeta)}
