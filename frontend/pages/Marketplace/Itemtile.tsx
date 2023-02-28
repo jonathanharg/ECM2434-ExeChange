@@ -66,6 +66,26 @@ const locations = [
   },
 ]
 
+const times = [
+  {id: 1, time: "0900"},
+  {id: 2, time: "0930"},
+  {id: 3, time: "1000"},
+  {id: 4, time: "1030"},
+  {id: 5, time: "1100"},
+  {id: 6, time: "1130"},
+  {id: 7, time: "1200"},
+  {id: 8, time: "1230"},
+  {id: 9, time: "1300"},
+  {id: 10, time: "1330"},
+  {id: 11, time: "1400"},
+  {id: 12, time: "1430"},
+  {id: 13, time: "1500"},
+  {id: 14, time: "1530"},
+  {id: 15, time: "1600"},
+  {id: 16, time: "1630"},
+  {id: 17, time: "1700"},
+]
+
 
 
 function Root() {
@@ -107,6 +127,7 @@ function Itemtile(product: Product) {
   const [selectedDates, onDatesChange] = useState<Date[]>([]);
   
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
+  const [selectedTime, setSelectedTime] = useState(times[0]);
   
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -267,11 +288,10 @@ function Itemtile(product: Product) {
                             )}
                           </Listbox>
                           </div>
+                          {/*
                           <h2 className="block text-sm font-medium text-gray-700 mt-5">
                             Select date and time of trade
                           </h2>
-                          
-                          <div>
                           <DatePickerStateProvider config={{
                             selectedDates,
                             onDatesChange,
@@ -292,8 +312,71 @@ function Itemtile(product: Product) {
                           }}>
                             <Root />
                           </DatePickerStateProvider>
+                        </div>*/}
+
+                          {/*Time picker*/}
+                          
+                          <div>
+                          <Listbox value={selectedTime} onChange={setSelectedTime}>
+                            {({ open }) => (
+                            <>
+                            <Listbox.Label  className="block text-sm font-medium text-gray-700">Select trade location</Listbox.Label>
+                            <div className="relative mt-1">
+                              <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-green-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+                                <span className="flex items-center">
+                                  <span className="ml-3 block truncate">{selectedTime.time}</span>
+                                  </span>
+                                  <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                                    <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                  </span>
+                              </Listbox.Button>
+                              <Transition
+                              show={open}
+                              as={Fragment}
+                              leave="transition ease-in duration-100"
+                              leaveFrom="opacity-100"
+                              leaveTo="opacity-0">
+                                <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                  {times.map((time) => (
+                                  <Listbox.Option
+                                  key={time.id}
+                                  className={({ active }) =>
+                                    classNames(
+                                      active ? 'bg-green-700 text-white' : 'text-gray-900','relative cursor-default select-none py-2 pl-3 pr-9'
+                                    )
+                                  }
+                                  value={time}
+                                  >
+                                    {({ selected, active }) => (
+                                    <>
+                                    <div className="flex items-center">
+                                      <span
+                                      className={classNames(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
+                                      >
+                                      {time.time}
+                                      </span>
+                                    </div>
+                                    {selected ? (
+                                    <span
+                                    className={classNames(
+                                      active ? 'text-white' : 'text-green-800','absolute inset-y-0 right-0 flex items-center pr-4'
+                                    )}
+                                    >
+                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                    </span>
+                                    ) : null}
+                                    </>
+                                    )}
+                                  </Listbox.Option>
+                                  ))}
+                                </Listbox.Options>
+                              </Transition>
+                            </div>
+                            </>
+                            )}
+                          </Listbox>
                           </div>
-            
+
                           <button
                           type="submit"
                           className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-green-800 py-3 px-8 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2"
