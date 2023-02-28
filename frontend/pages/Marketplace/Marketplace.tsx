@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Itemtile from "./Itemtile";
 import { Product, tag } from "./Itemtile";
-import Select, { SelectOptionActionMeta ,RemoveValueActionMeta, InputActionMeta } from "react-select";
+import Select from "react-select";
 
 
 function Marketplace() {
