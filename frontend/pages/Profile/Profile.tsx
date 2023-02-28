@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {ChatBubbleLeftRightIcon, PowerIcon, CameraIcon, UserGroupIcon, BookOpenIcon, CloudIcon,
         DocumentChartBarIcon, BuildingLibraryIcon, RocketLaunchIcon, NewspaperIcon, BuildingOffice2Icon,
         FilmIcon, MoonIcon, BeakerIcon, LightBulbIcon, TicketIcon} from "@heroicons/react/24/outline";
@@ -23,8 +23,12 @@ function Profile(){
         return fetch("/api/gettrade")
           .then((response) => response.json())
           .then((data) => setTrades(data));
-      }
+    }
 
+    useEffect(() => {
+        fetchTrades();
+    }, []);
+      
     return(
         <><div className="min-h-screen flex flex-col max-w-lg lg:max-w-5xl mx-auto bg-white opacity-100 font-poppins px-4 bg-no-repeat bg-cover bg-center">
             <div className="flex justify-between px-1 pt-4 items-center">
