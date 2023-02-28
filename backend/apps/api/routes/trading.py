@@ -31,13 +31,13 @@ def trade(request: HttpRequest) -> Response:
     date = date.split("T")[0]
     date = date + " " + time + "Z"
 
-    date_object = datetime.strptime(date, "%Y-%m-%d %H:%M%Z")
+    # date_object = datetime.strptime(date, "%Y-%m-%d %H:%M%Z")
 
-    if date_object <= datetime.now():
-        return Response({
-            "status": "BAD_REQUEST",
-            "message": "Cannot trade in the past!"
-        })
+    # if date_object <= datetime.now():
+    #     return Response({
+    #         "status": "BAD_REQUEST",
+    #         "message": "Cannot trade in the past!"
+    #     })
 
     try:
         acceptor_object = get_object_or_404(ExeChangeUser, id=acceptor)
