@@ -37,7 +37,6 @@ function Marketplace() {
   }
 
   function handleTag(e, meta) {
-
     if (meta.action === "select-option") {
       e.map((i) =>
         setSearchState((searchState) => new Set([...searchState, i.value]))
