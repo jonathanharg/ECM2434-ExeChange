@@ -10,8 +10,10 @@ from apps.api.models import ExeChangeUser
 from django.contrib.auth import authenticate
 from django.test import TestCase
 
+
 def test_dummy():
     assert 1 == 1
+
 
 @pytest.fixture(autouse=True)
 def use_sqlite3_db(settings):
@@ -20,10 +22,12 @@ def use_sqlite3_db(settings):
         "NAME": settings.BASE_DIR / "db.sqlite3",
     }
 
+
 @pytest.mark.django_db()
 def test_user_create() -> None:
     ExeChangeUser.objects.create_user("test_user", "test@test.com", "testpassword")
     assert ExeChangeUser.objects.count() == 1
+
 
 @pytest.mark.django_db
 def test_user_authenticate() -> None:
@@ -35,6 +39,7 @@ def test_user_authenticate() -> None:
 def test_user_not_authenticated() -> None:
     ExeChangeUser.objects.create_user("test_user", "test@test.com", "testpassword")
     assert authenticate(username="test_user", password="WRONG_PASSWORD") is None
+
 
 class RequestTests(TestCase):
     """
