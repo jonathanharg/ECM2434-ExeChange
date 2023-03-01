@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { ArrowUpTrayIcon, DocumentPlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import TagSelect from "../../components/TagSelect"
+import { tag } from "../Marketplace/Itemtile";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
 function Upload() {
   const [caption, setCaption] = useState("");
-  const [searchState, setSearchState] = useState(new Set());
+  const [searchState, setSearchState] = useState(new Set<tag>());
   const [image, setImage] = useState<File>();
   const [file, setFile] = useState<string>();
-  
+  const [completed, setCompleted] = useState(false);
+  const [checked, setChecked] = useState(false)
+  const fileRef = useRef(null)
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = {
@@ -22,16 +26,39 @@ function Upload() {
     console.log(formData);
     console.log("Form submitted");
     await axios.post("/api/upload", formData, {
-      // headers: { "Content-Type": "application/json" },
       headers: { "Content-Type": "multipart/form-data" },
     });
     setCaption("");
     setSearchState(new Set());
-    //TODO: Clear image
+    <TagSelect setState={setSearchState} state={searchState} />
+  
   };
-  function resetFile(e){
-    e.target.value = null;
+
+  function resetFile(){
+    fileRef.current.value = null;
   }
+
+
+  function handleImage(e){
+    setImage(e.target.files[0]);
+    setFile(URL.createObjectURL(e.target.files[0]));
+    console.log(e.target.files[0].type);
+  }
+  function setCheck(){
+    setChecked(!checked)
+    terms()
+  }
+  const terms = () => {
+    console.log(checked)
+    if (searchState.size > 0 && image && caption != "" && !checked && !completed){
+
+      setCompleted(true)
+    } else {
+      setCompleted(false)
+    }
+  }
+
+  useEffect(()=> {terms}, [])
 
   return (
     <>
@@ -78,14 +105,13 @@ function Upload() {
                         >
                           <span>Upload a file</span>
                           <input
+                            ref = {fileRef}
                             id="file-upload"
                             name="file-upload"
                             type="file"
                             className="sr-only"
                             onChange={(e) => {
-                              setImage(e.target.files[0]);
-                              setFile(URL.createObjectURL(e.target.files[0]));
-                              console.log(e.target.files[0].type);
+                              handleImage(e)
                             }}
                             required
                           />
@@ -114,11 +140,19 @@ function Upload() {
                 />
               </div>
             </div>
+            <div className="content-center py-2 px-4 text-center">
+                <input id="link-checkbox" type="checkbox" value="" checked= {checked} onChange = {setCheck} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                <label htmlFor="link-checkbox" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree with the <a href="#" className="text-blue-600 dark:text-blue-500 hover:underline">terms and conditions</a>.</label>
+            </div>
+    
+
             <div className="bg-gray-100 px-4 py-3 text-right sm:px-6">
+            
               <button
+                disabled = {completed ? false : true}
                 type="submit"
-                className="inline-flex justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-              >
+                className={completed ? "inline-flex justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2": "inline-flex justify-center rounded-md border border-transparent bg-gray-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2"
+                }>
                 <ArrowUpTrayIcon className="mr-2 h-4 w-4" /> Upload
               </button>
             </div>
