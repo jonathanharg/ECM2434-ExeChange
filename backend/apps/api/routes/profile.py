@@ -23,6 +23,7 @@ def trade_requests(request: HttpRequest) -> Response:
     data = []
 
     for pending_trade in pending_trades:
+        print(pending_trade)
         initiator_username = get_object_or_404(
             ExeChangeUser, id=pending_trade["initiator_id"]
         ).username
@@ -35,6 +36,7 @@ def trade_requests(request: HttpRequest) -> Response:
                 "location": pending_trade["location"],
                 "time": pending_trade["time"],
                 "date": pending_trade_date,
+                "itemId": pending_trade["item_id"],
             }
         )
 
@@ -57,3 +59,19 @@ def get_profile_data(request: HttpRequest) -> Response:
             "levelPercent": authenticated_user.current_xp,
         }
     )
+
+# @api_view(["POST"])
+# def set_pending_trade_tag(request: HttpRequest) -> Response:
+#     authenticated_user = authenticate_user(request)
+
+#     if authenticated_user is None:
+#         return Response({
+#             "status": "BAD_REQEUST",
+#             "message": "User credentials are not correct!",
+#         })
+    
+#     clothingItem = 
+
+#     PendingTrade.objects.filter(acceptor=authenticated_user).values()
+
+
