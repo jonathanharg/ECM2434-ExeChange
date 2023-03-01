@@ -164,7 +164,7 @@ const locations: Location[] = [
   },
   {
     id: 16,
-    colour: "bg-yellow-400",
+    colour: "bg-green-400",
     place: "East Park",
     icon: BuildingOffice2Icon,
     trades: 3,
