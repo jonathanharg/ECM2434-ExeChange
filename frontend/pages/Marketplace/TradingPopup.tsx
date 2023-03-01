@@ -109,223 +109,172 @@ export function Trading(product: Product) {
   };
 
   return (
-      <div className="grid w-full grid-cols-1 items-start gap-y-8 gap-x-6 sm:grid-cols-12 lg:gap-x-8">
-        <div className="aspect-w-2 aspect-h-3 overflow-hidden rounded-lg bg-gray-100 sm:col-span-4 lg:col-span-5">
-          <img
-            src={product.image}
-            className="object-cover object-center"
-          />
+  <div className="grid w-full grid-cols-1 items-start gap-y-8 gap-x-6 sm:grid-cols-12 lg:gap-x-8">
+    <div className="aspect-w-2 aspect-h-3 overflow-hidden rounded-lg bg-gray-100 sm:col-span-4 lg:col-span-5">
+      <img src={product.image} className="object-cover object-center"/>
+      <div>
+        <h1>{product.owner.username}</h1>
+      </div>
+    </div>
+
+    <div className="mt-10 sm:col-span-8 lg:col-span-7">
+      <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">
+        {product.caption}
+      </h2>
+
+      <section aria-labelledby="options-heading" className="mt-10">
+        <h3 id="options-heading">
+          {product.tags.map((t) => t.value)}
+        </h3>
+
+        <form method="POST" onSubmit={handleSubmit}>
+          {/*Location drop down menu*/}
+          <Listbox value={selectedLocation} onChange={setSelectedLocation}>
+            {({ open }) => (
+              <>
+                <Listbox.Label className="block text-sm font-medium text-gray-700">
+                  Select trade location
+                </Listbox.Label>
+                <div className="relative mt-1">
+                  <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-[#1d8d35] focus:outline-none focus:ring-1 focus:ring-[#1d8d35]  sm:text-sm">
+                    <span className="flex items-center">
+                      <span className="ml-3 block truncate">
+                        {selectedLocation.locationName}
+                      </span>
+                    </span>
+                    <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                      <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true"/>
+                    </span>
+                  </Listbox.Button>
+                  <Transition show={open} as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
+                    <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                      {locations.map((location) => (
+                        <Listbox.Option
+                          key={location.id}
+                          className={({ active }) =>
+                            classNames(
+                              active
+                                ? "bg-[#17742b] text-white"
+                                : "text-gray-900",
+                              "relative cursor-default select-none py-2 pl-3 pr-9"
+                            )
+                          }
+                          value={location}>
+                          {({ selected, active }) => (
+                            <>
+                              <div className="flex items-center">
+                                <span
+                                  className={classNames(
+                                    selected
+                                      ? "font-semibold"
+                                      : "font-normal",
+                                    "ml-3 block truncate"
+                                  )}>
+                                  {location.locationName}
+                                </span>
+                              </div>
+                              {selected ? (
+                                <span
+                                  className={classNames(
+                                    active
+                                      ? "text-white"
+                                      : "text-[#17742b]",
+                                    "absolute inset-y-0 right-0 flex items-center pr-4"
+                                  )}>
+                                  <CheckIcon className="h-5 w-5" aria-hidden="true"/>
+                                </span>
+                              ) : null}
+                            </>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+                </div>
+              </>
+            )}
+          </Listbox>
+
+          {/*Time picker*/}
+
+          <Listbox value={selectedTime} onChange={setSelectedTime}>
+            {({ open }) => (
+              <>
+                <Listbox.Label className="block text-sm font-medium text-gray-700">
+                  Select time
+                </Listbox.Label>
+                <div className="relative mt-1">
+                  <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-[#1d8d35]  focus:outline-none focus:ring-1 focus:ring-[#1d8d35] sm:text-sm">
+                    <span className="flex items-center">
+                      <span className="ml-3 block truncate">
+                        {selectedTime.time}
+                      </span>
+                    </span>
+                    <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                      <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true"/>
+                    </span>
+                  </Listbox.Button>
+                  <Transition show={open} as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
+                    <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                      {times.map((time) => (
+                        <Listbox.Option
+                          key={time.id}
+                          className={({ active }) =>
+                            classNames(
+                              active
+                                ? "bg-green-700 text-white"
+                                : "text-gray-900",
+                              "relative cursor-default select-none py-2 pl-3 pr-9"
+                            )
+                          }
+                          value={time}>
+                          {({ selected, active }) => (
+                            <>
+                              <div className="flex items-center">
+                                <span
+                                  className={classNames(
+                                    selected
+                                      ? "font-semibold"
+                                      : "font-normal",
+                                    "ml-3 block truncate"
+                                  )}>
+                                  {time.time}
+                                </span>
+                              </div>
+                              {selected ? (
+                                <span
+                                  className={classNames(
+                                    active
+                                      ? "text-white"
+                                      : "text-green-800",
+                                    "absolute inset-y-0 right-0 flex items-center pr-4"
+                                  )}>
+                                  <CheckIcon className="h-5 w-5" aria-hidden="true"/>
+                                </span>
+                              ) : null}
+                            </>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+                </div>
+              </>
+            )}
+          </Listbox>
           <div>
-            <h1>{product.owner.username}</h1>
+            <Calendar onChange={onDatesChange} value={selectedDates} minDate={new Date()}/>
           </div>
-        </div>
 
-        <div className="mt-10 sm:col-span-8 lg:col-span-7">
-          <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">
-            {product.caption}
-          </h2>
-
-          <section
-            aria-labelledby="options-heading"
-            className="mt-10"
-          >
-            <h3 id="options-heading">
-              {product.tags.map((t) => t.value)}
-            </h3>
-            {/* All form questions down here - stuff above is responsible for the pop up window when clicking on an item 
-
-          following code was used for the date/time picker from the @rehookify headlessui thing.
-
-          */}
-            <form method="POST" onSubmit={handleSubmit}>
-              {/*Location drop down menu*/}
-              <Listbox
-                value={selectedLocation}
-                onChange={setSelectedLocation}
-              >
-                {({ open }) => (
-                  <>
-                    <Listbox.Label className="block text-sm font-medium text-gray-700">
-                      Select trade location
-                    </Listbox.Label>
-                    <div className="relative mt-1">
-                      <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-[#1d8d35] focus:outline-none focus:ring-1 focus:ring-[#1d8d35]  sm:text-sm">
-                        <span className="flex items-center">
-                          <span className="ml-3 block truncate">
-                            {selectedLocation.locationName}
-                          </span>
-                        </span>
-                        <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                          <ChevronUpDownIcon
-                            className="h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                          />
-                        </span>
-                      </Listbox.Button>
-                      <Transition
-                        show={open}
-                        as={Fragment}
-                        leave="transition ease-in duration-100"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                      >
-                        <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                          {locations.map((location) => (
-                            <Listbox.Option
-                              key={location.id}
-                              className={({ active }) =>
-                                classNames(
-                                  active
-                                    ? "bg-[#17742b] text-white"
-                                    : "text-gray-900",
-                                  "relative cursor-default select-none py-2 pl-3 pr-9"
-                                )
-                              }
-                              value={location}
-                            >
-                              {({ selected, active }) => (
-                                <>
-                                  <div className="flex items-center">
-                                    <span
-                                      className={classNames(
-                                        selected
-                                          ? "font-semibold"
-                                          : "font-normal",
-                                        "ml-3 block truncate"
-                                      )}
-                                    >
-                                      {location.locationName}
-                                    </span>
-                                  </div>
-                                  {selected ? (
-                                    <span
-                                      className={classNames(
-                                        active
-                                          ? "text-white"
-                                          : "text-[#17742b]",
-                                        "absolute inset-y-0 right-0 flex items-center pr-4"
-                                      )}
-                                    >
-                                      <CheckIcon
-                                        className="h-5 w-5"
-                                        aria-hidden="true"
-                                      />
-                                    </span>
-                                  ) : null}
-                                </>
-                              )}
-                            </Listbox.Option>
-                          ))}
-                        </Listbox.Options>
-                      </Transition>
-                    </div>
-                  </>
-                )}
-              </Listbox>
-
-              {/*Time picker*/}
-
-              <Listbox
-                value={selectedTime}
-                onChange={setSelectedTime}
-              >
-                {({ open }) => (
-                  <>
-                    <Listbox.Label className="block text-sm font-medium text-gray-700">
-                      Select time
-                    </Listbox.Label>
-                    <div className="relative mt-1">
-                      <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-[#1d8d35]  focus:outline-none focus:ring-1 focus:ring-[#1d8d35] sm:text-sm">
-                        <span className="flex items-center">
-                          <span className="ml-3 block truncate">
-                            {selectedTime.time}
-                          </span>
-                        </span>
-                        <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                          <ChevronUpDownIcon
-                            className="h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                          />
-                        </span>
-                      </Listbox.Button>
-                      <Transition
-                        show={open}
-                        as={Fragment}
-                        leave="transition ease-in duration-100"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                      >
-                        <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                          {times.map((time) => (
-                            <Listbox.Option
-                              key={time.id}
-                              className={({ active }) =>
-                                classNames(
-                                  active
-                                    ? "bg-green-700 text-white"
-                                    : "text-gray-900",
-                                  "relative cursor-default select-none py-2 pl-3 pr-9"
-                                )
-                              }
-                              value={time}
-                            >
-                              {({ selected, active }) => (
-                                <>
-                                  <div className="flex items-center">
-                                    <span
-                                      className={classNames(
-                                        selected
-                                          ? "font-semibold"
-                                          : "font-normal",
-                                        "ml-3 block truncate"
-                                      )}
-                                    >
-                                      {time.time}
-                                    </span>
-                                  </div>
-                                  {selected ? (
-                                    <span
-                                      className={classNames(
-                                        active
-                                          ? "text-white"
-                                          : "text-green-800",
-                                        "absolute inset-y-0 right-0 flex items-center pr-4"
-                                      )}
-                                    >
-                                      <CheckIcon
-                                        className="h-5 w-5"
-                                        aria-hidden="true"
-                                      />
-                                    </span>
-                                  ) : null}
-                                </>
-                              )}
-                            </Listbox.Option>
-                          ))}
-                        </Listbox.Options>
-                      </Transition>
-                    </div>
-                  </>
-                )}
-              </Listbox>
-              <div>
-                <Calendar
-                  onChange={onDatesChange}
-                  value={selectedDates}
-                  minDate={new Date()}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-[#17742b] py-3 px-8 text-base font-medium text-white hover:bg-[#17742b] focus:outline-none focus:ring-2 focus:ring-[#1d8d35] focus:ring-offset-2"
-              >
-                Request trade!
-              </button>
-            </form>
-          </section>
-        </div>
-      </div>    
+          <button
+            type="submit"
+            className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-[#17742b] py-3 px-8 text-base font-medium text-white hover:bg-[#17742b] focus:outline-none focus:ring-2 focus:ring-[#1d8d35] focus:ring-offset-2">
+            Request trade!
+          </button>
+        </form>
+      </section>
+    </div>
+  </div>    
   );
 }
 
