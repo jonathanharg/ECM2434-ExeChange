@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { ArrowUpTrayIcon, DocumentPlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon, DocumentPlusIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import TagSelect from "../../components/TagSelect"
 import { tag } from "../Marketplace/Itemtile";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -28,6 +28,7 @@ function Upload() {
     await axios.post("/api/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
+    setImage(undefined);
     setCaption("");
     setSearchState(new Set());
     <TagSelect setState={setSearchState} state={searchState} />
@@ -37,7 +38,6 @@ function Upload() {
   function resetFile(){
     fileRef.current.value = null;
   }
-
 
   function handleImage(e){
     setImage(e.target.files[0]);
@@ -50,12 +50,12 @@ function Upload() {
   }
   const terms = () => {
     console.log(checked)
-    if (searchState.size > 0 && image && caption != "" && !checked && !completed){
-
+    if (!completed && searchState.size > 0 && image && caption != "" && !checked){
       setCompleted(true)
     } else {
       setCompleted(false)
     }
+    console.log(completed)
   }
 
   useEffect(()=> {terms}, [])
@@ -65,7 +65,7 @@ function Upload() {
       <div className="mt-5 md:col-span-2 md:mt-0">
         <form method="POST" onSubmit={handleSubmit}>
           <div className="shadow sm:overflow-hidden sm:rounded-md">
-            <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
+            <div className="space-y-6 z-50 bg-white px-4 py-5 sm:p-6">
               <div id="tags">
                 <label className="mb-2 block text-sm font-medium text-gray-700">
                   Add tags
@@ -82,15 +82,16 @@ function Upload() {
                       // Image viewer div
                       <div>
                         <button
-                          onClick={(e) => {
+                          onClick={() => {
                             setImage(undefined);
                             setFile("");
-                            resetFile(e);
+                            resetFile();
                           }}
+                          className=""
                         >
-                          <XMarkIcon className="m-auto h-16 w-16 text-gray-700" />
+                          <XCircleIcon className="m-auto h-5 w-5 stroke-red-600 text-gray-700" />
                         </button>
-                        <div className="aspect-[3/4] w-64 h-auto overflow-hidden">
+                        <div className="aspect-[3/4] w-48 h-auto overflow-hidden">
                           <img className="object-cover" src={file} />
                         </div>
                       </div>
@@ -139,17 +140,17 @@ function Upload() {
                   placeholder="Caption"
                 />
               </div>
+              <div className="content-center text-center">
+                <input required id="link-checkbox" type="checkbox" value="" checked= {checked} onChange = {setCheck} className="w-4 h-4 text-green-800 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                <label htmlFor="link-checkbox" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree with the <a href="#" className="text-green-800 dark:text-green-700 hover:underline">terms and conditions</a>.</label>
             </div>
-            <div className="content-center py-2 px-4 text-center">
-                <input id="link-checkbox" type="checkbox" value="" checked= {checked} onChange = {setCheck} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                <label htmlFor="link-checkbox" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree with the <a href="#" className="text-blue-600 dark:text-blue-500 hover:underline">terms and conditions</a>.</label>
             </div>
+
     
 
             <div className="bg-gray-100 px-4 py-3 text-right sm:px-6">
             
               <button
-                disabled = {completed ? false : true}
                 type="submit"
                 className={completed ? "inline-flex justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2": "inline-flex justify-center rounded-md border border-transparent bg-gray-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2"
                 }>
