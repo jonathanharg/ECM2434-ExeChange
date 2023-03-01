@@ -31,7 +31,7 @@ function Tradealert(trade: Trade) {
       </svg>
       <div className="ml-3 text-sm font-medium">
         Trade Alert! User {trade.initiator} would like to trade at{" "}
-        {trade.location}, {trade.date} {trade.time}
+        {trade.location} on {trade.date} at {trade.time} !
       </div>
       <button
         type="button"

@@ -1,3 +1,5 @@
+# Create your models here.
+
 from uuid import uuid4
 
 from django.conf import settings
@@ -31,6 +33,34 @@ class ClothingItem(models.Model):
 
     def __str__(self) -> str:
         return self.caption
+
+
+class PendingTrade(models.Model):
+    initiator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        default=None,
+        related_name="initiator",
+    )
+
+    acceptor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        default=None,
+        related_name="acceptor",
+    )
+
+    location = models.CharField(max_length=255)
+
+    time = models.CharField(max_length=255)
+
+    date = models.DateTimeField()
+
+    item = models.ForeignKey(
+        ClothingItem,
+        on_delete=models.CASCADE,
+        default=None,
+    )
 
 
 class ExeChangeUser(AbstractUser):
