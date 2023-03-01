@@ -8,6 +8,8 @@ from rest_framework.response import Response
 
 from apps.api.models import ClothingItem, PendingTrade
 
+from datetime import datetime
+
 
 @api_view(["GET"])
 def trade_requests(request: HttpRequest) -> Response:
@@ -85,7 +87,7 @@ def confirm_pending_trade(request: HttpRequest) -> Response:
         return Response({
             "status": "OK",
             "message": "success",
-            "pending_trade_status": str(clothing_item_object.in_pending_trade).replace("T", "t")
+            "pending_status": str(clothing_item_object.in_pending_trade).replace("T", "t")
         })
 
     except Http404:
@@ -106,13 +108,11 @@ def get_pending_trade_status(request: HttpRequest) -> Response:
 
         clothing_item_object = get_object_or_404(ClothingItem, id=int(clothing_item_id))
 
-        print("Hello")
-
         return Response(
             {
             "status": "OK",
             "message": "success",
-            "pending_trade_status": str(clothing_item_object.in_pending_trade).lower()
+            "pending_status": str(clothing_item_object.in_pending_trade).lower()
             }
         )
 
@@ -131,8 +131,21 @@ def remove_pending_trade(request: HttpRequest) -> Response:
     
     try:
         clothing_item_id = request.data["itemId"]
+        date = request.data["date"]
+        location = request.data["location"]
+        time = request.data["time"]
+        initiator = request.data["initiator"]
+
+        date_object = datetime.strptime(date, "%d/%m/%Y")
+        time_object = datetime.strptime(time, "%H:%M")
+        
+        initiator_object = get_object_or_404(ExeChangeUser, username=str(initiator))
         clothing_item_object = get_object_or_404(ClothingItem, id=int(clothing_item_id))
-        pending_trade_object = get_object_or_404(PendingTrade, acceptor=authenticated_user, item=clothing_item_object)
+        # Get time working
+        pending_trade_object = get_object_or_404(PendingTrade, initiator=initiator_object, acceptor=authenticated_user, date=date_object, location=str(location), item=clothing_item_object)
+        
+        clothing_item_object.in_pending_trade = False
+        clothing_item_object.save()
         pending_trade_object.delete()
 
         return Response(
@@ -142,4 +155,6 @@ def remove_pending_trade(request: HttpRequest) -> Response:
             }
         )
     except Http404:
-        pass
+        return Response({
+            "status": "BAD"
+        })

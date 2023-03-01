@@ -13,17 +13,20 @@ export interface Trade {
 function Tradealert(trade: Trade) {
 
   const[tradeState, setTradeState] = useState<boolean>(false);
-  const itemId = trade.itemId;
 
   function postToTrade(apiPath: string) {
-    
-    axios.post(apiPath, JSON.stringify({itemId}), {
+    const itemId = trade.itemId;
+    const date = trade.date
+    const location = trade.location
+    const time = trade.time
+    const initiator = trade.initiator
+    axios.post(apiPath, JSON.stringify({itemId, date, location, time, initiator}), {
       headers: {"Content-Type": "application/json"},
       withCredentials: true,
     })
     .then((response) => {
       if (response.data.status == "OK") {
-        setTradeState(response.data.pending_trade_status)
+        setTradeState(response.data.pending_status)
         return;
       }
     })
@@ -32,9 +35,9 @@ function Tradealert(trade: Trade) {
     });
   }
 
-  useEffect(() => {
-    postToTrade("/api/getpendingtradestatus");
-  },[]);
+  // useEffect(() => {
+  //   postToTrade("/api/getpendingtradestatus");
+  // }, []);
 
   return (
     <div
