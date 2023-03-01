@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { ArrowUpTrayIcon, DocumentPlusIcon } from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon, DocumentPlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import TagSelect from "../../components/TagSelect"
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -9,6 +9,7 @@ function Upload() {
   const [caption, setCaption] = useState("");
   const [searchState, setSearchState] = useState(new Set());
   const [image, setImage] = useState<File>();
+  const [file, setFile] = useState<string>();
   
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,6 +29,9 @@ function Upload() {
     setSearchState(new Set());
     //TODO: Clear image
   };
+  function resetFile(e){
+    e.target.value = null;
+  }
 
   return (
     <>
@@ -51,10 +55,10 @@ function Upload() {
                       // Image viewer div
                       <div>
                         <button
-                          onClick={() => {
+                          onClick={(e) => {
                             setImage(undefined);
                             setFile("");
-                            resetFile();
+                            resetFile(e);
                           }}
                         >
                           <XMarkIcon className="m-auto h-16 w-16 text-gray-700" />
