@@ -1,22 +1,4 @@
 import React from "react";
-import {
-  ChatBubbleLeftRightIcon,
-  PowerIcon,
-  CameraIcon,
-  UserGroupIcon,
-  BookOpenIcon,
-  CloudIcon,
-  DocumentChartBarIcon,
-  BuildingLibraryIcon,
-  RocketLaunchIcon,
-  NewspaperIcon,
-  BuildingOffice2Icon,
-  FilmIcon,
-  MoonIcon,
-  BeakerIcon,
-  LightBulbIcon,
-  TicketIcon,
-} from "@heroicons/react/24/outline";
 
 export interface Location {
   id: number;
