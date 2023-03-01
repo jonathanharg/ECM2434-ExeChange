@@ -85,7 +85,7 @@ def confirm_pending_trade(request: HttpRequest) -> Response:
         return Response({
             "status": "OK",
             "message": "success",
-            "pending_status": str(clothing_item_object.in_pending_trade).replace("T", "t")
+            "pending_trade_status": str(clothing_item_object.in_pending_trade).replace("T", "t")
         })
 
     except Http404:
@@ -112,10 +112,34 @@ def get_pending_trade_status(request: HttpRequest) -> Response:
             {
             "status": "OK",
             "message": "success",
-            "pendingTradeStatus": str(clothing_item_object.in_pending_trade)
+            "pending_trade_status": str(clothing_item_object.in_pending_trade).lower()
             }
         )
 
     except Http404:
         pass
+
+@api_view(["POST"])
+def remove_pending_trade(request: HttpRequest) -> Response:
+    authenticated_user = authenticate_user(request)
+
+    if authenticated_user is None:
+        return Response({
+            "status": "BAD_REQEUST",
+            "message": "User credentials are not correct!",
+        })
     
+    try:
+        clothing_item_id = request.data["itemId"]
+        clothing_item_object = get_object_or_404(ClothingItem, id=int(clothing_item_id))
+        pending_trade_object = get_object_or_404(PendingTrade, acceptor=authenticated_user, item=clothing_item_object)
+        pending_trade_object.delete()
+
+        return Response(
+            {
+            "status": "OK",
+            "message": "pending trade deleted",
+            }
+        )
+    except Http404:
+        pass
