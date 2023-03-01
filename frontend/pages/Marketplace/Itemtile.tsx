@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Trading } from "./TradingPopup";
+import { useAuthUser } from "react-auth-kit";
 
 export interface Product {
     id: number;
@@ -22,14 +23,13 @@ export type tag = {
     readonly value: string;
     label: string;
   };
-
 export function Itemtile(product: Product) {
   /* , {trading}:boolean */
     const [open, setOpen] = useState(false);
-
+    const auth = useAuthUser();
     return(
     
-      <div key={product.id} className="group relative">
+      <div key={product.id} className="group relative rounded-md p-4 shadow">
         <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={setOpen}>
           <Transition.Child
@@ -74,15 +74,17 @@ export function Itemtile(product: Product) {
           </div>
         </Dialog>
         </Transition.Root>
-        <button type="button"
-        className="z-50 rounded-md bg-white p-2 text-gray-400"
-        onClick={() => setOpen(true)}>
-          <div className="group relative rounded-md p-4 shadow">
-            <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                <img src={product.image}
-                    className="h-full w-full object-cover object-center lg:h-full lg:w-full"/>
+            <div className="min-h-80 aspect-w-3 aspect-h-4 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-80">
+              <img
+                tabIndex={1}
+                src={product.image}
+                className={auth() ? "h-full w-full object-cover object-center" : "blur-lg lg:h-full lg:w-full"}
+                onClick={() => setOpen(true)}
+                
+              />
             </div>
-            <div className="mt-4 flex justify-between">
+
+        <div className="mt-2 flex justify-between">
             <div>
               <h3 className="text-sm text-gray-700">
                 <a href={product.href}>
@@ -94,8 +96,6 @@ export function Itemtile(product: Product) {
               </p>
             </div>
           </div>
-          </div>
-        </button>
   
       </div>
     )
