@@ -34,6 +34,8 @@ interface ProfileData {
   level: number;
 }
 
+
+
 function Profile() {
   const [trades, setTrades] = useState<Trade[]>([]);
   const [profileData, setProfileData] = useState<ProfileData>();
@@ -106,6 +108,16 @@ function Profile() {
           </button>
         </div>
       </div>
+      {/* {
+        data.map((s) => (
+            <h1>{s}</h1>
+        ))
+      }
+
+      {
+         */}
+      {/* } */}
+
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
         <div className="flex w-full flex-col space-y-2 pt-2">
@@ -129,7 +141,7 @@ function Profile() {
           <div className="flex h-12 w-full">
             <div className="h-full w-2/12">
               <div className="flex h-12 w-12 items-center rounded-full bg-blue-500">
-                <BookOpenIcon className="stroke-white stroke-[1.9]" />
+                <BookOpenIcon className="stroke-white m-auto w-10 h-10" />
               </div>
             </div>
             <div className="flex h-full w-6/12 items-start">
