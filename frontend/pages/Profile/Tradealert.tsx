@@ -42,8 +42,8 @@ function Tradealert(trade: Trade) {
       className=
       {
         tradeState
-        ? "light:text-blue-500 light:bg-gray-800 light:border-blue-500 mb-4 flex border-t-4 border-green-500 bg-white p-4 text-green-500"
-        : "light:text-blue-500 light:bg-gray-800 light:border-blue-500 mb-4 flex border-t-4 border-blue-500 bg-white p-4 text-blue-500"
+        ? "light:text-blue-500 light:bg-gray-800 light:border-blue-500 mb-4 flex border-t-4 border-b-4 border-green-500 bg-white p-4 text-green-500"
+        : "light:text-blue-500 light:bg-gray-800 light:border-blue-500 mb-4 flex border-t-4 border-b-4 border-blue-500 bg-white p-4 text-blue-500"
         }
     role="alert"
     >
