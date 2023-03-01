@@ -123,7 +123,7 @@ const locations: Location[] = [
   {
     id: 10,
     colour: "bg-teal-600",
-    place: "Queen&apos;s",
+    place: "Queen's",
     icon: NewspaperIcon,
     trades: 3,
   },
