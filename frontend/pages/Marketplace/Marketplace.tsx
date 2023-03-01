@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Trading from "./trading";
-import { Product, tag } from "./Itemtile";
+import { Itemtile, Product, tag } from "./Itemtile";
 import Select from "react-select";
 
 function Marketplace() {
@@ -79,9 +78,10 @@ function Marketplace() {
                     searchState
                   )
                 )
-                .map((product) => <Trading key={product.id} {...product} />)
+                .map((product) => <Itemtile key={product.id} {...product} />)
             : products.map((product) => (
-                <Trading key={product.id} {...product} />
+                <Itemtile key={product.id} {...product}/>
+                /*  trading={true} */
               ))}
         </div>
       </div>
