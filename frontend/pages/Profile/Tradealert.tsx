@@ -39,6 +39,22 @@ function Tradealert(trade: Trade) {
         data-dismiss-target="#alert-border-3"
         aria-label="Close"
       >
+        <div className="ml-1 text-sm font-medium">Accept</div>
+      </button>
+      <button
+        type="button"
+        className="-mx-4.0 w-23 light:bg-gray-800 light:text-green-400 light:hover:bg-gray-700 -my-1.5 ml-auto inline-flex h-8 rounded-lg bg-white p-1.5 text-green-700 hover:bg-white focus:ring-2 focus:ring-green-700"
+        data-dismiss-target="#alert-border-3"
+        aria-label="Close"
+      >
+        <div className="ml-1 text-sm font-medium">Deny</div>
+      </button>
+      <button
+        type="button"
+        className="-mx-4.0 w-23 light:bg-gray-800 light:text-green-400 light:hover:bg-gray-700 -my-1.5 ml-auto inline-flex h-8 rounded-lg bg-white p-1.5 text-green-700 hover:bg-white focus:ring-2 focus:ring-green-700"
+        data-dismiss-target="#alert-border-3"
+        aria-label="Close"
+      >
         <div className="ml-1 text-sm font-medium">View</div>
       </button>
     </div>
