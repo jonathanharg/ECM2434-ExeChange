@@ -22,14 +22,8 @@ import Tradealert from "./Tradealert";
 import { Location } from "./Badge";
 import Badge from "./Badge";
 import { create } from "domain";
+import { Trade } from "./Tradealert";
 
-export interface Trade {
-  id: number;
-  initiator: string;
-  location: string;
-  time: string;
-  date: string;
-}
 
 interface ProfileData {
   levelPercent: number;

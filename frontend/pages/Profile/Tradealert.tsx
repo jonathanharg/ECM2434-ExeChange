@@ -1,11 +1,12 @@
 import React from "react";
 
-interface Trade {
+export interface Trade {
   id: number;
   initiator: string;
   location: string;
   time: string;
   date: string;
+  itemId: string,
 }
 
 function Tradealert(trade: Trade) {
@@ -30,7 +31,7 @@ function Tradealert(trade: Trade) {
         />
       </svg>
       <div className="ml-3 text-sm font-medium">
-        Trade Alert! User {trade.initiator} would like to trade at{" "}
+        Trade Alert! User {trade.initiator} would like [item id: {trade.itemId}] to trade at{" "}
         {trade.location} on {trade.date} at {trade.time} !
       </div>
       <button
