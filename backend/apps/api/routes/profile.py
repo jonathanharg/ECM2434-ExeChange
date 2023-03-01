@@ -85,6 +85,7 @@ def confirm_pending_trade(request: HttpRequest) -> Response:
         return Response({
             "status": "OK",
             "message": "success",
+            "pending_status": str(clothing_item_object.in_pending_trade).replace("T", "t")
         })
 
     except Http404:
@@ -104,6 +105,8 @@ def get_pending_trade_status(request: HttpRequest) -> Response:
         clothing_item_id = request.data["itemId"]
 
         clothing_item_object = get_object_or_404(ClothingItem, id=int(clothing_item_id))
+
+        print("Hello")
 
         return Response(
             {
