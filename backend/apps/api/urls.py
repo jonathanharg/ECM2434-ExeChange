@@ -20,4 +20,6 @@ urlpatterns = [
     path("trade", trading.trade),
     path("pendingtrades", profile.trade_requests),
     path("profiledata", profile.get_profile_data),
+    path("confirmpendingtrade", profile.confirm_pending_trade),
+    path("getpendingtradestatus", profile.get_pending_trade_status)
 ]
