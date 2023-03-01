@@ -1,19 +1,35 @@
 import React from "react";
+import {
+  ChatBubbleLeftRightIcon,
+  PowerIcon,
+  CameraIcon,
+  UserGroupIcon,
+  BookOpenIcon,
+  CloudIcon,
+  DocumentChartBarIcon,
+  BuildingLibraryIcon,
+  RocketLaunchIcon,
+  NewspaperIcon,
+  BuildingOffice2Icon,
+  FilmIcon,
+  MoonIcon,
+  BeakerIcon,
+  LightBulbIcon,
+  TicketIcon,
+} from "@heroicons/react/24/outline";
 
-interface Location {
+export interface Location {
+  id: number;
   colour: string;
   place: string;
-  icon: string;
+  icon: React.ForwardRefExoticComponent<
+    React.SVGProps<SVGSVGElement> & {
+      title?: string | undefined;
+      titleId?: string | undefined;
+    }
+  >;
   trades: number;
 }
-
-const location = [
-  {
-  "colour" : "bg-yellow-400",
-  "place" : "Lafrowda",
-  "icon" : "UserGroupIcon",
-  "trades" : 3}
-]
 
 function Badge(location: Location) {
   const thiscolour =
@@ -24,7 +40,10 @@ function Badge(location: Location) {
       <div className="flex h-12 w-full">
         <div className="h-full w-2/12">
           <div className={thiscolour}>
-            {React.createElement(location.icon, {className:"stroke-white m-auto w-10 h-10"})}
+            {/* {location.icon} */}
+            {React.createElement(location.icon, {
+              className: "stroke-white m-auto w-10 h-10",
+            })}
           </div>
         </div>
         <div className="flex h-full w-6/12 items-start">
