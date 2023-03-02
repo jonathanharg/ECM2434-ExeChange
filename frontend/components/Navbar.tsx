@@ -17,6 +17,7 @@ import { useIsAuthenticated, useAuthUser, useSignOut } from "react-auth-kit";
 const navigation = [
   { name: "Home", to: "/" },
   { name: "Marketplace", to: "/marketplace" },
+  { name: "Upload", to: "/upload" },
 ];
 
 export default function Navbar() {
