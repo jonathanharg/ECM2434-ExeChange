@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState, createElement } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ChatBubbleLeftRightIcon,
   PowerIcon,
@@ -21,10 +21,7 @@ import { UserCircleIcon } from "@heroicons/react/24/outline";
 import Tradealert from "./Tradealert";
 import { Location } from "./Badge";
 import Badge from "./Badge";
-import { create } from "domain";
 import { Trade } from "./Tradealert";
-import axios from "axios";
-
 
 interface ProfileData {
   levelPercent: number;

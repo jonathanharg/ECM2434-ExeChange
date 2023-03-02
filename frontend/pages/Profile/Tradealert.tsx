@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export interface Trade {
   id: number;
@@ -7,32 +7,36 @@ export interface Trade {
   location: string;
   time: string;
   date: string;
-  itemId: string,
+  itemId: string;
 }
 
 function Tradealert(trade: Trade) {
-
-  const[tradeState, setTradeState] = useState<boolean>(false);
+  const [tradeState, setTradeState] = useState<boolean>(false);
 
   function postToTrade(apiPath: string) {
     const itemId = trade.itemId;
-    const date = trade.date
-    const location = trade.location
-    const time = trade.time
-    const initiator = trade.initiator
-    axios.post(apiPath, JSON.stringify({itemId, date, location, time, initiator}), {
-      headers: {"Content-Type": "application/json"},
-      withCredentials: true,
-    })
-    .then((response) => {
-      if (response.data.status == "OK") {
-        setTradeState(response.data.pending_status)
-        return;
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    const date = trade.date;
+    const location = trade.location;
+    const time = trade.time;
+    const initiator = trade.initiator;
+    axios
+      .post(
+        apiPath,
+        JSON.stringify({ itemId, date, location, time, initiator }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        if (response.data.status == "OK") {
+          setTradeState(response.data.pending_status);
+          return;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   // useEffect(() => {
@@ -42,13 +46,12 @@ function Tradealert(trade: Trade) {
   return (
     <div
       id="alert-border-3"
-      className=
-      {
+      className={
         tradeState
-        ? "light:text-blue-500 light:bg-gray-800 light:border-blue-500 mb-4 flex border-4 border-green-500 bg-white p-4 text-green-500"
-        : "light:text-blue-500 light:bg-gray-800 light:border-blue-500 mb-4 flex border-4 border-blue-500 bg-white p-4 text-blue-500"
-        }
-    role="alert"
+          ? "light:text-blue-500 light:bg-gray-800 light:border-blue-500 mb-4 flex border-4 border-green-500 bg-white p-4 text-green-500"
+          : "light:text-blue-500 light:bg-gray-800 light:border-blue-500 mb-4 flex border-4 border-blue-500 bg-white p-4 text-blue-500"
+      }
+      role="alert"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -65,15 +68,17 @@ function Tradealert(trade: Trade) {
         />
       </svg>
       <div className="ml-3 text-sm font-medium">
-        Trade Alert! User {trade.initiator} would like [item id: {trade.itemId}] to trade at{" "}
-        {trade.location} on {trade.date} at {trade.time} !
+        Trade Alert! User {trade.initiator} would like [item id: {trade.itemId}]
+        to trade at {trade.location} on {trade.date} at {trade.time} !
       </div>
       <button
         type="button"
         className="-mx-4.0 w-23 light:bg-gray-800 light:text-green-400 light:hover:bg-gray-700 -my-1.5 ml-auto inline-flex h-8 rounded-lg bg-white p-1.5 text-black hover:bg-white focus:ring-2 focus:ring-black"
         data-dismiss-target="#alert-border-3"
         aria-label="Close"
-        onClick={() => {postToTrade("/api/confirmpendingtrade")}}
+        onClick={() => {
+          postToTrade("/api/confirmpendingtrade");
+        }}
       >
         <div className="ml-1 text-sm font-medium">Accept</div>
       </button>
@@ -82,7 +87,9 @@ function Tradealert(trade: Trade) {
         className="-mx-4.0 w-23 light:bg-gray-800 light:text-green-400 light:hover:bg-gray-700 -my-1.5 ml-auto inline-flex h-8 rounded-lg bg-white p-1.5 text-black hover:bg-white focus:ring-2 focus:ring-black"
         data-dismiss-target="#alert-border-3"
         aria-label="Close"
-        onClick={() => {postToTrade("/api/removependingtrade")}}
+        onClick={() => {
+          postToTrade("/api/removependingtrade");
+        }}
       >
         <div className="ml-1 text-sm font-medium">Deny</div>
       </button>
