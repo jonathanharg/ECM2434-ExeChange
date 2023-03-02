@@ -5,8 +5,7 @@
 1. **Install** [poetry](https://python-poetry.org/docs/#installing-with-the-official-installer)
 2. **Install** [Node.js/NPM v19.6.0](https://nodejs.org/en/) (steps to install Node will depend on your system, recommended to use a package manager like [brew](https://formulae.brew.sh/formula/node)).
 3. **Install** [PostgreSQL](https://formulae.brew.sh/formula/postgresql@14).
-
-> Windows can encounter some issues installing Poetry, therefore if you are not intending to contribute towards it is recommended to run ExeChange using [docker](#running-production-with-docker).
+4. Run the following shell commands
 
 ```shell
 cd ExeChange
@@ -15,11 +14,13 @@ poetry install                              # Installs packages for python/djang
 npm install                                 # Installs packages for typescript/vite/react frontend
 ```
 
-4. :bangbang: **Before running anything** copy `.env.example` to `.env` and change any relevant settings. :bangbang:
+4. :bangbang: Before running anything **copy** `.env.example` to `.env` and change any relevant settings. :bangbang:
+
+> Windows can encounter some issues installing Poetry, therefore if you are not intending to contribute towards it is recommended to run ExeChange using [docker](#running-production-with-docker).
 
 ## Running Development Locally
 
-In **two seperate** terminal windows run the following commands:
+1. In **two seperate** terminal windows run the following commands:
 
 First terminal:
 
@@ -34,11 +35,13 @@ Second terminal:
 npm run dev     # Render the React frontend (.tsx, css, react components)
 ```
 
-Now visit <http://127.0.0.1:8000/> to view the website
+2. Now visit <http://127.0.0.1:8000/> to view the website
 
 > Note, various django aliases have been made in `pyproject.toml`. To run any other commands from manage.py use `poetry run python backend/manage.py`
 
 ## Running Production Locally
+
+1. Run the following shell commands
 
 ```shell
 npm run build           # Compiles the frontend into singular .js & .css files
@@ -46,7 +49,7 @@ poetry run build        # Collects all the static files Django needs to serve
 poetry run prod         # Runs the dynamic Django routes with gunicorn
 ```
 
-Now visit <http://127.0.0.1:8000/> to view the website.
+2. Now visit <http://127.0.0.1:8000/> to view the website.
 
 If you want Django to serve static files change change `FORCE_SERVE_STATIC=True` (This should only be used for testing!). Otherwise, setup a webserver to serve the files in `backend/staticfiles` and map it to `www.yourdomain.com/static/`.
 
