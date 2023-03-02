@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Itemtile, Product, tag } from "./Itemtile";
-import Select from "react-select";
+import Itemtile from "./Itemtile";
+import { Product } from "./Itemtile";
+import TagSelect from "../../components/TagSelect";
 
 function Marketplace() {
   const [searchState, setSearchState] = useState(new Set<string>());
-  const [tags, setTags] = useState<tag[]>([]);
+
   const [products, setProducts] = useState<Product[]>([]);
 
   function fetchProducts() {
@@ -13,18 +14,9 @@ function Marketplace() {
       .then((data) => setProducts(data));
   }
 
-  function fetchTags() {
-    return fetch("/api/tags")
-      .then((response) => response.json())
-      .then((data) => setTags(data));
-  }
-
   useEffect(() => {
     fetchProducts();
-    fetchTags();
   }, []);
-
-  tags.map((i) => (i.label = i.value));
 
   function isSuperset(set, subset) {
     for (const elem of subset) {
@@ -33,22 +25,6 @@ function Marketplace() {
       }
     }
     return true;
-  }
-
-  function handleTag(e, meta) {
-    if (meta.action === "select-option") {
-      e.map((i) =>
-        setSearchState((searchState) => new Set([...searchState, i.value]))
-      );
-    } else if (meta.action === "pop-value" || meta.action === "remove-value") {
-      console.log(e.map((i) => i.value));
-      setSearchState(
-        (searchState) =>
-          new Set([...searchState].filter((x) => x == e.map((i) => i.value)))
-      );
-    } else if (meta.action === "clear") {
-      setSearchState(new Set());
-    }
   }
 
   return (
@@ -61,13 +37,7 @@ function Marketplace() {
           >
             Search by tag
           </label>
-          <Select
-            isMulti
-            options={tags}
-            className="basic-multi-select"
-            classNamePrefix="select"
-            onChange={(e, actionMeta) => handleTag(e, actionMeta)}
-          />
+          <TagSelect setState={setSearchState} state={searchState} />
         </div>
         <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-6">
           {searchState.size != 0

@@ -92,6 +92,11 @@ export function Itemtile(product: Product) {
                   {product.caption}
                 </a>
               </h3>
+              <h6>
+            <a href="#" className="mt-1 text-xs text-gray-700">
+              {product.owner.username}
+            </a>
+          </h6>
               <p className="mt-1 text-sm text-gray-500">
                 {product.tags.map((t) => t.value).join(", ")}
               </p>
@@ -101,3 +106,5 @@ export function Itemtile(product: Product) {
       </div>
     )
   }
+
+export default Itemtile;
