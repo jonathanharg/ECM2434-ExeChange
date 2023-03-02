@@ -251,10 +251,10 @@ export default function Navbar() {
                           <>
                             <Popover.Button
                               ref={setUploadButtonReference}
-                              className="group -m-2 flex items-center p-2 rounded-md bg-green-800 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-800"
+                              className="group -m-2 flex items-center rounded-md bg-green-800 p-2 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-800"
                             >
                               <ArrowUpTrayIcon
-                                className="h-5 w-5 flex-shrink-0 stroke-2 stroke-white-800 group-hover:stroke-white-600"
+                                className="stroke-white-800 group-hover:stroke-white-600 h-5 w-5 flex-shrink-0 stroke-2"
                                 aria-hidden="true"
                               />
                             </Popover.Button>

@@ -35,9 +35,7 @@ function Itemtile(product: Product) {
       <div className="mt-2 flex justify-between">
         <div>
           <h3 className="text-sm text-gray-700">
-            <a href={product.href}>
-              {product.caption}
-            </a>
+            <a href={product.href}>{product.caption}</a>
           </h3>
           <h6>
             <a href="#" className="mt-1 text-xs text-gray-700">

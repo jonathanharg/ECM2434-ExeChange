@@ -3,20 +3,32 @@
 
 from django.db import migrations
 
+
 def defaultTags(apps, schema_editor):
-    tags = ["Small", "Medium", "Large",
-             "Top", "Trouser", "Shirt", "Hat", "Dress", "Accessories", 
-             "Vintage", "Retro", "Streetwear", "Gorpcore"]
-    Tag = apps.get_model('api', 'ItemTag')
+    tags = [
+        "Small",
+        "Medium",
+        "Large",
+        "Top",
+        "Trouser",
+        "Shirt",
+        "Hat",
+        "Dress",
+        "Accessories",
+        "Vintage",
+        "Retro",
+        "Streetwear",
+        "Gorpcore",
+    ]
+    Tag = apps.get_model("api", "ItemTag")
     for tag in tags:
-        obj = Tag(value= tag)
+        obj = Tag(value=tag)
         obj.save()
+
 
 class Migration(migrations.Migration):
     dependencies = [
         ("api", "0001_initial"),
     ]
 
-    operations = [
-        migrations.RunPython(defaultTags)
-    ]
+    operations = [migrations.RunPython(defaultTags)]
