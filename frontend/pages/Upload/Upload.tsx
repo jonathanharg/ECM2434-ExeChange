@@ -37,8 +37,7 @@ function Upload() {
     setCaption("");
     setCheckedTerms(false);
     setCheckedUnderstand(false);
-    setSearchState(new Set());
-    <TagSelect setState={setSearchState} state={searchState} />;
+    
   };
 
   function resetFile() {
