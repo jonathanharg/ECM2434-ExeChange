@@ -1,6 +1,6 @@
 import React from "react";
 
-function Icon({ title, titleId, ...props }, svgRef) {
+function Icon({ ...props }, svgRef) {
   return React.createElement(
     "svg",
     Object.assign(
@@ -12,19 +12,9 @@ function Icon({ title, titleId, ...props }, svgRef) {
         stroke: "currentColor",
         "aria-hidden": "true",
         ref: svgRef,
-        "aria-labelledby": titleId,
       },
       props
     ),
-    title
-      ? React.createElement(
-          "title",
-          {
-            id: titleId,
-          },
-          title
-        )
-      : null,
     React.createElement("path", {
       d: "M66.41,96.19L12.61,9.26h53.16l31.18,58.49h0.97l30.7-58.49H180l-54.13,85.64l53.64,87.58h-51.22l-32.96-59.95h-0.97l-32.48,59.95H12.12L66.41,96.19z",
     })

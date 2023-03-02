@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Itemtile from "./Itemtile";
-import { Product, tag } from "./Itemtile";
+import { Product } from "./Itemtile";
 import TagSelect from "../../components/TagSelect";
 
 function Marketplace() {

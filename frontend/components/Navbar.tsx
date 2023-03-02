@@ -17,14 +17,13 @@ import { useIsAuthenticated, useAuthUser, useSignOut } from "react-auth-kit";
 const navigation = [
   { name: "Home", to: "/" },
   { name: "Marketplace", to: "/marketplace" },
-  { name: "Upload", to: "/upload" },
 ];
 
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(false);
-  let [uploadButtonReference, setUploadButtonReference] = useState();
-  let [uploadPopupElement, setUploadPopupElement] = useState();
-  let { styles, attributes } = usePopper(
+  const [uploadButtonReference, setUploadButtonReference] = useState();
+  const [uploadPopupElement, setUploadPopupElement] = useState();
+  const { styles, attributes } = usePopper(
     uploadButtonReference,
     uploadPopupElement
   );

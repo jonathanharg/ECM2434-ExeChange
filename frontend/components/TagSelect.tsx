@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { tag } from "../pages/Marketplace/Itemtile";
+import PropTypes from "prop-types";
 
 // the TagSelect function needs a the state of search and a setter for search
 export default function TagSelect({ setState, state }) {
@@ -51,3 +52,8 @@ export default function TagSelect({ setState, state }) {
     />
   );
 }
+
+TagSelect.propTypes = {
+  setState: PropTypes.func.isRequired,
+  state: PropTypes.object,
+};
