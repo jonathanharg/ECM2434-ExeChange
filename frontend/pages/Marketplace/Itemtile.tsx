@@ -18,6 +18,7 @@ export type owner = {
 export type tag = {
   id: number;
   readonly value: string;
+  label: string;
 };
 
 function Itemtile(product: Product) {
