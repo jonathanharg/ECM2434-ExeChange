@@ -16,7 +16,8 @@ function Upload() {
   const [image, setImage] = useState<File>();
   const [file, setFile] = useState<string>();
   const [completed, setCompleted] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const [checkedTerms, setCheckedTerms] = useState(false);
+  const [checkedUnderstand, setCheckedUnderstand] = useState(false);
   const fileRef = useRef(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -34,6 +35,8 @@ function Upload() {
     });
     setImage(undefined);
     setCaption("");
+    setCheckedTerms(false);
+    setCheckedUnderstand(false);
     setSearchState(new Set());
     <TagSelect setState={setSearchState} state={searchState} />;
   };
@@ -47,24 +50,20 @@ function Upload() {
     setFile(URL.createObjectURL(e.target.files[0]));
     console.log(e.target.files[0].type);
   }
-  function setCheck() {
-    setChecked(!checked);
-    terms();
-  }
+
   const terms = () => {
-    console.log(checked);
     if (
       !completed &&
       searchState.size > 0 &&
       image &&
       caption != "" &&
-      !checked
+      checkedTerms &&
+      checkedUnderstand
     ) {
       setCompleted(true);
     } else {
       setCompleted(false);
     }
-    console.log(completed);
   };
 
   useEffect(() => {
@@ -151,52 +150,61 @@ function Upload() {
                   placeholder="Caption"
                 />
               </div>
-              <div className="content-center text-center">
-                <input
-                  required
-                  id="link-checkbox"
-                  type="checkbox"
-                  value=""
-                  checked={checked}
-                  onChange={setCheck}
-                  className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-800 focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-green-600"
-                />
-                <label
-                  htmlFor="link-checkbox"
-                  className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-800"
-                >
-                  I agree with the{" "}
-                  <a
-                    href="#"
-                    className="text-green-800 hover:underline dark:text-green-700"
+              <div className="max-w-md text-left">
+                <div>
+                  <input
+                    required
+                    id="link-checkbox"
+                    type="checkbox"
+                    value=""
+                    checked={checkedTerms}
+                    onChange={() => {
+                      setCheckedTerms(!checkedTerms);
+                    }}
+                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-800 focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-green-600"
+                  />
+                  <label
+                    htmlFor="link-checkbox"
+                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-800"
                   >
-                    terms and conditions
-                  </a>
-                  .
-                </label>{" "}
-                <br></br>
-                <input
-                  required
-                  id="link-checkbox"
-                  type="checkbox"
-                  value=""
-                  checked={checked}
-                  onChange={setCheck}
-                  className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-800 focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-green-600"
-                />
-                <label
-                  htmlFor="link-checkbox"
-                  className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-800"
-                >
-                  I agree to freely trade my item as per the{" "}
-                  <a
-                    href="#"
-                    className="text-green-800 hover:underline dark:text-green-700"
+                    I agree with the{" "}
+                    <a
+                      href="#"
+                      className="text-green-800 hover:underline dark:text-green-700"
+                    >
+                      Terms & Conditions
+                    </a>{" "}
+                    and the{" "}
+                    <a
+                      href="#"
+                      className="text-green-800 hover:underline dark:text-green-700"
+                    >
+                      Privacy Policy
+                    </a>
+                    .
+                  </label>{" "}
+                </div>
+                <div className="mt-4">
+                  <input
+                    required
+                    id="link-checkbox"
+                    type="checkbox"
+                    value=""
+                    checked={checkedUnderstand}
+                    onChange={() => {
+                      setCheckedUnderstand(!checkedUnderstand);
+                    }}
+                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-800 focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-green-600"
+                  />
+                  <label
+                    htmlFor="link-checkbox"
+                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-800"
                   >
-                    privacy policy
-                  </a>
-                  .
-                </label>
+                    I understand that uploading my item means I am willing
+                    within a reasonable extent to give my item away to another
+                    user.
+                  </label>
+                </div>
               </div>
             </div>
 
