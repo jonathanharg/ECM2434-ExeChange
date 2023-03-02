@@ -302,3 +302,5 @@ export function Trading(product: Product) {
 }
 
 export default Trading;
+
+export default Trading;

@@ -57,6 +57,7 @@ warn_return_any = true
 show_error_codes = true
 warn_unused_ignores = true
 ignore_missing_imports = true
+exclude = ["backend/apps/api/migrations"]
 plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
 
 [tool.django-stubs]
