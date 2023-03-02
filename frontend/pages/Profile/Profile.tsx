@@ -19,20 +19,149 @@ import {
 } from "@heroicons/react/24/outline";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import Tradealert from "./Tradealert";
-
-export interface Trade {
-  id: number;
-  initiator: string;
-  location: string;
-  time: string;
-  date: string;
-}
+import { Location } from "./Badge";
+import Badge from "./Badge";
+import { Trade } from "./Tradealert";
 
 interface ProfileData {
   levelPercent: number;
   name: string;
   level: number;
 }
+
+const Components = {
+  ChatBubbleLeftRightIcon,
+  PowerIcon,
+  CameraIcon,
+  UserGroupIcon,
+  BookOpenIcon,
+  CloudIcon,
+  DocumentChartBarIcon,
+  BuildingLibraryIcon,
+  RocketLaunchIcon,
+  NewspaperIcon,
+  BuildingOffice2Icon,
+  FilmIcon,
+  MoonIcon,
+  BeakerIcon,
+  LightBulbIcon,
+  TicketIcon,
+};
+
+const locations: Location[] = [
+  {
+    id: 1,
+    colour: "bg-yellow-400",
+    place: "Lafrowda",
+    icon: UserGroupIcon,
+    trades: 3,
+  },
+  {
+    id: 2,
+    colour: "bg-blue-500",
+    place: "Library",
+    icon: BookOpenIcon,
+    trades: 4,
+  },
+  {
+    id: 3,
+    colour: "bg-orange-600",
+    place: "Holland Hall",
+    icon: CameraIcon,
+    trades: 3,
+  },
+  {
+    id: 4,
+    colour: "bg-purple-500",
+    place: "Sports Park",
+    icon: PowerIcon,
+    trades: 3,
+  },
+  {
+    id: 5,
+    colour: "bg-green-900",
+    place: "Forum",
+    icon: ChatBubbleLeftRightIcon,
+    trades: 2,
+  },
+  {
+    id: 6,
+    colour: "bg-pink-600",
+    place: "Mardon",
+    icon: CloudIcon,
+    trades: 3,
+  },
+  {
+    id: 7,
+    colour: "bg-blue-700",
+    place: "Peter Chalk",
+    icon: DocumentChartBarIcon,
+    trades: 3,
+  },
+  {
+    id: 8,
+    colour: "bg-gray-600",
+    place: "Reed Hall",
+    icon: BuildingLibraryIcon,
+    trades: 2,
+  },
+  {
+    id: 9,
+    colour: "bg-red-500",
+    place: "Physics Building",
+    icon: RocketLaunchIcon,
+    trades: 4,
+  },
+  {
+    id: 10,
+    colour: "bg-teal-600",
+    place: "Queen's",
+    icon: NewspaperIcon,
+    trades: 3,
+  },
+  {
+    id: 11,
+    colour: "bg-teal-900",
+    place: "Washington Singer",
+    icon: MoonIcon,
+    trades: 3,
+  },
+  {
+    id: 12,
+    colour: "bg-orange-800",
+    place: "Old Library",
+    icon: FilmIcon,
+    trades: 5,
+  },
+  {
+    id: 13,
+    colour: "bg-pink-700",
+    place: "Amory",
+    icon: BeakerIcon,
+    trades: 3,
+  },
+  {
+    id: 14,
+    colour: "bg-yellow-600",
+    place: "Innovation Centre",
+    icon: LightBulbIcon,
+    trades: 4,
+  },
+  {
+    id: 15,
+    colour: "bg-purple-800",
+    place: "Northcott Theatre",
+    icon: TicketIcon,
+    trades: 3,
+  },
+  {
+    id: 16,
+    colour: "bg-green-400",
+    place: "East Park",
+    icon: BuildingOffice2Icon,
+    trades: 3,
+  },
+];
 
 function Profile() {
   const [trades, setTrades] = useState<Trade[]>([]);
@@ -102,286 +231,16 @@ function Profile() {
             Halloween trader
           </button>
           <button className="font-ligth flex w-32 rounded-full bg-red-800 px-4 py-2 text-white">
-            5+ trades
+            5+ trades so far!
           </button>
         </div>
       </div>
+
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-yellow-400">
-                <UserGroupIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Lafrowda</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-blue-500">
-                <BookOpenIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Library</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="h-full w-2/12">
-                <div className="flex h-12 w-12 items-center rounded-full bg-orange-600">
-                  <CameraIcon className="stroke-white stroke-[1.9]" />
-                </div>
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Holland Hall</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-purple-500">
-                <PowerIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Sports Park</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-green-900">
-                <ChatBubbleLeftRightIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Forum</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-pink-600">
-                <CloudIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Mardon</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-blue-700">
-                <DocumentChartBarIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Peter Chalk</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-gray-600">
-                <BuildingLibraryIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Reed Hall</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-red-500">
-                <RocketLaunchIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Physics Building</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-teal-600">
-                <NewspaperIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Queen&apos;s</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-teal-900">
-                <MoonIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Washington Singer</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-orange-800">
-                <FilmIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Old Library</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-pink-700">
-                <BeakerIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Amory</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-yellow-600">
-                <LightBulbIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Innovation Centre</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-purple-800">
-                <TicketIcon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">Northcott Theatre</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                3 Trades
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col space-y-2 pt-2">
-          <div className="flex h-12 w-full">
-            <div className="h-full w-2/12">
-              <div className="flex h-12 w-12 items-center rounded-full bg-green-500">
-                <BuildingOffice2Icon className="stroke-white stroke-[1.9]" />
-              </div>
-            </div>
-            <div className="flex h-full w-6/12 items-start">
-              <p className="my-auto text-lg font-semibold">East park</p>
-            </div>
-            <div className="flex h-full w-4/12 items-end justify-end">
-              <button className="float-right my-auto flex rounded-md bg-red-600 px-5 py-1 font-medium text-white">
-                2 Trades
-              </button>
-            </div>
-          </div>
-        </div>
+        {locations.map((location) => (
+          <Badge key={location.id} {...location} />
+        ))}
       </div>
     </div>
   );
