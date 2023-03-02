@@ -256,7 +256,7 @@ export function Trading(product: Product) {
               </>
             )}
           </Listbox>
-          <div className="sm:ml-0 lg:ml-7 mt-[1.75rem]">
+          <div className="ml-7 mt-[1.75rem]">
             <Calendar onChange={onDatesChange} value={selectedDates} minDate={new Date()}/>
           </div>
           <button
