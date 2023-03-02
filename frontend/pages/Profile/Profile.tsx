@@ -231,7 +231,7 @@ function Profile() {
             Halloween trader
           </button>
           <button className="font-ligth flex w-32 rounded-full bg-red-800 px-4 py-2 text-white">
-            5+ trades
+            5+ trades so far!
           </button>
         </div>
       </div>
