@@ -76,6 +76,7 @@ export function Itemtile(product: Product) {
         </Transition.Root>
             <div className="min-h-80 aspect-w-3 aspect-h-4 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-80">
               <img
+                draggable= {false} 
                 tabIndex={1}
                 src={product.image}
                 className={auth() ? "h-full w-full object-cover object-center" : "blur-lg lg:h-full lg:w-full"}
