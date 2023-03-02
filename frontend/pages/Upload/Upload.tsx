@@ -142,7 +142,10 @@ function Upload() {
               </div>
               <div className="content-center text-center">
                 <input required id="link-checkbox" type="checkbox" value="" checked= {checked} onChange = {setCheck} className="w-4 h-4 text-green-800 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                <label htmlFor="link-checkbox" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree with the <a href="#" className="text-green-800 dark:text-green-700 hover:underline">terms and conditions</a>.</label>
+                <label htmlFor="link-checkbox" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-800">I agree with the <a href="#" className="text-green-800 dark:text-green-700 hover:underline">terms and conditions</a>.</label> <br></br>
+                <input required id="link-checkbox" type="checkbox" value="" checked= {checked} onChange = {setCheck} className="w-4 h-4 text-green-800 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                <label htmlFor="link-checkbox" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-800">I understand that by uploading an item, I agree to freely trade it as per our <a href="#" className="text-green-800 dark:text-green-700 hover:underline">privacy policy</a>.</label>
+
             </div>
             </div>
 
