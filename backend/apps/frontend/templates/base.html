@@ -4,6 +4,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/static/favicon-32.png" sizes="32x32" />
+    <link rel="icon" href="/static/favicon-128.png" sizes="128x128" />
+    <link rel="icon" href="/static/favicon-192.png" sizes="192x192" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="shortcut icon" sizes="192x192" href="/static/favicon-192.png" />
+    <link
+      rel="apple-touch-icon"
+      href="/static/favicon-180.png"
+      sizes="180x180"
+    />
     <title>ExeChange</title>
 
     {% if debug %}
@@ -19,11 +29,11 @@
     </script>
     {% endif %}
   </head>
+
   <body>
     <div id="root"></div>
 
     {% if debug %}
-    <!-- This url will be different for each type of app. Point it to your main js file. -->
     <script type="module" src="http://localhost:5173/main.tsx"></script>
     {% else %} {% render_vite_bundle %} {% endif %}
   </body>

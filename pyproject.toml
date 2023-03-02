@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "backend"
 version = "0.1.0"
-description = ""
-authors = ["Jonathan Hargreaves <32854503+jonathanharg@users.noreply.github.com>"]
+description = "The Django based backend for ExeChange"
+authors = ["Jonathan Hargreaves <jih208@exeter.ac.uk>", "Harry Findlay <hf362@exeter.ac.uk>", "Augustijn Vrolijk av407@exeter.ac.uk", "Maddie Hansford mh1047@exeter.ac.uk", "Vihan Sharma vs378@exeter.ac.uk", "Gabriella Clifton gmc217@exeter.ac.uk"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -11,6 +11,9 @@ django = "^4.1.6"
 djangorestframework = "^3.14.0"
 gunicorn = "^20.1.0"
 python-dotenv = "^0.21.1"
+djangorestframework-simplejwt = "^5.2.2"
+pillow = "^9.4.0"
+psycopg2 = "^2.9.5"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -23,10 +26,24 @@ pylint = "^2.16.1"
 pylint-django = "^2.5.3"
 pytest-django = "^4.5.2"
 django-stubs = "^1.14.0"
+autopep8 = "^2.0.1"
+djangorestframework-stubs = "^1.8.0"
+types-pillow = "^9.4.0.17"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+dev = "backend.scripts:runserver"
+shell = "backend.scripts:runshell"
+format = "backend.scripts:black"
+check-format = "backend.scripts:black_check"
+migrate = "backend.scripts:migrate"
+build = "backend.scripts:build"
+prod = "backend.scripts:run_prod"
+makemigrations = "backend.scripts:make_migrations"
+admin = "backend.scripts:create_super_user"
 
 [tool.isort]
 profile = "black"
@@ -39,20 +56,23 @@ check_untyped_defs = true
 warn_return_any = true
 show_error_codes = true
 warn_unused_ignores = true
-# plugins = ["mypy_django_plugin.main"]
+ignore_missing_imports = true
+exclude = ["backend/apps/api/migrations"]
+plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
 
-# [tool.django-stubs]
-# django_settings_module = "backend.backend.settings"
+[tool.django-stubs]
+django_settings_module = "backend.settings"
 
 [tool.pylint.master]
 load-plugins = ["pylint_django"]
 django-settings-module = "backend.settings"
+ignore="apps/api/migrations"
 
 [tool.pylint.format]
 max-line-length = 125
 
 [tool.pylint.messages_control]
-disable = ["missing-docstring", "invalid-name"]
+disable = ["missing-docstring", "invalid-name", "imported-auth-user", "too-many-return-statements"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "backend.settings"

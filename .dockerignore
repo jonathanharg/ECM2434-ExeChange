@@ -5,8 +5,9 @@
 .prettierrc.json
 .venv
 backend/staticfiles
-node_moduels
+node_modules
 frontend/dist
+frontend/coverage
 nginx
 documentation
 

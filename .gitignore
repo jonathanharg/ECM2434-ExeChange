@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+frontend/coverage
 dist
 dist-ssr
 *.local
@@ -68,6 +69,7 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 backend/staticfiles
+backend/media
 
 # Celery stuff
 celerybeat-schedule
@@ -113,3 +115,8 @@ cython_debug/
 *.njsproj
 *.sln
 *.sw?
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

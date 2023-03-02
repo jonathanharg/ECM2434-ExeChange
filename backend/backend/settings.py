@@ -12,8 +12,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 import sys
+from datetime import timedelta
 from pathlib import Path
 
+# Load environment variables from the users .env file
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -29,7 +31,19 @@ sys.path.insert(0, APPS_DIR)
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+DEFAULT_SECRET_KEY = (
+    "django-insecure-ep*!1h*9o8wd936&ys3qws35j3f1at@ncqfdld@)i25!kp77-l"
+)
+SECRET_KEY = os.getenv("SECRET_KEY", DEFAULT_SECRET_KEY)
+
+if SECRET_KEY == DEFAULT_SECRET_KEY:
+    # Building the docker image errors when it builds if there is no SECRET_KEY set
+    # Here we set the secret key to a default, this is overwritten by environment variables
+    # Warn the user if the default secret key is not overwritten.
+    print("WARNING! No SECRET_KEY set!")
+    print(
+        "If you are running in production stop the server IMMEDIATELY and set the SECRET_KEY using an environment variable!"
+    )
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
@@ -47,6 +61,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework_simplejwt",
     "apps.frontend",
     "apps.api",
 ]
@@ -60,6 +75,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
 
 ROOT_URLCONF = "backend.urls"
 
@@ -85,13 +101,47 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+USE_POSTGRES_DB = os.getenv("USE_POSTGRES_DB", "False") == "True"
+POSTGRES_NAME = os.getenv("POSTGRES_NAME")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT")
+POSTGRES_USER = os.getenv("POSTGRES_USER")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+
 DATABASES = {
-    "default": {
+    "dev": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
-    }
+    },
+    "production": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": POSTGRES_NAME,
+        "HOST": POSTGRES_HOST,
+        "PORT": POSTGRES_PORT,
+        "USER": POSTGRES_USER,
+        "PASSWORD": POSTGRES_PASSWORD,
+    },
 }
 
+DATABASES["default"] = DATABASES["production" if (USE_POSTGRES_DB) else "dev"]
+
+# Rest Framework Options
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
+
+# Simple JWT Options
+SIMPLE_JWT = {
+    "SIGNING_KEY": SECRET_KEY,
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
+    "AUTH_HEADER_TYPES": ("Bearer"),
+    "AUTH_HEADER_NAME": "_auth",
+}
+
+# Setting AUTH_USER_MODEL to customer made model
+AUTH_USER_MODEL = "api.ExeChangeUser"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -126,14 +176,14 @@ USE_TZ = True
 # These are the settings you should have for everything to work properly.
 # Add these to your main settings.py file, or modify it accordingly.
 
-# Needed for production. Avoid using '*'.
+# Hosts that Django will accept requests to
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(" ")
 
 # Needed for 'debug' to be available inside templates.
 # https://docs.djangoproject.com/en/3.2/ref/templates/api/#django-template-context-processors-debug
 INTERNAL_IPS = ["127.0.0.1"]
 
-# Vite App Dir: point it to the folder your vite app is in.
+# Vite App Dir: Let Django know where the frontend files are
 VITE_APP_DIR = BASE_DIR_FRONTEND / "frontend"
 
 # Static files (CSS, JavaScript, Images)
@@ -143,16 +193,21 @@ VITE_APP_DIR = BASE_DIR_FRONTEND / "frontend"
 # If it's not, collectstatic won't copy your bundle to production.
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    VITE_APP_DIR / "dist",
-]
+STATICFILES_DIRS = [VITE_APP_DIR / "dist", BASE_DIR / "media"]
 
 if DEBUG:
+    # Serve all static files from the frontend in debug mode
     STATICFILES_DIRS.append(VITE_APP_DIR)
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Custom setting values
+
+XP_IN_LEVEL = 100
