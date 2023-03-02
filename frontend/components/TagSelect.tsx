@@ -44,16 +44,17 @@ export default function TagSelect({ setState, state }) {
           "input:focus": {
             boxShadow: "none",
           },
-        })}}
-        theme={(theme) => ({
-          ...theme,
-          colors: {
+        }),
+      }}
+      theme={(theme) => ({
+        ...theme,
+        colors: {
           ...theme.colors,
-            text: '#dc2626',
-            primary25: '#dcfce7',
-            primary: '#166534',
-          },
-        })}
+          text: "#dc2626",
+          primary25: "#dcfce7",
+          primary: "#166534",
+        },
+      })}
       className="basic-multi-select"
       classNamePrefix="select"
       onChange={(e, actionMeta) => handleTag(e, actionMeta)}

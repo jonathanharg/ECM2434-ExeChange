@@ -97,6 +97,7 @@ export default function Navbar() {
                         <Link
                           to="/login"
                           className="-m-2 block p-2 font-medium text-gray-900"
+                          onClick={() => setOpenMenu(false)}
                         >
                           Login
                         </Link>
@@ -105,6 +106,7 @@ export default function Navbar() {
                         <Link
                           to="/register"
                           className="-m-2 block p-2 font-medium text-gray-900"
+                          onClick={() => setOpenMenu(false)}
                         >
                           Register
                         </Link>
@@ -117,6 +119,7 @@ export default function Navbar() {
                         <Link
                           to="/profile"
                           className="-m-2 flex items-center p-2"
+                          onClick={() => setOpenMenu(false)}
                         >
                           <UserCircleIcon className="block h-auto w-5 flex-shrink-0" />
                           <span className="ml-3 block font-medium text-gray-900">

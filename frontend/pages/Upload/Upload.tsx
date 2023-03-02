@@ -37,7 +37,6 @@ function Upload() {
     setCaption("");
     setCheckedTerms(false);
     setCheckedUnderstand(false);
-    
   };
 
   function resetFile() {
@@ -210,7 +209,7 @@ function Upload() {
             <div className="bg-gray-100 px-4 py-3 text-right sm:px-6">
               <button
                 type="submit"
-                className= "inline-flex justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                className="inline-flex justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
                 <ArrowUpTrayIcon className="mr-2 h-4 w-4" /> Upload
               </button>

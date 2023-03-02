@@ -50,7 +50,7 @@ function Marketplace() {
                 )
                 .map((product) => <Itemtile key={product.id} {...product} />)
             : products.map((product) => (
-                <Itemtile key={product.id} {...product}/>
+                <Itemtile key={product.id} {...product} />
                 /*  trading={true} */
               ))}
         </div>
