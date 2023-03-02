@@ -57,7 +57,7 @@ function Marketplace() {
         <div className="mx-auto max-w-2xl">
           <label
             htmlFor="countries"
-            className="mb-2 block text-sm font-medium text-gray-400 dark:text-green-700"
+            className="mb-2 block text-sm font-medium text-gray-400 dark:text-green-800"
           >
             Search by tag
           </label>
