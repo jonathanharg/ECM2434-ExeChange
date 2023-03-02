@@ -29,25 +29,6 @@ interface ProfileData {
   level: number;
 }
 
-const Components = {
-  ChatBubbleLeftRightIcon,
-  PowerIcon,
-  CameraIcon,
-  UserGroupIcon,
-  BookOpenIcon,
-  CloudIcon,
-  DocumentChartBarIcon,
-  BuildingLibraryIcon,
-  RocketLaunchIcon,
-  NewspaperIcon,
-  BuildingOffice2Icon,
-  FilmIcon,
-  MoonIcon,
-  BeakerIcon,
-  LightBulbIcon,
-  TicketIcon,
-};
-
 const locations: Location[] = [
   {
     id: 1,

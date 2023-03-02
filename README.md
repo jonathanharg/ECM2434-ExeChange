@@ -2,9 +2,11 @@
 
 ## Installation
 
-First **install** [poetry](https://python-poetry.org/docs/#installing-with-the-official-installer) and [Node.js/npm v19.6.0](https://nodejs.org/en/) (steps to install Node will depend on your system, recommended to use a package manager like [brew](https://formulae.brew.sh/formula/node)).
+1. **Install** [poetry](https://python-poetry.org/docs/#installing-with-the-official-installer)
+2. **Install** [Node.js/NPM v19.6.0](https://nodejs.org/en/) (steps to install Node will depend on your system, recommended to use a package manager like [brew](https://formulae.brew.sh/formula/node)).
+3. **Install** [PostgreSQL](https://formulae.brew.sh/formula/postgresql@14).
 
-Windows can encounter some issues installing Poetry, therefore if you are not intending to contribute towards it is recommended to run ExeChange using [docker](#running-production-with-docker).
+> Windows can encounter some issues installing Poetry, therefore if you are not intending to contribute towards it is recommended to run ExeChange using [docker](#running-production-with-docker).
 
 ```shell
 cd ExeChange
@@ -13,7 +15,7 @@ poetry install                              # Installs packages for python/djang
 npm install                                 # Installs packages for typescript/vite/react frontend
 ```
 
-:bangbang: **Before running anything** copy `.env.example` to `.env` and change any relevant settings. :bangbang:
+4. :bangbang: **Before running anything** copy `.env.example` to `.env` and change any relevant settings. :bangbang:
 
 ## Running Development Locally
 
@@ -52,13 +54,18 @@ If you want Django to serve static files change change `FORCE_SERVE_STATIC=True`
 
 This builds the app into a lightweight virtual environment image so that it can consistently be deployed. Use this for hosting on sites like AWS, but this is overkill for testing the production environment. The default docker compose does not include a PostgreSQL database, as this is hosted separately by Amazon RDS. You can either setup your own PostgreSQL database or set `FORCE_DEBUG_DB=True` in your `.env` file to use the debug SQLite database.
 
-Make sure [Docker](https://docs.docker.com/get-docker/) (and docker-compose) are installed.
+1. Make sure [Docker](https://docs.docker.com/get-docker/) (and docker-compose) are installed.
+2. Copy the `.env` file. Set `DEBUG=False`, `FORCE_SERVE_STATIC=False` & `USE_POSTGRES_DB=False`
 
 ```shell
 docker-compose up   # Build and run the required Docker images.
 ```
 
-Now visit <http://localhost> to view the website. If you make any changes to the source code you may have to **delete the ExeChange docker volume** and force rebuild the images.
+Now visit <http://localhost> to view the website. If you make any changes to the source code you may have to **delete the ExeChange docker volume** and force rebuild the images with
+
+```shell
+docker-compose up --build --force-recreate
+```
 
 ## Technologies
 

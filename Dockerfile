@@ -42,5 +42,5 @@ COPY --from=python-base $PYSETUP_PATH $PYSETUP_PATH
 COPY --from=node-base /src/frontend/dist/ /app/frontend/dist/
 COPY --from=node-base /src/backend/ /app/backend/
 WORKDIR /app
-# RUN python ./backend/manage.py migrate && python ./backend/manage.py collectstatic
-RUN python ./backend/manage.py collectstatic
+RUN python ./backend/manage.py migrate && python ./backend/manage.py collectstatic
+# RUN python ./backend/manage.py collectstatic
