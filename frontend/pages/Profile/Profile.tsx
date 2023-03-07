@@ -22,6 +22,8 @@ import Tradealert from "./Tradealert";
 import { Location } from "./Badge";
 import Badge from "./Badge";
 import { Trade } from "./Tradealert";
+import Achievement from "./Achievement";
+import {Reward} from "./Achievement";
 
 interface ProfileData {
   levelPercent: number;
@@ -144,6 +146,22 @@ const locations: Location[] = [
   },
 ];
 
+const rewards = [{
+    id: 1,
+    text: "5 days in a row!",
+    colour: "bg-gray-800",
+},
+{
+    id: 2,
+    text: "Traded on Halloween!",
+    colour: "bg-green-800",
+},
+{
+    id: 3,
+    text: "ExeChanged 5 times!",
+    colour: "bg-red-800",
+},];
+
 function Profile() {
   const [trades, setTrades] = useState<Trade[]>([]);
   const [profileData, setProfileData] = useState<ProfileData>();
@@ -205,6 +223,9 @@ function Profile() {
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">My Achievements</p>
         <div className="flex w-full space-x-2 pt-2">
+            {rewards.map((reward) => (
+            <Achievement key={reward.id} {...reward} />
+            ))}
           <button className="font-ligth flex w-32 rounded-full bg-gray-800 px-4 py-2 text-white">
             5 days in a row
           </button>

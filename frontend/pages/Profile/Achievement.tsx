@@ -1,6 +1,7 @@
 import React from "react";
 
 export interface Reward {
+    id: number;
     text: string;
     colour: string;
 }
