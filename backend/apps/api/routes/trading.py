@@ -1,5 +1,11 @@
 from apps.api.authentication import authenticate_user
-from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade, TradeRequest
+from apps.api.models import (
+    ClothingItem,
+    ExeChangeUser,
+    Location,
+    PendingTrade,
+    TradeRequest,
+)
 from django.http import HttpRequest, JsonResponse
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
@@ -11,6 +17,7 @@ from rest_framework.status import (
     HTTP_401_UNAUTHORIZED,
 )
 
+
 @api_view(["POST"])
 def new(request: HttpRequest) -> Response:
     authenticated_user = authenticate_user(request)
@@ -20,18 +27,37 @@ def new(request: HttpRequest) -> Response:
             NOT_LOGGED_IN,
             status=HTTP_401_UNAUTHORIZED,
         )
-    
-    # We can ignore the type here since Django doesn't include it
-    form = request.data  # type: ignore
 
-    #check values exists, get_user is not self user
-    giving = form.getlist("giving[]")
-    get_items = list(map(lambda x: ClothingItem.objects.get(value=x), get_items))
-    to_user = get_object_or_404(ExeChangeUser, id=form["to_user"])
+    get_items = list(
+        map(lambda x: ClothingItem.objects.get(id=x), request.data["receiving"])
+    )
+    to_user = get_object_or_404(ExeChangeUser, id=request.data["to_user"])
+    day_availability = request.data["my_day_availability"][0]
+    # time_availability = request.data["my_time_availability"][0]
+    # location_availability = list(
+    #     map(
+    #         lambda x: Location.objects.get(name=x),
+    #         request.data["my_location_availability"],
+    #     )
+    # )
+
+    newobj = TradeRequest.objects.create(
+        from_user=authenticated_user,
+        to_user=to_user,
+        # giving=giving,
+        # receiving=get_items,
+        # from_location=location_availability,
+        # from_days=day_availability,  # BUGGED: TODO: BROKEN: FIXME: JANK: make this an array
+        # from_times=time_availability,
+    )
+    newobj.giving.set([])
+    newobj.receiving.set(get_items)
+
     print(to_user)
     print(get_items)
-    
+
     return Response()
+
 
 @api_view(["GET"])
 def requests(request: HttpRequest) -> Response:
@@ -42,8 +68,9 @@ def requests(request: HttpRequest) -> Response:
             NOT_LOGGED_IN,
             status=HTTP_401_UNAUTHORIZED,
         )
-    
-    return JsonResponse(TradeRequest.objects.all(), safe= False)
+
+    return JsonResponse(TradeRequest.objects.all(), safe=False)
+
 
 @api_view(["POST"])
 def trade(request: HttpRequest) -> Response:

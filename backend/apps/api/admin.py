@@ -8,8 +8,10 @@ from apps.api.models import (
 )
 from django.contrib import admin
 
+
 class ShowID(admin.ModelAdmin):
-    readonly_fields = ('id',)
+    readonly_fields = ("id",)
+
 
 admin.site.register(ExeChangeUser, ShowID)
 admin.site.register(ClothingItem, ShowID)

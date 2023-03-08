@@ -45,11 +45,25 @@ class ClothingItem(models.Model):
 
 
 class TradeRequest(models.Model):
-    from_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="trade_request_from")
-    to_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="trade_request_to")
+    from_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="trade_request_from",
+    )
+    to_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="trade_request_to",
+    )
     giving = models.ManyToManyField(ClothingItem, related_name="trade_request_giving")
-    receiving = models.ManyToManyField(ClothingItem, related_name="trade_request_receiving")
+    receiving = models.ManyToManyField(
+        ClothingItem, related_name="trade_request_receiving"
+    )
     from_location = models.ManyToManyField(Location)
+    from_days = models.DateField
+    # BUGGED: TODO: BROKEN: FIXME: JANK: make this an array
+    from_times = models.TimeField
+
 
 # class UserOffering():
 #     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
