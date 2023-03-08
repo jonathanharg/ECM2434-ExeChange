@@ -16,10 +16,10 @@ class ItemTag(models.Model):
 
 
 class Location(models.Model):
-    value = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=20, unique=True)
 
     def __str__(self) -> str:
-        return self.value
+        return self.name
 
 
 class ClothingItem(models.Model):
@@ -59,10 +59,11 @@ class TradeRequest(models.Model):
     receiving = models.ManyToManyField(
         ClothingItem, related_name="trade_request_receiving"
     )
-    from_location = models.ManyToManyField(Location)
-    from_days = models.DateField
-    # BUGGED: TODO: BROKEN: FIXME: JANK: make this an array
-    from_times = models.TimeField
+    from_locations = models.ManyToManyField(Location, related_name="trade_request_from_loc")
+    to_locations = models.ManyToManyField(Location, related_name="trade_request_to_loc")
+    # from_days = models.DateField
+    # # BUGGED: TODO: BROKEN: FIXME: JANK: make this an array
+    # from_times = models.TimeField
 
 
 # class UserOffering():

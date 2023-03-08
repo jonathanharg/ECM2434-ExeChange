@@ -37,23 +37,23 @@ def new(request: HttpRequest) -> Response:
     to_user = get_object_or_404(ExeChangeUser, id=request.data["to_user"])
     day_availability = request.data["my_day_availability"][0]
     # time_availability = request.data["my_time_availability"][0]
-    # location_availability = list(
-    #     map(
-    #         lambda x: Location.objects.get(name=x),
-    #         request.data["my_location_availability"],
-    #     )
-    # )
+    location_availability = list(
+        map(
+            lambda x: Location.objects.get(name=x),
+            request.data["my_location_availability"],
+        )
+    )
 
     newobj = TradeRequest.objects.create(
         from_user=authenticated_user,
         to_user=to_user,
-        # giving=giving,
-        # receiving=get_items,
         # from_location=location_availability,
         # from_days=day_availability,  # BUGGED: TODO: BROKEN: FIXME: JANK: make this an array
         # from_times=time_availability,
     )
     newobj.giving.set([])
+    newobj.to_locations.set([])
+    newobj.from_locations.set(location_availability)
     newobj.receiving.set(get_items)
 
     print(to_user)
