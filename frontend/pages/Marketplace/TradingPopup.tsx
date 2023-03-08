@@ -52,9 +52,9 @@ const times = [
 ];
 
 export function Trading(product: Product) {
-  const [selectedDates, onDatesChange] = useState(new Date());
-  const [selectedLocation, setSelectedLocation] = useState(locations[0]);
-  const [selectedTime, setSelectedTime] = useState(times[0]);
+  const [my_day_availability, onDatesChange] = useState(new Date());
+  const [my_location_availability, setSelectedLocation] = useState(locations[0]);
+  const [my_time_availability, setSelectedTime] = useState(times[0]);
   // const [profileData, setProfileData] = useState<typeof ProfileData>();
 
   // function fetchProfileData() {
@@ -74,18 +74,20 @@ export function Trading(product: Product) {
     // this function sends form data to /api/trade
     e.preventDefault();
 
-    const productOwnerId = product.owner.id;
-    const itemId = product.id;
+    const to_user = product.owner.id;
+    const recieving = [product.id];       // item(s) you are asking for 
+    const giving = [];                   // items you are giving in return 
 
     await axios
       .post(
-        "/api/trade",
+        "/api/trade/new",
         JSON.stringify({
-          productOwnerId,
-          selectedDates,
-          selectedTime,
-          selectedLocation,
-          itemId,
+          to_user,            //used to be productOwnerId
+          giving,
+          recieving,          //[] of itemIds
+          my_day_availability,
+          my_time_availability,
+          my_location_availability,
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -122,7 +124,7 @@ export function Trading(product: Product) {
         <section aria-labelledby="options-heading">
           <form method="POST" onSubmit={handleSubmit} className="">
             {/*Location drop down menu*/}
-            <Listbox value={selectedLocation} onChange={setSelectedLocation}>
+            <Listbox value={my_location_availability} onChange={setSelectedLocation}>
               {({ open }) => (
                 <>
                   <Listbox.Label className="block py-2 text-sm font-bold text-gray-700">
@@ -132,7 +134,7 @@ export function Trading(product: Product) {
                     <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-[#1d8d35] focus:outline-none focus:ring-1 focus:ring-[#1d8d35]  sm:text-sm">
                       <span className="flex items-center">
                         <span className="ml-3 block truncate">
-                          {selectedLocation.locationName}
+                          {my_location_availability.locationName}
                         </span>
                       </span>
                       <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
@@ -203,7 +205,7 @@ export function Trading(product: Product) {
 
             {/*Time picker*/}
 
-            <Listbox value={selectedTime} onChange={setSelectedTime}>
+            <Listbox value={my_time_availability} onChange={setSelectedTime}>
               {({ open }) => (
                 <>
                   <Listbox.Label className="mt-[1rem] block py-2 text-sm font-bold text-gray-700">
@@ -213,7 +215,7 @@ export function Trading(product: Product) {
                     <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-[#1d8d35]  focus:outline-none focus:ring-1 focus:ring-[#1d8d35] sm:text-sm">
                       <span className="flex items-center">
                         <span className="ml-3 block truncate">
-                          {selectedTime.time}
+                          {my_time_availability.time}
                         </span>
                       </span>
                       <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
@@ -284,7 +286,7 @@ export function Trading(product: Product) {
             <div className="ml-7 mt-[1.75rem]">
               <Calendar
                 onChange={onDatesChange}
-                value={selectedDates}
+                value={my_day_availability}
                 minDate={new Date()}
               />
             </div>
