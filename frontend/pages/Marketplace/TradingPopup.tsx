@@ -75,7 +75,7 @@ export function Trading(product: Product) {
     e.preventDefault();
 
     const to_user = product.owner.id;
-    const recieving = [product.id];       // item(s) you are asking for 
+    const receiving = [product.id];       // item(s) you are asking for 
     const giving = [];                   // items you are giving in return 
 
     await axios
@@ -84,7 +84,7 @@ export function Trading(product: Product) {
         JSON.stringify({
           to_user,            //used to be productOwnerId
           giving,
-          recieving,          //[] of itemIds
+          receiving,          //[] of itemIds
           my_day_availability,
           my_time_availability,
           my_location_availability,
