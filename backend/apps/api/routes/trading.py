@@ -1,11 +1,49 @@
 from apps.api.authentication import authenticate_user
-from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade
-from django.http import HttpRequest
+from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade, TradeRequest
+from django.http import HttpRequest, JsonResponse
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.status import (
+    HTTP_201_CREATED,
+    HTTP_400_BAD_REQUEST,
+    HTTP_401_UNAUTHORIZED,
+)
 
+@api_view(["POST"])
+def new(request: HttpRequest) -> Response:
+    authenticated_user = authenticate_user(request)
+
+    if authenticated_user is None:
+        return Response(
+            NOT_LOGGED_IN,
+            status=HTTP_401_UNAUTHORIZED,
+        )
+    
+    # We can ignore the type here since Django doesn't include it
+    form = request.data  # type: ignore
+
+    #check values exists, get_user is not self user
+    giving = form.getlist("giving[]")
+    get_items = list(map(lambda x: ClothingItem.objects.get(value=x), get_items))
+    to_user = get_object_or_404(ExeChangeUser, id=form["to_user"])
+    print(to_user)
+    print(get_items)
+    
+    return Response()
+
+@api_view(["GET"])
+def requests(request: HttpRequest) -> Response:
+    authenticated_user = authenticate_user(request)
+
+    if authenticated_user is None:
+        return Response(
+            NOT_LOGGED_IN,
+            status=HTTP_401_UNAUTHORIZED,
+        )
+    
+    return JsonResponse(TradeRequest.objects.all(), safe= False)
 
 @api_view(["POST"])
 def trade(request: HttpRequest) -> Response:
@@ -71,3 +109,9 @@ def trade(request: HttpRequest) -> Response:
                 "message": "item or acceptor object not found!",
             }
         )
+
+
+NOT_LOGGED_IN = {
+    "status": "NOT_LOGGED_IN",
+    "message": "You need to be logged in to trade.",
+}

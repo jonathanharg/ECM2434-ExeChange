@@ -15,6 +15,13 @@ class ItemTag(models.Model):
         return self.value
 
 
+class Location(models.Model):
+    value = models.CharField(max_length=20, unique=True)
+
+    def __str__(self) -> str:
+        return self.value
+
+
 class ClothingItem(models.Model):
     # Ignore the argument since Django errors without a filename variable.
     def image_post_path(self, filename: str) -> str:  # pylint: disable=unused-argument
@@ -35,6 +42,25 @@ class ClothingItem(models.Model):
 
     def __str__(self) -> str:
         return self.caption
+
+
+class TradeRequest(models.Model):
+    from_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="trade_request_from")
+    to_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="trade_request_to")
+    giving = models.ManyToManyField(ClothingItem, related_name="trade_request_giving")
+    receiving = models.ManyToManyField(ClothingItem, related_name="trade_request_receiving")
+    from_location = models.ManyToManyField(Location)
+
+# class UserOffering():
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     items = models.ManyToManyField(ClothingItem)
+#     locations = models.ManyToManyField(Location)
+#     days = models.ManyToManyField(models.DateField)
+#     times = models.ManyToManyField(models.TimeField)
+
+# class TradeRequest(models.Model):
+#     requester = models.ForeignKey(UserOffering)
+#     responder = models.ForeignKey(UserOffering)
 
 
 class PendingTrade(models.Model):
