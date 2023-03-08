@@ -1,4 +1,5 @@
 from apps.api.authentication import authenticate_user
+from django.core import serializers
 from apps.api.models import (
     ClothingItem,
     ExeChangeUser,
@@ -16,6 +17,8 @@ from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_401_UNAUTHORIZED,
 )
+
+from apps.api.serializer import TradeRequestSerializer
 
 
 @api_view(["POST"])
@@ -69,7 +72,15 @@ def requests(request: HttpRequest) -> Response:
             status=HTTP_401_UNAUTHORIZED,
         )
 
-    return JsonResponse(TradeRequest.objects.all(), safe=False)
+    from_user = TradeRequest.objects.filter(from_user=authenticated_user);
+    from_user_serializer = TradeRequestSerializer(from_user, many=True)
+    to_user = TradeRequest.objects.filter(to_user=authenticated_user);
+    to_user_serializer = TradeRequestSerializer(to_user, many=True)
+    data = {
+        "sent" : from_user_serializer.data,
+        "received": to_user_serializer.data
+    }
+    return JsonResponse(data, safe=False)
 
 
 @api_view(["POST"])
