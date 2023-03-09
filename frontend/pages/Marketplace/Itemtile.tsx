@@ -11,6 +11,7 @@ export interface Product {
   image: string;
   tags: tag[];
   owner: owner;
+  description: string;
 }
 
 export type owner = {

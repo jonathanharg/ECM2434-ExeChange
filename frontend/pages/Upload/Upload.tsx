@@ -18,6 +18,7 @@ function Upload() {
   const [completed, setCompleted] = useState(false);
   const [checkedTerms, setCheckedTerms] = useState(false);
   const [checkedUnderstand, setCheckedUnderstand] = useState(false);
+  const [description, setDescription] = useState("")
   const fileRef = useRef(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -26,6 +27,7 @@ function Upload() {
       caption: caption,
       tags: Array.from(searchState),
       image: image,
+      description: description
     };
 
     console.log(formData);
@@ -63,7 +65,7 @@ function Upload() {
       setCompleted(false);
     }
   };
-
+  
   useEffect(() => {
     terms;
   }, []);
@@ -147,6 +149,10 @@ function Upload() {
                   className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-green-800 focus:outline-none focus:ring-green-800 sm:text-sm"
                   placeholder="Caption"
                 />
+              </div>
+              <div>
+              <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Item description</label>
+                <textarea required id="message" className="row-span-4 block p-2.5 w-full text-sm text-gray-900  rounded-lg border border-gray-300 focus:ring-green-700 focus:border-green-800 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-800 dark:focus:border-green-800" placeholder="Be descriptive... but not more descriptive than a tweet" value={description} onChange={(e)=> setDescription(e.target.value)}></textarea>
               </div>
               <div className="max-w-md text-left">
                 <div>
