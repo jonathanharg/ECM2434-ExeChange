@@ -49,6 +49,13 @@ def gen_unique_code() -> str:
     return res
 
 
+def send_verification_email(user: ExeChangeUser):
+    """
+    This function will take an unverified user object and send an email to the email associated with the user
+    containing a link that will successfully verify the user onclick.
+    """
+    pass
+
 def authenticate_user(request: HttpRequest) -> ExeChangeUser | None:  # type: ignore
     """
     Authenticate a request with a given access token that is sent in the cookies.
