@@ -1,9 +1,11 @@
-from apps.api.authentication import gen_token, get_username
+from apps.api.authentication import gen_token, get_username, gen_unique_code
 from apps.api.models import ExeChangeUser
 from django.db.utils import IntegrityError
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from django.http import Http404
 
 
 @api_view(["POST"])
@@ -29,8 +31,16 @@ def register(request: HttpRequest) -> Response:
         try:
             # Generate new user and add to User database using django.auth User model
             new_user_username = get_username(email_address)
+
+            # Generating verification code for user
+            new_user_verification_code = gen_unique_code()
+
             new_user = ExeChangeUser.objects.create_user(
-                username=new_user_username, email=email_address, password=user_password
+                username=new_user_username,
+                email=email_address,
+                password=user_password,
+                verification_code=new_user_verification_code,
+                is_verified = False
             )
             new_user.save()
 
@@ -58,3 +68,37 @@ def register(request: HttpRequest) -> Response:
         }
 
     return Response(data)
+
+
+@api_view(["POST"])
+def verify(request: HttpRequest) -> Response:
+    username = request.data["username"]
+    verification_code = request.data["verification_code"]
+
+    try:
+        # get user object to verify
+        user_to_verify = get_object_or_404(ExeChangeUser, username=username)
+
+        # verification code from user object
+        user_to_verify_code = user_to_verify.verification_code
+
+        if verification_code == user_to_verify_code:
+            # verification is correct
+            user_to_verify.is_verified = True
+            user_to_verify.save()
+
+            return Response({
+                "status": "OK",
+                "message": "user verified"
+            })
+        else:
+            return Response({
+                "status": "BAD_REQUEST",
+                "message": "code sent is not correct"
+            })
+
+    except Http404:
+        return Response({
+            "status": "BAD_REQUEST",
+            "message": "Sent username is wrong"
+        })
