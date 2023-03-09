@@ -21,14 +21,11 @@ function Profilestats() {
       }
 
       useEffect(() => {
-        
         fetchProfileData();
       }, []);
 
   return (
     <div className="flex items-center justify-between px-4 pt-12">
-        {/* <div className="flex h-24 w-24 items-center rounded-full bg-blue-600">
-        </div> */}
         <UserCircleIcon className="h-32 w-32" />
         <div className="flex w-9/12 items-center">
           <div className="flex w-10/12 flex-col pl-4 leading-none">
