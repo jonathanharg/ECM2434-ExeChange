@@ -1,10 +1,4 @@
-from apps.api.models import (
-    ClothingItem,
-    ExeChangeUser,
-    ItemTag,
-    Location,
-    Trade,
-)
+from apps.api.models import ClothingItem, ExeChangeUser, ItemTag, Location, Trade
 from django.contrib import admin
 
 

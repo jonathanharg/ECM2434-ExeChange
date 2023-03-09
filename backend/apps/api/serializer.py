@@ -27,6 +27,7 @@ class ClothingItemSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
+
 # TODO: Update
 class TradeSerializer(serializers.ModelSerializer):
     giver = UserSerializer()
@@ -35,4 +36,12 @@ class TradeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trade
         depth = 1
-        fields = ["id", "giver", "receiver", "giver_giving", "receiver_exchanging", "message"]
+        fields = [
+            "id",
+            "status",
+            "giver",
+            "receiver",
+            "giver_giving",
+            "receiver_exchanging",
+            "message",
+        ]

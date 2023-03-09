@@ -49,10 +49,10 @@ class ClothingItem(models.Model):
 
 class Trade(models.Model):
     class TradeStatuses(models.TextChoices):
-        PENDING = "P", _("Pending")     # No reply yet from giver
-        REJECTED = "R", _("Rejected")   # Either giver/receiver declines/withdraws
-        UPCOMING = "U", _("Upcoming")   # Both agreed to make the exechange
-        ACCEPTED = "A", _("Accepted")   # Trade has been made
+        PENDING = "P", _("Pending")  # No reply yet from giver
+        REJECTED = "R", _("Rejected")  # Either giver/receiver declines/withdraws
+        ACCEPTED = "A", _("Accepted")  # Both agreed to make the exechange
+        COMPLETED = "C", _("Completed")  # Trade has been made completed
 
     status = models.CharField(
         max_length=1,
@@ -74,14 +74,16 @@ class Trade(models.Model):
         ClothingItem, related_name="trade_exchanging", blank=True
     )
     message = models.TextField(max_length=280)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE, blank=True, null=True)
+    location = models.ForeignKey(
+        Location, on_delete=models.CASCADE, blank=True, null=True
+    )
     time = models.DateTimeField(blank=True, null=True)
     giver_there = models.BooleanField(default=False)
     receiver_there = models.BooleanField(default=False)
     confirmation_code = models.PositiveSmallIntegerField(
-        default=random.randint(1000, 9999),
-        editable=False
+        default=random.randint(1000, 9999), editable=False
     )
+
 
 class ExeChangeUser(AbstractUser):
     profile_level = models.PositiveIntegerField(
