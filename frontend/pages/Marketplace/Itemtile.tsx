@@ -82,7 +82,7 @@ export function Itemtile(product: Product) {
           className={
             auth()
               ? "h-full w-full object-cover object-center"
-              : "blur-lg lg:h-full lg:w-full"
+              : "blur-lg lg:h-full lg:w-full pointer-events-none"
           }
           onClick={() => setOpen(true)}
         />
