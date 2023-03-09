@@ -6,8 +6,9 @@ import Calendar from "react-calendar";
 import axios from "axios";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
-import { Product } from "./Itemtile";
+import Itemtile, { Product } from "./Itemtile";
 import UserCircleIcon from "@heroicons/react/24/outline/UserCircleIcon";
+
 
 interface ProfileData {
   levelPercent: number;
@@ -15,12 +16,21 @@ interface ProfileData {
   level: number;
 }
 
-
-
-
 export function Trading(product: Product) {
   const [requestMessage, setRequestMessage] = useState("");
   const [profileData, setProfileData] = useState<ProfileData>();
+  const [giver_giving, setGiverGiving] = useState<Number[]>([product.owner.id]) //items you're asking for 
+  const [products, setProducts] = useState<Product[]>([]);
+
+  function fetchProducts() {
+    return fetch("/api/products")
+      .then((response) => response.json())
+      .then((data) => setProducts(data));
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -35,11 +45,10 @@ export function Trading(product: Product) {
   useEffect(() => {
     fetchProfileData();
   }, []);
+
   const handleSubmit = async (e) => {
     // this function sends form data to /api/trade
     e.preventDefault();
-
-    const giver_giving = [product.id];       // item(s) you are asking for 
     const giver = product.owner.id;   // person you are asking for item from 
     const message = requestMessage
     await axios
@@ -80,10 +89,13 @@ export function Trading(product: Product) {
           <b>Tagged by {product.owner.username} as: </b>
           {product.tags.map((t) => t.value).join(", ")}
         </p>
+        <p className="text-sm pt-1 text-gray-500">   
+            <b>Described as: </b> {product.description}  
+        </p> 
       </div>
       <div className="sm:col-span-8 lg:col-span-7">
         <section aria-labelledby="options-heading">
-          <div className="flex items-center justify-between px-4 pt-12">
+          <div className="flex items-center justify-between px-4 pt-3">
             <UserCircleIcon className="h-16 w-16" />
             <div className="flex w-9/12 items-center">
               <div className="flex w-10/12 flex-col pl-4 leading-none">
@@ -100,23 +112,30 @@ export function Trading(product: Product) {
                   </div>
                 </div>
               </div>
-              <div className="w-2/12">
-                <div>
-                  {/* <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-700" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z" /><path d="M9.243 19H21v2H3v-4.243l9.9-9.9 4.242 4.244L9.242 19zm5.07-13.556l2.122-2.122a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414l-2.122 2.121-4.242-4.242z" /></svg> */}
-                </div>
-              </div>
             </div>
           </div>
 
-       
-
-        <div className="mt-2 mb-2 absolute py-10"> 
-          <p className="text-sm text-gray-500">   
-              {product.description}  
-          </p> 
-        </div>
-
-          <form method="POST" onSubmit={handleSubmit} className="mt-[6rem]">
+          <div className="mt-5 text-xl font-bold text-gray-900"> 
+                Other items by {product.owner.username}...
+          </div>
+          <div className = "mt-2"> 
+            <div className="container grid grid-rows-2 grid-cols-4 gap-2 rounded-md overflow-hidden mx-auto py-1"> 
+                {products
+                .filter((i) =>
+                  i.id != product.id &&
+                  i.owner.id == product.owner.id
+                ).map((i) =>  
+                <div key= {i.id} className="w-full overflow-hidden rounded-md bg-gray-200 hover:opacity-75 ">
+                <img
+                draggable={false}
+                tabIndex={1}
+                src={i.image}
+                onClick ={()=> setGiverGiving([...giver_giving, i.id])}
+                />
+                </div>)}
+            </div>
+          </div>         
+          <form method="POST" onSubmit={handleSubmit} className="mt-2">
 
            <div className="">
             <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Write a message with your request!</label>

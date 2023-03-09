@@ -4,7 +4,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Trading } from "./TradingPopup";
 import { useAuthUser } from "react-auth-kit";
 
-export interface Product {
+export type Product = {
   id: number;
   caption: string;
   href: string;
