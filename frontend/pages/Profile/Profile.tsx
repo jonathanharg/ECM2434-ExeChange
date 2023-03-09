@@ -24,6 +24,7 @@ import Badge from "./Badge";
 import { Trade } from "./Tradealert";
 import Achievement from "./Achievement";
 import {Reward} from "./Achievement";
+import Profilestats from "./Profilestats";
 
 interface ProfileData {
   levelPercent: number;
@@ -190,6 +191,7 @@ function Profile() {
           <p className="font-semibold">My Profile</p>
         </div>
       </div>
+      <Profilestats />
       <div className="flex items-center justify-between px-4 pt-12">
         {/* <div className="flex h-24 w-24 items-center rounded-full bg-blue-600">
         </div> */}
