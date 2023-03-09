@@ -77,21 +77,22 @@ def reject_trade(request: HttpRequest, trade_id: int) -> Response:
     except Trade.DoesNotExist:
         return TRADE_NOT_FOUND
 
-    if (trade.giver != user) | (trade.receiver != user):
+    if (trade.giver != user) & (trade.receiver != user):
+        return TRADE_NOT_FOUND
+    
+    if (trade.status == trade.TradeStatuses.COMPLETED) | (trade.status == trade.TradeStatuses.REJECTED):
         return TRADE_NOT_FOUND
 
     if ("reject" not in request.data) | (request.data["reject"] != True):
         return CONFIRM_TRADE_REJECT
 
-    if trade.status == Trade.TradeStatuses.ACCEPTED:
-        return CANNOT_REJECT_ACCEPTED_TRADE
-
-    trade.status == Trade.TradeStatuses.REJECTED
+    trade.status = Trade.TradeStatuses.REJECTED
+    trade.save()
     # trade.delete() # TODO: Should we delete the trades
     return OK
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def accept_trade(request: HttpRequest, trade_id: int) -> Response:
     user = authenticate_user(request)
 
@@ -103,7 +104,11 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
     except Trade.DoesNotExist:
         return TRADE_NOT_FOUND
 
-    if (trade.giver != user) | (trade.receiver != user):
+    # Trade must be accepted by the person who is giving the items
+    if trade.giver != user:
+        return TRADE_NOT_FOUND
+    
+    if trade.status != Trade.TradeStatuses.PENDING:
         return TRADE_NOT_FOUND
 
     data = request.data
@@ -127,12 +132,19 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
 
     if any(trade.receiver != item.owner for item in receiver_exchanging):
         return INVALID_REQUEST_ITEMS
+    
+    try:
+        location = Location.objects.get(name=data["location"])
+    except Location.DoesNotExist:
+        return INVALID_LOCATION
 
     trade.receiver_exchanging.set(receiver_exchanging)
+    trade.location = location
+    trade.status = trade.TradeStatuses.ACCEPTED
+    trade.save()
     # trade.time
     # trade.location
 
-    trade.status = trade.TradeStatuses.ACCEPTED
 
     return Response(
         {"status": "OK", "message": "Submission accepted", "id": trade.pk},
@@ -203,14 +215,6 @@ CONFIRM_TRADE_REJECT = Response(
     status=HTTP_400_BAD_REQUEST,
 )
 
-CANNOT_REJECT_ACCEPTED_TRADE = Response(
-    {
-        "status": "CANNOT_REJECT_ACCEPTED_TRADE",
-        "message": "Cannot reject a Trade which has already been accepted.",
-    },
-    status=HTTP_400_BAD_REQUEST,
-)
-
 OK = Response(
     {"status": "OK"},
     status=HTTP_200_OK,
@@ -219,4 +223,9 @@ OK = Response(
 TRADE_NOT_FOUND = Response(
     {"status": "TRADE_NOT_FOUND", "message": "Could not find the trade."},
     status=HTTP_404_NOT_FOUND,
+)
+
+INVALID_LOCATION = Response(
+    {"status": "INVALID_LOCATION", "message": "Could not find the location."},
+    status=HTTP_400_BAD_REQUEST,
 )
