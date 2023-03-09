@@ -7,6 +7,8 @@ from rest_framework_simplejwt.authentication import (
     JWTAuthentication,
 )
 from rest_framework_simplejwt.tokens import RefreshToken
+import random
+import string
 
 
 def gen_token(user: ExeChangeUser) -> RefreshToken:  # type: ignore
@@ -33,6 +35,18 @@ def get_username(email: str) -> str:
     """
     username = email.split("@")[0]
     return username
+
+
+def gen_unique_code() -> str:
+    chars = (string.ascii_letters + string.digits + string.punctuation)
+
+    res = ""
+
+    n = random.randint(10, 15)
+    for _ in range(n):
+        res += random.choice(chars)
+
+    return res
 
 
 def authenticate_user(request: HttpRequest) -> ExeChangeUser | None:  # type: ignore
