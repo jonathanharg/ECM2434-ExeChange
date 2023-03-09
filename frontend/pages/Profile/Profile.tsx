@@ -22,6 +22,7 @@ import Tradealert from "./Tradealert";
 import { Location } from "./Badge";
 import Badge from "./Badge";
 import { Trade } from "./Tradealert";
+import { MyItems } from "./MyItemsProfile";
 import Achievement from "./Achievement";
 import {Reward} from "./Achievement";
 import Profilestats from "./Profilestats";
@@ -166,7 +167,7 @@ const rewards = [{
 function Profile() {
   const [trades, setTrades] = useState<Trade[]>([]);
   const [profileData, setProfileData] = useState<ProfileData>();
-
+  
   function fetchTrades() {
     return fetch("/api/pendingtrades")
       .then((response) => response.json())
@@ -236,6 +237,9 @@ function Profile() {
         {locations.map((location) => (
           <Badge key={location.id} {...location} />
         ))}
+      </div>
+      <div className="flex w-full flex-col px-4 pt-12">
+        <MyItems />
       </div>
     </div>
   );
