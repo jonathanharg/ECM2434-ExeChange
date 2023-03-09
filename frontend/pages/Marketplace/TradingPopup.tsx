@@ -39,7 +39,7 @@ export function Trading(product: Product) {
     // this function sends form data to /api/trade
     e.preventDefault();
 
-    const items = [product.id];       // item(s) you are asking for 
+    const giver_giving = [product.id];       // item(s) you are asking for 
     const giver = product.owner.id;   // person you are asking for item from 
     const message = requestMessage
     await axios
@@ -47,7 +47,7 @@ export function Trading(product: Product) {
         "/api/trade/new",
         JSON.stringify({
           giver,           
-          items,          //[] of itemIds
+          giver_giving,          //[] of itemIds
           message, 
         }),
         {
