@@ -2,6 +2,7 @@
 
 from django.db import migrations
 
+
 def defaultLocations(apps, schema_editor):
     locations = [
         "Lafrowda",
@@ -13,12 +14,13 @@ def defaultLocations(apps, schema_editor):
         "Peter Chalk",
         "Harrison",
         "Amory",
-        "Northcott Theatre"
+        "Northcott Theatre",
     ]
     Location = apps.get_model("api", "Location")
     for location in locations:
         obj = Location(name=location)
         obj.save()
+
 
 class Migration(migrations.Migration):
     dependencies = [
@@ -26,5 +28,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [migrations.RunPython(defaultLocations)]
+
 
 from django.db import migrations

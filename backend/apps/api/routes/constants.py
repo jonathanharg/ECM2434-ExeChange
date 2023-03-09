@@ -7,6 +7,9 @@ from rest_framework.decorators import api_view
 def tags(request: HttpRequest) -> JsonResponse:
     return JsonResponse(list(ItemTag.objects.values()), safe=False)
 
+
 @api_view(["GET"])
 def locations(request: HttpRequest) -> JsonResponse:
-    return JsonResponse(list(Location.objects.values_list('name', flat=True)), safe=False)
+    return JsonResponse(
+        list(Location.objects.values_list("name", flat=True)), safe=False
+    )

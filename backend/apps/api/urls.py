@@ -1,10 +1,10 @@
 from apps.api.routes import (
+    constants,
     login,
     marketplace,
     profile,
     register,
     status,
-    constants,
     trading,
     upload,
 )

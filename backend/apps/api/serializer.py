@@ -16,14 +16,24 @@ class ClothingItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClothingItem
         depth = 1
-        fields = ["caption", "tags", "owner", "id", "image", "created_at", "updated_at"]
+        fields = [
+            "id",
+            "owner",
+            "caption",
+            "image",
+            "tags",
+            "description",
+            "created_at",
+            "updated_at",
+        ]
+
 
 class TradeRequestSerializer(serializers.ModelSerializer):
-    from_user = UserSerializer()
-    to_user = UserSerializer()
+    giver = UserSerializer()
+    receiver = UserSerializer()
+    trade_type = "REQUEST"
 
     class Meta:
         model = TradeRequest
         depth = 1
-        # fields = ["giving", "receiving", "from_location", "from_days", "from_times", "from_user", "to_user"]
-        fields = ["id", "from_user", "to_user", "receiving", "giving"]
+        fields = ["id", "trade_type", "giver", "receiver", "items", "message"]

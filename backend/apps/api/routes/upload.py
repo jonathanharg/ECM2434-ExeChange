@@ -30,7 +30,7 @@ def post(request: HttpRequest) -> Response:
             INVALID_SUBMISSION,
             status=HTTP_400_BAD_REQUEST,
         )
-    
+
     if "description" not in form:
         form["description"] = ""
 
@@ -48,7 +48,7 @@ def post(request: HttpRequest) -> Response:
             INVALID_CAPTION,
             status=HTTP_400_BAD_REQUEST,
         )
-    
+
     if len(description) > 280:
         return Response(
             INVALID_DESCRIPTION,
@@ -83,7 +83,10 @@ def post(request: HttpRequest) -> Response:
     img.save(image, "JPEG", subsampling=0, quality=85, optimize=True)
 
     item = ClothingItem.objects.create(
-        caption=caption_clean, owner=authenticated_user, image=image, description=description
+        caption=caption_clean,
+        owner=authenticated_user,
+        image=image,
+        description=description,
     )
     item.full_clean()
     item.save()
