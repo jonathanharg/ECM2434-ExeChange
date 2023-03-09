@@ -4,7 +4,6 @@ from apps.api.models import (
     ItemTag,
     Location,
     Trade,
-    TradeRequest,
 )
 from django.contrib import admin
 
@@ -20,6 +19,5 @@ class ShowConfirmationCode(admin.ModelAdmin):
 admin.site.register(ExeChangeUser, ShowID)
 admin.site.register(ClothingItem, ShowID)
 admin.site.register(ItemTag)
-admin.site.register(TradeRequest)
 admin.site.register(Trade, ShowConfirmationCode)
 admin.site.register(Location)

@@ -20,5 +20,7 @@ urlpatterns = [
     path("locations", constants.locations),
     path("profiledata", profile.get_profile_data),
     path("trade/new", trading.request_trade),
-    path("trade/requests", trading.get_requests),
+    path("trade/all", trading.get_trades),
+    path("trade/<int:trade_id>/reject", trading.reject_trade),
+    path("trade/<int:trade_id>/accept", trading.accept_trade),
 ]

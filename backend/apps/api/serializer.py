@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import ClothingItem, TradeRequest
+from .models import ClothingItem, Trade
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -27,13 +27,12 @@ class ClothingItemSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
-
-class TradeRequestSerializer(serializers.ModelSerializer):
+# TODO: Update
+class TradeSerializer(serializers.ModelSerializer):
     giver = UserSerializer()
     receiver = UserSerializer()
-    trade_type = "REQUEST"
 
     class Meta:
-        model = TradeRequest
+        model = Trade
         depth = 1
-        fields = ["id", "trade_type", "giver", "receiver", "items", "message"]
+        fields = ["id", "giver", "receiver", "giver_giving", "receiver_exchanging", "message"]

@@ -47,66 +47,41 @@ class ClothingItem(models.Model):
         return self.caption
 
 
-class TradeRequest(models.Model):
-    class TradeRequestStatuses(models.TextChoices):
-        PENDING = "P", _("Pending")
-        REJECTED = "R", _("Rejected")
-
-    status = models.CharField(
-        max_length=1,
-        choices=TradeRequestStatuses.choices,
-        default=TradeRequestStatuses.PENDING,
-    )
-    receiver = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="trade_request_receiver",
-    )
-    giver = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="trade_request_giver",
-    )
-    items = models.ManyToManyField(ClothingItem, related_name="trade_request_items")
-    message = models.TextField(max_length=280)
-
-
 class Trade(models.Model):
     class TradeStatuses(models.TextChoices):
-        UPCOMING = "U", _("Upcoming")
-        REJECTED = "R", _("Rejected")
-        ACCEPTED = "A", _("Accepted")
+        PENDING = "P", _("Pending")     # No reply yet from giver
+        REJECTED = "R", _("Rejected")   # Either giver/receiver declines/withdraws
+        UPCOMING = "U", _("Upcoming")   # Both agreed to make the exechange
+        ACCEPTED = "A", _("Accepted")   # Trade has been made
 
     status = models.CharField(
         max_length=1,
         choices=TradeStatuses.choices,
-        default=TradeStatuses.UPCOMING,
-    )
-    giver = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="trade_giver",
+        default=TradeStatuses.PENDING,
     )
     receiver = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="trade_receiver",
     )
+    giver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="trade_giver",
+    )
     giver_giving = models.ManyToManyField(ClothingItem, related_name="trade_giving")
     receiver_exchanging = models.ManyToManyField(
-        ClothingItem, related_name="trade_exchanging"
+        ClothingItem, related_name="trade_exchanging", blank=True
     )
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    time = models.DateTimeField()
+    message = models.TextField(max_length=280)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, blank=True, null=True)
+    time = models.DateTimeField(blank=True, null=True)
     giver_there = models.BooleanField(default=False)
     receiver_there = models.BooleanField(default=False)
     confirmation_code = models.PositiveSmallIntegerField(
-        default=random.randint(1000, 9999)
-    )  # Editable=false
-    # from_days = models.DateField
-    # # BUGGED: TODO: BROKEN: FIXME: JANK: make this an array
-    # from_times = models.TimeField
-
+        default=random.randint(1000, 9999),
+        editable=False
+    )
 
 class ExeChangeUser(AbstractUser):
     profile_level = models.PositiveIntegerField(
