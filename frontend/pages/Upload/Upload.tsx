@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import TagSelect from "../../components/TagSelect";
 import { tag } from "../Marketplace/Itemtile";
+import { MinusCircleIcon } from "@heroicons/react/20/solid";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -90,21 +91,23 @@ function Upload() {
                   <div className="content-center space-y-1 px-4 text-center">
                     {image && (
                       // Image viewer div
-                      <div>
-                        <button
-                          onClick={() => {
-                            setImage(undefined);
-                            setFile("");
-                            resetFile();
-                          }}
-                          className=""
-                        >
-                          <XCircleIcon className="m-auto h-5 w-5 stroke-red-600 text-gray-700" />
-                        </button>
-                        <div className="aspect-[3/4] h-auto w-48 overflow-hidden">
-                          <img className="object-cover" src={file} />
+                        <div className="aspect-[3/4] relative h-auto w-48 overflow-hidden rounded-md">
+                          <div className="absolute right-0 align-top"> 
+                          <button
+                            onClick={() => {
+                              setImage(undefined);
+                              setFile("");
+                              resetFile();
+                            }}
+                            className=""
+                          >
+                            <MinusCircleIcon className="m-auto h-5 w-5 stroke-1 stroke-white fill-red-800" />
+                          </button>
                         </div>
-                      </div>
+                          <img className="object-cover" src={file} />
+                          
+                        </div>
+              
                     )}
                     <div className={image ? "hidden" : "block text-center"}>
                       <DocumentPlusIcon className="m-auto h-16 w-16 stroke-gray-500 stroke-1" />

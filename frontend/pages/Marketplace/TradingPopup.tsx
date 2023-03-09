@@ -8,6 +8,8 @@ axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 import Itemtile, { Product } from "./Itemtile";
 import UserCircleIcon from "@heroicons/react/24/outline/UserCircleIcon";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
+
 
 
 interface ProfileData {
@@ -21,7 +23,7 @@ export function Trading(product: Product) {
   const [profileData, setProfileData] = useState<ProfileData>();
   const [giver_giving, setGiverGiving] = useState<Number[]>([product.owner.id]) //items you're asking for 
   const [products, setProducts] = useState<Product[]>([]);
-
+  const [selected, setSelected] = useState(false)
   function fetchProducts() {
     return fetch("/api/products")
       .then((response) => response.json())
@@ -45,6 +47,12 @@ export function Trading(product: Product) {
   useEffect(() => {
     fetchProfileData();
   }, []);
+
+  function handleExtraItems(i) {
+    setGiverGiving([...giver_giving, i.id])
+    setSelected(true)
+  }
+
 
   const handleSubmit = async (e) => {
     // this function sends form data to /api/trade
@@ -130,9 +138,10 @@ export function Trading(product: Product) {
                 draggable={false}
                 tabIndex={1}
                 src={i.image}
-                onClick ={()=> setGiverGiving([...giver_giving, i.id])}
+                onClick ={() => handleExtraItems(i)}
                 />
                 </div>)}
+                <CheckCircleIcon className={selected ?"w-8 h-8 absolute":" absolute invisible"}> </CheckCircleIcon>
             </div>
           </div>         
           <form method="POST" onSubmit={handleSubmit} className="mt-2">
