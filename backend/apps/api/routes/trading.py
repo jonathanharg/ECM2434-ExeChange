@@ -39,6 +39,9 @@ def request_trade(request: HttpRequest) -> Response:
     if receiver == giver:
         return INVALID_REQUEST_SELF
 
+    if any(giver != item.owner for item in items):
+        return INVALID_REQUEST_ITEMS
+
     message = ""
 
     if "message" in request.data:
@@ -49,7 +52,7 @@ def request_trade(request: HttpRequest) -> Response:
         giver=giver,
         message=message,
     )
-    trade_request.receiving.set(items)
+    trade_request.items.set(items)
     trade_request.full_clean()
     trade_request.save()
 
@@ -103,6 +106,14 @@ INVALID_REQUEST_SELF = Response(
     {
         "status": "INVALID_REQUEST_SELF",
         "message": "You can't trade with yourself silly!",
+    },
+    status=HTTP_400_BAD_REQUEST,
+)
+
+INVALID_REQUEST_ITEMS = Response(
+    {
+        "status": "INVALID_REQUEST_ITEMS",
+        "message": "This person does not have all these items!",
     },
     status=HTTP_400_BAD_REQUEST,
 )
