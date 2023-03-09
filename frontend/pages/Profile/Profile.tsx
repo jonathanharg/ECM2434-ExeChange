@@ -17,7 +17,6 @@ import {
   LightBulbIcon,
   TicketIcon,
 } from "@heroicons/react/24/outline";
-import { UserCircleIcon } from "@heroicons/react/24/outline";
 import Tradealert from "./Tradealert";
 import { Location } from "./Badge";
 import Badge from "./Badge";
