@@ -22,48 +22,39 @@ from apps.api.serializer import TradeRequestSerializer
 
 
 @api_view(["POST"])
-def new(request: HttpRequest) -> Response:
-    authenticated_user = authenticate_user(request)
+def request_trade(request: HttpRequest) -> Response:
+    receiver = authenticate_user(request)
 
-    if authenticated_user is None:
+    if receiver is None:
         return Response(
             NOT_LOGGED_IN,
             status=HTTP_401_UNAUTHORIZED,
         )
+    
+    message = request.data["message"].strip()
 
-    get_items = list(
-        map(lambda x: ClothingItem.objects.get(id=x), request.data["receiving"])
+    if "message" not in get_requests.data:
+        message = ""
+
+    items = list(
+        map(lambda x: ClothingItem.objects.get(id=x), request.data["items"])
     )
-    to_user = get_object_or_404(ExeChangeUser, id=request.data["to_user"])
-    day_availability = request.data["my_day_availability"][0]
-    # time_availability = request.data["my_time_availability"][0]
-    location_availability = list(
-        map(
-            lambda x: Location.objects.get(name=x),
-            request.data["my_location_availability"],
-        )
+    giver = get_object_or_404(ExeChangeUser, id=request.data["giver"])
+
+    trade_request = TradeRequest.objects.create(
+        receiver=receiver,
+        giver=giver,
+        message=message,
     )
+    trade_request.receiving.set(items)
+    trade_request.full_clean()
+    trade_request.save()
 
-    newobj = TradeRequest.objects.create(
-        from_user=authenticated_user,
-        to_user=to_user,
-        # from_location=location_availability,
-        # from_days=day_availability,  # BUGGED: TODO: BROKEN: FIXME: JANK: make this an array
-        # from_times=time_availability,
-    )
-    newobj.giving.set([])
-    newobj.to_locations.set([])
-    newobj.from_locations.set(location_availability)
-    newobj.receiving.set(get_items)
-
-    print(to_user)
-    print(get_items)
-
-    return Response()
+    return Response(OK, status=HTTP_201_CREATED)
 
 
 @api_view(["GET"])
-def requests(request: HttpRequest) -> Response:
+def get_requests(request: HttpRequest) -> Response:
     authenticated_user = authenticate_user(request)
 
     if authenticated_user is None:
@@ -152,4 +143,9 @@ def trade(request: HttpRequest) -> Response:
 NOT_LOGGED_IN = {
     "status": "NOT_LOGGED_IN",
     "message": "You need to be logged in to trade.",
+}
+
+OK = {
+    "status": "OK",
+    "message": "Submission accepted",
 }

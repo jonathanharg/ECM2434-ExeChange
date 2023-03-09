@@ -1,8 +1,10 @@
 # Create your models here.
 
+import random
 from uuid import uuid4
 
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -37,6 +39,7 @@ class ClothingItem(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    description = models.TextField(max_length=280)
 
     in_pending_trade = models.BooleanField(default=False)
 
@@ -45,37 +48,61 @@ class ClothingItem(models.Model):
 
 
 class TradeRequest(models.Model):
-    from_user = models.ForeignKey(
+    class TradeRequestStatuses(models.TextChoices):
+        PENDING = 'P', _('Pending')
+        REJECTED = 'R', _('Rejected')
+    status = models.CharField(
+        max_length=1,
+        choices=TradeRequestStatuses.choices,
+        default=TradeRequestStatuses.PENDING,
+    )
+    receiver = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="trade_request_from",
+        related_name="trade_request_receiver",
     )
-    to_user = models.ForeignKey(
+    giver = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="trade_request_to",
+        related_name="trade_request_giver",
     )
-    giving = models.ManyToManyField(ClothingItem, related_name="trade_request_giving")
-    receiving = models.ManyToManyField(
-        ClothingItem, related_name="trade_request_receiving"
+    items = models.ManyToManyField(
+        ClothingItem, related_name="trade_request_items"
     )
-    from_locations = models.ManyToManyField(Location, related_name="trade_request_from_loc")
-    to_locations = models.ManyToManyField(Location, related_name="trade_request_to_loc")
+    message =  models.TextField(max_length=280)
+
+
+class Trade(models.Model):
+    class TradeStatuses(models.TextChoices):
+        UPCOMING = 'U', _('Upcoming')
+        REJECTED = 'R', _('Rejected')
+        ACCEPTED = 'A', _('Accepted')
+
+    status = models.CharField(
+        max_length=1,
+        choices=TradeStatuses.choices,
+        default=TradeStatuses.UPCOMING,
+    )
+    giver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="trade_giver",
+    )
+    receiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="trade_receiver",
+    )
+    giver_giving = models.ManyToManyField(ClothingItem, related_name="trade_giving")
+    receiver_exchanging = models.ManyToManyField(ClothingItem, related_name="trade_exchanging")
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    time = models.DateTimeField()
+    giver_there = models.BooleanField(default=False)
+    receiver_there = models.BooleanField(default=False)
+    confirmation_code = models.PositiveSmallIntegerField(default=random.randint(1000,9999)) # Editable=false
     # from_days = models.DateField
     # # BUGGED: TODO: BROKEN: FIXME: JANK: make this an array
     # from_times = models.TimeField
-
-
-# class UserOffering():
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-#     items = models.ManyToManyField(ClothingItem)
-#     locations = models.ManyToManyField(Location)
-#     days = models.ManyToManyField(models.DateField)
-#     times = models.ManyToManyField(models.TimeField)
-
-# class TradeRequest(models.Model):
-#     requester = models.ForeignKey(UserOffering)
-#     responder = models.ForeignKey(UserOffering)
 
 
 class PendingTrade(models.Model):

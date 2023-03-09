@@ -19,6 +19,6 @@ urlpatterns = [
     path("tags", constants.tags),
     path("locations", constants.locations),
     path("profiledata", profile.get_profile_data),
-    path("trade/new", trading.new),
-    path("trade/requests", trading.requests),
+    path("trade/new", trading.request_trade),
+    path("trade/requests", trading.get_requests),
 ]
