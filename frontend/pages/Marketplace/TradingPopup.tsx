@@ -9,7 +9,7 @@ axios.defaults.xsrfCookieName = "csrftoken";
 import { Product } from "./Itemtile";
 
 export function Trading(product: Product) {
-
+  const [requestMessage, setRequestMessage] = useState("");
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -18,17 +18,16 @@ export function Trading(product: Product) {
     // this function sends form data to /api/trade
     e.preventDefault();
 
-    const to_user = product.owner.id;
-    const receiving = [product.id];       // item(s) you are asking for 
-    const giving = [];                   // items you are giving in return 
-
+    const items = [product.id];       // item(s) you are asking for 
+    const giver = product.owner.id;   // person you are asking for item from 
+    const message = requestMessage
     await axios
       .post(
         "/api/trade/new",
         JSON.stringify({
-          to_user,            //used to be productOwnerId
-          giving,
-          receiving,          //[] of itemIds
+          giver,           
+          items,          //[] of itemIds
+          message, 
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -72,7 +71,7 @@ export function Trading(product: Product) {
 
            <div className= "">
            <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Write a message with your request!</label>
-            <textarea id="message" className="row-span-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Here, you can let the trader know when you're free or discuss any other details about your request..."></textarea>
+            <textarea id="message" value = {requestMessage} onChange={(e)=> setRequestMessage(e.target.value)} className="row-span-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Here, you can let the trader know when you're free or discuss any other details about your request..."></textarea>
 
            </div>
             <button
