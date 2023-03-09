@@ -106,15 +106,15 @@ function Upload() {
                         </div>
                       </div>
                     )}
-                    <div className={image ? "hidden" : "block"}>
+                    <div className={image ? "hidden" : "block text-center"}>
                       <DocumentPlusIcon className="m-auto h-16 w-16 stroke-gray-500 stroke-1" />
 
-                      <div className="flex text-sm text-gray-600">
+                      <div className="flex text-sm text-gray-600 justify-center">
                         <label
                           htmlFor="file-upload"
                           className="relative cursor-pointer rounded-md bg-white font-medium text-green-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-green-700 focus-within:ring-offset-2 hover:text-green-700"
                         >
-                          <span>Upload a file</span>
+                          <span>Upload a file!</span>
                           <input
                             ref={fileRef}
                             id="file-upload"
@@ -127,7 +127,7 @@ function Upload() {
                             required
                           />
                         </label>
-                        <p className="pl-1">or drag and drop</p>
+                        <p className="pl-1"></p>
                       </div>
                       <p className="text-xs text-gray-500">
                         PNG, JPG, GIF up to 10MB
@@ -151,8 +151,8 @@ function Upload() {
                 />
               </div>
               <div>
-              <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Item description</label>
-                <textarea required id="message" className="row-span-4 block p-2.5 w-full text-sm text-gray-900  rounded-lg border border-gray-300 focus:ring-green-700 focus:border-green-800 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-800 dark:focus:border-green-800" placeholder="Be descriptive... but not more descriptive than a tweet" value={description} onChange={(e)=> setDescription(e.target.value)}></textarea>
+              <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900">Item description</label>
+                <textarea required id="message" className="row-span-4 block p-2.5 w-full text-sm text-gray-900  rounded-lg border border-gray-300 focus:ring-green-700 focus:border-green-800" placeholder="Be descriptive... but not more descriptive than a tweet" value={description} onChange={(e)=> setDescription(e.target.value)}></textarea>
               </div>
               <div className="max-w-md text-left">
                 <div>
@@ -165,23 +165,23 @@ function Upload() {
                     onChange={() => {
                       setCheckedTerms(!checkedTerms);
                     }}
-                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-800 focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-green-600"
+                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-800 focus:ring-2 focus:ring-green-500 "
                   />
                   <label
                     htmlFor="link-checkbox"
-                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-800"
+                    className="ml-2 text-sm font-medium text-gray-900"
                   >
                     I agree with the{" "}
                     <a
                       href="#"
-                      className="text-green-800 hover:underline dark:text-green-700"
+                      className="text-green-800 hover:underline "
                     >
                       Terms & Conditions
                     </a>{" "}
                     and the{" "}
                     <a
                       href="#"
-                      className="text-green-800 hover:underline dark:text-green-700"
+                      className="text-green-800 hover:underline "
                     >
                       Privacy Policy
                     </a>
@@ -198,11 +198,11 @@ function Upload() {
                     onChange={() => {
                       setCheckedUnderstand(!checkedUnderstand);
                     }}
-                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-800 focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-green-600"
+                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-800 focus:ring-2 focus:ring-green-500"
                   />
                   <label
                     htmlFor="link-checkbox"
-                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-800"
+                    className="ml-2 text-sm font-medium text-gray-900"
                   >
                     I understand that uploading my item means I am willing
                     within a reasonable extent to give my item away to another

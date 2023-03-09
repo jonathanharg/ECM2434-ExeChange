@@ -138,8 +138,8 @@ export function Trading(product: Product) {
           <form method="POST" onSubmit={handleSubmit} className="mt-2">
 
            <div className="">
-            <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Write a message with your request!</label>
-              <textarea id="message" value = {requestMessage} onChange={(e)=> setRequestMessage(e.target.value)} className="row-span-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Here, you can let the trader know when you're free or discuss any other details about your request..."></textarea>
+            <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900">Write a message with your request!</label>
+              <textarea id="message" value = {requestMessage} onChange={(e)=> setRequestMessage(e.target.value)} className="row-span-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Here, you can let the trader know when you're free or discuss any other details about your request..."></textarea>
            </div>
             <button
               type="submit"
