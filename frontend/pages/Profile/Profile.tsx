@@ -166,7 +166,6 @@ const rewards = [{
 
 function Profile() {
   const [trades, setTrades] = useState<Trade[]>([]);
-  const [profileData, setProfileData] = useState<ProfileData>();
   
   function fetchTrades() {
     return fetch("/api/pendingtrades")
@@ -174,15 +173,8 @@ function Profile() {
       .then((data) => setTrades(data));
   }
 
-  function fetchProfileData() {
-    return fetch("/api/profiledata")
-      .then((response) => response.json())
-      .then((data) => setProfileData(data));
-  }
-
   useEffect(() => {
     fetchTrades();
-    fetchProfileData();
   }, []);
 
   return (
