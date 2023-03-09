@@ -66,7 +66,7 @@ class PendingTrade(models.Model):
 
 
 class ExeChangeUser(AbstractUser):
-    is_verified = models.BooleanField
+    is_verified = models.BooleanField(default=False)
 
     verification_code = models.CharField(max_length=50)
 

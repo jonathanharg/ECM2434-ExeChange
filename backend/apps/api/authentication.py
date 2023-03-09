@@ -9,6 +9,7 @@ from rest_framework_simplejwt.authentication import (
 from rest_framework_simplejwt.tokens import RefreshToken
 import random
 import string
+import yagmail
 
 
 def gen_token(user: ExeChangeUser) -> RefreshToken:  # type: ignore
@@ -38,7 +39,7 @@ def get_username(email: str) -> str:
 
 
 def gen_unique_code() -> str:
-    chars = (string.ascii_letters + string.digits + string.punctuation)
+    chars = (string.ascii_letters + string.digits)
 
     res = ""
 
@@ -54,7 +55,22 @@ def send_verification_email(user: ExeChangeUser):
     This function will take an unverified user object and send an email to the email associated with the user
     containing a link that will successfully verify the user onclick.
     """
-    pass
+    # Generate link to send
+
+    username = user.username
+    code = user.verification_code
+    user_link = "http://127.0.0.1:8000/verify?username=%s?code=%s" % (username, code)
+
+    yag = yagmail.SMTP('noreplyexechange@gmail.com', oauth2_file='credentials.json')
+
+    contents = [
+        'Hello %s !' % (username),
+        'Welcome to ExeChange, cleary you heard the rumours',
+        'Big things are coming and if you click the below link, you will be a part of it...',
+        '%s' % (user_link),
+    ]
+
+    yag.send(user.email, 'ExeChange Verfication', contents)
 
 def authenticate_user(request: HttpRequest) -> ExeChangeUser | None:  # type: ignore
     """

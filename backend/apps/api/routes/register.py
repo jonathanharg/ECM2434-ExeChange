@@ -1,4 +1,4 @@
-from apps.api.authentication import gen_token, get_username, gen_unique_code
+from apps.api.authentication import gen_token, get_username, gen_unique_code, send_verification_email
 from apps.api.models import ExeChangeUser
 from django.db.utils import IntegrityError
 from django.http import HttpRequest
@@ -40,11 +40,14 @@ def register(request: HttpRequest) -> Response:
                 email=email_address,
                 password=user_password,
                 verification_code=new_user_verification_code,
-                is_verified = False
+                is_verified = False,
             )
             new_user.save()
 
             print("REGISTRATION SUCCESSFULL AND USER ADDED TO DATABASE!")
+
+            # Sending a user verification email
+            send_verification_email(new_user)
 
             # Generating new JWT token for registered user, this means that they do not need to log in after registering
             token = gen_token(new_user)
