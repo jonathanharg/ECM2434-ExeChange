@@ -3,7 +3,6 @@ from apps.api.models import (
     ClothingItem,
     ExeChangeUser,
     Location,
-    PendingTrade,
     TradeRequest,
 )
 from apps.api.serializer import TradeRequestSerializer

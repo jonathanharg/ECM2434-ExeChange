@@ -41,7 +41,7 @@ class ClothingItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     description = models.TextField(max_length=280)
 
-    in_pending_trade = models.BooleanField(default=False)
+    in_trade = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.caption
@@ -106,34 +106,6 @@ class Trade(models.Model):
     # from_days = models.DateField
     # # BUGGED: TODO: BROKEN: FIXME: JANK: make this an array
     # from_times = models.TimeField
-
-
-class PendingTrade(models.Model):
-    initiator = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        default=None,
-        related_name="initiator",
-    )
-
-    acceptor = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        default=None,
-        related_name="acceptor",
-    )
-
-    location = models.CharField(max_length=255)
-
-    time = models.CharField(max_length=255)
-
-    date = models.DateTimeField()
-
-    item = models.ForeignKey(
-        ClothingItem,
-        on_delete=models.CASCADE,
-        default=None,
-    )
 
 
 class ExeChangeUser(AbstractUser):
