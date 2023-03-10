@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { Listbox } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { CheckIcon, ChevronUpDownIcon, FaceSmileIcon } from "@heroicons/react/20/solid";
 import Calendar from "react-calendar";
 import axios from "axios";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -9,6 +9,7 @@ axios.defaults.xsrfCookieName = "csrftoken";
 import Itemtile, { Product } from "./Itemtile";
 import UserCircleIcon from "@heroicons/react/24/outline/UserCircleIcon";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { number } from "prop-types";
 
 
 
@@ -21,9 +22,10 @@ interface ProfileData {
 export function Trading(product: Product) {
   const [requestMessage, setRequestMessage] = useState("");
   const [profileData, setProfileData] = useState<ProfileData>();
-  const [giver_giving, setGiverGiving] = useState<Number[]>([product.id]) //items you're asking for 
+  const [giver_giving, setGiverGiving] = useState<Number[]>([product.id]) //items you're asking for. this item is default added in cause you've clicked on it
   const [products, setProducts] = useState<Product[]>([]);
-  const [selected, setSelected] = useState(false)
+
+
   function fetchProducts() {
     return fetch("/api/products")
       .then((response) => response.json())
@@ -33,10 +35,6 @@ export function Trading(product: Product) {
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
-  }
 
   function fetchProfileData() {
     return fetch("/api/profiledata")
@@ -48,11 +46,19 @@ export function Trading(product: Product) {
     fetchProfileData();
   }, []);
 
-  function handleExtraItems(i) {
-    setGiverGiving([...giver_giving, i.id])
-    setSelected(true)
+  function handleExtraItems(index) {
+    if (giver_giving.includes(index)) {
+      setGiverGiving(giver_giving.filter((i) => i !== index));
+    } else {
+      setGiverGiving([...giver_giving, index]);
+    }
   }
 
+  function showSvg(index) {
+    if(giver_giving.includes(index)) {    
+      return <CheckCircleIcon className={`w-8 h-8 absolute`}> </CheckCircleIcon>
+    } 
+  }
 
   const handleSubmit = async (e) => {
     // this function sends form data to /api/trade
@@ -127,21 +133,22 @@ export function Trading(product: Product) {
                 Other items by {product.owner.username}...
           </div>
           <div className = "mt-2"> 
-            <div className="container grid grid-rows-2 grid-cols-4 gap-2 rounded-md overflow-hidden mx-auto py-1"> 
+            <div className="container grid grid-flow-dense grid-rows-2 grid-cols-4 gap-2 rounded-md overflow-hidden mx-auto py-1"> 
                 {products
                 .filter((i) =>
                   i.id != product.id &&
                   i.owner.id == product.owner.id
                 ).map((i) =>  
-                <div key= {i.id} className="w-full overflow-hidden rounded-md bg-gray-200 hover:opacity-75 ">
+                <div key= {i.id} className="w-full overflow-hidden rounded-md bg-gray-200 hover:opacity-75">
+                  {showSvg(i.id)}
                 <img
                 draggable={false}
                 tabIndex={1}
                 src={i.image}
-                onClick ={() => handleExtraItems(i)}
+                onClick={() => handleExtraItems(i.id) 
+                }
                 />
-                </div>)}
-                <CheckCircleIcon className={selected ?"w-8 h-8 absolute":" absolute invisible"}> </CheckCircleIcon>
+                </div>)}       
             </div>
           </div>         
           <form method="POST" onSubmit={handleSubmit} className="mt-2">
