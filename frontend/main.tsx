@@ -60,14 +60,14 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <AuthProvider
-    authType={"cookie"}
-    authName={"_auth"}
-    cookieDomain={window.location.hostname}
-    cookieSecure={window.location.protocol === "https:"} //should this be http for now ?
-  >
-    <React.StrictMode>
+  <React.StrictMode>
+    <AuthProvider
+      authType={"cookie"}
+      authName={"_auth"}
+      cookieDomain={window.location.hostname}
+      cookieSecure={window.location.protocol === "https:"} //should this be http for now ?
+    >
       <RouterProvider router={router} />
-    </React.StrictMode>
-  </AuthProvider>
+    </AuthProvider>
+  </React.StrictMode>
 );
