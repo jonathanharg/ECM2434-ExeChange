@@ -21,7 +21,7 @@ interface ProfileData {
 export function Trading(product: Product) {
   const [requestMessage, setRequestMessage] = useState("");
   const [profileData, setProfileData] = useState<ProfileData>();
-  const [giver_giving, setGiverGiving] = useState<Number[]>([product.owner.id]) //items you're asking for 
+  const [giver_giving, setGiverGiving] = useState<Number[]>([product.id]) //items you're asking for 
   const [products, setProducts] = useState<Product[]>([]);
   const [selected, setSelected] = useState(false)
   function fetchProducts() {
