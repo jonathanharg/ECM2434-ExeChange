@@ -216,5 +216,5 @@ def get_trades(request: HttpRequest) -> Response:
     )
     accepted_trades = trades.filter(status=Trade.TradeStatuses.ACCEPTED).order_by("time")
     other_trades = trades.exclude(status=Trade.TradeStatuses.ACCEPTED).order_by("requested_at")
-    trades_serializer = TradeSerializer(accepted_trades.union(other_trades), many=True)
+    trades_serializer = TradeSerializer(list(chain(accepted_trades, other_trades)), many=True)
     return JsonResponse(trades_serializer.data, safe=False)
