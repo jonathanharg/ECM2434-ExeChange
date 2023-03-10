@@ -2,30 +2,60 @@ from datetime import datetime, timedelta, timezone
 
 from apps.api.authentication import authenticate_user
 from apps.api.models import ClothingItem, ExeChangeUser, Location, Trade
+from apps.api.responses import (
+    CONFIRM_TRADE_REJECT,
+    INVALID_LOCATION,
+    INVALID_TIME,
+    INVALID_TRADE_ACCEPT,
+    INVALID_TRADE_ITEMS,
+    INVALID_TRADE_REQUEST,
+    INVALID_TRADE_SELF,
+    NOT_LOGGED_IN,
+    OK,
+    TRADE_NOT_FOUND,
+    ITEM_ALREADY_REQUESTED
+)
 from apps.api.serializer import TradeSerializer
-from django.core import serializers
 from django.db.models import Q
 from django.http import HttpRequest, JsonResponse
-from django.http.response import Http404
-from django.shortcuts import get_object_or_404
 from django.utils.dateparse import parse_datetime
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.status import (
-    HTTP_200_OK,
-    HTTP_201_CREATED,
-    HTTP_400_BAD_REQUEST,
-    HTTP_401_UNAUTHORIZED,
-    HTTP_404_NOT_FOUND,
-)
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
 
-# TODO: VALIDATE USER IMPUT MAKE SURE THEY ARE FOLOWING THE URELS
+def valid_trade_time(time: datetime | None) -> bool:
+    now = datetime.now(timezone.utc)
+    TRADING_HOURS = [9, 10, 11, 12, 13, 14, 15, 16]
+
+    half_past = time.minute != 30
+    in_hours = time.hour in TRADING_HOURS
+    in_past = time <= now
+    within_a_week = (time - now) < timedelta(days=7)
+    weekend = time.weekday > 4  # Index of weekdays starting a Monday: 0, 4 is Friday
+    return (
+        (time is None)
+        | (not in_hours)
+        | (not half_past)
+        | (in_past)
+        | (not within_a_week)
+        | weekend
+    )
+
+
+def item_request_by_user(user: ExeChangeUser, item: ClothingItem) -> bool:
+    asked_for = Trade.objects.filter(Q(giver_giving=item) & Q(receiver=user)).exists()
+    exchanged_for = Trade.objects.filter(
+        Q(receiver_exchanging=item) & Q(giver=user)
+    ).exists()
+    return asked_for | exchanged_for
+
+
 @api_view(["POST"])
 def request_trade(request: HttpRequest) -> Response:
-    receiver = authenticate_user(request)
+    user = authenticate_user(request)
 
-    if receiver is None:
+    if user is None:
         return NOT_LOGGED_IN
 
     data = request.data
@@ -35,26 +65,30 @@ def request_trade(request: HttpRequest) -> Response:
 
     giver = ExeChangeUser.objects.get(id=request.data["giver"])
 
-    if receiver == giver:
-        return INVALID_REQUEST_SELF
+    if user == giver:
+        return INVALID_TRADE_SELF
 
     try:
         giver_giving = list(
             map(lambda x: ClothingItem.objects.get(id=x), request.data["giver_giving"])
         )
     except ClothingItem.DoesNotExist:
-        return INVALID_REQUEST_ITEMS
+        return INVALID_TRADE_ITEMS
 
-    if any(giver != item.owner for item in giver_giving):
-        return INVALID_REQUEST_ITEMS
+    for item in giver_giving:
+        if giver != item.owner:
+            return INVALID_TRADE_ITEMS
 
+        if item_request_by_user(user, item):
+            return ITEM_ALREADY_REQUESTED
+        
     message = ""
 
     if "message" in request.data:
         message = request.data["message"].strip()
 
     trade_request = Trade.objects.create(
-        receiver=receiver,
+        receiver=user,
         giver=giver,
         message=message,
     )
@@ -88,12 +122,12 @@ def reject_trade(request: HttpRequest, trade_id: int) -> Response:
     ):
         return TRADE_NOT_FOUND
 
+    # user must confirm the rejection with the key value "reject": True in request data
     if ("reject" not in request.data) | (request.data["reject"] != True):
         return CONFIRM_TRADE_REJECT
 
     trade.status = Trade.TradeStatuses.REJECTED
     trade.save()
-    # trade.delete() # TODO: Should we delete the trades
     return OK
 
 
@@ -133,10 +167,14 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
             )
         )
     except ClothingItem.DoesNotExist:
-        return INVALID_REQUEST_ITEMS
+        return INVALID_TRADE_ITEMS
 
-    if any(trade.receiver != item.owner for item in receiver_exchanging):
-        return INVALID_REQUEST_ITEMS
+    for item in receiver_exchanging:
+        if trade.receiver != item.owner:
+            return INVALID_TRADE_ITEMS
+
+        if item_request_by_user(user, item):
+            return ITEM_ALREADY_REQUESTED
 
     try:
         location = Location.objects.get(name=data["location"])
@@ -148,20 +186,10 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
     except ValueError:
         return INVALID_TIME
 
-    now = datetime.now(timezone.utc)
-    TRADING_HOURS = [9, 10, 11, 12, 13, 14, 15, 16]
-
-    if (
-        (time is None)
-        | (time.minute != 30)
-        | (time.hour not in TRADING_HOURS)
-        | (time <= now)
-        | ((time - now) > timedelta(days=7))
-        | time.weekday > 4 # Greater than Friday (4)
-    ):
+    if not valid_trade_time(time):
         return INVALID_TIME
 
-    time = time.replace(second=0, microsecond=0)  # ignore seconds
+    time = time.replace(second=0, microsecond=0)  # ignore anything less than minutes
 
     trade.receiver_exchanging.set(receiver_exchanging)
     trade.location = location
@@ -187,73 +215,3 @@ def get_trades(request: HttpRequest) -> Response:
     )
     trades_serializer = TradeSerializer(trades, many=True)
     return JsonResponse(trades_serializer.data, safe=False)
-
-
-NOT_LOGGED_IN = Response(
-    {
-        "status": "NOT_LOGGED_IN",
-        "message": "You need to be logged in to trade.",
-    },
-    status=HTTP_401_UNAUTHORIZED,
-)
-
-
-INVALID_TRADE_REQUEST = Response(
-    {
-        "status": "INVALID_TRADE_REQUEST",
-        "message": "Please include a valid giver and giver_giving.",  # TODO: Make this more user friendly
-    },
-    status=HTTP_400_BAD_REQUEST,
-)
-
-INVALID_TRADE_ACCEPT = Response(
-    {
-        "status": "INVALID_TRADE_ACCEPT",
-        "message": "Please include a valid receiver exchanging, date, time and location.",  # TODO: Make this more user friendly
-    },
-    status=HTTP_400_BAD_REQUEST,
-)
-
-INVALID_REQUEST_SELF = Response(
-    {
-        "status": "INVALID_REQUEST_SELF",
-        "message": "You can't trade with yourself silly!",
-    },
-    status=HTTP_400_BAD_REQUEST,
-)
-
-INVALID_REQUEST_ITEMS = Response(
-    {
-        "status": "INVALID_REQUEST_ITEMS",
-        "message": "This person does not have all these items!",
-    },
-    status=HTTP_400_BAD_REQUEST,
-)
-
-CONFIRM_TRADE_REJECT = Response(
-    {
-        "status": "CONFIRM_TRADE_REJECT",
-        "message": 'Confirm you want to reject the trade with "reject": True',
-    },
-    status=HTTP_400_BAD_REQUEST,
-)
-
-OK = Response(
-    {"status": "OK"},
-    status=HTTP_200_OK,
-)
-
-TRADE_NOT_FOUND = Response(
-    {"status": "TRADE_NOT_FOUND", "message": "Could not find the trade."},
-    status=HTTP_404_NOT_FOUND,
-)
-
-INVALID_LOCATION = Response(
-    {"status": "INVALID_LOCATION", "message": "Could not find the location."},
-    status=HTTP_400_BAD_REQUEST,
-)
-
-INVALID_TIME = Response(
-    {"status": "INVALID_TIME", "message": "The time is not valid."},
-    status=HTTP_400_BAD_REQUEST,
-)
