@@ -44,33 +44,25 @@ def register(request: HttpRequest) -> Response:
             )
             new_user.save()
 
-            print("REGISTRATION SUCCESSFULL AND USER ADDED TO DATABASE!")
-
             # Sending a user verification email
             send_verification_email(new_user)
 
             # Generating new JWT token for registered user, this means that they do not need to log in after registering
             token = gen_token(new_user)
 
-            data = {
+            return Response({
                 "status": "OK",
                 "message": "User authentication accepted",
                 "username": new_user_username,
                 "access": str(token.access_token),
                 "refresh": str(token),
-            }
+            })
+        
         except IntegrityError:
-            print(
-                "NON UNIQUE EMAIL OR USERNAME USED THEREFORE, REGISTRATION UNSUCCESSFUL!"
-            )
-            data = {"status": "UNIQUE_ERROR", "message": "User already signed up!"}
+            return Response(UNIQUE_ERROR)
+        
     else:
-        data = {
-            "status": "CREDENTIAL_ERROR",
-            "message": "Password and confirm do not match",
-        }
-
-    return Response(data)
+        return Response(CREDENTIAL_ERROR)
 
 
 @api_view(["POST"])
@@ -81,6 +73,10 @@ def verify(request: HttpRequest) -> Response:
     try:
         # get user object to verify
         user_to_verify = get_object_or_404(ExeChangeUser, username=username)
+
+        # if user is already verified return ALREADY_VERIFIED
+        if user_to_verify.is_verified:
+            return Response(ALREADY_VERIFIED)
 
         # verification code from user object
         user_to_verify_code = user_to_verify.verification_code
@@ -95,14 +91,33 @@ def verify(request: HttpRequest) -> Response:
                 "message": "user verified"
             })
         else:
-            print("verification is INCORRECT")
-            return Response({
-                "status": "BAD_REQUEST",
-                "message": "code sent is not correct"
-            })
+            return Response(INCORRECT_CODE)
 
     except Http404:
-        return Response({
-            "status": "BAD_REQUEST",
-            "message": "Sent username is wrong"
-        })
+        return Response(INCORRECT_USER)
+
+
+CREDENTIAL_ERROR = {
+    "status": "CREDENTIAL_ERROR",
+    "message": "Password and confirm password do not match!",
+}
+
+UNIQUE_ERROR = {
+    "status": "UNIQUE_ERROR",
+    "message": "User already signed up!"
+}
+
+INCORRECT_CODE = {
+    "status": "INCORRECT_CODE",
+    "message": "Given verification code was not correct!",
+}
+
+INCORRECT_USER = {
+    "status": "INCORRECT_USER",
+    "message": "Given username is incorrect, no user found!",
+}
+
+ALREADY_VERIFIED = {
+    "status": "ALREADY_VERIFIED",
+    "message": "User is already verified",
+}

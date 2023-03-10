@@ -8,10 +8,15 @@ function Verify() {
     const code = queryParameters.get("code");
 
     const [isVerified, setIsVerified] = useState(false);
+    const [alreadyVerified, setIsAlreadyVerified] = useState(false);
 
 
     axios.post("/api/verify", JSON.stringify({username, code}), {headers: {"Content-Type": "application/json"}, withCredentials: true,})
     .then(function (response) {
+        if(response.data.status == "ALREADY_VERIFIED") {
+            setIsAlreadyVerified(true);
+            return;
+        }
         if(response.data.status != "OK") {
             setIsVerified(false);
             return;
@@ -26,6 +31,13 @@ function Verify() {
                 <div>
                     <h1>VERIFIED</h1>
                     <p>Welcome to the change... you now have full access.</p>
+                </div>
+                :
+                alreadyVerified
+                ?
+                <div>
+                    <h1>HUH? ALREADY VERIFIED</h1>
+                    <p>You can keep refreshing if you want though...</p>
                 </div>
                 :
                 <div>
