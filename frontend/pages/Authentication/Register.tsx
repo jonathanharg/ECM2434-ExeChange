@@ -131,21 +131,10 @@ function Register() {
           setGenericError("An unknown authentication error occurred!");
           return;
         }
-        // SIGN UP WAS SUCCESSFUL -> proceed to 'sign the user in' by using the tokens returned to them
-        // from the django register view !
 
-        const attemptAuth = signIn({
-          token: response.data.access,
-          expiresIn: 120,
-          tokenType: "bearer",
-          authState: { user: response.data.username },
-          // TODO: refresh tokens working !
-        });
-        if (attemptAuth) {
-          //Registered user has been successfully signed in!
-          console.log("User logged in!");
-          navigate("/");
-        }
+        // Registration was successful, show message to verify.
+        // TODO: Show message somewhere better to verify.
+        setGenericError("PLEASE VERIFY YOUR ACCOUNT, YOU WILL HAVE RECIEVED AN EMAIL!");
       })
       .catch((error) => {
         console.log(error);

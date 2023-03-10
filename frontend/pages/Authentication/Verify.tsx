@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useSignIn } from "react-auth-kit";
+import { useNavigate } from "react-router-dom";
 
 function Verify() {
     const queryParameters = new URLSearchParams(window.location.search);
 
     const username = queryParameters.get("username");
     const code = queryParameters.get("code");
+
+    const signIn = useSignIn();
+    const navigate = useNavigate();
 
     const [isVerified, setIsVerified] = useState(false);
     const [alreadyVerified, setIsAlreadyVerified] = useState(false);
@@ -21,7 +26,25 @@ function Verify() {
             setIsVerified(false);
             return;
         }
-        setIsVerified(true);
+
+        const attemptAuth = signIn({
+          token: response.data.access,
+          expiresIn: 120,
+          tokenType: "bearer",
+          authState: { user: response.data.username },
+          // TODO: refresh tokens working !
+        });
+
+        if (attemptAuth) {
+          //Registered user has been successfully verified !
+          setIsVerified(true);
+
+          // Wait for 3 seconds before redircting to home with auth now set.
+          setTimeout(() => {
+            navigate("/");
+          }, 3000)
+        }
+        
     })
     return (
         <div>
@@ -31,6 +54,7 @@ function Verify() {
                 <div>
                     <h1>VERIFIED</h1>
                     <p>Welcome to the change... you now have full access.</p>
+                    <p>You will be redirected in a matter of seconds...</p>
                 </div>
                 :
                 alreadyVerified

@@ -47,16 +47,7 @@ def register(request: HttpRequest) -> Response:
             # Sending a user verification email
             send_verification_email(new_user)
 
-            # Generating new JWT token for registered user, this means that they do not need to log in after registering
-            token = gen_token(new_user)
-
-            return Response({
-                "status": "OK",
-                "message": "User authentication accepted",
-                "username": new_user_username,
-                "access": str(token.access_token),
-                "refresh": str(token),
-            })
+            return Response(REGISTRATION_ACCEPTED)
         
         except IntegrityError:
             return Response(UNIQUE_ERROR)
@@ -86,9 +77,15 @@ def verify(request: HttpRequest) -> Response:
             user_to_verify.is_verified = True
             user_to_verify.save()
 
+            #generate access token for user so full access is available
+            token = gen_token(user_to_verify)
+
             return Response({
                 "status": "OK",
-                "message": "user verified"
+                "message": "user verified",
+                "username": user_to_verify.username,
+                "token": str(token.access_token),
+                "refresh": str(token),
             })
         else:
             return Response(INCORRECT_CODE)
@@ -96,6 +93,11 @@ def verify(request: HttpRequest) -> Response:
     except Http404:
         return Response(INCORRECT_USER)
 
+
+REGISTRATION_ACCEPTED = {
+    "status": "OK",
+    "message": "User registration accepted!",
+}
 
 CREDENTIAL_ERROR = {
     "status": "CREDENTIAL_ERROR",
