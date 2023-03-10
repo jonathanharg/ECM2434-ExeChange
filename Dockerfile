@@ -30,7 +30,7 @@ FROM node:19-slim as node-base
 ENV NODE_ENV = "production"
 ADD . /src
 WORKDIR /src
-RUN npm i && npm run build # TODO: Lint & Test
+RUN npm i && npm run build
 
 # SETUP Backend
 FROM python-base as production
@@ -42,5 +42,4 @@ COPY --from=python-base $PYSETUP_PATH $PYSETUP_PATH
 COPY --from=node-base /src/frontend/dist/ /app/frontend/dist/
 COPY --from=node-base /src/backend/ /app/backend/
 WORKDIR /app
-RUN python ./backend/manage.py migrate && python ./backend/manage.py collectstatic
-# RUN python ./backend/manage.py collectstatic
+RUN python ./backend/manage.py migrate && python ./backend/manage.py collectstatic --noinput

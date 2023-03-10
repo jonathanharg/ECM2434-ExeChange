@@ -1,15 +1,17 @@
 services:
   backend:
     build: .
-    restart: "on-failure"
+    restart: on-failure
     env_file: .env
+    depends_on:
+      - postgres
     volumes:
       - static-content:/app/backend/staticfiles
       - media:/app/backend/media
 
   nginx:
     build: ./nginx
-    restart: "always"
+    restart: always
     volumes:
       - static-content:/www/static
       - media:/www/media
@@ -17,6 +19,18 @@ services:
       - backend
     ports:
       - 80:80
+  
+  postgres:
+    image: postgres:15-bullseye
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_NAME}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
 volumes:
   static-content:
   media:
+  postgres-data:
