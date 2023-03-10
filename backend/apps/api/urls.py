@@ -3,11 +3,11 @@ from apps.api.routes import (
     marketplace,
     profile,
     register,
-    verify,
     status,
     tags,
     trading,
     upload,
+    verify,
 )
 from django.urls import path
 

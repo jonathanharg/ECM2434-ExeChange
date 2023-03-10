@@ -134,7 +134,9 @@ function Register() {
 
         // Registration was successful, show message to verify.
         // TODO: Show message somewhere better to verify.
-        setGenericError("PLEASE VERIFY YOUR ACCOUNT, YOU WILL HAVE RECIEVED AN EMAIL!");
+        setGenericError(
+          "PLEASE VERIFY YOUR ACCOUNT, YOU WILL HAVE RECIEVED AN EMAIL!"
+        );
       })
       .catch((error) => {
         console.log(error);

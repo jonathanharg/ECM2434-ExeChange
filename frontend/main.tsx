@@ -34,7 +34,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/verify",
-        element: <Verify />
+        element: <Verify />,
       },
       {
         path: "/marketplace",

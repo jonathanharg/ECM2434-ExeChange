@@ -1,3 +1,7 @@
+import random
+import string
+
+import yagmail
 from apps.api.models import ExeChangeUser
 from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
@@ -7,9 +11,6 @@ from rest_framework_simplejwt.authentication import (
     JWTAuthentication,
 )
 from rest_framework_simplejwt.tokens import RefreshToken
-import random
-import string
-import yagmail
 
 
 def gen_token(user: ExeChangeUser) -> RefreshToken:  # type: ignore
@@ -39,7 +40,7 @@ def get_username(email: str) -> str:
 
 
 def gen_unique_code() -> str:
-    chars = (string.ascii_letters + string.digits)
+    chars = string.ascii_letters + string.digits
 
     res = ""
 
@@ -61,16 +62,17 @@ def send_verification_email(user: ExeChangeUser):
     code = user.verification_code
     user_link = "http://127.0.0.1:8000/verify?username=%s&code=%s" % (username, code)
 
-    yag = yagmail.SMTP('noreplyexechange@gmail.com', oauth2_file='credentials.json')
+    yag = yagmail.SMTP("noreplyexechange@gmail.com", oauth2_file="credentials.json")
 
     contents = [
-        'Hello %s !' % (username),
-        'Welcome to ExeChange, cleary you heard the rumours',
-        'Big things are coming and if you click the below link, you will be a part of it...',
-        '%s' % (user_link),
+        "Hello %s !" % (username),
+        "Welcome to ExeChange, cleary you heard the rumours",
+        "Big things are coming and if you click the below link, you will be a part of it...",
+        "%s" % (user_link),
     ]
 
-    yag.send(user.email, 'ExeChange Verfication', contents)
+    yag.send(user.email, "ExeChange Verfication", contents)
+
 
 def authenticate_user(request: HttpRequest) -> ExeChangeUser | None:  # type: ignore
     """

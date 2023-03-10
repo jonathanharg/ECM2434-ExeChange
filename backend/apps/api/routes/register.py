@@ -1,4 +1,8 @@
-from apps.api.authentication import get_username, gen_unique_code, send_verification_email
+from apps.api.authentication import (
+    gen_unique_code,
+    get_username,
+    send_verification_email,
+)
 from apps.api.models import ExeChangeUser
 from django.db.utils import IntegrityError
 from django.http import HttpRequest
@@ -38,7 +42,7 @@ def register(request: HttpRequest) -> Response:
                 email=email_address,
                 password=user_password,
                 verification_code=new_user_verification_code,
-                is_verified = False,
+                is_verified=False,
             )
             new_user.save()
 
@@ -46,10 +50,10 @@ def register(request: HttpRequest) -> Response:
             send_verification_email(new_user)
 
             return Response(REGISTRATION_ACCEPTED)
-        
+
         except IntegrityError:
             return Response(UNIQUE_ERROR)
-        
+
     else:
         return Response(CREDENTIAL_ERROR)
 
@@ -64,7 +68,4 @@ CREDENTIAL_ERROR = {
     "message": "Password and confirm password do not match!",
 }
 
-UNIQUE_ERROR = {
-    "status": "UNIQUE_ERROR",
-    "message": "User already signed up!"
-}
+UNIQUE_ERROR = {"status": "UNIQUE_ERROR", "message": "User already signed up!"}

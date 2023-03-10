@@ -1,10 +1,10 @@
 from apps.api.authentication import gen_token
 from apps.api.models import ExeChangeUser
-from django.http import HttpRequest
+from django.http import Http404, HttpRequest
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-from django.http import Http404
+
 
 @api_view(["POST"])
 def verify(request: HttpRequest) -> Response:
@@ -27,16 +27,18 @@ def verify(request: HttpRequest) -> Response:
             user_to_verify.is_verified = True
             user_to_verify.save()
 
-            #generate access token for user so full access is available
+            # generate access token for user so full access is available
             token = gen_token(user_to_verify)
 
-            return Response({
-                "status": "OK",
-                "message": "user verified",
-                "username": user_to_verify.username,
-                "token": str(token.access_token),
-                "refresh": str(token),
-            })
+            return Response(
+                {
+                    "status": "OK",
+                    "message": "user verified",
+                    "username": user_to_verify.username,
+                    "token": str(token.access_token),
+                    "refresh": str(token),
+                }
+            )
         else:
             return Response(INCORRECT_CODE)
 
