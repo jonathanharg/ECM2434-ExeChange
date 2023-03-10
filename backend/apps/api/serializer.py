@@ -4,14 +4,14 @@ from rest_framework import serializers
 from .models import ClothingItem, Trade
 
 
-class UserSerializer(serializers.ModelSerializer):
+class MinimalUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ["id", "username"]
 
 
 class ClothingItemSerializer(serializers.ModelSerializer):
-    owner = UserSerializer()
+    owner = MinimalUserSerializer()
 
     class Meta:
         model = ClothingItem
@@ -27,11 +27,22 @@ class ClothingItemSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
+# TODO: Minimize this so only the needed data is sent
+class MinimalTradeClothingItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClothingItem
+        depth = 1
+        fields = [
+            "id",
+            "caption",
+        ]
 
 # TODO: Update
 class TradeSerializer(serializers.ModelSerializer):
-    giver = UserSerializer()
-    receiver = UserSerializer()
+    giver = MinimalUserSerializer()
+    receiver = MinimalUserSerializer()
+    giver_giving = MinimalTradeClothingItemSerializer(many=True)
+    receiver_exchanging = MinimalTradeClothingItemSerializer(many=True)
 
     class Meta:
         model = Trade
@@ -44,4 +55,6 @@ class TradeSerializer(serializers.ModelSerializer):
             "giver_giving",
             "receiver_exchanging",
             "message",
+            "location",
+            "time",
         ]

@@ -41,8 +41,6 @@ class ClothingItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     description = models.TextField(max_length=280)
 
-    in_trade = models.BooleanField(default=False)
-
     def __str__(self) -> str:
         return self.caption
 
@@ -73,7 +71,7 @@ class Trade(models.Model):
     receiver_exchanging = models.ManyToManyField(
         ClothingItem, related_name="trade_exchanging", blank=True
     )
-    message = models.TextField(max_length=280)
+    message = models.TextField(max_length=280, blank=True)
     location = models.ForeignKey(
         Location, on_delete=models.CASCADE, blank=True, null=True
     )
@@ -83,6 +81,9 @@ class Trade(models.Model):
     confirmation_code = models.PositiveSmallIntegerField(
         default=random.randint(1000, 9999), editable=False
     )
+    requested_at = models.DateTimeField(auto_now_add=True)
+    accepted_at = models.DateTimeField(blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class ExeChangeUser(AbstractUser):

@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-
+from itertools import chain
 from apps.api.authentication import authenticate_user
 from apps.api.models import ClothingItem, ExeChangeUser, Location, Trade
 from apps.api.responses import (
@@ -195,6 +195,7 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
     trade.location = location
     trade.status = trade.TradeStatuses.ACCEPTED
     trade.time = time
+    trade.accepted_at = datetime.now()
     trade.save()
 
     return Response(
@@ -213,5 +214,7 @@ def get_trades(request: HttpRequest) -> Response:
     trades = Trade.objects.filter(
         Q(receiver=authenticated_user) | Q(giver=authenticated_user)
     )
-    trades_serializer = TradeSerializer(trades, many=True)
+    accepted_trades = trades.filter(status=Trade.TradeStatuses.ACCEPTED).order_by("time")
+    other_trades = trades.exclude(status=Trade.TradeStatuses.ACCEPTED).order_by("requested_at")
+    trades_serializer = TradeSerializer(accepted_trades.union(other_trades), many=True)
     return JsonResponse(trades_serializer.data, safe=False)
