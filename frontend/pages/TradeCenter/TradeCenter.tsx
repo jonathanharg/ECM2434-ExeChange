@@ -1,14 +1,12 @@
-import { Console } from 'console';
-import { setFips } from 'crypto';
 import React, { useEffect, useState } from 'react';
 import { Product } from '../Marketplace/Itemtile';
+import Tradealerts from './Tradealerts';
 
 
 export type User = {
     id: number,
     username: String
 }
-
 
 export type TradeInvolvement = {
     id: number,
@@ -19,24 +17,27 @@ export type TradeInvolvement = {
     message: String,
 }
 
-export default function TradeAlerts() {
-    const [tradeInvolvements, setTradeInvolvements] = useState<TradeInvolvement[]>([]);
-
+export default function TradeCenter() {
+    const [trades, setTrades] = useState<TradeInvolvement[]>([]);
+    
     function fetchInvolvement() {
         return fetch("/api/trade/all")
           .then((response) => response.json())
-          .then((data) => setTradeInvolvements(data));
+          .then((data) => setTrades(data));
       }
 
     useEffect(()=> {
         fetchInvolvement()
     }, [])
    
-    return (   
-        <div className= "ml-3 text-sm font-medium">
-            {tradeInvolvements.map((trade) => (trade.receiver.username))} is requesting your item 
-            {tradeInvolvements.map((trade)=>(trade.giver_giving.map((i)=> i.caption)))} !!!
+
+
+    return ( 
+        <div className="flex w flex-col px-4 pt-12">
+            {trades.map((trade) => (
+          <Tradealerts key={trade.id} {...trade} />
+        ))}
+
         </div>
     )
-
 }
