@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Hero from "./pages/Hero/Hero";
 import Login from "./pages/Authentication/Login";
 import Register from "./pages/Authentication/Register";
+import Verify from "./pages/Authentication/Verify";
 import Navbar from "./components/Navbar";
 import { AuthProvider, RequireAuth } from "react-auth-kit";
 
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/verify",
+        element: <Verify />
       },
       {
         path: "/marketplace",

@@ -59,7 +59,7 @@ def send_verification_email(user: ExeChangeUser):
 
     username = user.username
     code = user.verification_code
-    user_link = "http://127.0.0.1:8000/verify?username=%s?code=%s" % (username, code)
+    user_link = "http://127.0.0.1:8000/verify?username=%s&code=%s" % (username, code)
 
     yag = yagmail.SMTP('noreplyexechange@gmail.com', oauth2_file='credentials.json')
 

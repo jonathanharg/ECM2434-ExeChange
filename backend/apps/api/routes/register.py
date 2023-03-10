@@ -76,7 +76,7 @@ def register(request: HttpRequest) -> Response:
 @api_view(["POST"])
 def verify(request: HttpRequest) -> Response:
     username = request.data["username"]
-    verification_code = request.data["verification_code"]
+    verification_code = request.data["code"]
 
     try:
         # get user object to verify
@@ -95,6 +95,7 @@ def verify(request: HttpRequest) -> Response:
                 "message": "user verified"
             })
         else:
+            print("verification is INCORRECT")
             return Response({
                 "status": "BAD_REQUEST",
                 "message": "code sent is not correct"
