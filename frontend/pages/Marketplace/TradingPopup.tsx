@@ -56,7 +56,7 @@ export function Trading(product: Product) {
 
   function showSvg(index) {
     if(giver_giving.includes(index)) {    
-      return <CheckCircleIcon className={`w-8 h-8 absolute`}> </CheckCircleIcon>
+      return <CheckCircleIcon className={`w-6 h-6 absolute right-0 stroke-green-800`}> </CheckCircleIcon>
     } 
   }
 
@@ -139,7 +139,7 @@ export function Trading(product: Product) {
                   i.id != product.id &&
                   i.owner.id == product.owner.id
                 ).map((i) =>  
-                <div key= {i.id} className="w-full overflow-hidden rounded-md bg-gray-200 hover:opacity-75">
+                <div key= {i.id} className="w-full relative overflow-hidden rounded-md bg-gray-200 hover:opacity-75">
                   {showSvg(i.id)}
                 <img
                 draggable={false}
