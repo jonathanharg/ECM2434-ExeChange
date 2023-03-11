@@ -8,6 +8,7 @@ from django.db.utils import IntegrityError
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.conf import settings
 
 
 @api_view(["POST"])
@@ -44,12 +45,17 @@ def register(request: HttpRequest) -> Response:
                 verification_code=new_user_verification_code,
                 is_verified=False,
             )
-            new_user.save()
 
-            # Sending a user verification email
-            send_verification_email(new_user)
-
-            return Response(REGISTRATION_ACCEPTED)
+            # on debug testing, do not need to send email.
+            if settings.DEBUG:
+                new_user.is_verified = True
+                new_user.save()
+                return Response(DEBUG_REGISTRATION_ACCEPTED)
+            else:
+                new_user.save()
+                # sending verification email to user
+                send_verification_email(new_user)
+                return Response(REGISTRATION_ACCEPTED)
 
         except IntegrityError:
             return Response(UNIQUE_ERROR)
@@ -61,6 +67,11 @@ def register(request: HttpRequest) -> Response:
 REGISTRATION_ACCEPTED = {
     "status": "OK",
     "message": "User registration accepted!",
+}
+
+DEBUG_REGISTRATION_ACCEPTED = {
+    "status": "OK_DEBUG",
+    "message": "User registration accepted debug mode",
 }
 
 CREDENTIAL_ERROR = {
