@@ -1,15 +1,15 @@
 from apps.api.authentication import (
+    gen_token,
     gen_unique_code,
     get_username,
     send_verification_email,
-    gen_token
 )
 from apps.api.models import ExeChangeUser
+from django.conf import settings
 from django.db.utils import IntegrityError
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.conf import settings
 
 
 @api_view(["POST"])
@@ -52,13 +52,15 @@ def register(request: HttpRequest) -> Response:
                 new_user.is_verified = True
                 new_user.save()
                 token = gen_token(new_user)
-                return Response({
-                    "status": "OK_DEBUG",
-                    "message": "user registration accepted",
-                    "username": get_username(email_address),
-                    "access": str(token.access_token),
-                    "refresh": str(token),
-                })
+                return Response(
+                    {
+                        "status": "OK_DEBUG",
+                        "message": "user registration accepted",
+                        "username": get_username(email_address),
+                        "access": str(token.access_token),
+                        "refresh": str(token),
+                    }
+                )
             else:
                 new_user.save()
                 # sending verification email to user

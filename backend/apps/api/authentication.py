@@ -3,6 +3,7 @@ import string
 
 import yagmail
 from apps.api.models import ExeChangeUser
+from django.conf import settings
 from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.authentication import (
@@ -11,7 +12,6 @@ from rest_framework_simplejwt.authentication import (
     JWTAuthentication,
 )
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.conf import settings
 
 
 def gen_token(user: ExeChangeUser) -> RefreshToken:  # type: ignore
@@ -52,7 +52,7 @@ def gen_unique_code() -> str:
     return res
 
 
-def send_verification_email(user: ExeChangeUser) -> None: # type: ignore
+def send_verification_email(user: ExeChangeUser) -> None:  # type: ignore
     """
     This function will take an unverified user object and send an email to the email associated with the user
     containing a link that will successfully verify the user onclick.
@@ -64,9 +64,9 @@ def send_verification_email(user: ExeChangeUser) -> None: # type: ignore
 
     yag = yagmail.SMTP("noreplyexechange@gmail.com", oauth2_file="credentials.json")
 
-    body = f" Hello {username}! Welcome to ExeChange, clearly you heard the rumours, Big things are coming and if you click the below link, you will be a part of it..."
+    body = f" Hello {username}! Welcome to ExeChange, clearly you heard the rumours, Big things are coming and if you click the below link, you will be a part of it..."  # pylint: disable=line-too-long
 
-    html_link = f"<a href='{settings.DOMAIN_NAME}/verify?username={username}&code={code}'>Verify me!</a>" # type: ignore
+    html_link = f"<a href='{settings.DOMAIN_NAME}/verify?username={username}&code={code}'>Verify me!</a>"  # type: ignore
     # send email
     yag.send(user.email, "ExeChange Verfication", contents=[body, html_link])
 
