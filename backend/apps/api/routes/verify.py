@@ -1,4 +1,4 @@
-from apps.api.authentication import gen_token, gen_unique_code, send_verification_email
+from apps.api.authentication import gen_token, send_verification_email
 from apps.api.models import ExeChangeUser
 from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
@@ -40,8 +40,9 @@ def verify(request: HttpRequest) -> Response:
                     "refresh": str(token),
                 }
             )
-        else:
-            return Response(INCORRECT_CODE)
+
+        # Verification code from email link was not correct.
+        return Response(INCORRECT_CODE)
 
     except Http404:
         return Response(INCORRECT_USER)

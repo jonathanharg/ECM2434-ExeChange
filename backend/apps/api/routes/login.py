@@ -46,8 +46,8 @@ def login(request: HttpRequest) -> Response:
                 "refresh": str(token),
             }
         )
-    else:
-        return Response(NOT_AUTHENTICATED)
+
+    return Response(NOT_AUTHENTICATED)
 
 
 NOT_AUTHENTICATED = {

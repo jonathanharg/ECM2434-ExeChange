@@ -61,11 +61,11 @@ def register(request: HttpRequest) -> Response:
                         "refresh": str(token),
                     }
                 )
-            else:
-                new_user.save()
-                # sending verification email to user
-                send_verification_email(new_user)
-                return Response(REGISTRATION_ACCEPTED)
+
+            new_user.save()
+            # sending verification email to user
+            send_verification_email(new_user)
+            return Response(REGISTRATION_ACCEPTED)
 
         except IntegrityError:
             return Response(UNIQUE_ERROR)
