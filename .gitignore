@@ -13,6 +13,9 @@ dist
 dist-ssr
 *.local
 
+# SSL Certificates
+nginx/ssl/*
+
 # Django
 /staticfiles
 

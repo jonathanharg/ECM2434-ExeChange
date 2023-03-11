@@ -10,15 +10,18 @@ services:
       - media:/app/backend/media
 
   nginx:
-    build: ./nginx
+    image: nginx:1.23.3
     restart: always
     volumes:
       - static-content:/www/static
       - media:/www/media
+      - ./nginx/${NGINX_CONFIG}.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/ssl:/etc/ssl:ro
     depends_on:
       - backend
     ports:
       - 80:80
+      - 443:443
   
   postgres:
     image: postgres:15-bullseye
