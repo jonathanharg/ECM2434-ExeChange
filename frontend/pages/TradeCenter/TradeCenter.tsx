@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Product } from '../Marketplace/Itemtile';
 import Tradealerts from './Tradealerts';
 
-
 export type User = {
     id: number,
     username: String
@@ -19,18 +18,15 @@ export type TradeInvolvement = {
 
 export default function TradeCenter() {
     const [trades, setTrades] = useState<TradeInvolvement[]>([]);
-    
+
     function fetchInvolvement() {
         return fetch("/api/trade/all")
           .then((response) => response.json())
           .then((data) => setTrades(data));
       }
-
     useEffect(()=> {
         fetchInvolvement()
     }, [])
-   
-
 
     return ( 
         <div className="flex w flex-col px-4 pt-12">
