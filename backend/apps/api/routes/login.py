@@ -30,22 +30,31 @@ def login(request: HttpRequest) -> Response:
         password=user_password,
     )
 
-    if user is not None:
-        print("LOG IN SUCCESSFULL!")
+    if not user.is_verified:
+        return Response(NOT_VERIFIED)
 
+    if user is not None:
         # Creating JWT Access token
-        # Ignoring type as libraries have no included type stubs
         token = gen_token(user)
 
-        data = {
+        return Response({
             "status": "OK",
             "message": "User authentication excepted",
             "username": username,
             "access": str(token.access_token),
             "refresh": str(token),
-        }
+        })
     else:
-        print("LOGIN UNSUCCESSFUL, USER NOT FOUND IN DATABASE!")
-        data = {"status": "BAD", "message": "User not authenticated"}
+        return Response(NOT_AUTHENTICATED)
 
-    return Response(data)
+
+NOT_AUTHENTICATED = {
+    "status": "NOT_AUTHENTICATED",
+    "message": "User credentials are not correct."
+}
+
+
+NOT_VERIFIED = {
+    "status": "NOT_VERIFIED",
+    "message": "User has not yet verifed."
+}
