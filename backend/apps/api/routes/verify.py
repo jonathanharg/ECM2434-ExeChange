@@ -21,6 +21,7 @@ def verify(request: HttpRequest) -> Response:
 
         # verification code from user object
         user_to_verify_code = user_to_verify.verification_code
+        print("code: ", user_to_verify_code)
 
         if verification_code == user_to_verify_code:
             # verification is correct
@@ -57,14 +58,8 @@ def resend_verify(request: HttpRequest) -> Response:
     try:
         user_object = get_object_or_404(ExeChangeUser, username=username)
 
-        # Generate new code for user and save it.
-        user_object.verification_code = gen_unique_code()
-        user_object.save()
-
         # Resend verification email
-        if not send_verification_email(user_object):
-            # Error in sending
-            return Response(EMAIL_ERROR)
+        send_verification_email(user_object)
         
         # sending was okay.
         return Response({
@@ -89,9 +84,4 @@ INCORRECT_USER = {
 ALREADY_VERIFIED = {
     "status": "ALREADY_VERIFIED",
     "message": "User is already verified",
-}
-
-EMAIL_ERROR = {
-    "status": "EMAIL_ERROR",
-    "message": "Email did not send, please try refresh.",
 }

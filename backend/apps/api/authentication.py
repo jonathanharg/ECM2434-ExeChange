@@ -72,7 +72,8 @@ def send_verification_email(user: ExeChangeUser) -> bool:
         "%s" % (user_link),
     ]
 
-    return yag.send(user.email, "ExeChange Verfication", contents)
+    # send email
+    yag.send(user.email, "ExeChange Verfication", contents)
 
 
 def authenticate_user(request: HttpRequest) -> ExeChangeUser | None:  # type: ignore

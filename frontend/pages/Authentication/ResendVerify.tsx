@@ -1,25 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function ResendVerify() {
-    const navigate = useNavigate();
-
     const QueryParameters = new URLSearchParams(window.location.search);
     const username = QueryParameters.get("username");
 
-    let err = false;
+    const [err, setErr] = useState(false);
+
 
     axios.post("/api/resendverify", JSON.stringify({username}), {
         headers: {"Content-Type": "application/json"},
         withCredentials: true,
-    })
-    .then(function (response) {
+         })
+        .then(function (response) {
         if(response.data.status != "OK") {
-            err = true;
+            setErr(true);
             return;
         }
-    })
+    });
+
     return (
         <div>
             {
