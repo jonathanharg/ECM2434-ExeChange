@@ -77,7 +77,7 @@ export default function Login() {
   }, [password]);
 
   function resendEmail() {
-    if(!(isVerified)) {
+    if (!isVerified) {
       navigate("/resendverify?username=" + user.split("@")[0]);
     }
   }
@@ -103,11 +103,10 @@ export default function Login() {
           setPasswordError("Incorrect username or password");
           return;
         }
-        if(response.data.status == "NOT_VERIFIED") {
+        if (response.data.status == "NOT_VERIFIED") {
           setIsVerified(false);
           return;
         }
-
 
         const attemptAuth = signIn({
           token: response.data.access,
@@ -255,17 +254,17 @@ export default function Login() {
                 Log in
               </button>
             </div>
-            {
-              isVerified
-              ?
+            {isVerified ? (
               <></>
-              :
+            ) : (
               <div>
                 <br />
                 <p>You have not yet verified your account!</p>
-                <a onClick={() => resendEmail()} className="cursor-pointer">Click here to resend verification email!</a>
+                <a onClick={() => resendEmail()} className="cursor-pointer">
+                  Click here to resend verification email!
+                </a>
               </div>
-            }
+            )}
           </form>
         </div>
       </div>

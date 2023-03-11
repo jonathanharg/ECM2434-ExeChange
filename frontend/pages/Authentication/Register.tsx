@@ -127,7 +127,7 @@ function Register() {
           return;
         }
         // Sign the user in with sent codes.
-        if(response.data.status == "OK_DEBUG") {
+        if (response.data.status == "OK_DEBUG") {
           const attemptAuth = signIn({
             token: response.data.access,
             expiresIn: 120,
@@ -136,7 +136,7 @@ function Register() {
             // refreshToken: response.data.refresh,
             // refreshTokenExpireIn: 1440,
           });
-  
+
           if (attemptAuth) {
             navigate("/");
           } else {

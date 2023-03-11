@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/resendverify",
-        element: <ResendVerify />
+        element: <ResendVerify />,
       },
       {
         path: "/marketplace",
