@@ -33,6 +33,7 @@ export default function Login() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isVerified, setIsVerified] = useState(true);
+  const [resendEmailLink, setResendEmailLink] = useState("");
 
   const messages = [
     "Go for a walk, that may help jog your memory.",
@@ -75,6 +76,12 @@ export default function Login() {
       setPasswordError("");
     }
   }, [password]);
+
+  function resendEmail() {
+    if(!(isVerified)) {
+      navigate("/resendverify?user=" + user.split("@")[0]);
+    }
+  }
 
   const handleSubmit = async (e) => {
     // this function sends form data to /api/login
@@ -257,7 +264,7 @@ export default function Login() {
               <div>
                 <br />
                 <p>You have not yet verified your account!</p>
-                <a href="http://127.0.0.1:8000/resendverify">Click here to resend verification email!</a>
+                <a onClick={() => resendEmail()} className="cursor-pointer">Click here to resend verification email!</a>
               </div>
             }
           </form>
