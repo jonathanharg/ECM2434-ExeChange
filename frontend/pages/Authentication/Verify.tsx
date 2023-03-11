@@ -15,6 +15,10 @@ function Verify() {
   const [isVerified, setIsVerified] = useState(false);
   const [alreadyVerified, setIsAlreadyVerified] = useState(false);
 
+  function resendEmail() {
+    navigate("/resendverify?username=" + username);
+  }
+
   axios
     .post("/api/verify", JSON.stringify({ username, code }), {
       headers: { "Content-Type": "application/json" },
@@ -65,6 +69,7 @@ function Verify() {
         <div>
           <h1>VERIFICATION ERROR</h1>
           <p>Please try again, you will be late to the wave otherwise...</p>
+          <a onClick={() => resendEmail()} className="cursor-pointer">Click here to resend!</a>
         </div>
       )}
     </div>

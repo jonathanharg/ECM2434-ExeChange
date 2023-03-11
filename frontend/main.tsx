@@ -6,6 +6,7 @@ import Hero from "./pages/Hero/Hero";
 import Login from "./pages/Authentication/Login";
 import Register from "./pages/Authentication/Register";
 import Verify from "./pages/Authentication/Verify";
+import ResendVerify from "./pages/Authentication/ResendVerify";
 import Navbar from "./components/Navbar";
 import { AuthProvider, RequireAuth } from "react-auth-kit";
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/verify",
         element: <Verify />,
+      },
+      {
+        path: "/resendverify",
+        element: <ResendVerify />
       },
       {
         path: "/marketplace",
