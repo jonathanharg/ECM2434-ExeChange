@@ -32,6 +32,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [isVerified, setIsVerified] = useState(true);
 
   const messages = [
     "Go for a walk, that may help jog your memory.",
@@ -91,13 +92,16 @@ export default function Login() {
         withCredentials: true,
       })
       .then((response) => {
-        // TODO: Handle more responses than just OK
-        if (response.data.status != "OK") {
+        if (response.data.status == "NOT_AUTHENTICATED") {
           setEmailError("Incorrect username or password");
           setPasswordError("Incorrect username or password");
-          console.log("Incorrect username or password!");
           return;
         }
+        if(response.data.status == "NOT_VERIFIED") {
+          setIsVerified(false);
+          return;
+        }
+
 
         const attemptAuth = signIn({
           token: response.data.access,
@@ -109,7 +113,6 @@ export default function Login() {
         });
 
         if (attemptAuth) {
-          console.log("User logged in!");
           navigate("/");
         } else {
           //Print error as react-auth-kit broke!
@@ -246,6 +249,17 @@ export default function Login() {
                 Log in
               </button>
             </div>
+            {
+              isVerified
+              ?
+              <></>
+              :
+              <div>
+                <br />
+                <p>You have not yet verified your account!</p>
+                <a href="http://127.0.0.1:8000/resendverify">Click here to resend verification email!</a>
+              </div>
+            }
           </form>
         </div>
       </div>
