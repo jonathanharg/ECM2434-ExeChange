@@ -126,6 +126,24 @@ function Register() {
           );
           return;
         }
+        // Sign the user in with sent codes.
+        if(response.data.status == "OK_DEBUG") {
+          const attemptAuth = signIn({
+            token: response.data.access,
+            expiresIn: 120,
+            tokenType: "Bearer",
+            authState: { user: response.data.username }, // state passed in cannot be called user, hence const email = user.
+            // refreshToken: response.data.refresh,
+            // refreshTokenExpireIn: 1440,
+          });
+  
+          if (attemptAuth) {
+            navigate("/");
+          } else {
+            //Print error as react-auth-kit broke!
+            console.log("React-auth-kit error!");
+          }
+        }
         if (response.data.status != "OK") {
           console.log("Auth error!");
           setGenericError("An unknown authentication error occurred!");

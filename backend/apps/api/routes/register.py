@@ -2,6 +2,7 @@ from apps.api.authentication import (
     gen_unique_code,
     get_username,
     send_verification_email,
+    gen_token
 )
 from apps.api.models import ExeChangeUser
 from django.db.utils import IntegrityError
@@ -50,7 +51,14 @@ def register(request: HttpRequest) -> Response:
             if settings.DEBUG:
                 new_user.is_verified = True
                 new_user.save()
-                return Response(DEBUG_REGISTRATION_ACCEPTED)
+                token = gen_token(new_user)
+                return Response({
+                    "status": "OK_DEBUG",
+                    "message": "user registration accepted",
+                    "username": get_username(email_address),
+                    "access": str(token.access_token),
+                    "refresh": str(token),
+                })
             else:
                 new_user.save()
                 # sending verification email to user
@@ -67,11 +75,6 @@ def register(request: HttpRequest) -> Response:
 REGISTRATION_ACCEPTED = {
     "status": "OK",
     "message": "User registration accepted!",
-}
-
-DEBUG_REGISTRATION_ACCEPTED = {
-    "status": "OK_DEBUG",
-    "message": "User registration accepted debug mode",
 }
 
 CREDENTIAL_ERROR = {
