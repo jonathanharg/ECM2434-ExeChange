@@ -11,6 +11,7 @@ from rest_framework_simplejwt.authentication import (
     JWTAuthentication,
 )
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.conf import settings
 
 
 def gen_token(user: ExeChangeUser) -> RefreshToken:  # type: ignore
@@ -51,7 +52,7 @@ def gen_unique_code() -> str:
     return res
 
 
-def send_verification_email(user: ExeChangeUser):
+def send_verification_email(user: ExeChangeUser) -> bool:
     """
     This function will take an unverified user object and send an email to the email associated with the user
     containing a link that will successfully verify the user onclick.
@@ -60,18 +61,18 @@ def send_verification_email(user: ExeChangeUser):
 
     username = user.username
     code = user.verification_code
-    user_link = "http://127.0.0.1:8000/verify?username=%s&code=%s" % (username, code)
+    user_link =  settings.DOMAIN_NAME + f"/verify?username={username}&code={code}"
 
     yag = yagmail.SMTP("noreplyexechange@gmail.com", oauth2_file="credentials.json")
 
     contents = [
         "Hello %s !" % (username),
-        "Welcome to ExeChange, cleary you heard the rumours",
+        "Welcome to ExeChange, clearly you heard the rumours",
         "Big things are coming and if you click the below link, you will be a part of it...",
         "%s" % (user_link),
     ]
 
-    yag.send(user.email, "ExeChange Verfication", contents)
+    return yag.send(user.email, "ExeChange Verfication", contents)
 
 
 def authenticate_user(request: HttpRequest) -> ExeChangeUser | None:  # type: ignore

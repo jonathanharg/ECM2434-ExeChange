@@ -1,4 +1,4 @@
-from apps.api.authentication import gen_token
+from apps.api.authentication import gen_token, send_verification_email, gen_unique_code
 from apps.api.models import ExeChangeUser
 from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
@@ -52,7 +52,28 @@ def resend_verify(request: HttpRequest) -> Response:
     Link clicked from login page to resend verify email
     gets code for username passed in request and resends the email with the code.
     """
-    pass
+    username = request.data["username"]
+
+    try:
+        user_object = get_object_or_404(ExeChangeUser, username=username)
+
+        # Generate new code for user and save it.
+        user_object.verification_code = gen_unique_code()
+        user_object.save()
+
+        # Resend verification email
+        if not send_verification_email(user_object):
+            # Error in sending
+            return Response(EMAIL_ERROR)
+        
+        # sending was okay.
+        return Response({
+            "status": "OK",
+            "message": "resent email successfully",
+        })
+
+    except Http404:
+        return Response(INCORRECT_USER)
 
 
 INCORRECT_CODE = {
@@ -68,4 +89,9 @@ INCORRECT_USER = {
 ALREADY_VERIFIED = {
     "status": "ALREADY_VERIFIED",
     "message": "User is already verified",
+}
+
+EMAIL_ERROR = {
+    "status": "EMAIL_ERROR",
+    "message": "Email did not send, please try refresh.",
 }
