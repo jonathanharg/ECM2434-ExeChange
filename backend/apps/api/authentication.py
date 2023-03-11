@@ -65,15 +65,11 @@ def send_verification_email(user: ExeChangeUser) -> bool:
 
     yag = yagmail.SMTP("noreplyexechange@gmail.com", oauth2_file="credentials.json")
 
-    contents = [
-        "Hello %s !" % (username),
-        "Welcome to ExeChange, clearly you heard the rumours",
-        "Big things are coming and if you click the below link, you will be a part of it...",
-        "%s" % (user_link),
-    ]
+    body = f" Hello {username}! Welcome to ExeChange, clearly you heard the rumours, Big things are coming and if you click the below link, you will be a part of it..."
 
+    html_link = f"<a href='{settings.DOMAIN_NAME}/verify?username={username}&code={code}'>Verify me!</a>"
     # send email
-    yag.send(user.email, "ExeChange Verfication", contents)
+    yag.send(user.email, "ExeChange Verfication", contents=[body, html_link])
 
 
 def authenticate_user(request: HttpRequest) -> ExeChangeUser | None:  # type: ignore
