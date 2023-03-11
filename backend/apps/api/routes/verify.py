@@ -46,6 +46,15 @@ def verify(request: HttpRequest) -> Response:
         return Response(INCORRECT_USER)
 
 
+@api_view(["POST"])
+def resend_verify(request: HttpRequest) -> Response:
+    """
+    Link clicked from login page to resend verify email
+    gets code for username passed in request and resends the email with the code.
+    """
+    pass
+
+
 INCORRECT_CODE = {
     "status": "INCORRECT_CODE",
     "message": "Given verification code was not correct!",

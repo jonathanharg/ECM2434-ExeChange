@@ -25,4 +25,5 @@ urlpatterns = [
     path("getpendingtradestatus", profile.get_pending_trade_status),
     path("removependingtrade", profile.remove_pending_trade),
     path("verify", verify.verify),
+    path("resendverify", verify.resend_verify),
 ]
