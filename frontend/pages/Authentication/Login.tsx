@@ -33,7 +33,6 @@ export default function Login() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isVerified, setIsVerified] = useState(true);
-  const [resendEmailLink, setResendEmailLink] = useState("");
 
   const messages = [
     "Go for a walk, that may help jog your memory.",
@@ -79,7 +78,7 @@ export default function Login() {
 
   function resendEmail() {
     if(!(isVerified)) {
-      navigate("/resendverify?user=" + user.split("@")[0]);
+      navigate("/resendverify?username=" + user.split("@")[0]);
     }
   }
 
