@@ -64,8 +64,6 @@ export function Itemtile(product: Product) {
                       <span className="sr-only">Close</span>
                       <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
-                    {/* if(trading) {  } */}
-                    {/* ADD IF CONDITION HERE - IF TRADING then : otherwise idk not that  */}
                     <Trading key={product.id} {...product} />
                   </div>
                 </Dialog.Panel>

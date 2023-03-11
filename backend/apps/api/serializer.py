@@ -35,6 +35,7 @@ class MinimalTradeClothingItemSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "caption",
+            "image",
         ]
 
 # TODO: Update

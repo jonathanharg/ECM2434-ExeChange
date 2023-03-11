@@ -145,8 +145,7 @@ export function Trading(product: Product) {
                 draggable={false}
                 tabIndex={1}
                 src={i.image}
-                onClick={() => handleExtraItems(i.id) 
-                }
+                onClick={() => handleExtraItems(i.id) }
                 />
                 </div>)}       
             </div>
