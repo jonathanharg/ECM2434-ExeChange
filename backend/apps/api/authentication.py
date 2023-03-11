@@ -52,7 +52,7 @@ def gen_unique_code() -> str:
     return res
 
 
-def send_verification_email(user: ExeChangeUser) -> bool:
+def send_verification_email(user: ExeChangeUser) -> None: # type: ignore
     """
     This function will take an unverified user object and send an email to the email associated with the user
     containing a link that will successfully verify the user onclick.
@@ -61,13 +61,12 @@ def send_verification_email(user: ExeChangeUser) -> bool:
 
     username = user.username
     code = user.verification_code
-    user_link =  settings.DOMAIN_NAME + f"/verify?username={username}&code={code}"
 
     yag = yagmail.SMTP("noreplyexechange@gmail.com", oauth2_file="credentials.json")
 
     body = f" Hello {username}! Welcome to ExeChange, clearly you heard the rumours, Big things are coming and if you click the below link, you will be a part of it..."
 
-    html_link = f"<a href='{settings.DOMAIN_NAME}/verify?username={username}&code={code}'>Verify me!</a>"
+    html_link = f"<a href='{settings.DOMAIN_NAME}/verify?username={username}&code={code}'>Verify me!</a>" # type: ignore
     # send email
     yag.send(user.email, "ExeChange Verfication", contents=[body, html_link])
 

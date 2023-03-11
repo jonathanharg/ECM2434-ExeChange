@@ -30,7 +30,7 @@ def login(request: HttpRequest) -> Response:
         password=user_password,
     )
 
-    if not user.is_verified:
+    if not user.is_verified: # type: ignore
         return Response(NOT_VERIFIED)
 
     if user is not None:

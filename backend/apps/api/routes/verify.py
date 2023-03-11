@@ -8,8 +8,8 @@ from rest_framework.response import Response
 
 @api_view(["POST"])
 def verify(request: HttpRequest) -> Response:
-    username = request.data["username"]
-    verification_code = request.data["code"]
+    username = request.data["username"] # type: ignore
+    verification_code = request.data["code"] # type: ignore
 
     try:
         # get user object to verify
@@ -53,7 +53,7 @@ def resend_verify(request: HttpRequest) -> Response:
     Link clicked from login page to resend verify email
     gets code for username passed in request and resends the email with the code.
     """
-    username = request.data["username"]
+    username = request.data["username"] # type: ignore
 
     try:
         user_object = get_object_or_404(ExeChangeUser, username=username)
