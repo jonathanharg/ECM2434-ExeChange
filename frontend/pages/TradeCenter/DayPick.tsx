@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { format } from "date-fns";
 import "react-day-picker/dist/style.css";
 import { DayPicker, Row, RowProps } from "react-day-picker";
 
@@ -25,15 +24,28 @@ function isPastDate(date: Date) {
 }
 
 function isPostNextWeek(date: Date) {
-  return differenceInCalendarDays(date, new Date()) > 7;
+  return differenceInCalendarDays(date, new Date()) > 6;
 }
 
-function OnlyFutureRow(props: RowProps) {
+function isWeekend(date: Date){
+  if (date.getDay() == 0 || date.getDay() == 6) return true 
+  else return false;
+}
+
+function weekends(props: RowProps){
+  const weekends = props.dates.filter((i)=> isWeekend(i))
+  return weekends
+}
+
+function OnlyThisWeek(props: RowProps) {
+
   const isPastRow = props.dates.every(isPastDate);
   const isFutureRow = props.dates.every(isPostNextWeek);
+
   if (isPastRow && isFutureRow) return <></>;
   return <Row {...props} />;
 }
+
 
 export default function DayPick({day, setDay}) {
 
@@ -45,13 +57,15 @@ export default function DayPick({day, setDay}) {
         selected={day}
         onSelect={setDay}
         fromDate={new Date()}
-        components={{ Row: OnlyFutureRow }}
-        disabled={[isPastDate, isPostNextWeek]}
+        components={{ Row: OnlyThisWeek}}
+        disabled={[isPastDate, isPostNextWeek, isWeekend]}
         showOutsideDays
         modifiersClassNames={{
           selected: "my-selected",
           today: "my-today",
         }}
+        
+       
       />
     </>
   );

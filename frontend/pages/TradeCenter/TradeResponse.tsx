@@ -64,13 +64,13 @@ export default function TradeResponse(trade: TradeInvolvement) {
   }
 
    async function submitResponse() {
-    console.log(receiver_exchanging, timePicked, location)
     const tradeid = trade.id.toString()
     const apiPath = "/api/trade/" +tradeid+ "/accept";
     const hourMin = timePicked.split(":");
     time?.setHours(parseInt(hourMin[0]), parseInt(hourMin[1]))
     console.log(time)
-    
+
+
     await axios
     .post(
       apiPath,
@@ -127,7 +127,7 @@ export default function TradeResponse(trade: TradeInvolvement) {
           </>
         ) : (
           <>
-            <h3 className="p-5 text-xl font-bold text-gray-900">
+            <h3 className="text-xl font-bold text-gray-900">
               {" "}
               Items requested{" "}
             </h3>
@@ -336,6 +336,7 @@ export default function TradeResponse(trade: TradeInvolvement) {
           </div>
         </div>
       </div>
+      
     </div>
   );
 }
