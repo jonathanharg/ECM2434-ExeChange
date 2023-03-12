@@ -178,7 +178,7 @@ export default function TradeResponse(trade: TradeInvolvement) {
                     </div>
                     <div className="justify-center"> </div>
                     <div className="justify-right">
-                        <button onClick ={handleclick} className="w-fit flex items-center  p-2 pl-4  text-sm font-medium text-white bg-stone-800 border border-gray-300 rounded-lg hover:bg-stone-700 hover:text-gray-50">
+                        <button onClick ={handleclick} className="w-fit flex items-center  p-2 pl-4  text-sm font-medium text-white bg-stone-900 border border-gray-300 rounded-lg hover:bg-stone-700 hover:text-gray-50">
                                 Next 
                                 <ArrowRightIcon className="stroke-2 m-2 h-3 w-3"></ArrowRightIcon>
                          </button>
@@ -203,7 +203,7 @@ export default function TradeResponse(trade: TradeInvolvement) {
                         </div>
                         <div className="justify-center"> </div>
                         <div className="justify-right">
-                            <button onClick ={handleclick} className="w-fit flex items-center  p-2 pl-4  text-sm font-medium text-white bg-stone-800 border border-gray-300 rounded-lg hover:bg-stone-700 hover:text-gray-50">
+                            <button onClick ={handleclick} className="w-fit flex items-center  p-2 pl-4  text-sm font-medium text-white bg-stone-900 border border-gray-300 rounded-lg hover:bg-stone-700 hover:text-gray-50">
                                 Next 
                                 <ArrowRightIcon className="stroke-2 m-2 h-3 w-3"></ArrowRightIcon>
                             </button>
