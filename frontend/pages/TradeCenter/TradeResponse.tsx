@@ -6,7 +6,7 @@ import { TradeInvolvement } from "./TradeCenter";
 export default function TradeResponse(trade: TradeInvolvement) {
     const [page, setPage] = useState<number>(0)
     const [products, setProducts] = useState<Product[]>([]);
-    const [reciever_exchanging, setRecieverExchanging] = useState<Number[]>()
+    const [reciever_exchanging, setRecieverExchanging] = useState<Number[]>([])
 
     function fetchProducts() {
         return fetch("/api/products")
@@ -15,29 +15,25 @@ export default function TradeResponse(trade: TradeInvolvement) {
     }
     useEffect(()=> {fetchProducts()}, [])
     function handleclick() {
-        console.log(products.map((i)=> i.owner.id))
+        console.log(reciever_exchanging)
         setPage(1)
-        console.log(page)
     }
     
     function handleExtraItems(index) {
-        if(reciever_exchanging){
-            if (reciever_exchanging.includes(index)) {
+        if (reciever_exchanging.includes(index)) {
 
             setRecieverExchanging(reciever_exchanging.filter((i) => i !== index));
-            } else {
+        } 
+        else {
             setRecieverExchanging([...reciever_exchanging, index]);
-            }
         }
       }
 
     function showSvg(index) {
-        if(reciever_exchanging){
-            if(reciever_exchanging.includes(index)) {    
+        if(reciever_exchanging.includes(index)) {    
             return <CheckCircleIcon className={`w-6 h-6 absolute right-0 stroke-green-800`}> </CheckCircleIcon>
-            } 
-        }
-      }
+        } 
+    }
     return (
         <div className="w-full"> 
             <div className={page == 0 ? "p-4 overflow-hidden flex flex-col items-center rounded-lg": "hidden"}>
