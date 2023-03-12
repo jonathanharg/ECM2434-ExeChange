@@ -32,11 +32,6 @@ function isWeekend(date: Date){
   else return false;
 }
 
-function weekends(props: RowProps){
-  const weekends = props.dates.filter((i)=> isWeekend(i))
-  return weekends
-}
-
 function OnlyThisWeek(props: RowProps) {
 
   const isPastRow = props.dates.every(isPastDate);
