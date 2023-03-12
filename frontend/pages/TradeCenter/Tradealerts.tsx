@@ -6,16 +6,13 @@ import {
   InboxArrowDownIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Console } from "console";
-import { setFips } from "crypto";
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import { Product } from "../Marketplace/Itemtile";
+
+import React, {useEffect, useState } from "react";
+
 import { TradeInvolvement } from "./TradeCenter";
-import { Dialog, Popover, Transition } from "@headlessui/react";
+import {Transition, Disclosure } from "@headlessui/react";
 import TradeResponse from "./TradeResponse";
 import { usePopper } from "react-popper";
-import TradingPopup from "../Marketplace/TradingPopup";
-import { Disclosure } from '@headlessui/react'
 import { ChevronUpIcon } from '@heroicons/react/20/solid'
 
 type ProfileData = {
@@ -27,7 +24,7 @@ type ProfileData = {
 export default function TradeAlerts(trade: TradeInvolvement) {
   const [profileData, setProfileData] = useState<ProfileData>();
   const [tradeResponseRef, setTradeResponseRef] = useState();
-  const { styles, attributes } = usePopper(tradeResponseRef);
+  const [isShowing, setIsShowing] = useState(false);
   
   function fetchProfileData() {
     return fetch("/api/profiledata")
@@ -55,17 +52,27 @@ export default function TradeAlerts(trade: TradeInvolvement) {
                   } h-5 w-5 text-green-800`}
                 />
               </Disclosure.Button>
-              <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-                <TradeResponse {...trade}/>
+              <Transition
+              show={open}
+              enter="transition-opacity duration-75"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="transition-opacity duration-150"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+              >
+              <Disclosure.Panel static className="px-4 pt-4 pb-2 text-sm text-gray-500 shadow rounded-md overflow-hidden">
+                    <TradeResponse {...trade}/>
               </Disclosure.Panel>
+            </Transition>
             </>
           )}
         </Disclosure>
       ) : (<Disclosure>
         {({ open }) => (
           <>
-            <Disclosure.Button className="flex w-full justify-between rounded-lg bg-white shadow px-4 py-3 text-left text-sm font-medium text-black hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
-              <ArrowUpRightIcon className="h-5 w-5 stroke-green-800 stroke-2">
+            <Disclosure.Button onClick={() => setIsShowing((isShowing) => !isShowing)} className="flex w-full justify-between rounded-lg bg-white shadow px-4 py-3 text-left text-sm font-medium text-black hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
+              <ArrowUpRightIcon className="h-5 w-5 stroke-green-800 stroke-2 ">
               </ArrowUpRightIcon> 
               <span><b> You sent a trade to {trade.giver.username}! </b> </span>
               <ChevronUpIcon
@@ -74,9 +81,19 @@ export default function TradeAlerts(trade: TradeInvolvement) {
                 } h-5 w-5 text-green-800`}
               />
             </Disclosure.Button>
-            <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-              
-            </Disclosure.Panel>
+            <Transition
+              show={isShowing}
+              enter="transition-opacity duration-75"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="transition-opacity duration-150"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                
+              </Disclosure.Panel>
+            </Transition>
           </>
         )}
       </Disclosure>)

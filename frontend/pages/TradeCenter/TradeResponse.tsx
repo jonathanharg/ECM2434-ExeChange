@@ -107,7 +107,7 @@ export default function TradeResponse(trade: TradeInvolvement) {
       >
         {trade.giver_giving.length == 1 ? (
           <>
-            <h3 className="p-5 text-xl font-bold text-gray-900">
+            <h3 className="text-xl font-bold text-gray-900">
               {" "}
               Request for: {trade.giver_giving.map((i) => i.caption)}{" "}
             </h3>
@@ -167,7 +167,7 @@ export default function TradeResponse(trade: TradeInvolvement) {
           products.filter((i) => i.owner.id == trade.receiver.id).length ==
           1 ? (
             <>
-              <h3 className="pt-5 pb-2 text-xl font-bold text-gray-900">
+              <h3 className="pb-2 text-xl font-bold text-gray-900">
                 {" "}
                 {trade.receiver.username} has...{" "}
               </h3>
@@ -272,7 +272,7 @@ export default function TradeResponse(trade: TradeInvolvement) {
             : "hidden"
         }
       >
-        <h3 className="pt-5 text-xl font-bold text-gray-900">
+        <h3 className="text-xl font-bold text-gray-900">
           Pick the day you'd like to trade.
         </h3>
         <DayPick day = {time} setDay = {setTime}/>
@@ -308,7 +308,7 @@ export default function TradeResponse(trade: TradeInvolvement) {
             : "hidden"
         }
       >
-        <h3 className="pt-5 text-xl font-bold text-gray-900">
+        <h3 className="text-xl font-bold text-gray-900">
           Pick the time and location you'd like to trade at
         </h3>
 
