@@ -30,7 +30,7 @@ export default function TradeCenter() {
 
   return (
     <div className="w flex flex-col px-4 pt-12">
-      <h2 className="pb-5 text-left text-2xl font-bold">Trades</h2>
+      <h2 className="pb-5 text-center text-2xl font-bold">Trades</h2>
       {trades.map((trade) => (
         <Tradealerts key={trade.id} {...trade} />
       ))}
