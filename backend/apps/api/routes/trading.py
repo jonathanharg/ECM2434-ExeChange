@@ -1,19 +1,21 @@
 from datetime import datetime, timedelta, timezone
 from itertools import chain
+
 from apps.api.authentication import authenticate_user
 from apps.api.models import ClothingItem, ExeChangeUser, Location, Trade
 from apps.api.responses import (
     CONFIRM_TRADE_REJECT,
     INVALID_LOCATION,
     INVALID_TIME,
+    INVALID_TOO_EARLY,
     INVALID_TRADE_ACCEPT,
     INVALID_TRADE_ITEMS,
     INVALID_TRADE_REQUEST,
     INVALID_TRADE_SELF,
+    ITEM_ALREADY_REQUESTED,
     NOT_LOGGED_IN,
     OK,
     TRADE_NOT_FOUND,
-    ITEM_ALREADY_REQUESTED
 )
 from apps.api.serializer import TradeSerializer
 from django.db.models import Q
@@ -81,7 +83,7 @@ def request_trade(request: HttpRequest) -> Response:
 
         if item_request_by_user(user, item):
             return ITEM_ALREADY_REQUESTED
-        
+
     message = ""
 
     if "message" in request.data:
@@ -204,6 +206,56 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
     )
 
 
+# TODO: Handle case when two people mark as here but either one or both doesn't show
+@api_view(["GET"])
+def arrived(request: HttpRequest, trade_id: int) -> Response:
+    user = authenticate_user(request)
+
+    if user is None:
+        return NOT_LOGGED_IN
+
+    try:
+        trade = Trade.objects.get(id=trade_id)
+    except Trade.DoesNotExist:
+        return TRADE_NOT_FOUND
+
+    invalid_user = user not in [trade.giver, trade.receiver]
+    invalid_status = trade.status != Trade.TradeStatuses.ACCEPTED
+
+    if invalid_user | invalid_status:
+        return TRADE_NOT_FOUND
+
+    now = datetime.now(timezone.utc)
+    time_until_trade = trade.time - now
+
+    if time_until_trade > timedelta(minutes=10):  # more than 10 mins early
+        return INVALID_TOO_EARLY
+
+    if time_until_trade > timedelta(minutes=9):
+        print("TODO: User has achieved the 'Early Bird Catches the Word' achievement")
+
+    if time_until_trade < timedelta(minutes=-10):
+        print("TODO: The user is too late! PERMA BAN THEM")
+        #TODO: Handle this situation
+        return Response()
+
+    here = bool(request.data["here"])
+
+    # TODO: VERY NASTY NON-ATOMIC ARRIVAL SITUATION COULD OCCUR HERE
+    # BOTH USERS THINK THEY'RE THE FIRST TO ARRIVE ATM LEAVE THIS PROBLEM LATER
+    # KICK THE CAN DOWN THE ROAD, PROVERBIALLY
+
+    if user == trade.giver:
+        trade.giver_there = here
+    if user == trade.receiver:
+        trade.receiver_there = here
+    trade.save()
+    return Response(
+        {"status": "OK", "message": f"You are {'not ' if not here else ''}here!"},
+        status=HTTP_200_OK,
+    )
+
+
 @api_view(["GET"])
 def get_trades(request: HttpRequest) -> Response:
     authenticated_user = authenticate_user(request)
@@ -214,7 +266,13 @@ def get_trades(request: HttpRequest) -> Response:
     trades = Trade.objects.filter(
         Q(receiver=authenticated_user) | Q(giver=authenticated_user)
     )
-    accepted_trades = trades.filter(status=Trade.TradeStatuses.ACCEPTED).order_by("time")
-    other_trades = trades.exclude(status=Trade.TradeStatuses.ACCEPTED).order_by("requested_at")
-    trades_serializer = TradeSerializer(list(chain(accepted_trades, other_trades)), many=True)
+    accepted_trades = trades.filter(status=Trade.TradeStatuses.ACCEPTED).order_by(
+        "time"
+    )
+    other_trades = trades.exclude(status=Trade.TradeStatuses.ACCEPTED).order_by(
+        "requested_at"
+    )
+    trades_serializer = TradeSerializer(
+        list(chain(accepted_trades, other_trades)), many=True
+    )
     return JsonResponse(trades_serializer.data, safe=False)

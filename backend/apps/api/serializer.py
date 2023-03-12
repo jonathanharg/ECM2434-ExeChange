@@ -27,6 +27,7 @@ class ClothingItemSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
+
 # TODO: Minimize this so only the needed data is sent
 class MinimalTradeClothingItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,6 +38,7 @@ class MinimalTradeClothingItemSerializer(serializers.ModelSerializer):
             "caption",
             "image",
         ]
+
 
 # TODO: Update
 class TradeSerializer(serializers.ModelSerializer):

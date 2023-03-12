@@ -139,3 +139,11 @@ ITEM_ALREADY_REQUESTED = Response(
     },
     status=HTTP_400_BAD_REQUEST,
 )
+
+INVALID_TOO_EARLY = Response(
+    {
+        "status": "INVALID_TOO_EARLY",
+        "message": "You are too early to arrive to this trade.",
+    },
+    status=HTTP_400_BAD_REQUEST,
+)
