@@ -21,8 +21,8 @@ export default function TradeResponse(trade: TradeInvolvement) {
         setPage(page => page + 1)
     }
     
-    function handleDecline() {
-
+    function handleBack() {
+        setPage(page => page - 1)
     }
 
     function handleExtraItems(index) {
@@ -171,17 +171,17 @@ export default function TradeResponse(trade: TradeInvolvement) {
 
                 <div className="p-2 w-full grid grid-cols-3 ">
                     <div className="justify-left">
-                        <button onClick ={handleDecline} className="w-fit flex items-center p-2 text-sm font-medium text-white bg-red-800 border border-gray-300 rounded-lg hover:bg-red-700 hover:text-gray-700">
-                            Decline
-                            <TrashIcon className=" stroke-2 m-2 h-3 w-3"></TrashIcon>
+                        <button onClick ={handleBack} className="w-fit flex items-center p-2 pr-4 text-sm font-medium text-white bg-stone-900 border border-gray-300 rounded-lg hover:bg-stone-700 hover:text-gray-50">
+                            <ArrowLeftIcon className=" stroke-2 m-2 h-3 w-3"></ArrowLeftIcon>
+                                Back  
                         </button>
                     </div>
                     <div className="justify-center"> </div>
                     <div className="justify-right">
-                        <button onClick ={handleclick} className="w-fit flex items-center p-2 text-sm font-medium text-white bg-green-800 border border-gray-300 rounded-lg hover:bg-green-700 hover:text-gray-700">
-                            Next
-                            <ArrowRightIcon className="stroke-2 m-2 h-3 w-3"></ArrowRightIcon>
-                        </button>
+                        <button onClick ={handleclick} className="w-fit flex items-center  p-2 pl-4  text-sm font-medium text-white bg-stone-800 border border-gray-300 rounded-lg hover:bg-stone-700 hover:text-gray-50">
+                                Next 
+                                <ArrowRightIcon className="stroke-2 m-2 h-3 w-3"></ArrowRightIcon>
+                         </button>
                     </div>
                 </div>
 
@@ -196,15 +196,15 @@ export default function TradeResponse(trade: TradeInvolvement) {
                     </p> 
                     <div className="p-2 w-full grid grid-cols-3 ">
                         <div className="justify-left">
-                            <button onClick ={handleDecline} className="w-fit flex items-center p-2 text-sm font-medium text-white bg-red-800 border border-gray-300 rounded-lg hover:bg-red-700 hover:text-gray-700">
-                                Decline
-                                <TrashIcon className=" stroke-2 m-2 h-3 w-3"></TrashIcon>
+                            <button onClick ={handleBack} className="w-fit flex items-center p-2 pr-4 text-sm font-medium text-white bg-stone-900 border border-gray-300 rounded-lg hover:bg-stone-700 hover:text-gray-50">
+                            <ArrowLeftIcon className=" stroke-2 m-2 h-3 w-3"></ArrowLeftIcon>
+                                Back  
                             </button>
                         </div>
                         <div className="justify-center"> </div>
                         <div className="justify-right">
-                            <button onClick ={handleclick} className="w-fit flex items-center p-2 text-sm font-medium text-white bg-green-800 border border-gray-300 rounded-lg hover:bg-green-700 hover:text-gray-700">
-                                Time? 
+                            <button onClick ={handleclick} className="w-fit flex items-center  p-2 pl-4  text-sm font-medium text-white bg-stone-800 border border-gray-300 rounded-lg hover:bg-stone-700 hover:text-gray-50">
+                                Next 
                                 <ArrowRightIcon className="stroke-2 m-2 h-3 w-3"></ArrowRightIcon>
                             </button>
                         </div>
