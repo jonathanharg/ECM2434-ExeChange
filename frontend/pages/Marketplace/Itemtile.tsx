@@ -12,7 +12,7 @@ export type Product = {
   tags: tag[];
   owner: owner;
   description: string;
-}
+};
 
 export type owner = {
   id: number;
@@ -80,7 +80,7 @@ export function Itemtile(product: Product) {
           className={
             auth()
               ? "h-full w-full object-cover object-center"
-              : "blur-lg lg:h-full lg:w-full pointer-events-none"
+              : "pointer-events-none blur-lg lg:h-full lg:w-full"
           }
           onClick={() => setOpen(true)}
         />

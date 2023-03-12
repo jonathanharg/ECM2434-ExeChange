@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { format } from 'date-fns';
-import 'react-day-picker/dist/style.css';
-import { DayPicker, Row, RowProps } from 'react-day-picker';
+import { format } from "date-fns";
+import "react-day-picker/dist/style.css";
+import { DayPicker, Row, RowProps } from "react-day-picker";
 
-import { differenceInCalendarDays } from 'date-fns';
+import { differenceInCalendarDays } from "date-fns";
 
 const css = `
   .my-selected:not([disabled]) { 
@@ -20,13 +20,12 @@ const css = `
   }
 `;
 
-
 function isPastDate(date: Date) {
   return differenceInCalendarDays(date, new Date()) < 0;
 }
 
-function isPostNextWeek(date: Date){
-    return differenceInCalendarDays(date, new Date) > 7;
+function isPostNextWeek(date: Date) {
+  return differenceInCalendarDays(date, new Date()) > 7;
 }
 
 function OnlyFutureRow(props: RowProps) {
@@ -37,11 +36,11 @@ function OnlyFutureRow(props: RowProps) {
 }
 
 export default function DayPick() {
-    const [selected, setSelected] = useState<Date>();
-    
-    
-    return (
-      <><style> {css}</style>
+  const [selected, setSelected] = useState<Date>();
+
+  return (
+    <>
+      <style> {css}</style>
       <DayPicker
         mode="single"
         selected={selected}
@@ -49,12 +48,12 @@ export default function DayPick() {
         fromDate={new Date()}
         components={{ Row: OnlyFutureRow }}
         disabled={[isPastDate, isPostNextWeek]}
-        showOutsideDays 
+        showOutsideDays
         modifiersClassNames={{
-          selected: 'my-selected',
-          today: 'my-today'
+          selected: "my-selected",
+          today: "my-today",
         }}
-        />
-      </>
-    )
+      />
+    </>
+  );
 }

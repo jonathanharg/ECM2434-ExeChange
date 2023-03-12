@@ -19,7 +19,7 @@ function Upload() {
   const [completed, setCompleted] = useState(false);
   const [checkedTerms, setCheckedTerms] = useState(false);
   const [checkedUnderstand, setCheckedUnderstand] = useState(false);
-  const [description, setDescription] = useState("")
+  const [description, setDescription] = useState("");
   const fileRef = useRef(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -28,7 +28,7 @@ function Upload() {
       caption: caption,
       tags: Array.from(searchState),
       image: image,
-      description: description
+      description: description,
     };
 
     console.log(formData);
@@ -66,7 +66,7 @@ function Upload() {
       setCompleted(false);
     }
   };
-  
+
   useEffect(() => {
     terms;
   }, []);
@@ -91,8 +91,8 @@ function Upload() {
                   <div className="content-center space-y-1 px-4 text-center">
                     {image && (
                       // Image viewer div
-                        <div className="aspect-[3/4] relative h-auto w-48 overflow-hidden rounded-md">
-                          <div className="absolute right-0 align-top"> 
+                      <div className="relative aspect-[3/4] h-auto w-48 overflow-hidden rounded-md">
+                        <div className="absolute right-0 align-top">
                           <button
                             onClick={() => {
                               setImage(undefined);
@@ -101,18 +101,16 @@ function Upload() {
                             }}
                             className=""
                           >
-                            <MinusCircleIcon className="m-auto h-5 w-5 stroke-1 stroke-white fill-red-800" />
+                            <MinusCircleIcon className="m-auto h-5 w-5 fill-red-800 stroke-white stroke-1" />
                           </button>
                         </div>
-                          <img className="object-cover" src={file} />
-                          
-                        </div>
-              
+                        <img className="object-cover" src={file} />
+                      </div>
                     )}
                     <div className={image ? "hidden" : "block text-center"}>
                       <DocumentPlusIcon className="m-auto h-16 w-16 stroke-gray-500 stroke-1" />
 
-                      <div className="flex text-sm text-gray-600 justify-center">
+                      <div className="flex justify-center text-sm text-gray-600">
                         <label
                           htmlFor="file-upload"
                           className="relative cursor-pointer rounded-md bg-white font-medium text-green-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-green-700 focus-within:ring-offset-2 hover:text-green-700"
@@ -154,8 +152,20 @@ function Upload() {
                 />
               </div>
               <div>
-              <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900">Item description</label>
-                <textarea required id="message" className="row-span-4 block p-2.5 w-full text-sm text-gray-900  rounded-lg border border-gray-300 focus:ring-green-700 focus:border-green-800" placeholder="Be descriptive... but not more descriptive than a tweet" value={description} onChange={(e)=> setDescription(e.target.value)}></textarea>
+                <label
+                  htmlFor="message"
+                  className="mb-2 block text-sm font-medium text-gray-900"
+                >
+                  Item description
+                </label>
+                <textarea
+                  required
+                  id="message"
+                  className="row-span-4 block w-full rounded-lg border border-gray-300  p-2.5 text-sm text-gray-900 focus:border-green-800 focus:ring-green-700"
+                  placeholder="Be descriptive... but not more descriptive than a tweet"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                ></textarea>
               </div>
               <div className="max-w-md text-left">
                 <div>
@@ -175,17 +185,11 @@ function Upload() {
                     className="ml-2 text-sm font-medium text-gray-900"
                   >
                     I agree with the{" "}
-                    <a
-                      href="#"
-                      className="text-green-800 hover:underline "
-                    >
+                    <a href="#" className="text-green-800 hover:underline ">
                       Terms & Conditions
                     </a>{" "}
                     and the{" "}
-                    <a
-                      href="#"
-                      className="text-green-800 hover:underline "
-                    >
+                    <a href="#" className="text-green-800 hover:underline ">
                       Privacy Policy
                     </a>
                     .

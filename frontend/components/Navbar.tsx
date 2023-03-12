@@ -18,7 +18,7 @@ const navigation = [
   { name: "Home", to: "/" },
   { name: "Marketplace", to: "/marketplace" },
   { name: "Upload", to: "/upload" },
-  { name: "Trade Center", to: "/tradecenter"}
+  { name: "Trade Center", to: "/tradecenter" },
 ];
 
 export default function Navbar() {
