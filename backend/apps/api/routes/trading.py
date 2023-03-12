@@ -183,7 +183,7 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
 
     try:
         time = parse_datetime(data["time"])
-    except ValueError:
+    except (ValueError, TypeError):
         return INVALID_TIME
 
     if not valid_trade_time(time):
