@@ -8,23 +8,34 @@ import React, { useEffect, useState } from "react";
 import { Product } from "../Marketplace/Itemtile";
 import DayPick from "./DayPick";
 import { TradeInvolvement } from "./TradeCenter";
+import axios from "axios";
+import TimeLocation from "./TimeLocation";
+
+
+
+
 
 export default function TradeResponse(trade: TradeInvolvement) {
   const [page, setPage] = useState<number>(0);
   const [products, setProducts] = useState<Product[]>([]);
-  const [reciever_exchanging, setRecieverExchanging] = useState<Number[]>([]);
+  const [receiver_exchanging, setRecieverExchanging] = useState<Number[]>([]);
+  const [timePicked, setTimePicked] = useState('');
+  const [location, setLocation] = useState("Lafrowda")
+  const [time, setTime] = useState<Date>();
+   // this "time" above includes date and time, had to call it time instead of date cus that is how its defined in backend 
 
   function fetchProducts() {
     return fetch("/api/products")
       .then((response) => response.json())
       .then((data) => setProducts(data));
   }
+
   useEffect(() => {
     fetchProducts();
   }, []);
 
   function handleclick() {
-    console.log(reciever_exchanging);
+    console.log(receiver_exchanging);
     setPage((page) => page + 1);
   }
 
@@ -33,15 +44,15 @@ export default function TradeResponse(trade: TradeInvolvement) {
   }
 
   function handleExtraItems(index) {
-    if (reciever_exchanging.includes(index)) {
-      setRecieverExchanging(reciever_exchanging.filter((i) => i !== index));
+    if (receiver_exchanging.includes(index)) {
+      setRecieverExchanging(receiver_exchanging.filter((i) => i !== index));
     } else {
-      setRecieverExchanging([...reciever_exchanging, index]);
+      setRecieverExchanging([...receiver_exchanging, index]);
     }
   }
-
+  
   function showSvg(index) {
-    if (reciever_exchanging.includes(index)) {
+    if (receiver_exchanging.includes(index)) {
       return (
         <CheckCircleIcon
           className={`absolute right-0 h-6 w-6 stroke-green-800`}
@@ -52,8 +63,41 @@ export default function TradeResponse(trade: TradeInvolvement) {
     }
   }
 
+   async function submitResponse() {
+    console.log(receiver_exchanging, timePicked, location)
+    const tradeid = trade.id.toString()
+    const apiPath = "/api/trade/" +tradeid+ "/accept";
+    const hourMin = timePicked.split(":");
+    time?.setHours(parseInt(hourMin[0]), parseInt(hourMin[1]))
+    console.log(time)
+    
+    await axios
+    .post(
+      apiPath,
+      JSON.stringify({
+        receiver_exchanging,
+        time,
+        location
+      }),
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    )
+    .then((response) => {
+      // TODO: Handle more responses than just OK
+      if (response.data.status != "OK") {
+        return;
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+
   return (
-    <div className="w-full">
+    <div className="w-full flex justify-center items-center">
       <div
         className={
           page == 0
@@ -231,7 +275,7 @@ export default function TradeResponse(trade: TradeInvolvement) {
         <h3 className="pt-5 text-xl font-bold text-gray-900">
           Pick the day you'd like to trade.
         </h3>
-        <DayPick />
+        <DayPick day = {time} setDay = {setTime}/>
         <p className="text-sm text-gray-500">
           You can only schedule a trade within a <b> week's </b> time.
         </p>
@@ -252,6 +296,41 @@ export default function TradeResponse(trade: TradeInvolvement) {
               className="flex w-fit items-center  rounded-lg border  border-gray-300 bg-stone-900 p-2 pl-6 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
             >
               Next
+              <ArrowRightIcon className="m-2 h-3 w-3 stroke-2"></ArrowRightIcon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className={
+          page == 3
+            ? "flex flex-col  items-center overflow-hidden rounded-lg p-4 h-full"
+            : "hidden"
+        }
+      >
+        <h3 className="pt-5 text-xl font-bold text-gray-900">
+          Pick the time and location you'd like to trade at
+        </h3>
+
+        <TimeLocation selected={location} setSelected={setLocation}time= {timePicked} setTime= {setTimePicked}/>
+
+        <div className="grid w-full grid-cols-3 p-2 ">
+          <div className="justify-left">
+            <button
+              onClick={handleBack}
+              className="flex w-fit items-center rounded-lg border border-gray-300 bg-stone-900 p-2 pr-6 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
+            >
+              <ArrowLeftIcon className=" m-2 h-3 w-3 stroke-2"></ArrowLeftIcon>
+              Back
+            </button>
+          </div>
+          <div className="justify-center"> </div>
+          <div className="justify-right -ml-2 ">
+            <button
+              onClick={submitResponse}
+              className="flex w-fit items-center  rounded-lg border  border-gray-300 bg-stone-900 p-2 pl-6 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
+            >
+              ExeChange!
               <ArrowRightIcon className="m-2 h-3 w-3 stroke-2"></ArrowRightIcon>
             </button>
           </div>

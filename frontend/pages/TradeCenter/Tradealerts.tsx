@@ -26,6 +26,7 @@ export default function TradeAlerts(trade: TradeInvolvement) {
   const [profileData, setProfileData] = useState<ProfileData>();
   const [tradeResponseRef, setTradeResponseRef] = useState();
   const { styles, attributes } = usePopper(tradeResponseRef);
+  
   function fetchProfileData() {
     return fetch("/api/profiledata")
       .then((response) => response.json())

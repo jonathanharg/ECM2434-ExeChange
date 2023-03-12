@@ -35,16 +35,15 @@ function OnlyFutureRow(props: RowProps) {
   return <Row {...props} />;
 }
 
-export default function DayPick() {
-  const [selected, setSelected] = useState<Date>();
+export default function DayPick({day, setDay}) {
 
   return (
     <>
       <style> {css}</style>
       <DayPicker
         mode="single"
-        selected={selected}
-        onSelect={setSelected}
+        selected={day}
+        onSelect={setDay}
         fromDate={new Date()}
         components={{ Row: OnlyFutureRow }}
         disabled={[isPastDate, isPostNextWeek]}

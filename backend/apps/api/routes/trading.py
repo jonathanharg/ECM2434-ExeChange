@@ -32,7 +32,7 @@ def valid_trade_time(time: datetime | None) -> bool:
     in_hours = time.hour in TRADING_HOURS
     in_past = time <= now
     within_a_week = (time - now) < timedelta(days=7)
-    weekend = time.weekday > 4  # Index of weekdays starting a Monday: 0, 4 is Friday
+    weekend = time.weekday() > 4  # Index of weekdays starting a Monday: 0, 4 is Friday
     return (
         (time is None)
         | (not in_hours)
