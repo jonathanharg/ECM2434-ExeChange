@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   ChatBubbleLeftRightIcon,
   PowerIcon,
@@ -25,12 +26,6 @@ import { MyItems } from "./MyItemsProfile";
 import Achievement from "./Achievement";
 import {Reward} from "./Achievement";
 import Profilestats from "./Profilestats";
-
-interface ProfileData {
-  levelPercent: number;
-  name: string;
-  level: number;
-}
 
 const locations: Location[] = [
   {
@@ -164,6 +159,11 @@ const rewards = [{
 },];
 
 function Profile() {
+  let { username } = useParams();
+  
+  const [myProfile, setMyProfile] = useState();
+  let profileTitle = whoseProfile();
+  
   const [trades, setTrades] = useState<Trade[]>([]);
   
   function fetchTrades() {
@@ -176,11 +176,33 @@ function Profile() {
     fetchTrades();
   }, []);
 
+  function fetchWhoseProfile(){
+    return fetch("/api/whoseprofile/"+ username)
+    .then((response) => response.json())
+    .then((data) => setMyProfile(data));
+  }
+
+  useEffect(() => {
+    fetchWhoseProfile();
+  }, []);
+
+  function whoseProfile(){
+    if(myProfile == true){
+      let profileTitle = "My Profile"
+      return profileTitle;
+    }else if(myProfile == false){
+      let profileTitle = (username +"'s Profile")
+      return profileTitle;
+    }
+  }
+  
+
+
   return (
     <div className="font-poppins mx-auto flex min-h-screen max-w-lg flex-col bg-white bg-cover bg-center bg-no-repeat px-4 opacity-100 lg:max-w-5xl">
       <div className="flex items-center justify-between px-1 pt-4">
         <div>
-          <p className="font-semibold">My Profile</p>
+          <p className="font-semibold">{profileTitle}</p>
         </div>
       </div>
       <Profilestats />
