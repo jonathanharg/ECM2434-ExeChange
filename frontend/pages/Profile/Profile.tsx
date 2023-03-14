@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import {
   ChatBubbleLeftRightIcon,
   PowerIcon,
@@ -165,8 +164,6 @@ const rewards = [{
 },];
 
 function Profile() {
-  let { username } = useParams();
-
   const [trades, setTrades] = useState<Trade[]>([]);
   
   function fetchTrades() {
@@ -183,7 +180,7 @@ function Profile() {
     <div className="font-poppins mx-auto flex min-h-screen max-w-lg flex-col bg-white bg-cover bg-center bg-no-repeat px-4 opacity-100 lg:max-w-5xl">
       <div className="flex items-center justify-between px-1 pt-4">
         <div>
-          <p className="font-semibold">Username: {username}</p>
+          <p className="font-semibold">My Profile</p>
         </div>
       </div>
       <Profilestats />
