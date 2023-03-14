@@ -15,6 +15,7 @@ urlpatterns = [
     path("login", login.login),
     path("register", register.register),
     path("products", marketplace.marketplace),
+    path("marketplace", marketplace.marketplace),
     path("upload", upload.post),
     path("tags", constants.tags),
     path("locations", constants.locations),

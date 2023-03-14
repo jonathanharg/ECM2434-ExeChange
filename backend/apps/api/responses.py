@@ -147,3 +147,11 @@ INVALID_TOO_EARLY = Response(
     },
     status=HTTP_400_BAD_REQUEST,
 )
+
+INVALID_USER = Response(
+    {
+        "status": "INVALID_USER",
+        "message": "The specified user is not valid.",
+    },
+    status=HTTP_400_BAD_REQUEST,
+)
