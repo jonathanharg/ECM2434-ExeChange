@@ -18,6 +18,7 @@ from apps.api.responses import (
     TRADE_NOT_FOUND,
 )
 from apps.api.serializer import TradeSerializer
+from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.http import HttpRequest, JsonResponse
 from django.utils.dateparse import parse_datetime
@@ -207,6 +208,7 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
 
 
 # TODO: Handle case when two people mark as here but either one or both doesn't show
+@transaction.atomic
 @api_view(["GET"])
 def arrived(request: HttpRequest, trade_id: int) -> Response:
     user = authenticate_user(request)
@@ -236,22 +238,29 @@ def arrived(request: HttpRequest, trade_id: int) -> Response:
 
     if time_until_trade < timedelta(minutes=-10):
         print("TODO: The user is too late! PERMA BAN THEM")
-        #TODO: Handle this situation
+        # TODO: Handle this situation
         return Response()
 
-    here = bool(request.data["here"])
+    try:
+        with transaction.atomic():
+            here = bool(request.data["here"])
+            if user == trade.giver:
+                trade.giver_there = here
+                first_there = trade.receiver_there
+            if user == trade.receiver:
+                trade.receiver_there = here
+                first_there = trade.giver_there
+            trade.save()
+    except IntegrityError:
+        return Response(status=404)
 
-    # TODO: VERY NASTY NON-ATOMIC ARRIVAL SITUATION COULD OCCUR HERE
-    # BOTH USERS THINK THEY'RE THE FIRST TO ARRIVE ATM LEAVE THIS PROBLEM LATER
-    # KICK THE CAN DOWN THE ROAD, PROVERBIALLY
+    # TODO: Handle notifications and things
 
-    if user == trade.giver:
-        trade.giver_there = here
-    if user == trade.receiver:
-        trade.receiver_there = here
-    trade.save()
     return Response(
-        {"status": "OK", "message": f"You are {'not ' if not here else ''}here!"},
+        {
+            "status": "OK",
+            "message": f"You are {'not ' if not here else ''}here! And you are {'not ' if not first_there else ''}first!",
+        },
         status=HTTP_200_OK,
     )
 
@@ -262,7 +271,6 @@ def get_trades(request: HttpRequest) -> Response:
 
     if authenticated_user is None:
         return NOT_LOGGED_IN
-    # TODO: Sort by something?
     trades = Trade.objects.filter(
         Q(receiver=authenticated_user) | Q(giver=authenticated_user)
     )
