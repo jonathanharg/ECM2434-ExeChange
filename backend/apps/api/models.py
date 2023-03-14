@@ -85,4 +85,6 @@ class Achievemnt(models.Model):
         default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
     )
     # field representing xp received when achievement unlocked -> PositiveIntegerField
-    achievers = models.ManyToOneRel(ExeChangeUser)
+
+    # many to many to user
+    achiever = models.ManyToManyField(ExeChangeUser)
