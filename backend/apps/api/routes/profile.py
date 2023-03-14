@@ -47,8 +47,10 @@ def trade_requests(request: HttpRequest) -> Response:
 
 
 @api_view(["GET"])
-def get_profile_data(request: HttpRequest) -> Response:
+def get_profile_data(request: HttpRequest, username: str) -> Response:
     authenticated_user = authenticate_user(request)
+    
+    user_object = get_object_or_404(ExeChangeUser, username= str(username))
 
     if authenticated_user is None:
         return Response(
@@ -57,11 +59,11 @@ def get_profile_data(request: HttpRequest) -> Response:
 
     return Response(
         {
-            "name": authenticated_user.username,
-            "level": authenticated_user.profile_level,
-            "levelPercent": authenticated_user.current_xp,
+            "name": user_object.username,
+            "level": user_object.profile_level,
+            "levelPercent": user_object.current_xp,
         }
-    )
+    ) 
 
 
 @api_view(["POST"])
