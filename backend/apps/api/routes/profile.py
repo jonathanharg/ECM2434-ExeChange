@@ -217,4 +217,17 @@ def get_achievements(request: HttpRequest) -> Response:
     )
 
     achievement_object = get_object_or_404(Achievemnt)
+
+    if authenticated_user is None:
+        return Response(
+            {"status": "BAD_REQUEST", "message": "User credentials not correct!"}
+        )
+
+    return Response(
+        {
+            "id": achievement_object.id,
+            "text": achievement_object.text,
+            "colour": achievement_object.colour,
+        }
+    ) 
     
