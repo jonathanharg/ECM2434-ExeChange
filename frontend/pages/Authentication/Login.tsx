@@ -84,8 +84,6 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     // this function sends form data to /api/login
-    // Zod validation for email, password, and password matching
-    //https://zod.dev/
     e.preventDefault();
 
     if (!EmailValidation.success || !PasswordValidation.success) {
@@ -98,21 +96,11 @@ export default function Login() {
         withCredentials: true,
       })
       .then((response) => {
-        if (response.data.status == "NOT_AUTHENTICATED") {
-          setEmailError("Incorrect username or password");
-          setPasswordError("Incorrect username or password");
-          return;
-        }
-        if (response.data.status == "NOT_VERIFIED") {
-          setIsVerified(false);
-          return;
-        }
-
         const attemptAuth = signIn({
           token: response.data.access,
           expiresIn: 120,
           tokenType: "Bearer",
-          authState: { user: response.data.username }, // state passed in cannot be called user, hence const email = user.
+          authState: { user: response.data.username },
           // refreshToken: response.data.refresh,
           // refreshTokenExpireIn: 1440,
         });
@@ -120,12 +108,29 @@ export default function Login() {
         if (attemptAuth) {
           navigate("/");
         } else {
-          //Print error as react-auth-kit broke!
-          console.log("React-auth-kit error!");
+          // React auth kit has broke.
+          setPasswordError("There has been an unexpected error, please try again later");
         }
       })
       .catch((error) => {
-        console.log(error);
+        // Recieved an error code
+        if(error.response) {
+          // bad request
+          if(error.response.status == 400) {
+            if(error.response.data.status == "NOT_VERIFIED") {
+              setIsVerified(false);
+              return;
+            }
+          }
+          // not authorised
+          if(error.response.status == 401) {
+            if(error.response.data.status == "NOT_AUTHENTICATED") {
+              setEmailError("Incorrect username or password");
+              setPasswordError("Incorrect username or password");
+              return;
+            }
+          }
+        }
       });
   };
 

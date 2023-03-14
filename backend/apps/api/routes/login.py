@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 
 
 @api_view(["POST"])
@@ -30,10 +31,12 @@ def login(request: HttpRequest) -> Response:
         password=user_password,
     )
 
-    if not user.is_verified:  # type: ignore
-        return Response(NOT_VERIFIED)
-
     if user is not None:
+        # if the user is not verified, return an error.
+        if not user.is_verified:  # type: ignore
+            return Response(NOT_VERIFIED, status=HTTP_400_BAD_REQUEST)
+        
+        #u ser is verified
         # Creating JWT Access token
         token = gen_token(user)
 
@@ -47,7 +50,7 @@ def login(request: HttpRequest) -> Response:
             }
         )
 
-    return Response(NOT_AUTHENTICATED)
+    return Response(NOT_AUTHENTICATED, status=HTTP_401_UNAUTHORIZED)
 
 
 NOT_AUTHENTICATED = {
