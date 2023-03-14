@@ -74,3 +74,15 @@ class ExeChangeUser(AbstractUser):
     current_xp = models.PositiveIntegerField(
         default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
     )
+
+
+class Achievemnt(models.Model):
+    text = models.CharField(max_length=100)
+    # field representing text -> charField
+    colour = models.CharField(max_length = 100)
+    # field representing color -> charField
+    xp_recieved = models.PositiveIntegerField(
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
+    )
+    # field representing xp received when achievement unlocked -> PositiveIntegerField
+    achievers = models.ManyToOneRel(ExeChangeUser)

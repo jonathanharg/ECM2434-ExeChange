@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from apps.api.authentication import authenticate_user
-from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade
+from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade, Achievemnt
 from django.http import HttpRequest
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
@@ -186,3 +186,18 @@ def remove_pending_trade(request: HttpRequest) -> Response:
         )
     except Http404:
         return Response({"status": "BAD"})
+
+@api_view(["POST"])
+def get_achievements(request: HttpRequest) -> Response:
+    authenticated_user = authenticate_user(request)
+
+    if authenticated_user is None:
+        return Response(
+            {
+                "status": "BAD_REQEUST",
+                "message": "User credentials are not correct!",
+            }
+    )
+
+    achievement_object = get_object_or_404(Achievemnt)
+    
