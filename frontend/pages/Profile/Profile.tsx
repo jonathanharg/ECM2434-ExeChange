@@ -166,6 +166,8 @@ function Profile() {
   
   const [trades, setTrades] = useState<Trade[]>([]);
   
+  const [achievements, setMyAchievements] = useState<Reward[]>([]);
+
   function fetchTrades() {
     return fetch("/api/pendingtrades")
       .then((response) => response.json())
@@ -195,7 +197,11 @@ function Profile() {
       return profileTitle;
     }
   }
-  
+  function fetchAchievements(){
+    return fetch("api/getachievements/")
+    .then((response) => response.json())
+    .then((data) => setMyAchievements(data));
+  }
 
 
   return (
@@ -214,8 +220,8 @@ function Profile() {
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">My Achievements</p>
         <div className="flex w-full space-x-2 pt-2">
-            {rewards.map((reward) => (
-            <Achievement key={reward.id} {...reward} />
+            {achievements.map((achievement) => (
+            <Achievement key={achievement.id} {...achievement} />
             ))}
         </div>
       </div>
