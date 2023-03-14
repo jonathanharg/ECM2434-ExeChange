@@ -52,6 +52,7 @@ def get_profile_data(request: HttpRequest, username: str) -> Response:
     
     user_object = get_object_or_404(ExeChangeUser, username= str(username))
 
+
     if authenticated_user is None:
         return Response(
             {"status": "BAD_REQUEST", "message": "User credentials not correct!"}
@@ -65,6 +66,22 @@ def get_profile_data(request: HttpRequest, username: str) -> Response:
         }
     ) 
 
+@api_view(["GET"])
+def whose_profile(request: HttpRequest, username: str) -> Response:
+    authenticated_user = authenticate_user(request)
+    user_object = get_object_or_404(ExeChangeUser, username= str(username))
+    
+    if authenticated_user.username == user_object.username:
+        myProfile = True
+    else:
+        myProfile = False
+
+    if authenticated_user is None:
+        return Response(
+            {"status": "BAD_REQUEST", "message": "User credentials not correct!"}
+        )
+
+    return Response(myProfile) 
 
 @api_view(["POST"])
 def confirm_pending_trade(request: HttpRequest) -> Response:
