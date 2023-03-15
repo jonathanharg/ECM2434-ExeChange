@@ -29,8 +29,6 @@ def login(request: HttpRequest) -> Response:
     )
 
     if user is not None:
-        # TODO remove this is only for testing
-        send_verification_email(user)
         # if the user is not verified, return an error.
         if not user.is_verified:  # type: ignore
             return Response(NOT_VERIFIED, status=HTTP_400_BAD_REQUEST)
