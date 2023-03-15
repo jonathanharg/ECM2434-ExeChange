@@ -1,4 +1,4 @@
-from apps.api.authentication import gen_token, get_username
+from apps.api.authentication import gen_token, get_username, send_verification_email
 from django.contrib.auth import authenticate
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
@@ -9,16 +9,13 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 @api_view(["POST"])
 def login(request: HttpRequest) -> Response:
     """
-    Login view that takes data from the frontend and inputs it into the django supplied User database using
-    the User model, again supplied by Django.
-
-    Links to Docs: https://docs.djangoproject.com/en/4.1/topics/auth/default/#django.contrib.auth
+    Function that logs a user in, by checking wether they authenticate correctly
 
     Args:
-        request (HttpRequest): Contains the JSON data sent from the frontend.
+        request (HttpRequest): Including username and password
 
     Returns:
-        Response: Include the JSON data that needs to be sent back to the frontend, i.e. STATUS good or STATUS bad.
+        Response (Response): HTTP status code and message
     """
     # Ignoring types here, as mypy throws errors but these are valid attributes.
     email_address = request.data["user"]  # type: ignore
@@ -32,11 +29,13 @@ def login(request: HttpRequest) -> Response:
     )
 
     if user is not None:
+        # TODO remove this is only for testing
+        send_verification_email(user)
         # if the user is not verified, return an error.
         if not user.is_verified:  # type: ignore
             return Response(NOT_VERIFIED, status=HTTP_400_BAD_REQUEST)
 
-        # u ser is verified
+        # User is verified
         # Creating JWT Access token
         token = gen_token(user)
 

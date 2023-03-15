@@ -15,16 +15,13 @@ from rest_framework.response import Response
 @api_view(["POST"])
 def register(request: HttpRequest) -> Response:
     """
-    Registering a user:
-    Taking data sent from the frontend and using the supplied Django user model and save the new_user to the User database.
-
-    Required docs: https://docs.djangoproject.com/en/4.1/topics/auth/default/#django.contrib.auth
+    Function that registers a user to the database and sends the user a verification email.
 
     Args:
-        request (HttpRequest): JSON data from the frontend
+        request (HttpRequest): JSON data including username, password and confirm password
 
     Returns:
-        Response: Include the JSON data that needs to be sent back to the frontend
+        Response: HTTP status code and message
     """
     # Ignoring types here, as mypy throws errors but these are valid attributes.
     email_address = request.data["user"]  # type: ignore

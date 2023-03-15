@@ -70,7 +70,7 @@ def send_user_email(user: ExeChangeUser, subject: str, contents: List[str]) -> b
         }
     }
 
-    with open("credentials.json", "w") as f:
+    with open("backend/apps/api/credentials.json", "w") as f:
         json.dump(oauth2_data, f)
 
     # email address to send to
@@ -80,7 +80,7 @@ def send_user_email(user: ExeChangeUser, subject: str, contents: List[str]) -> b
     sender_email_address = "teamexechange@gmail.com"
 
     # instantiate a new instance of yagmail
-    yag = yagmail.SMTP(user=sender_email_address, oauth2_file="credentials.json")
+    yag = yagmail.SMTP(user=sender_email_address, oauth2_file="~/backend/apps/api/credentials.json")
 
     # send email
     try:
