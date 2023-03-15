@@ -64,6 +64,7 @@ export default function TradeResponse(trade:TradeInvolvement) {
   }
 
    async function submitResponse() {
+
     const tradeid = trade.id.toString()
     const apiPath = "/api/trade/" +tradeid+ "/accept";
     console.log(timePicked)
@@ -88,7 +89,6 @@ export default function TradeResponse(trade:TradeInvolvement) {
     .then((response) => {
       // TODO: Handle more responses than just OK
       if (response.data.status != "OK") {
-
 ;       return;
       }
     })
@@ -103,7 +103,7 @@ export default function TradeResponse(trade:TradeInvolvement) {
       <div
         className={
           page == 0
-            ? "flex flex-col items-center overflow-hidden rounded-lg p-4"
+            ? "w-full flex flex-col justify-center items-center"
             : "hidden"
         }
       >
@@ -132,24 +132,24 @@ export default function TradeResponse(trade:TradeInvolvement) {
         ) : (
           <>
             <h3 className="text-xl font-bold text-gray-900">
-              {" "}
-              Items requested{" "}
-            </h3>
-            <div className="flex w-full justify-between p-2">
-              {trade.giver_giving.map((i) => (
-                <div
-                  key={i.id}
-                  className="relative w-full overflow-hidden rounded-lg text-sm font-bold text-gray-900 hover:opacity-75"
-                >
-                  <img draggable={false} tabIndex={1} src={i.image} />
-                </div>
-              ))}
-            </div>
-            <div className={trade.message === ""  ? "hidden":" " }> 
-              <p className="pt-2 text-sm text-gray-500">
-                <b> Message from {trade.receiver.username}: </b> {trade.message}
-              </p>
-            </div>
+                {" "}
+                Items requested: {" "}
+              </h3>
+              <div className="flex w-full justify-between p-2">
+                {trade.giver_giving.map((i) => (
+                  <div
+                    key={i.id}
+                    className="relative w-1/4 overflow-hidden rounded-lg font-bold text-gray-900 hover:opacity-75"
+                  >
+                    <img draggable={false} tabIndex={1} src={i.image} />
+                  </div>
+                ))}
+              </div>
+              <div className={trade.message === ""  ? "hidden":" " }> 
+                <p className="pt-2 text-sm text-gray-500">
+                  <b> Message from {trade.receiver.username}: </b> {trade.message}
+                </p>
+              </div>
           </>
         )}
         <div className="flex items-center justify-center p-2">

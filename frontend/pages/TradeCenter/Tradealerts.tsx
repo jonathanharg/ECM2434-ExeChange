@@ -18,10 +18,8 @@ import { usePopper } from "react-popper";
 import { ChevronUpIcon } from '@heroicons/react/20/solid'
 import { Product } from "../Marketplace/Itemtile";
 import TradeAccept from "./TradeViews/AcceptGiverView";
-import GiverAcceptView from "./TradeViews/AcceptGiverView";
-import ReceiverAcceptView from "./TradeViews/AcceptReceiverView";
+
 import { tr } from "date-fns/locale";
-import PendingTradeView from "./TradeViews/PendingGiverTradeView";
 import PendingGiverTradeView from "./TradeViews/PendingGiverTradeView";
 import PendingReceiverTradeView from "./TradeViews/PendingReceiverTradeView";
 import AcceptReceiverView from "./TradeViews/AcceptReceiverView";
@@ -36,7 +34,6 @@ export type ProfileData = {
 
 export default function TradeAlerts(trade: TradeInvolvement) {
   const [profileData, setProfileData] = useState<ProfileData>();
-  const [isShowing, setIsShowing] = useState(false);
   
   function fetchProfileData() {
     return fetch("/api/profiledata")
@@ -73,10 +70,12 @@ export default function TradeAlerts(trade: TradeInvolvement) {
       <div>
       {trade.status == "P" ? (
         <PendingReceiverTradeView {...trade}/> 
-        ) : trade.status == "A"? (
+        ) 
+        : trade.status == "A"? (
             <AcceptReceiverView {...trade}/>
         ) : (
-          <Disclosure></Disclosure>
+          <Disclosure>
+          </Disclosure>
         )
       }
       </div>)
