@@ -4,7 +4,7 @@ import { ArrowDownRightIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import { TradeInvolvement } from "./TradeCenter";
 import TradeResponse from "./TradeResponse";
 
-export default function PendingTradeView (trade:TradeInvolvement) {
+export default function PendingGiverTradeView (trade:TradeInvolvement) {
 return ( 
     <Disclosure>
     {({ open }) => (

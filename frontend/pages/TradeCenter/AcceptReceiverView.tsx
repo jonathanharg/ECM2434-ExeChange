@@ -7,7 +7,7 @@ import { Location } from '../Profile/Badge';
 import { TradeInvolvement, User } from './TradeCenter';
 import { ProfileData } from './Tradealerts';
 
-export default function TradeAccept(trade:TradeInvolvement) {
+export default function AcceptGiverView(trade:TradeInvolvement) {
     const Datetime = trade.time
     const meetingtime = Datetime.split("T")[1]?.replace(":00Z", '');
     const meetingDay = Datetime.split("T")[0]
@@ -52,7 +52,35 @@ return (
                             </div>
                             
                         </div>
-                        ) : (
+                        ) : trade.receiver_exchanging.length == 1 ? (
+                            <div> 
+                            You're trading your <b>{trade.giver_giving.map((i)=>i.caption)}</b> for {trade.receiver.username}'s <b>{trade.receiver_exchanging.map((i)=>(i.caption))}</b> 
+                            
+                            {" "} at <b>{meetingtime}</b> at <b> {trade.location.name}</b>
+                            {" "} on <b>{ meetingDay} </b>
+                            <div className="flex w-full justify-between p-2">
+                            {trade.giver_giving.map((i) => (
+                                <div
+                                key={i.id}
+                                className="relative w-1/4 overflow-hidden rounded-lg font-bold text-gray-900 hover:opacity-75"
+                                >
+                                <img draggable={false} tabIndex={1} src={i.image} />
+                                </div>
+                            ))}
+                            <div className='pt-10'> 
+                                <ArrowPathIcon className='h-10 w-10 text-green-800 stroke-[3]'></ArrowPathIcon>
+                            </div> 
+                            {trade.receiver_exchanging.map((i) => (
+                                    <div
+                                    key={i.id}
+                                    className="relative w-1/4 overflow-hidden rounded-lg font-bold text-gray-900 hover:opacity-75"
+                                    >
+                                    <img draggable={false} tabIndex={1} src={i.image} />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        ): (
                         <div> 
                             <b>{trade.giver.username}</b> wants these items from you at <b>{meetingtime}</b> at <b> {trade.location.name}</b>
                             {" "} on <b>{ meetingDay} </b>

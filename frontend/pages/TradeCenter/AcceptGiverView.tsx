@@ -7,7 +7,7 @@ import { Location } from '../Profile/Badge';
 import { TradeInvolvement, User } from './TradeCenter';
 import { ProfileData } from './Tradealerts';
 
-export default function TradeAccept(trade:TradeInvolvement) {
+export default function AcceptGiverView(trade:TradeInvolvement) {
     const Datetime = trade.time
     const meetingtime = Datetime.split("T")[1]?.replace(":00Z", '');
     const meetingDay = Datetime.split("T")[0]
@@ -20,7 +20,7 @@ return (
                 <Disclosure.Button className="flex w-full justify-between rounded-lg bg-green-700 shadow px-4 py-3 text-left text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
                 <CheckIcon className="h-5 w-5 stroke-white stroke-[3]">
                 </CheckIcon>
-                <span> <b>  You accepted  {trade.receiver.username}'s request! </b> </span>
+                <span>  You accepted <b>{trade.receiver.username}'s</b> request! </span>
                 <ChevronUpIcon
                     className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-green-800 stroke-[3]`} />
                 </Disclosure.Button>
@@ -50,6 +50,34 @@ return (
                             ))}
                             </div>
                             
+                        </div>
+                        ) : trade.receiver_exchanging.length == 1 ? (
+                        <div> 
+                            You're trading your <b>{trade.giver_giving.map((i)=>i.caption)}</b> for {trade.receiver.username}'s <b>{trade.receiver_exchanging.map((i)=>(i.caption))}</b> 
+                            
+                            {" "} at <b>{meetingtime}</b> at <b> {trade.location.name}</b>
+                            {" "} on <b>{ meetingDay} </b>
+                            <div className="flex w-full justify-between p-2">
+                            {trade.giver_giving.map((i) => (
+                                <div
+                                key={i.id}
+                                className="relative w-1/4 overflow-hidden rounded-lg font-bold text-gray-900 hover:opacity-75"
+                                >
+                                <img draggable={false} tabIndex={1} src={i.image} />
+                                </div>
+                            ))}
+                            <div className='pt-10'> 
+                                <ArrowPathIcon className='h-10 w-10 text-green-800 stroke-[3]'></ArrowPathIcon>
+                            </div> 
+                            {trade.receiver_exchanging.map((i) => (
+                                    <div
+                                    key={i.id}
+                                    className="relative w-1/4 overflow-hidden rounded-lg font-bold text-gray-900 hover:opacity-75"
+                                    >
+                                    <img draggable={false} tabIndex={1} src={i.image} />
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                         ) : (
                         <div> 
