@@ -32,13 +32,13 @@ def register(request: HttpRequest) -> Response:
     user_confirm_password = request.data["confirmPwd"]  # type: ignore
 
     if user_password == user_confirm_password:
+        # Generate new user and add to User database using django.auth User model
+        new_user_username = get_username(email_address)
+
+        # Generating verification code for user
+        new_user_verification_code = gen_unique_code()
+
         try:
-            # Generate new user and add to User database using django.auth User model
-            new_user_username = get_username(email_address)
-
-            # Generating verification code for user
-            new_user_verification_code = gen_unique_code()
-
             new_user = ExeChangeUser.objects.create_user(
                 username=new_user_username,
                 email=email_address,
@@ -47,36 +47,44 @@ def register(request: HttpRequest) -> Response:
                 is_verified=False,
             )
 
-            # on debug testing, do not need to send email.
-            if settings.DEBUG:
-                new_user.is_verified = True
-                new_user.save()
-                token = gen_token(new_user)
-                return Response(
-                    {
-                        "status": "OK_DEBUG",
-                        "message": "user registration accepted",
-                        "username": get_username(email_address),
-                        "access": str(token.access_token),
-                        "refresh": str(token),
-                    }
-                )
-
-            new_user.save()
-            # sending verification email to user
-            send_verification_email(new_user)
-            return Response(REGISTRATION_ACCEPTED)
-
         except IntegrityError:
             return Response(UNIQUE_ERROR)
+
+        # on debug testing, do not need to send email.
+        if settings.DEBUG:
+            new_user.is_verified = True
+            new_user.save()
+            token = gen_token(new_user)
+            return Response(
+                {
+                    "status": "OK_DEBUG",
+                    "message": "user registration accepted",
+                    "username": get_username(email_address),
+                    "access": str(token.access_token),
+                    "refresh": str(token),
+                }
+            )
+
+        new_user.save()
+        # sending verification email to user
+        if send_verification_email(new_user):
+            return Response(REGISTRATION_ACCEPTED_VERIFICATION_SENT)
+
+        # error in sending email
+        return Response(VERIFICATION_EMAIL_ERROR)
 
     else:
         return Response(CREDENTIAL_ERROR)
 
 
-REGISTRATION_ACCEPTED = {
+REGISTRATION_ACCEPTED_VERIFICATION_SENT = {
     "status": "OK",
-    "message": "User registration accepted!",
+    "message": "User registration accepted, and email sent!",
+}
+
+VERIFICATION_EMAIL_ERROR = {
+    "status": "VERIFICATION_EMAIL_ERROR",
+    "message": "Verification email did not send properly :(",
 }
 
 CREDENTIAL_ERROR = {

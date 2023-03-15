@@ -72,7 +72,7 @@ backend/staticfiles
 backend/media
 
 # Gmail API generated credentials file
-creds.json
+credentials.json
 
 # Celery stuff
 celerybeat-schedule

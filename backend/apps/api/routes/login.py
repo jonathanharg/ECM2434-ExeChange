@@ -35,8 +35,8 @@ def login(request: HttpRequest) -> Response:
         # if the user is not verified, return an error.
         if not user.is_verified:  # type: ignore
             return Response(NOT_VERIFIED, status=HTTP_400_BAD_REQUEST)
-        
-        #u ser is verified
+
+        # u ser is verified
         # Creating JWT Access token
         token = gen_token(user)
 

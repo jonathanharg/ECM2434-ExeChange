@@ -1,10 +1,8 @@
-import json
-import os
 import random
 import string
 
-import yagmail
 from apps.api.models import ExeChangeUser
+from apps.api.users import send_user_email
 from django.conf import settings
 from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
@@ -54,42 +52,22 @@ def gen_unique_code() -> str:
     return res
 
 
-def send_verification_email(user: ExeChangeUser) -> None:  # type: ignore
+def send_verification_email(user: ExeChangeUser) -> bool:  # type: ignore
     """
     This function will take an unverified user object and send an email to the email associated with the user
     containing a link that will successfully verify the user onclick.
     """
-    # generating json file
-    client_id = os.getenv("CLIENT_ID")
-    client_secret = os.getenv("CLIENT_SECRET")
-    project_id = os.getenv("PROJECT_ID")
-    oauth2_data = {
-        "installed": {
-            "client_id": client_id,
-            "project_id": project_id,
-            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-            "token_uri": "https://oauth2.googleapis.com/token",
-            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-            "client_secret": client_secret,
-            "redirect_uris": ["http://localhost"],
-        }
-    }
-
-    with open("creds.json", "w") as f:
-        json.dump(oauth2_data, f)
 
     # Generate link to send
-
     username = user.username
     code = user.verification_code
 
-    yag = yagmail.SMTP("teamexechange@gmail.com", oauth2_file="creds.json")
-
+    subject = "Verify your Exechange account!"
     body = f" Hello {username}! Welcome to ExeChange, clearly you heard the rumours, Big things are coming and if you click the below link, you will be a part of it..."  # pylint: disable=line-too-long
-
     html_link = f"<a href='{settings.DOMAIN_NAME}/verify?username={username}&code={code}'>Verify me!</a>"  # type: ignore
-    # send email
-    yag.send(user.email, "ExeChange Verfication", contents=[body, html_link])
+
+    # Send email
+    return send_user_email(user, subject, contents=[body, html_link])
 
 
 def authenticate_user(request: HttpRequest) -> ExeChangeUser | None:  # type: ignore
