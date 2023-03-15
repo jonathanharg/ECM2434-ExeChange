@@ -17,15 +17,15 @@ import TradeResponse from "./TradeResponse";
 import { usePopper } from "react-popper";
 import { ChevronUpIcon } from '@heroicons/react/20/solid'
 import { Product } from "../Marketplace/Itemtile";
-import TradeAccept from "./AcceptGiverView";
-import GiverAcceptView from "./AcceptGiverView";
-import ReceiverAcceptView from "./AcceptReceiverView";
+import TradeAccept from "./TradeViews/AcceptGiverView";
+import GiverAcceptView from "./TradeViews/AcceptGiverView";
+import ReceiverAcceptView from "./TradeViews/AcceptReceiverView";
 import { tr } from "date-fns/locale";
-import PendingTradeView from "./PendingGiverTradeView";
-import PendingGiverTradeView from "./PendingGiverTradeView";
-import PendingReceiverTradeView from "./PendingReceiverTradeView";
-import AcceptReceiverView from "./AcceptReceiverView";
-import AcceptGiverView from "./AcceptGiverView";
+import PendingTradeView from "./TradeViews/PendingGiverTradeView";
+import PendingGiverTradeView from "./TradeViews/PendingGiverTradeView";
+import PendingReceiverTradeView from "./TradeViews/PendingReceiverTradeView";
+import AcceptReceiverView from "./TradeViews/AcceptReceiverView";
+import AcceptGiverView from "./TradeViews/AcceptGiverView";
 
 export type ProfileData = {
   levelPercent: number;

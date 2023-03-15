@@ -1,8 +1,8 @@
 import React from 'react';
 import { Disclosure, Transition } from "@headlessui/react";
 import { ArrowDownRightIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
-import { TradeInvolvement } from "./TradeCenter";
-import TradeResponse from "./TradeResponse";
+import { TradeInvolvement } from "../TradeCenter";
+import TradeResponse from "../TradeResponse";
 
 export default function PendingGiverTradeView (trade:TradeInvolvement) {
 return ( 
