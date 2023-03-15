@@ -7,6 +7,11 @@ export type User = {
   username: String;
 };
 
+type tradelocation = {
+  id: number;
+  name: string;
+}
+
 export type TradeInvolvement = {
   id: number;
   status: string
@@ -15,6 +20,8 @@ export type TradeInvolvement = {
   giver_giving: Product[];
   receiver_exchanging: Product[];
   message: string;
+  time: string;
+  location: tradelocation;
 };
 
 export default function TradeCenter() {

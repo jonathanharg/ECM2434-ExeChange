@@ -135,7 +135,7 @@ export default function TradeResponse(trade:TradeInvolvement) {
               {" "}
               Items requested{" "}
             </h3>
-            <div className="container mx-auto grid grid-flow-dense grid-cols-4 gap-2 overflow-hidden rounded-md p-4 py-1">
+            <div className="flex w-full justify-between p-2">
               {trade.giver_giving.map((i) => (
                 <div
                   key={i.id}
@@ -169,9 +169,7 @@ export default function TradeResponse(trade:TradeInvolvement) {
             : "hidden"
         }
       >
-        {products.filter((i) => i.owner.id == trade.receiver.id).length > 0 ? (
-          products.filter((i) => i.owner.id == trade.receiver.id).length ==
-          1 ? (
+        {products.filter((i) => i.owner.id == trade.receiver.id).length > 0 ? ( 
             <>
               <h3 className="pb-2 text-xl font-bold text-gray-900">
                 {" "}
@@ -180,7 +178,7 @@ export default function TradeResponse(trade:TradeInvolvement) {
               <p className="text-sm text-gray-500">
                 <b> Click </b> to select
               </p>
-              <div className="flex w-full justify-center p-2">
+              <div className="flex w-full justify-between p-2">
                 {products
                   .filter((i) => i.owner.id == trade.receiver.id)
                   .map((i) => (
@@ -203,38 +201,6 @@ export default function TradeResponse(trade:TradeInvolvement) {
               </p>
             </>
           ) : (
-            <>
-              <h3 className="pt-5 pb-1 text-xl font-bold text-gray-900">
-                {" "}
-                {trade.receiver.username} has...{" "}
-              </h3>
-              <p className="text-sm text-gray-500">
-                <b> Click </b> to select
-              </p>
-              <div className="container mx-auto grid grid-flow-dense grid-cols-4 gap-2 overflow-hidden rounded-md p-4 py-1">
-                {products
-                  .filter((i) => i.owner.id == trade.receiver.id)
-                  .map((i) => (
-                    <div
-                      key={i.id}
-                      className="relative w-full overflow-hidden rounded-md bg-gray-200 hover:opacity-75"
-                    >
-                      {showSvg(i.id)}
-                      <img
-                        draggable={false}
-                        tabIndex={1}
-                        src={i.image}
-                        onClick={() => handleExtraItems(i.id)}
-                      />
-                    </div>
-                  ))}
-              </div>
-              <p className="text-sm text-gray-500">
-                You <b> don't need </b> to pick an item to continue
-              </p>
-            </>
-          )
-        ) : (
           <>
             <div className="flex items-center justify-center">
               <h3 className="text-md font-bold text-gray-900">
