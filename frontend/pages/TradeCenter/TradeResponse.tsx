@@ -18,8 +18,8 @@ import TimeLocation from "./TimeLocation";
 export default function TradeResponse(trade:TradeInvolvement) {
   const [page, setPage] = useState<number>(0);
   const [products, setProducts] = useState<Product[]>([]);
-  const [receiver_exchanging, setRecieverExchanging] = useState<Number[]>([]);
-  const [timePicked, setTimePicked] = useState('');
+  const [receiver_exchanging, setReceiverExchanging] = useState<Number[]>([]);
+  const [timePicked, setTimePicked] = useState("9:30");
   const [location, setLocation] = useState("Lafrowda")
   const [time, setTime] = useState<Date>();
    // this "time" above includes date and time, had to call it time instead of date cus that is how its defined in backend 
@@ -45,9 +45,9 @@ export default function TradeResponse(trade:TradeInvolvement) {
 
   function handleExtraItems(index) {
     if (receiver_exchanging.includes(index)) {
-      setRecieverExchanging(receiver_exchanging.filter((i) => i !== index));
+      setReceiverExchanging(receiver_exchanging.filter((i) => i !== index));
     } else {
-      setRecieverExchanging([...receiver_exchanging, index]);
+      setReceiverExchanging([...receiver_exchanging, index]);
     }
   }
   
@@ -66,6 +66,7 @@ export default function TradeResponse(trade:TradeInvolvement) {
    async function submitResponse() {
     const tradeid = trade.id.toString()
     const apiPath = "/api/trade/" +tradeid+ "/accept";
+    console.log(timePicked)
     const hourMin = timePicked.split(":");
     time?.setHours(parseInt(hourMin[0]), parseInt(hourMin[1]))
     console.log(time)

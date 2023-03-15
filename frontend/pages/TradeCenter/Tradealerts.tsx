@@ -9,11 +9,13 @@ import {
 
 import React, {useEffect, useState } from "react";
 
-import { TradeInvolvement } from "./TradeCenter";
+import { TradeInvolvement, User } from "./TradeCenter";
 import {Transition, Disclosure } from "@headlessui/react";
 import TradeResponse from "./TradeResponse";
 import { usePopper } from "react-popper";
 import { ChevronUpIcon } from '@heroicons/react/20/solid'
+import { Product } from "../Marketplace/Itemtile";
+import TradeAccept from "./TradeAccept";
 
 type ProfileData = {
   levelPercent: number;
@@ -21,24 +23,29 @@ type ProfileData = {
   level: number;
 };
 
+
 export default function TradeAlerts(trade: TradeInvolvement) {
   const [profileData, setProfileData] = useState<ProfileData>();
   const [isShowing, setIsShowing] = useState(false);
-
+  
   function fetchProfileData() {
     return fetch("/api/profiledata")
       .then((response) => response.json())
-      .then((data) => setProfileData(data));
+      .then((data) => 
+      setProfileData(data));
   }
 
+
   useEffect(() => {
+
     fetchProfileData();
   }, []);
   return (
     <div className="w-full px-4">
       <div className={"mx-auto w-full max-w-md rounded-2xl bg-white p-2"}> 
       {trade.receiver.username != profileData?.name ? (
-      <div className={trade.status == "P" ? "" : "hidden"}>
+      <div>
+        {trade.status == "P" ? (
             <Disclosure>
               {({ open }) => (
                 <>
@@ -64,7 +71,17 @@ export default function TradeAlerts(trade: TradeInvolvement) {
                   </Transition>
                 </>
               )}
-            </Disclosure>
+            </Disclosure>)
+        : trade.status == "A" ? (
+          <Disclosure>
+            <TradeAccept/>
+          </Disclosure>
+        ) : (
+          <Disclosure>
+
+          </Disclosure>
+        )
+        }
       </div>
       ) : (
       <Disclosure>

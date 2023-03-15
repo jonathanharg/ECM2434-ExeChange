@@ -13,7 +13,7 @@ export type TradeInvolvement = {
   giver: User;
   receiver: User;
   giver_giving: Product[];
-  reciever_exchanging: Product[];
+  receiver_exchanging: Product[];
   message: string;
 };
 
