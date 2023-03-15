@@ -1,5 +1,6 @@
 import { Disclosure, Transition } from '@headlessui/react';
-import { ArrowUpRightIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, ArrowUpRightIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Product } from '../Marketplace/Itemtile';
 import { User } from './TradeCenter';
@@ -14,15 +15,13 @@ type TradeInfo = {
 
 export default function TradeAccept() {
     const [tradeInfo, setTradeInfo] = useState<TradeInfo>();
+    console.log(tradeInfo)
 
-    function fetchTradeInfo() {
-        return fetch("/api/trade/all")
-          .then((response) => response.json())
-          .then((data) => setTradeInfo(data));
+    async function fetchInfo() {
+        await axios("api/trade/all").then((response) => setTradeInfo(response.data));
     }
-
     useEffect(() => {
-        fetchTradeInfo();
+        fetchInfo()
       }, []);
 
 return (
@@ -46,8 +45,8 @@ return (
                 leaveTo="opacity-0"
               >
             <Disclosure.Panel static className="px-4 pt-4 pb-2 text-sm text-gray-500 shadow rounded-md overflow-hidden"> 
-                  <div className="w-full flex justify-center items-center">
-                    {tradeInfo?.receiver?.username} requested 
+                  <div className="w-full flex flex-col justify-center items-center">
+                    You're trading 
                     <div className="flex w-full justify-center p-2">
                       {tradeInfo?.giver_giving?.map((i) => (
                         <div
@@ -58,7 +57,8 @@ return (
                         </div>
                       ))}
                     </div>
-
+                    <ArrowPathIcon className='h-12 w-12 text-green-800 stroke-[3]'></ArrowPathIcon>
+                    for 
                     <div className={tradeInfo?.receiver_exchanging?.length != 0 ? "flex w-full justify-center p-2": "hidden"}>
                       {tradeInfo?.receiver_exchanging?.map((i) => (
                         <div
