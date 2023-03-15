@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": ["ESNext"],
+    "types": ["vite-plugin-pwa/serviceworker"],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": false,
@@ -17,8 +18,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  // "include": ["frontend"],
-  "include": ["src"],
-  "exclude": ["frontend/service-worker", "frontend/dist"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["./"]
 }

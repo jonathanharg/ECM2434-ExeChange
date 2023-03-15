@@ -18,6 +18,7 @@ const navigation = [
   { name: "Home", to: "/" },
   { name: "Marketplace", to: "/marketplace" },
   { name: "Upload", to: "/upload" },
+  { name: "Dev", to: "/dev" },
 ];
 
 export default function Navbar() {

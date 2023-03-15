@@ -4,9 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
-    "types": [
-      "vite-plugin-pwa/client"
-    ]
+    "types": ["vite-plugin-pwa/client"]
   },
   "include": ["vite.config.ts"]
 }

@@ -15,30 +15,32 @@ export default defineConfig({
     react(),
     splitVendorChunkPlugin(),
     VitePWA({
-      // strategies: "injectManifest",
+      strategies: "injectManifest",
+      filename: "sw.ts",
+      srcDir: "/service-worker",
       registerType: "autoUpdate",
       injectRegister: "script",
       manifest: {
-        name: 'ExeChange',
-        short_name: 'ExeChange',
-        start_url: '/',
-        scope: '/',
-        description: 'Swap your your clothes on campus!',
-        theme_color: '#166534',
-        background_color: '#ffffff',
+        name: "ExeChange",
+        short_name: "ExeChange",
+        start_url: "/",
+        scope: "/",
+        description: "Swap your your clothes on campus!",
+        theme_color: "#166534",
+        background_color: "#ffffff",
         icons: [
           {
-            src: '/static/icon-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
+            src: "/static/icon-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
           },
           {
-            src: '/static/icon-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
-      }
+            src: "/static/icon-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+          },
+        ],
+      },
     }),
   ],
   build: { manifest: true },

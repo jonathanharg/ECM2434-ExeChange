@@ -1,45 +1,55 @@
 {% load render_vite_bundle %}
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="/static/manifest.webmanifest" />
+    <link rel="icon" href="/static/favicon-32.png" sizes="32x32" />
+    <link rel="icon" href="/static/favicon-128.png" sizes="128x128" />
+    <link rel="icon" href="/static/favicon-192.png" sizes="192x192" />
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    <link rel="shortcut icon" sizes="192x192" href="/static/favicon-192.png" />
+    <link
+      rel="apple-touch-icon"
+      href="/static/apple-touch-icon-180.png"
+      sizes="180x180"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="/static/apple-touch-icon-167.png"
+      sizes="167x167"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="/static/apple-touch-icon-152.png"
+      sizes="152x152"
+    />
+    <link rel="mask-icon" href="/static/mask-icon.svg" color="#166534" />
+    <meta name="theme-color" content="#166534" />
+    <title>ExeChange</title>
+    <meta name="description" content="Swap your your clothes on campus!" />
+    <script src="/static/registerSW.js"></script>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="manifest" href="/static/manifest.webmanifest">
-  <link rel="icon" href="/static/favicon-32.png" sizes="32x32" />
-  <link rel="icon" href="/static/favicon-128.png" sizes="128x128" />
-  <link rel="icon" href="/static/favicon-192.png" sizes="192x192" />
-  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
-  <link rel="shortcut icon" sizes="192x192" href="/static/favicon-192.png" />
-  <link rel="apple-touch-icon" href="/static/apple-touch-icon-180.png" sizes="180x180" />
-  <link rel="apple-touch-icon" href="/static/apple-touch-icon-167.png" sizes="167x167" />
-  <link rel="apple-touch-icon" href="/static/apple-touch-icon-152.png" sizes="152x152" />
-  <link rel="mask-icon" href="/static/mask-icon.svg" color="#166534" />
-  <meta name="theme-color" content="#166534">
-  <title>ExeChange</title>
-  <meta name="description" content="Swap your your clothes on campus!">
-  <script src="/static/registerSW.js"></script>
+    {% if debug %}
+    <script type="module" src="http://localhost:5173/@vite/client"></script>
+    <script type="module">
+      import RefreshRuntime from "http://localhost:5173/@react-refresh";
+      if (RefreshRuntime) {
+        RefreshRuntime.injectIntoGlobalHook(window);
+        window.$RefreshReg$ = () => {};
+        window.$RefreshSig$ = () => (type) => type;
+        window.__vite_plugin_react_preamble_installed__ = true;
+      }
+    </script>
+    {% endif %}
+  </head>
 
-  {% if debug %}
-  <script type="module" src="http://localhost:5173/@vite/client"></script>
-  <script type="module">
-    import RefreshRuntime from "http://localhost:5173/@react-refresh";
-    if (RefreshRuntime) {
-      RefreshRuntime.injectIntoGlobalHook(window);
-      window.$RefreshReg$ = () => { };
-      window.$RefreshSig$ = () => (type) => type;
-      window.__vite_plugin_react_preamble_installed__ = true;
-    }
-  </script>
-  {% endif %}
-</head>
+  <body>
+    <div id="root"></div>
 
-<body>
-  <div id="root"></div>
-
-  {% if debug %}
-  <script type="module" src="http://localhost:5173/main.tsx"></script>
-  {% else %} {% render_vite_bundle %} {% endif %}
-</body>
-
+    {% if debug %}
+    <script type="module" src="http://localhost:5173/main.tsx"></script>
+    {% else %} {% render_vite_bundle %} {% endif %}
+  </body>
 </html>

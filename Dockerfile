@@ -35,13 +35,13 @@ RUN npm i && npm run build
 # SETUP Backend
 FROM python-base as production
 
+ARG CACHEBUST=1
+RUN echo "$CACHEBUST" # Force removal of cache to prevent errors
 RUN rm -rf /app/backend/staticfiles
 COPY --from=python-base $PYSETUP_PATH $PYSETUP_PATH
 COPY --from=node-base /src/frontend/dist/ /app/frontend/dist/
 COPY --from=node-base /src/backend/ /app/backend/
 WORKDIR /app
-ARG CACHEBUST=1
-RUN echo "$CACHEBUST" # Force removal of cache to prevent errors
 # Migration doesn't seem to work, or at least migrates the defualt DB
 RUN python ./backend/manage.py migrate && python ./backend/manage.py collectstatic --noinput
 EXPOSE 5000
