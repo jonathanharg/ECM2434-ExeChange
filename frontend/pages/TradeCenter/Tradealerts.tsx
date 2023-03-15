@@ -107,9 +107,11 @@ export default function TradeAlerts(trade: TradeInvolvement) {
                       </div>
                     ))}
                   </div>
-                  <p className="pt-2 text-sm text-gray-500">
-                    <b> Your message : </b> {trade.message}
-                  </p>
+                  <div className={trade.message === ""  ? "hidden":" " }> 
+                    <p className="pt-2 text-sm text-gray-500">
+                      <b> Message from {trade.receiver.username}: </b> {trade.message}
+                    </p>
+                  </div>
                   </> 
                   ): (          
                     <>
@@ -127,9 +129,11 @@ export default function TradeAlerts(trade: TradeInvolvement) {
                         </div>
                       ))}
                     </div>
-                    <p className="pt-2 text-sm text-gray-500">
-                      <b> Your message: </b> {trade.message}
-                    </p>
+                    <div className={trade.message === ""  ? "hidden":" " }> 
+                      <p className="pt-2 text-sm text-gray-500">
+                        <b> Message from {trade.receiver.username}: </b> {trade.message}
+                      </p>
+                    </div>
                   </>
                   
                   )}

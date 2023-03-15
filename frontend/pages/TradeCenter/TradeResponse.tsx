@@ -122,9 +122,11 @@ export default function TradeResponse(trade:TradeInvolvement) {
                 </div>
               ))}
             </div>
-            <p className="pt-2 text-sm text-gray-500">
-              <b> Message from {trade.receiver.username}: </b> {trade.message}
-            </p>
+            <div className={trade.message === ""  ? "hidden":" " }> 
+              <p className="pt-2 text-sm text-gray-500">
+                <b> Message from {trade.receiver.username}: </b> {trade.message}
+              </p>
+            </div>
           </>
         ) : (
           <>
@@ -142,9 +144,11 @@ export default function TradeResponse(trade:TradeInvolvement) {
                 </div>
               ))}
             </div>
-            <p className="pt-2 text-sm text-gray-500">
-              <b> Message from {trade.receiver.username}: </b> {trade.message}
-            </p>
+            <div className={trade.message === ""  ? "hidden":" " }> 
+              <p className="pt-2 text-sm text-gray-500">
+                <b> Message from {trade.receiver.username}: </b> {trade.message}
+              </p>
+            </div>
           </>
         )}
         <div className="flex items-center justify-center p-2">
