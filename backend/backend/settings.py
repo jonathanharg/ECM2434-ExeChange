@@ -45,6 +45,17 @@ if SECRET_KEY == DEFAULT_SECRET_KEY:
         "If you are running in production stop the server IMMEDIATELY and set the SECRET_KEY using an environment variable!"
     )
 
+GMAIL_CLIENT_ID = os.getenv("CLIENT_ID")
+GMAIL_SECRET = os.getenv("CLIENT_SECRET")
+
+if GMAIL_CLIENT_ID == "WRONG_CLIENT_ID":
+    print("WARNING: YOU HAVE NOT SET THE GMAIL CLIENT ID")
+    print("EMAILS WILL NOT SEND AND WILL ERROR IF DEBUG == FALSE")
+
+if GMAIL_SECRET == "WRONG_CLIENT_SECRET":
+    print("WARNING! YOU HAVE NOT SET THE GMAIL_CLIENT_SECRET")
+    print("EMAILS WILL NOT SEND AND ERROR!")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
