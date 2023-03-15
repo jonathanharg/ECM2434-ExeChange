@@ -24,7 +24,6 @@ type ProfileData = {
 export default function TradeAlerts(trade: TradeInvolvement) {
   const [profileData, setProfileData] = useState<ProfileData>();
   const [isShowing, setIsShowing] = useState(false);
-  const [response, setResponse] = useState('');
 
   function fetchProfileData() {
     return fetch("/api/profiledata")
@@ -37,38 +36,38 @@ export default function TradeAlerts(trade: TradeInvolvement) {
   }, []);
   return (
     <div className="w-full px-4">
-      <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-2">
+      <div className={"mx-auto w-full max-w-md rounded-2xl bg-white p-2"}> 
       {trade.receiver.username != profileData?.name ? (
-        <Disclosure>
-          {({ open }) => (
-            <>
-              <Disclosure.Button className="flex w-full justify-between rounded-lg bg-white shadow px-4 py-3 text-left text-sm font-medium text-black hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
-                <ArrowDownRightIcon className="h-5 w-5 stroke-green-800 stroke-[3]">
-                </ArrowDownRightIcon> 
-                <span> <b> Incoming trade request from {trade.receiver.username} </b> </span>
-                <ChevronUpIcon
-                  className={`${
-                    open ? 'rotate-180 transform' : ''
-                  } h-5 w-5 text-green-800 stroke-[3]`}
-                />
-              </Disclosure.Button>
-              <Transition
-              show={open}
-              enter="transition-opacity duration-75"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="transition-opacity duration-150"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-              >
-              <Disclosure.Panel static className="px-4 pt-4 pb-2 text-sm text-gray-500 shadow rounded-md overflow-hidden">
-                    <TradeResponse {...trade}/>
-              </Disclosure.Panel>
-            </Transition>
-            </>
-          )}
-        </Disclosure>
-      ) : (<Disclosure>
+      <div className={trade.status == "P" ? "" : "hidden"}>
+            <Disclosure>
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-white shadow px-4 py-3 text-left text-sm font-medium text-black hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
+                    <ArrowDownRightIcon className="h-5 w-5 stroke-green-800 stroke-[3]">
+                    </ArrowDownRightIcon>
+                    <span> <b> Incoming trade request from {trade.receiver.username} </b> </span>
+                    <ChevronUpIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-green-800 stroke-[3]`} />
+                  </Disclosure.Button>
+                  <Transition
+                    show={open}
+                    enter="transition-opacity duration-75"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                    leave="transition-opacity duration-150"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <Disclosure.Panel static className="px-4 pt-4 pb-2 text-sm text-gray-500 shadow rounded-md overflow-hidden">
+                      <TradeResponse {...trade} />
+                    </Disclosure.Panel>
+                  </Transition>
+                </>
+              )}
+            </Disclosure>
+      </div>
+      ) : (
+      <Disclosure>
         {({ open }) => (
           <>
             <Disclosure.Button onClick={() => setIsShowing((isShowing) => !isShowing)} className="flex w-full justify-between rounded-lg bg-white shadow px-4 py-3 text-left text-sm font-medium text-black hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
@@ -141,7 +140,7 @@ export default function TradeAlerts(trade: TradeInvolvement) {
         )}
       </Disclosure>)
       }
-      </div>
+      </div> 
     </div>
   )
 }

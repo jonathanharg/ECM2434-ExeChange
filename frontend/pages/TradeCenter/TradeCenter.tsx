@@ -9,11 +9,12 @@ export type User = {
 
 export type TradeInvolvement = {
   id: number;
+  status: string
   giver: User;
   receiver: User;
   giver_giving: Product[];
   reciever_exchanging: Product[];
-  message: String;
+  message: string;
 };
 
 export default function TradeCenter() {

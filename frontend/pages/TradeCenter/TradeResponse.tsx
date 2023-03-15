@@ -15,7 +15,7 @@ import TimeLocation from "./TimeLocation";
 
 
 
-export default function TradeResponse(trade: TradeInvolvement) {
+export default function TradeResponse(trade:TradeInvolvement) {
   const [page, setPage] = useState<number>(0);
   const [products, setProducts] = useState<Product[]>([]);
   const [receiver_exchanging, setRecieverExchanging] = useState<Number[]>([]);
@@ -87,7 +87,8 @@ export default function TradeResponse(trade: TradeInvolvement) {
     .then((response) => {
       // TODO: Handle more responses than just OK
       if (response.data.status != "OK") {
-        return;
+
+;       return;
       }
     })
     .catch((error) => {
