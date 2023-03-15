@@ -71,6 +71,9 @@ db.sqlite3-journal
 backend/staticfiles
 backend/media
 
+# Gmail API generated credentials file
+creds.json
+
 # Celery stuff
 celerybeat-schedule
 celerybeat.pid

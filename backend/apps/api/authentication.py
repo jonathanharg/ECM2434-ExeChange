@@ -1,3 +1,5 @@
+import json
+import os
 import random
 import string
 
@@ -57,12 +59,31 @@ def send_verification_email(user: ExeChangeUser) -> None:  # type: ignore
     This function will take an unverified user object and send an email to the email associated with the user
     containing a link that will successfully verify the user onclick.
     """
+    # generating json file
+    client_id = os.getenv("CLIENT_ID")
+    client_secret = os.getenv("CLIENT_SECRET")
+    project_id = os.getenv("PROJECT_ID")
+    oauth2_data = {
+        "installed": {
+            "client_id": client_id,
+            "project_id": project_id,
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+            "client_secret": client_secret,
+            "redirect_uris": ["http://localhost"],
+        }
+    }
+
+    with open("creds.json", "w") as f:
+        json.dump(oauth2_data, f)
+
     # Generate link to send
 
     username = user.username
     code = user.verification_code
 
-    yag = yagmail.SMTP("noreplyexechange@gmail.com", oauth2_file="credentials.json")
+    yag = yagmail.SMTP("teamexechange@gmail.com", oauth2_file="creds.json")
 
     body = f" Hello {username}! Welcome to ExeChange, clearly you heard the rumours, Big things are coming and if you click the below link, you will be a part of it..."  # pylint: disable=line-too-long
 
