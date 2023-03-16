@@ -1,4 +1,5 @@
 import React from "react";
+import { subscribeToPush } from "../push";
 
 function Dev() {
   const clicked = () => {
@@ -10,7 +11,7 @@ function Dev() {
       // Check whether notification permissions have already been granted;
       // if so, create a notification
       alert("Notifications Already Granted");
-      const notification = new Notification("Hi there!");
+      subscribeToPush()
       // …
     } else if (Notification.permission !== "denied") {
       // We need to ask the user for permission
@@ -18,12 +19,17 @@ function Dev() {
 
       Notification.requestPermission().then((permission) => {
         // If the user accepts, let's create a notification
+        // if ("serviceWorker" in navigator) {
+        //   const sw = navigator.serviceWorker;
+        //   sw.pushManager.subscribe()
+        // }
+
         if (permission === "granted") {
-          const notification = new Notification("Hi there!");
+          subscribeToPush()
         }
       });
     } else {
-      alert("Notifications not allowed")
+      alert("Notifications not allowed");
     }
   };
 
