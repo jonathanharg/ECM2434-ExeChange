@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Trading } from "./TradingPopup";
 import { useAuthUser } from "react-auth-kit";
+import { DeleteItem } from "../Profile/DeleteItem";
 
 export interface Product {
   id: number;
@@ -24,8 +25,8 @@ export type tag = {
   label: string;
 };
 
-export function Itemtile(product: Product, Function) {
-  /* , {trading}:boolean */
+export function Itemtile(product: Product) { 
+
   const [open, setOpen] = useState(false);
   const auth = useAuthUser();
   return (
@@ -66,7 +67,7 @@ export function Itemtile(product: Product, Function) {
                     </button>
                     {/* if(trading) {  } */}
                     {/* ADD IF CONDITION HERE - IF TRADING then : otherwise idk not that  */}
-                    <Function/>
+                    <Trading key={product.id} {...product}/>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -87,7 +88,7 @@ export function Itemtile(product: Product, Function) {
           onClick={() => setOpen(true)}
         />
       </div>
-      <svg className="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+      <DeleteItem />
       <div className="mt-2 flex justify-between">
         <div>
           <h3 className="text-sm text-gray-700">
