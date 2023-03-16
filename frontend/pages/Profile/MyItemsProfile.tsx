@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Itemtile, { Product } from "../Marketplace/Itemtile";
+import { DeleteItem } from "./DeleteItem";
 
 interface ProfileData {
     levelPercent: number;
@@ -53,7 +54,14 @@ export function MyItems() {
                 )
                 .map((product) => <Itemtile key={product.id} {...product} />)
             : products.map((product) => (
-                <Itemtile key={product.id} {...product} />
+                <>
+                <div className="relative">
+                    <Itemtile key={product.id} {...product} />
+                    <div className="absolute top-0 bg-red-500 text-white p-2 rounded hover:bg-red-800">
+                        <DeleteItem />
+                    </div>
+                </div>
+                </>
                 ))}
         </div>
         </>

@@ -3,7 +3,6 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Trading } from "./TradingPopup";
 import { useAuthUser } from "react-auth-kit";
-import { DeleteItem } from "../Profile/DeleteItem";
 
 export interface Product {
   id: number;
@@ -88,7 +87,6 @@ export function Itemtile(product: Product) {
           onClick={() => setOpen(true)}
         />
       </div>
-      <DeleteItem />
       <div className="mt-2 flex justify-between">
         <div>
           <h3 className="text-sm text-gray-700">
