@@ -19,7 +19,7 @@ export default defineConfig({
       filename: "sw.ts",
       srcDir: "/service-worker",
       registerType: "autoUpdate",
-      injectRegister: "script",
+      injectRegister: null,
       manifest: {
         name: "ExeChange",
         short_name: "ExeChange",
@@ -39,6 +39,13 @@ export default defineConfig({
             sizes: "512x512",
             type: "image/png",
           },
+          {
+            src: "/static/mask-icon.svg",
+            sizes: "150x150",
+            type: "image/svg",
+            purpose: "any maskable"
+          },
+          
         ],
       },
     }),

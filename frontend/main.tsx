@@ -60,6 +60,12 @@ const router = createBrowserRouter([
   },
 ]);
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.ts', { scope: '/' })
+  })
+}
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <AuthProvider
