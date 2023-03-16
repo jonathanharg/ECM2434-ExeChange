@@ -89,6 +89,7 @@ export default function TradeResponse(trade:TradeInvolvement) {
     .then((response) => {
       // TODO: Handle more responses than just OK
       if (response.data.status != "OK") {
+       
 ;       return;
       }
     })

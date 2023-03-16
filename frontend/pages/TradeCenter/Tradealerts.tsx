@@ -6,6 +6,7 @@ import {
   CheckBadgeIcon,
   CheckIcon,
   InboxArrowDownIcon,
+  TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
@@ -24,6 +25,8 @@ import PendingGiverTradeView from "./TradeViews/PendingGiverTradeView";
 import PendingReceiverTradeView from "./TradeViews/PendingReceiverTradeView";
 import AcceptReceiverView from "./TradeViews/AcceptReceiverView";
 import AcceptGiverView from "./TradeViews/AcceptGiverView";
+import RejectedGiverTradeView from "./RejectedGiverTradeView";
+// import RejectedReceiverTradeView from "./RejectedReceiverTradeView";
 
 export type ProfileData = {
   levelPercent: number;
@@ -34,12 +37,40 @@ export type ProfileData = {
 
 export default function TradeAlerts(trade: TradeInvolvement) {
   const [profileData, setProfileData] = useState<ProfileData>();
-  
+  // const [status, setStatus] = useState("Pending")
   function fetchProfileData() {
     return fetch("/api/profiledata")
       .then((response) => response.json())
       .then((data) => 
       setProfileData(data));
+  }
+
+  async function declineRequest() {
+
+    const tradeid = trade.id.toString()
+    const apiPath = "/api/trade/" +tradeid+ "/reject";
+
+    await axios
+    .post(
+      apiPath,
+      JSON.stringify({
+        reject: true
+      }),
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    )
+    .then((response) => {
+      // TODO: Handle more responses than just OK
+      if (response.data.status != "OK") {
+       
+;       return;
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
 
@@ -49,6 +80,7 @@ export default function TradeAlerts(trade: TradeInvolvement) {
   }, []);
   return (
     <div className="w-full px-4">
+    <div className="flex flex-row justify-center">
       <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-2"> 
       {trade.receiver.username != profileData?.name ? (
         // view of original giver, i.e person getting the request 
@@ -58,10 +90,8 @@ export default function TradeAlerts(trade: TradeInvolvement) {
             )
         : trade.status == "A" ? (
             <AcceptGiverView {...trade}/>
-        ) : (
-          <Disclosure>
-
-          </Disclosure>
+        ) : trade.status == "R" && (
+          <RejectedGiverTradeView {...trade}/>
         )
       }
       </div>
@@ -73,14 +103,23 @@ export default function TradeAlerts(trade: TradeInvolvement) {
         ) 
         : trade.status == "A"? (
             <AcceptReceiverView {...trade}/>
-        ) : (
-          <Disclosure>
-          </Disclosure>
+        ) : trade.status == "R" && (
+          <></>
+          // <RejectedReceiverTradeView {...trade}/>
         )
       }
       </div>)
       }
       </div> 
+      <div className="pt-2">
+      <button
+        onClick={declineRequest}
+        className="flex w-fit items-center rounded-lg border h-10 border-gray-300 bg-red-800 p-2 text-sm font-medium text-white hover:bg-red-700 hover:text-gray-50"
+      >
+        <TrashIcon className="h-5 w-5 stroke-white stroke-[3]"></TrashIcon>
+      </button>
+      </div>
+    </div>
     </div>
   )
 }
