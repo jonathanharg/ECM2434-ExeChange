@@ -19,9 +19,11 @@ urlpatterns = [
     path("tags", tags.tags),
     path("trade", trading.trade),
     path("pendingtrades", profile.trade_requests),
-    path("profiledata", profile.get_profile_data),
+    path("profiledata/<str:username>", profile.get_profile_data),
+    path("whoseprofile/<str:username>", profile.whose_profile),
     path("confirmpendingtrade", profile.confirm_pending_trade),
     path("getpendingtradestatus", profile.get_pending_trade_status),
     path("removependingtrade", profile.remove_pending_trade),
     path("deleteitem", profile.deleteImg),
+    path("getachievements", profile.get_achievements),
 ]

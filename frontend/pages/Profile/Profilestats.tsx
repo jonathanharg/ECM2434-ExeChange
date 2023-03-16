@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
     UserCircleIcon,
   } from "@heroicons/react/24/outline";
@@ -12,10 +13,11 @@ interface ProfileData {
 
 
 function Profilestats() {
+  let { username } = useParams();
     const [profileData, setProfileData] = useState<ProfileData>();
 
     function fetchProfileData() {
-        return fetch("/api/profiledata")
+        return fetch("/api/profiledata/"+ username)
           .then((response) => response.json())
           .then((data) => setProfileData(data));
       }

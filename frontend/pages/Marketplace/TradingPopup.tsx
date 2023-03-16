@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { Listbox } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { Link, Outlet } from "react-router-dom";
 import Calendar from "react-calendar";
 import axios from "axios";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -114,7 +115,7 @@ export function Trading(product: Product) {
           {product.caption}{" "}
         </h3>
         <p className="mt-1 text-sm text-gray-500">
-          <b>Tagged by {product.owner.username} as: </b>
+          <b>Tagged by <Link to={("../profile/" + product.owner.username)}> {product.owner.username} </Link> as: </b>
           {product.tags.map((t) => t.value).join(", ")}
         </p>
       </div>

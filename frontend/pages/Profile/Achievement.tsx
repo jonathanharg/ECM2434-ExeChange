@@ -7,7 +7,8 @@ export interface Reward {
 }
 
 function Achievement(reward: Reward) {
-    const format = 
+
+  const format = 
     "font-ligth flex w-32 rounded-full " +reward.colour+ " px-4 py-2 text-white";
   return (
     <button className= {format} >

@@ -14,6 +14,7 @@ import UploadPage from "./pages/Upload/UploadPage";
 
 import Profile from "./pages/Profile/Profile";
 
+
 //for using nested routes check out: https://reactrouter.com/en/main/start/tutorial
 //info is under the   " nested routes " title, you pretty much need to use an <outlet> to mark
 //where in the parent route you want the children to render
@@ -45,7 +46,19 @@ const router = createBrowserRouter([
           <RequireAuth loginPath={"/login"}>
             <Profile />
           </RequireAuth>
+        )
+      },
+      {
+        path: "/profile/:username",
+        element: (
+          <RequireAuth loginPath={"/login"}>
+            <Profile />
+          </RequireAuth>
         ),
+        loader: ({ params }) => {
+          return null;
+        },
+        action: ({ params }) => {}
       },
       {
         path: "/upload",

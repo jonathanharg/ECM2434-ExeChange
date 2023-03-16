@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from apps.api.authentication import authenticate_user
-from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade
+from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade, Achievemnt
 from django.http import HttpRequest
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
@@ -52,8 +52,11 @@ def trade_requests(request: HttpRequest) -> Response:
 
 
 @api_view(["GET"])
-def get_profile_data(request: HttpRequest) -> Response:
+def get_profile_data(request: HttpRequest, username: str) -> Response:
     authenticated_user = authenticate_user(request)
+    
+    user_object = get_object_or_404(ExeChangeUser, username= str(username))
+
 
     if authenticated_user is None:
         return Response(
@@ -62,12 +65,28 @@ def get_profile_data(request: HttpRequest) -> Response:
 
     return Response(
         {
-            "name": authenticated_user.username,
-            "level": authenticated_user.profile_level,
-            "levelPercent": authenticated_user.current_xp,
+            "name": user_object.username,
+            "level": user_object.profile_level,
+            "levelPercent": user_object.current_xp,
         }
-    )
+    ) 
 
+@api_view(["GET"])
+def whose_profile(request: HttpRequest, username: str) -> Response:
+    authenticated_user = authenticate_user(request)
+    user_object = get_object_or_404(ExeChangeUser, username= str(username))
+    
+    if authenticated_user.username == user_object.username:
+        myProfile = True
+    else:
+        myProfile = False
+
+    if authenticated_user is None:
+        return Response(
+            {"status": "BAD_REQUEST", "message": "User credentials not correct!"}
+        )
+
+    return Response(myProfile) 
 
 @api_view(["POST"])
 def confirm_pending_trade(request: HttpRequest) -> Response:
@@ -256,3 +275,31 @@ OK = {
     "status": "OK",
     "message": "Image removed",
 }
+
+@api_view(["POST"])
+def get_achievements(request: HttpRequest) -> Response:
+    authenticated_user = authenticate_user(request)
+
+    if authenticated_user is None:
+        return Response(
+            {
+                "status": "BAD_REQEUST",
+                "message": "User credentials are not correct!",
+            }
+    )
+
+    achievement_object = get_object_or_404(Achievemnt)
+
+    if authenticated_user is None:
+        return Response(
+            {"status": "BAD_REQUEST", "message": "User credentials not correct!"}
+        )
+
+    return Response(
+        {
+            "id": achievement_object.id,
+            "text": achievement_object.text,
+            "colour": achievement_object.colour,
+        }
+    ) 
+    
