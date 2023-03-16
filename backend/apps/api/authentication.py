@@ -2,7 +2,7 @@ import random
 import string
 
 from apps.api.models import ExeChangeUser
-from apps.api.users import send_user_email
+from apps.api.emails import send_user_email
 from django.conf import settings
 from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
