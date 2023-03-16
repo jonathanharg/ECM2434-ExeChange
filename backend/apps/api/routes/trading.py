@@ -5,17 +5,22 @@ from apps.api.authentication import authenticate_user
 from apps.api.models import ClothingItem, ExeChangeUser, Location, Trade
 from apps.api.responses import (
     CONFIRM_TRADE_REJECT,
+    DATABASE_TRANSACTION_ERROR,
+    INCORRECT_TRADE_CONFIRMATION_CODE,
     INVALID_LOCATION,
     INVALID_TIME,
     INVALID_TOO_EARLY,
     INVALID_TRADE_ACCEPT,
+    INVALID_TRADE_CONFIRMATION,
     INVALID_TRADE_ITEMS,
     INVALID_TRADE_REQUEST,
     INVALID_TRADE_SELF,
+    ITEM_ALREADY_ACCEPTED,
     ITEM_ALREADY_REQUESTED,
     NOT_LOGGED_IN,
     OK,
     TRADE_NOT_FOUND,
+    TRADERS_NOT_THERE,
 )
 from apps.api.serializer import TradeSerializer
 from django.db import IntegrityError, transaction
@@ -134,6 +139,7 @@ def reject_trade(request: HttpRequest, trade_id: int) -> Response:
     return OK
 
 
+@transaction.atomic
 @api_view(["POST"])
 def accept_trade(request: HttpRequest, trade_id: int) -> Response:
     user = authenticate_user(request)
@@ -180,34 +186,58 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
             return ITEM_ALREADY_REQUESTED
 
     try:
-        location = Location.objects.get(name=data["location"])
-    except Location.DoesNotExist:
-        return INVALID_LOCATION
+        with transaction.atomic():
+            # check if any of the items are in trades that have already been accepted
+            # i.e. have any of the items already been promised to someone else
+            query_accepted = Q(status=Trade.TradeStatuses.ACCEPTED)
+            query_contains_exchanging = Q(giver_giving__in=receiver_exchanging) | Q(
+                giver_giving__in=receiver_exchanging
+            )
+            query_contains_giving = Q(giver_giving__in=trade.giver_giving) | Q(
+                giver_giving__in=trade.giver_giving
+            )
 
-    try:
-        time = parse_datetime(data["time"])
-    except (ValueError, TypeError):
-        return INVALID_TIME
+            item_already_accepted = Trade.objects.filter(
+                query_accepted & (query_contains_exchanging | query_contains_giving)
+            ).exists()
 
-    if not valid_trade_time(time):
-        return INVALID_TIME
+            if item_already_accepted:
+                trade.status = trade.TradeStatuses.REJECTED
+                trade.save()
+                return ITEM_ALREADY_ACCEPTED
 
-    time = time.replace(second=0, microsecond=0)  # ignore anything less than minutes
+            try:
+                location = Location.objects.get(name=data["location"])
+            except Location.DoesNotExist:
+                return INVALID_LOCATION
 
-    trade.receiver_exchanging.set(receiver_exchanging)
-    trade.location = location
-    trade.status = trade.TradeStatuses.ACCEPTED
-    trade.time = time
-    trade.accepted_at = datetime.now()
-    trade.save()
+            try:
+                time = parse_datetime(data["time"])
+            except (ValueError, TypeError):
+                return INVALID_TIME
 
-    return Response(
-        {"status": "OK", "message": "Submission accepted", "id": trade.pk},
-        status=HTTP_200_OK,
-    )
+            if not valid_trade_time(time):
+                return INVALID_TIME
+
+            time = time.replace(
+                second=0, microsecond=0
+            )  # ignore anything less than minutes
+
+            trade.receiver_exchanging.set(receiver_exchanging)
+            trade.location = location
+            trade.status = trade.TradeStatuses.ACCEPTED
+            trade.time = time
+            trade.accepted_at = datetime.now()
+            trade.save()
+
+            return Response(
+                {"status": "OK", "message": "Submission accepted", "id": trade.pk},
+                status=HTTP_200_OK,
+            )
+    except IntegrityError:
+        return DATABASE_TRANSACTION_ERROR
 
 
-# TODO: Handle case when two people mark as here but either one or both doesn't show
 @transaction.atomic
 @api_view(["GET"])
 def arrived(request: HttpRequest, trade_id: int) -> Response:
@@ -239,6 +269,7 @@ def arrived(request: HttpRequest, trade_id: int) -> Response:
     if time_until_trade < timedelta(minutes=-10):
         print("TODO: The user is too late! PERMA BAN THEM")
         # TODO: Handle this situation
+        # When either one or both is late
         return Response()
 
     try:
@@ -252,9 +283,9 @@ def arrived(request: HttpRequest, trade_id: int) -> Response:
                 first_there = trade.giver_there
             trade.save()
     except IntegrityError:
-        return Response(status=404)
+        return DATABASE_TRANSACTION_ERROR
 
-    # TODO: Handle notifications and things
+    # TODO: Notify Trade other user that X has arrived
 
     return Response(
         {
@@ -263,6 +294,56 @@ def arrived(request: HttpRequest, trade_id: int) -> Response:
         },
         status=HTTP_200_OK,
     )
+
+
+@api_view(["GET", "POST"])
+def confirm(request: HttpRequest, trade_id: int) -> Response:
+    user = authenticate_user(request)
+
+    if user is None:
+        return NOT_LOGGED_IN
+
+    try:
+        trade = Trade.objects.get(id=trade_id)
+    except Trade.DoesNotExist:
+        return TRADE_NOT_FOUND
+
+    invalid_user = user not in [trade.giver, trade.receiver]
+    invalid_status = trade.status != Trade.TradeStatuses.ACCEPTED
+
+    if invalid_user | invalid_status:
+        return TRADE_NOT_FOUND
+
+    if (not trade.giver_there) | (not trade.receiver_there):
+        return TRADERS_NOT_THERE
+
+    if user == trade.receiver:
+        return Response({"status": "OK", "confirmation_code": trade.confirmation_code})
+
+    if (
+        (user != trade.giver)
+        | (request.method != "POST")
+        | ("confirmation_code" not in request.data)
+    ):
+        return INVALID_TRADE_CONFIRMATION
+
+    if request.data.confirmation_code != trade.confirmation_code:
+        return INCORRECT_TRADE_CONFIRMATION_CODE
+
+    for item in trade.giver_giving.all():
+        item.owner = trade.receiver
+        item.save()
+
+    for item in trade.receiver_exchanging.all():
+        item.owner = trade.giver
+        item.save()
+
+    # TODO: Update user XP, Ratio, Website wide stats abt no. trade completions
+
+    trade.status = trade.TradeStatuses.COMPLETED
+    trade.save()
+
+    return OK
 
 
 @api_view(["GET"])

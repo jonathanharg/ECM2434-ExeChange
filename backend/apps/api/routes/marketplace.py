@@ -11,6 +11,7 @@ from rest_framework.decorators import api_view
 # By both: /api/marketplace?user=17&tags=3+8
 
 # TODO: Paginate, e.g. page=1, page=2, max no per page maybe like 20?
+# TODO: Dont show items that are in an accepted trade
 
 
 @api_view(["GET"])

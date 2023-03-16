@@ -5,6 +5,8 @@ from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_401_UNAUTHORIZED,
     HTTP_404_NOT_FOUND,
+    HTTP_409_CONFLICT,
+    HTTP_500_INTERNAL_SERVER_ERROR,
 )
 
 NOT_LOGGED_IN = Response(
@@ -140,6 +142,14 @@ ITEM_ALREADY_REQUESTED = Response(
     status=HTTP_400_BAD_REQUEST,
 )
 
+ITEM_ALREADY_ACCEPTED = Response(
+    {
+        "status": "ITEM_ALREADY_ACCEPTED",
+        "message": "One or more of the requested items is already in an accepted trade.",
+    },
+    status=HTTP_409_CONFLICT,
+)
+
 INVALID_TOO_EARLY = Response(
     {
         "status": "INVALID_TOO_EARLY",
@@ -152,6 +162,39 @@ INVALID_USER = Response(
     {
         "status": "INVALID_USER",
         "message": "The specified user is not valid.",
+    },
+    status=HTTP_400_BAD_REQUEST,
+)
+
+DATABASE_TRANSACTION_ERROR = Response(
+    {
+        "status": "DATABASE_TRANSACTION_ERROR",
+        "message": "An unknown database transaction error occurred.",
+    },
+    status=HTTP_500_INTERNAL_SERVER_ERROR,
+)
+
+TRADERS_NOT_THERE = Response(
+    {
+        "status": "TRADERS_NOT_THERE",
+        "message": "Not all traders are at the trade location.",
+        "there": False,
+    },
+    status=HTTP_200_OK,
+)
+
+INVALID_TRADE_CONFIRMATION = Response(
+    {
+        "status": "INVALID_TRADE_CONFIRMATION",
+        "message": "Invalid trade confirmation.",
+    },
+    status=HTTP_400_BAD_REQUEST,
+)
+
+INCORRECT_TRADE_CONFIRMATION_CODE = Response(
+    {
+        "status": "INCORRECT_TRADE_CONFIRMATION_CODE",
+        "message": "Incorrect trade confirmation code.",
     },
     status=HTTP_400_BAD_REQUEST,
 )

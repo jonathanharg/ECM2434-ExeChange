@@ -42,6 +42,7 @@ def status(request: HttpRequest) -> Response:
         "Moving in silence, big things coming.",
         "Only the real ones know",
         "\"The world's ExeChanging. It's time we ExeChange, too.\" - Spider-Man",
+        "Do you want to develop our app?",
     ]
     data = {"status": "OK", "message": {random.choice(WELCOME_MESSAGES)}}
     return Response(data)

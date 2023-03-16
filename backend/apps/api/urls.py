@@ -25,4 +25,5 @@ urlpatterns = [
     path("trade/<int:trade_id>/reject", trading.reject_trade),
     path("trade/<int:trade_id>/accept", trading.accept_trade),
     path("trade/<int:trade_id>/arrived", trading.arrived),
+    path("trade/<int:trade_id>/confirm", trading.confirm),
 ]
