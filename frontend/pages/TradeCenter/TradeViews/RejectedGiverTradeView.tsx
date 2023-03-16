@@ -10,7 +10,7 @@ return (
     <Disclosure>
     {({ open }) => (
       <>
-        <Disclosure.Button className="flex w-full justify-between rounded-lg bg-red-700 shadow px-4 py-3 text-left text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
+        <Disclosure.Button className="flex w-full justify-between rounded-lg bg-red-800 shadow px-4 py-3 text-left text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
           <XMarkIcon className="h-5 w-5 stroke-white stroke-[3]">
           </XMarkIcon>
           <span> <b> You rejected {trade.receiver.username}'s request! </b> </span>
