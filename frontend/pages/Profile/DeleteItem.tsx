@@ -1,10 +1,11 @@
 import React, { Fragment, useRef, useState } from "react";
 import {Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
+import { Product } from "../Marketplace/Itemtile";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
-export function DeleteItem() {
+export function DeleteItem(product: Product) {
   const [open, setOpen] = useState(false)
   const [checkedDelete, setCheckedDelete] = useState(false);
   const cancelButtonRef = useRef(null)
@@ -17,12 +18,14 @@ export function DeleteItem() {
   const handleSubmit = async (e) => {
     // this function sends form data to /api/trade
     e.preventDefault();
+    const id = product.id 
 
     await axios
       .post(
         "/api/deleteitem",
         JSON.stringify({
             checkedDelete,
+            id,
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -77,7 +80,7 @@ export function DeleteItem() {
                         </Dialog.Title>
                         <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                            Are you sure you want to delete your item?
+                            Are you sure you want to delete {product.caption}?
                         </p>
                         </div>
                     </div>
