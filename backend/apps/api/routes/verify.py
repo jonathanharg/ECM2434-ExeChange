@@ -14,7 +14,7 @@ def verify(request: HttpRequest) -> Response:
     try:
         # get user object to verify
         user_to_verify = get_object_or_404(ExeChangeUser, username=username)
-    
+
     except Http404:
         # user object cannot be found with given username in request
         return Response(INCORRECT_USER)

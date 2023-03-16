@@ -1,8 +1,8 @@
 import random
 import string
 
-from apps.api.models import ExeChangeUser
 from apps.api.emails import send_user_email
+from apps.api.models import ExeChangeUser
 from django.conf import settings
 from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
@@ -61,7 +61,7 @@ def send_verification_email(user: ExeChangeUser) -> bool:  # type: ignore
     # Generate link to send
     username = user.username
     code = user.verification_code
-    
+
     subject = "ExeChange Verification"
     body = f" Hello {username}! Welcome to ExeChange, clearly you heard the rumours, Big things are coming and if you click the below link, you will be a part of it..."  # pylint: disable=line-too-long
     html_link = f"<a href='{settings.DOMAIN_NAME}/verify?username={username}&code={code}'>Verify me!</a>"  # type: ignore

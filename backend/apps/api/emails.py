@@ -4,14 +4,15 @@ from smtplib import SMTPDataError, SMTPRecipientsRefused, SMTPSenderRefused
 from typing import List
 
 import yagmail
-from yagmail.oauth2 import get_authorization
 from apps.api.models import ExeChangeUser
+from yagmail.oauth2 import get_authorization
 
 GOOGLE_CLIENT_ID = os.getenv("CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 GOOGLE_PROJECT_ID = os.getenv("PROJECT_ID")
 
 GOOGLE_REFRESH_TOKEN, _, _ = get_authorization(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET)
+
 
 def send_user_email(user: ExeChangeUser, subject: str, contents: List[str]) -> bool:
     """
@@ -26,7 +27,7 @@ def send_user_email(user: ExeChangeUser, subject: str, contents: List[str]) -> b
         bool: Success or Failure
     """
     if not os.path.exists("credentials.json"):
-        # generating JSON file for 
+        # generating JSON file for oauth data
         oauth2_data = {
             "installed": {
                 "client_id": GOOGLE_CLIENT_ID,
