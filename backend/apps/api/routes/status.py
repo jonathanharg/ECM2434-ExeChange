@@ -5,8 +5,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 
-@api_view(["GET"])
+@api_view(["GET", "POST"])
 def status(request: HttpRequest) -> Response:
+    print(request.body)
     WELCOME_MESSAGES = [
         "<h1>Wow! This code is so good!</h1>",
         "Exeter is Changing...",

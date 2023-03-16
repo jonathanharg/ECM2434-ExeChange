@@ -12,9 +12,10 @@ self.addEventListener("notificationclick", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  self.registration.showNotification("ExeChange", {
-    body: "Big things are happening... " + event.data.text(),
-    icon: "/static/apple-touch-icon-180.png",
-    tag: "/marketplace",
-  });
+  // if (event.data) {
+		// const pushData = event.data.json();
+		console.debug(event);
+		self.registration.showNotification(
+      `${event} sent you a trade request.`
+    );
 });

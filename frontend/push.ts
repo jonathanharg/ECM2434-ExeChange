@@ -35,6 +35,14 @@ export async function subscribeToPush() {
 		};
 	};
 	console.log(parsedSubscription)
+	fetch('/api/status', {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(parsedSubscription),
+})
 }
 
 export async function unsubscribeFromPush() {
