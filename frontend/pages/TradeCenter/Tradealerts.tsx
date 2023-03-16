@@ -25,8 +25,9 @@ import PendingGiverTradeView from "./TradeViews/PendingGiverTradeView";
 import PendingReceiverTradeView from "./TradeViews/PendingReceiverTradeView";
 import AcceptReceiverView from "./TradeViews/AcceptReceiverView";
 import AcceptGiverView from "./TradeViews/AcceptGiverView";
-import RejectedGiverTradeView from "./RejectedGiverTradeView";
-// import RejectedReceiverTradeView from "./RejectedReceiverTradeView";
+import RejectedGiverTradeView from "./TradeViews/RejectedGiverTradeView";
+import RejectedReceiverTradeView from "./TradeViews/RejectedReceiverTradeView";
+import axios from "axios";
 
 export type ProfileData = {
   levelPercent: number;
@@ -37,6 +38,7 @@ export type ProfileData = {
 
 export default function TradeAlerts(trade: TradeInvolvement) {
   const [profileData, setProfileData] = useState<ProfileData>();
+  const [rejected, setRejected] = useState(false)
   // const [status, setStatus] = useState("Pending")
   function fetchProfileData() {
     return fetch("/api/profiledata")
@@ -49,12 +51,12 @@ export default function TradeAlerts(trade: TradeInvolvement) {
 
     const tradeid = trade.id.toString()
     const apiPath = "/api/trade/" +tradeid+ "/reject";
-
+    setRejected(true)
     await axios
     .post(
       apiPath,
       JSON.stringify({
-        reject: true
+        reject: rejected
       }),
       {
         headers: { "Content-Type": "application/json" },
@@ -104,8 +106,7 @@ export default function TradeAlerts(trade: TradeInvolvement) {
         : trade.status == "A"? (
             <AcceptReceiverView {...trade}/>
         ) : trade.status == "R" && (
-          <></>
-          // <RejectedReceiverTradeView {...trade}/>
+          <RejectedReceiverTradeView {...trade}/>
         )
       }
       </div>)

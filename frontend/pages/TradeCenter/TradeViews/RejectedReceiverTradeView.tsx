@@ -1,9 +1,8 @@
 import React from 'react';
 import { Disclosure, Transition } from "@headlessui/react";
-import { ArrowDownRightIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
-import { TradeInvolvement } from "./TradeCenter";
-import TradeResponse from "./TradeResponse";
-import { CrossIcon } from 'react-select/dist/declarations/src/components/indicators';
+import { ArrowDownRightIcon, ChevronUpIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { TradeInvolvement } from "../TradeCenter";
+import TradeResponse from "../TradeResponse";
 
 export default function RejectedReceiverTradeView (trade:TradeInvolvement) {
 return ( 
@@ -11,9 +10,9 @@ return (
     {({ open }) => (
       <>
         <Disclosure.Button className="flex w-full justify-between rounded-lg bg-red-700 shadow px-4 py-3 text-left text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
-          <CrossIcon className="h-5 w-5 stroke-white stroke-[3]">
-          </CrossIcon>
-          <span> <b> You rejected {trade.receiver.username}'s request! </b> </span>
+          <XMarkIcon className="h-5 w-5 stroke-white stroke-[3]">
+          </XMarkIcon>
+          <span> <b>{trade.giver.username} rejected your request :(</b> </span>
           <ChevronUpIcon
             className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-green-800 stroke-[3]`} />
         </Disclosure.Button>
