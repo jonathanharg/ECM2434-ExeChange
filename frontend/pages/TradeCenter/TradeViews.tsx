@@ -1,9 +1,9 @@
 import { Disclosure, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpIcon, ArrowPathIcon, ArrowDownRightIcon, ArrowUpRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import React, { Dispatch, SetStateAction } from 'react';
-import { ProfileData } from '../Tradealerts';
-import { TradeInvolvement } from '../TradeCenter';
-import TradeResponse from '../TradeResponse';
+import { ProfileData } from './Tradealerts';
+import { TradeInvolvement } from './TradeCenter';
+import TradeResponse from './TradeResponse';
 
 interface TradeAndProfileType {
     trade: TradeInvolvement

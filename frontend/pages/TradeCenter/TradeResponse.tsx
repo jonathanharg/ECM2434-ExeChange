@@ -3,7 +3,7 @@ import {
   ArrowRightIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Product } from "../Marketplace/Itemtile";
 import DayPick from "./DayPick";
 import { TradeInvolvement } from "./TradeCenter";
