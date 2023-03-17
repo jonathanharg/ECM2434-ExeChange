@@ -39,7 +39,7 @@ def valid_trade_time(time: datetime | None) -> bool:
     half_past = time.minute != 30
     in_hours = time.hour in TRADING_HOURS
     in_past = time <= now
-    within_a_week = (time - now) < timedelta(days=7)
+    within_a_week = (time - now) < timedelta(days=7, hours=12)
     weekend = time.weekday() > 4  # Index of weekdays starting a Monday: 0, 4 is Friday
     return (
         (time is None)
@@ -194,23 +194,21 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
         with transaction.atomic():
             # check if any of the items are in trades that have already been accepted
             # i.e. have any of the items already been promised to someone else
-            if len(receiver_exchanging) != 0:
-                query_accepted = Q(status=Trade.TradeStatuses.ACCEPTED)
-                query_contains_exchanging = Q(giver_giving__in=receiver_exchanging) | Q(
-                    giver_giving__in=receiver_exchanging
-                )
-                query_contains_giving = Q(giver_giving__in=trade.giver_giving) | Q(
-                    giver_giving__in=trade.giver_giving
-                )
+            is_accepted = Q(status=Trade.TradeStatuses.ACCEPTED)
+            giver_giving = list(trade.giver_giving.all())
+            giving_already_promised = Q(giver_giving__in=giver_giving) | Q(
+                receiver_exchanging__in=giver_giving
+            )
+            receiving_already_promised = Q(giver_giving__in=receiver_exchanging) | Q(
+                receiver_exchanging__in=receiver_exchanging
+            )
 
-                item_already_accepted = Trade.objects.filter(
-                    query_accepted & (query_contains_exchanging | query_contains_giving)
-                ).exists()
-
-                if item_already_accepted:
-                    trade.status = trade.TradeStatuses.REJECTED
-                    trade.save()
-                    return ITEM_ALREADY_ACCEPTED
+            if Trade.objects.filter(
+                is_accepted & (giving_already_promised | receiving_already_promised)
+            ):
+                trade.status = trade.TradeStatuses.REJECTED
+                trade.save()
+                return ITEM_ALREADY_ACCEPTED
 
             try:
                 location = Location.objects.get(name=data["location"])
@@ -233,7 +231,7 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
             trade.location = location
             trade.status = trade.TradeStatuses.ACCEPTED
             trade.time = time
-            trade.accepted_at = datetime.now()
+            trade.accepted_at = datetime.now(timezone.utc)
             trade.save()
 
             return Response(
@@ -370,10 +368,13 @@ def get_trades(request: HttpRequest) -> Response:
     accepted_trades = trades.filter(status=Trade.TradeStatuses.ACCEPTED).order_by(
         "time"
     )
-    other_trades = trades.exclude(status=Trade.TradeStatuses.ACCEPTED).order_by(
+    active_trades = trades.exclude(
+        Q(status=Trade.TradeStatuses.ACCEPTED) | Q(status=Trade.TradeStatuses.REJECTED)
+    ).order_by("requested_at")
+    rejected_trades = trades.filter(status=Trade.TradeStatuses.REJECTED).order_by(
         "requested_at"
     )
     trades_serializer = TradeSerializer(
-        list(chain(accepted_trades, other_trades)), many=True
+        list(chain(accepted_trades, active_trades, rejected_trades)), many=True
     )
     return JsonResponse(trades_serializer.data, safe=False)
