@@ -194,22 +194,23 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
         with transaction.atomic():
             # check if any of the items are in trades that have already been accepted
             # i.e. have any of the items already been promised to someone else
-            query_accepted = Q(status=Trade.TradeStatuses.ACCEPTED)
-            query_contains_exchanging = Q(giver_giving__in=receiver_exchanging) | Q(
-                giver_giving__in=receiver_exchanging
-            )
-            query_contains_giving = Q(giver_giving__in=trade.giver_giving) | Q(
-                giver_giving__in=trade.giver_giving
-            )
+            if len(receiver_exchanging) != 0:
+                query_accepted = Q(status=Trade.TradeStatuses.ACCEPTED)
+                query_contains_exchanging = Q(giver_giving__in=receiver_exchanging) | Q(
+                    giver_giving__in=receiver_exchanging
+                )
+                query_contains_giving = Q(giver_giving__in=trade.giver_giving) | Q(
+                    giver_giving__in=trade.giver_giving
+                )
 
-            item_already_accepted = Trade.objects.filter(
-                query_accepted & (query_contains_exchanging | query_contains_giving)
-            ).exists()
+                item_already_accepted = Trade.objects.filter(
+                    query_accepted & (query_contains_exchanging | query_contains_giving)
+                ).exists()
 
-            if item_already_accepted:
-                trade.status = trade.TradeStatuses.REJECTED
-                trade.save()
-                return ITEM_ALREADY_ACCEPTED
+                if item_already_accepted:
+                    trade.status = trade.TradeStatuses.REJECTED
+                    trade.save()
+                    return ITEM_ALREADY_ACCEPTED
 
             try:
                 location = Location.objects.get(name=data["location"])
