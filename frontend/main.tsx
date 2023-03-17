@@ -49,11 +49,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/upload",
-        element: <UploadPage />,
+        element: (
+          <RequireAuth loginPath={"/login"}>
+            <UploadPage />
+          </RequireAuth>
+        ),
       },
       {
         path: "/tradecenter",
-        element: <TradeCenter />,
+        element: (
+          <RequireAuth loginPath={"/login"}>
+            <TradeCenter />
+          </RequireAuth>
+        ),
       },
     ],
   },
