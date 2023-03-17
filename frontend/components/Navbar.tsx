@@ -84,16 +84,16 @@ export default function Navbar() {
                   {/* Links */}
 
                   <div className="space-y-6 border-t border-gray-200 py-6 px-4">
-                    {navigation.map((page) => (
-                      <div key={page.name} className="flow-root">
-                        <Link
-                          to={page.to}
-                          className="-m-2 block p-2 font-medium text-gray-900"
-                          onClick={() => setOpenMenu(false)}
-                        >
-                          {page.name}
-                        </Link>
-                      </div>
+                    {navigation.map((page) => ( page != false && (
+                        <div key={page.name} className="flow-root">
+                          <Link
+                            to={page.to}
+                            className="-m-2 block p-2 font-medium text-gray-900"
+                            onClick={() => setOpenMenu(false)}
+                          >
+                            {page.name}
+                          </Link>
+                        </div>)
                     ))}
                   </div>
                   {!isAuthenticated() && (
@@ -175,14 +175,15 @@ export default function Navbar() {
                 {/* Flyout menus */}
                 <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
                   <div className="flex h-full space-x-8">
-                    {navigation.map((page) => (
-                      <Link
-                        key={page.name}
-                        to={page.to}
-                        className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                      >
-                        {page.name}
-                      </Link>
+                    {navigation.map((page) => ( page != false && (
+                        <Link
+                          key={page.name}
+                          to={page.to}
+                          className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                        >
+                          {page.name}
+                        </Link>
+                    )
                     ))}
                   </div>
                 </Popover.Group>
