@@ -5,7 +5,7 @@ from .models import ClothingItem, Trade
 
 
 class MinimalUserSerializer(serializers.ModelSerializer):
-    item_ratio = serializers.ReadOnlyField()
+    # item_ratio = serializers.ReadOnlyField()
     class Meta:
         model = get_user_model()
         fields = ["id", "username"]
