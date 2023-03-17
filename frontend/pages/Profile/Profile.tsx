@@ -23,11 +23,11 @@ import { Location } from "./Badge";
 import Badge from "./Badge";
 import { Trade } from "../../components/Tradealert";
 
-interface ProfileData {
+type ProfileData = {
   levelPercent: number;
   name: string;
   level: number;
-}
+};
 
 const locations: Location[] = [
   {

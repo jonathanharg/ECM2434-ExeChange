@@ -6,14 +6,15 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import TagSelect from "../../components/TagSelect";
-import { tag } from "../Marketplace/Itemtile";
+import { Tag } from "../Marketplace/Itemtile";
 import { MinusCircleIcon } from "@heroicons/react/20/solid";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
 function Upload() {
+  // TODO: again most of these can be use Ref since we're not rerendering on change
   const [caption, setCaption] = useState("");
-  const [searchState, setSearchState] = useState(new Set<tag>());
+  const [searchState, setSearchState] = useState(new Set<Tag>());
   const [image, setImage] = useState<File>();
   const [file, setFile] = useState<string>();
   const [completed, setCompleted] = useState(false);
@@ -43,13 +44,15 @@ function Upload() {
   };
 
   function resetFile() {
-    fileRef.current.value = null;
+    fileRef.current = null;
   }
 
-  function handleImage(e) {
-    setImage(e.target.files[0]);
-    setFile(URL.createObjectURL(e.target.files[0]));
-    console.log(e.target.files[0].type);
+  function handleImage(e: React.ChangeEvent<HTMLInputElement>) {
+    const image = e.target.files?.[0];
+    if (image != null) {
+      setImage(image);
+      setFile(URL.createObjectURL(image));
+    }
   }
 
   const terms = () => {

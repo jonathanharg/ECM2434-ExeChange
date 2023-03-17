@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import "react-day-picker/dist/style.css";
 import { DayPicker, Row, RowProps } from "react-day-picker";
 
@@ -27,13 +27,12 @@ function isPostNextWeek(date: Date) {
   return differenceInCalendarDays(date, new Date()) > 6;
 }
 
-function isWeekend(date: Date){
-  if (date.getDay() == 0 || date.getDay() == 6) return true 
+function isWeekend(date: Date) {
+  if (date.getDay() == 0 || date.getDay() == 6) return true;
   else return false;
 }
 
 function OnlyThisWeek(props: RowProps) {
-
   const isPastRow = props.dates.every(isPastDate);
   const isFutureRow = props.dates.every(isPostNextWeek);
 
@@ -41,9 +40,12 @@ function OnlyThisWeek(props: RowProps) {
   return <Row {...props} />;
 }
 
+interface DayPickerDateState {
+  day: Date | undefined;
+  setDay: Dispatch<SetStateAction<Date | undefined>>;
+}
 
-export default function DayPick({day, setDay}) {
-
+export default function DayPick({ day, setDay }: DayPickerDateState) {
   return (
     <>
       <style> {css}</style>
@@ -52,15 +54,13 @@ export default function DayPick({day, setDay}) {
         selected={day}
         onSelect={setDay}
         fromDate={new Date()}
-        components={{ Row: OnlyThisWeek}}
+        components={{ Row: OnlyThisWeek }}
         disabled={[isPastDate, isPostNextWeek, isWeekend]}
         showOutsideDays
         modifiersClassNames={{
           selected: "my-selected",
           today: "my-today",
         }}
-        
-       
       />
     </>
   );

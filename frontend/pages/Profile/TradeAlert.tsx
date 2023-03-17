@@ -1,16 +1,16 @@
 import axios from "axios";
 import React, { useState } from "react";
 
-export interface Trade {
+export type Trade = {
   id: number;
   initiator: string;
   location: string;
   time: string;
   date: string;
   itemId: string;
-}
+};
 
-function Tradealert(trade: Trade) {
+function TradeAlert(trade: Trade) {
   const [tradeState, setTradeState] = useState<boolean>(false);
 
   function postToTrade(apiPath: string) {
@@ -105,4 +105,4 @@ function Tradealert(trade: Trade) {
   );
 }
 
-export default Tradealert;
+export default TradeAlert;

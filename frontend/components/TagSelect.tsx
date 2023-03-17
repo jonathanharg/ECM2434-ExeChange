@@ -1,24 +1,32 @@
-import React, { useEffect, useState } from "react";
-import Select from "react-select";
-import { tag } from "../pages/Marketplace/Itemtile";
-import PropTypes from "prop-types";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import Select, { ActionMeta } from "react-select";
+import { Tag } from "../pages/Marketplace/Itemtile";
+
+interface TagStates {
+  state: Set<Tag>;
+  setState:
+    | Dispatch<SetStateAction<Set<Tag>>>
+    | ((value: React.SetStateAction<Set<Tag>>) => void);
+}
 
 // the TagSelect function needs a the state of search and a setter for search
-export default function TagSelect({ setState, state }) {
-  const [tags, setTags] = useState<tag[]>([]);
+export default function TagSelect({ setState, state }: TagStates) {
+  const [tags, setTags] = useState<Tag[]>([]);
 
-  function handleTag(e, meta) {
+  // {ValueType, ActionMeta}
+  function handleTag(input: readonly Tag[], meta: ActionMeta<Tag>) {
     if (meta.action === "select-option") {
-      e.map((i) => setState((state) => new Set([...state, i.value])));
+      input.map((i) => setState((state) => new Set([...state, i.value])));
     } else if (meta.action === "pop-value" || meta.action === "remove-value") {
-      console.log(e.map((i) => i.value));
+      console.log(input.map((i) => i.value));
       setState(
-        (state) => new Set([...state].filter((x) => x == e.map((i) => i.value)))
+        (state) =>
+          new Set([...state].filter((x) => x == input.map((i) => i.value)))
       );
     } else if (meta.action === "clear") {
       setState(new Set());
     }
-    console.log(e);
+    console.log(input);
     return state;
   }
 
@@ -57,12 +65,7 @@ export default function TagSelect({ setState, state }) {
       })}
       className="basic-multi-select"
       classNamePrefix="select"
-      onChange={(e, actionMeta) => handleTag(e, actionMeta)}
+      onChange={(input, actionMeta) => handleTag(input, actionMeta)}
     />
   );
 }
-
-TagSelect.propTypes = {
-  setState: PropTypes.func.isRequired,
-  state: PropTypes.object,
-};

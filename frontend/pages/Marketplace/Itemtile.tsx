@@ -9,17 +9,17 @@ export type Product = {
   caption: string;
   href: string;
   image: string;
-  tags: tag[];
-  owner: owner;
+  tags: Tag[];
+  owner: Owner;
   description: string;
 };
 
-export type owner = {
+export type Owner = {
   id: number;
   username: string;
 };
 
-export type tag = {
+export type Tag = {
   id: number;
   readonly value: string;
   label: string;

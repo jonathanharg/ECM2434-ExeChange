@@ -24,7 +24,7 @@ interface ProfileData {
 export function Trading(product: Product) {
   const [requestMessage, setRequestMessage] = useState("");
   const [profileData, setProfileData] = useState<ProfileData>();
-  const [giver_giving, setGiverGiving] = useState<Number[]>([product.id]); //items you're asking for. this item is default added in cause you've clicked on it
+  const [giver_giving, setGiverGiving] = useState<number[]>([product.id]); //items you're asking for. this item is default added in cause you've clicked on it
   const [products, setProducts] = useState<Product[]>([]);
 
   function fetchProducts() {
@@ -47,7 +47,7 @@ export function Trading(product: Product) {
     fetchProfileData();
   }, []);
 
-  function handleExtraItems(index) {
+  function handleExtraItems(index: number) {
     if (giver_giving.includes(index)) {
       setGiverGiving(giver_giving.filter((i) => i !== index));
     } else {
@@ -55,7 +55,7 @@ export function Trading(product: Product) {
     }
   }
 
-  function showSvg(index) {
+  function showSvg(index: number) {
     if (giver_giving.includes(index)) {
       return (
         <CheckCircleIcon
@@ -67,7 +67,7 @@ export function Trading(product: Product) {
     }
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     // this function sends form data to /api/trade
     e.preventDefault();
     const giver = product.owner.id; // person you are asking for item from

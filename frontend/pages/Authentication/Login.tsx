@@ -75,7 +75,7 @@ export default function Login() {
     }
   }, [password]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     // this function sends form data to /api/login
     // Zod validation for email, password, and password matching
     //https://zod.dev/

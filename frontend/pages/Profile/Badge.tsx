@@ -1,6 +1,6 @@
 import React from "react";
 
-export interface Location {
+export type Location = {
   id: number;
   colour: string;
   place: string;
@@ -11,7 +11,7 @@ export interface Location {
     }
   >;
   trades: number;
-}
+};
 
 function Badge(location: Location) {
   const thiscolour =

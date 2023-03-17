@@ -10,11 +10,11 @@ export type User = {
 type tradelocation = {
   id: number;
   name: string;
-}
+};
 
 export type TradeInvolvement = {
   id: number;
-  status: string
+  status: string;
   giver: User;
   receiver: User;
   giver_giving: Product[];

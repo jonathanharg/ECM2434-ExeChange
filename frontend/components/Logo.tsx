@@ -1,6 +1,6 @@
 import React from "react";
 
-function Icon({ ...props }, svgRef) {
+function Icon({ ...props }) {
   return React.createElement(
     "svg",
     Object.assign(
@@ -11,7 +11,6 @@ function Icon({ ...props }, svgRef) {
         strokeWidth: 1,
         stroke: "currentColor",
         "aria-hidden": "true",
-        ref: svgRef,
       },
       props
     ),

@@ -18,7 +18,7 @@ function Marketplace() {
     fetchProducts();
   }, []);
 
-  function isSuperset(set, subset) {
+  function isSuperset<T>(set: Set<T>, subset: Set<T>) {
     for (const elem of subset) {
       if (!set.has(elem)) {
         return false;
