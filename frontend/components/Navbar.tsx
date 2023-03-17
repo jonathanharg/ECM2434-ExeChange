@@ -14,12 +14,6 @@ import {
 import { Link, Outlet } from "react-router-dom";
 import { useIsAuthenticated, useAuthUser, useSignOut } from "react-auth-kit";
 
-const navigation = [
-  { name: "Home", to: "/" },
-  { name: "Marketplace", to: "/marketplace" },
-  { name: "Upload", to: "/upload" },
-  { name: "Trade Center", to: "/tradecenter" },
-];
 
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(false);
@@ -35,6 +29,13 @@ export default function Navbar() {
   const isAuthenticated = useIsAuthenticated();
   const auth = useAuthUser();
   const signOut = useSignOut();
+
+  const navigation = [
+    { name: "Home", to: "/" },
+    { name: "Marketplace", to: "/marketplace" },
+    { name: "Upload", to: "/upload" },
+    isAuthenticated() && { name: "Trade Center", to: "/tradecenter" },
+  ];
 
   return (
     <>
