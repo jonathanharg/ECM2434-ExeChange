@@ -17,7 +17,7 @@ from rest_framework.decorators import api_view
 @api_view(["GET"])
 def marketplace(request: HttpRequest) -> JsonResponse:
     # Start off querying all items
-    queryset = ClothingItem.objects.all().order_by('-created_at')
+    queryset = ClothingItem.objects.all().order_by("-created_at")
 
     # NOTE: Compatibility test REMOVE?
     if (request.query_params is not None) & request.get_full_path().startswith(

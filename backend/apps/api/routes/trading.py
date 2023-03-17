@@ -52,9 +52,14 @@ def valid_trade_time(time: datetime | None) -> bool:
 
 
 def item_request_by_user(user: ExeChangeUser, item: ClothingItem) -> bool:
-    asked_for = Trade.objects.filter(Q(giver_giving=item) & Q(receiver=user)).exists()
+    active_trade = Q(status=Trade.TradeStatuses.ACCEPTED) | Q(
+        status=Trade.TradeStatuses.PENDING
+    )
+    asked_for = Trade.objects.filter(
+        Q(giver_giving=item) & Q(receiver=user) & active_trade
+    ).exists()
     exchanged_for = Trade.objects.filter(
-        Q(receiver_exchanging=item) & Q(giver=user)
+        Q(receiver_exchanging=item) & Q(giver=user) & active_trade
     ).exists()
     return asked_for | exchanged_for
 
