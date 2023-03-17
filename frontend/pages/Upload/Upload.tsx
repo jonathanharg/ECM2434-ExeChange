@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import {
-  ArrowUpTrayIcon,
-  DocumentPlusIcon,
-  XCircleIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon, DocumentPlusIcon } from "@heroicons/react/24/outline";
 import TagSelect from "../../components/TagSelect";
 import { Tag } from "../Marketplace/Itemtile";
 import { MinusCircleIcon } from "@heroicons/react/20/solid";

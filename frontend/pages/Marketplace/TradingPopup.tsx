@@ -1,19 +1,9 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Transition } from "@headlessui/react";
-import { Listbox } from "@headlessui/react";
-import {
-  CheckIcon,
-  ChevronUpDownIcon,
-  FaceSmileIcon,
-} from "@heroicons/react/20/solid";
-import Calendar from "react-calendar";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
-import Itemtile, { Product } from "./Itemtile";
 import UserCircleIcon from "@heroicons/react/24/outline/UserCircleIcon";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
-import { number } from "prop-types";
 
 interface ProfileData {
   levelPercent: number;

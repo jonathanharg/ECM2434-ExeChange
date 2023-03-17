@@ -1,26 +1,8 @@
-import {
-  ArrowDownLeftIcon,
-  ArrowDownRightIcon,
-  ArrowRightCircleIcon,
-  ArrowUpRightIcon,
-  CheckBadgeIcon,
-  CheckIcon,
-  InboxArrowDownIcon,
-  TrashIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 import React, { useEffect, useState } from "react";
 
-import { TradeInvolvement, User } from "./TradeCenter";
-import { Transition, Disclosure } from "@headlessui/react";
-import TradeResponse from "./TradeResponse";
-import { usePopper } from "react-popper";
-import { ChevronUpIcon } from "@heroicons/react/20/solid";
-import { Product } from "../Marketplace/Itemtile";
-import TradeAccept from "./TradeViews/AcceptGiverView";
-
-import { tr } from "date-fns/locale";
+import { TradeInvolvement } from "./TradeCenter";
 import PendingGiverTradeView from "./TradeViews/PendingGiverTradeView";
 import PendingReceiverTradeView from "./TradeViews/PendingReceiverTradeView";
 import AcceptReceiverView from "./TradeViews/AcceptReceiverView";

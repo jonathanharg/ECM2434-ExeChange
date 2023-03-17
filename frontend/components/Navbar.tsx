@@ -127,7 +127,7 @@ export default function Navbar() {
                         >
                           <UserCircleIcon className="block h-auto w-5 flex-shrink-0" />
                           <span className="ml-3 block font-medium text-gray-900">
-                            {auth()!.user}
+                            {auth()?.user}
                           </span>
                         </Link>
                       </div>
@@ -228,7 +228,7 @@ export default function Navbar() {
                         >
                           <UserCircleIcon className="block h-auto w-5 flex-shrink-0" />
                           <span className="ml-3 block text-sm font-medium">
-                            {auth()!.user}
+                            {auth()?.user}
                           </span>
                         </Link>
                       </div>

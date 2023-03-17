@@ -4,10 +4,10 @@ import Tradealerts from "./Tradealerts";
 
 export type User = {
   id: number;
-  username: String;
+  username: string;
 };
 
-type tradelocation = {
+type TradeLocation = {
   id: number;
   name: string;
 };
@@ -21,7 +21,7 @@ export type TradeInvolvement = {
   receiver_exchanging: Product[];
   message: string;
   time: string;
-  location: tradelocation;
+  location: TradeLocation;
 };
 
 export default function TradeCenter() {

@@ -1,12 +1,7 @@
 import React from "react";
 import { Disclosure, Transition } from "@headlessui/react";
-import {
-  ArrowDownRightIcon,
-  ChevronUpIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronUpIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { TradeInvolvement } from "../TradeCenter";
-import TradeResponse from "../TradeResponse";
 
 export default function RejectedGiverTradeView(trade: TradeInvolvement) {
   return (
@@ -17,7 +12,10 @@ export default function RejectedGiverTradeView(trade: TradeInvolvement) {
             <XMarkIcon className="h-5 w-5 stroke-white stroke-[3]"></XMarkIcon>
             <span>
               {" "}
-              <b> You rejected {trade.receiver.username}'s request! </b>{" "}
+              <b>
+                {" "}
+                You rejected {trade.receiver.username}&apos;s request!{" "}
+              </b>{" "}
             </span>
             <ChevronUpIcon
               className={`${

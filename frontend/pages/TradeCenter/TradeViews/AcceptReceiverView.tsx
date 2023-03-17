@@ -1,16 +1,11 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import {
   ArrowPathIcon,
-  ArrowUpRightIcon,
   CheckIcon,
   ChevronUpIcon,
 } from "@heroicons/react/24/outline";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Product } from "../../Marketplace/Itemtile";
-import { Location } from "../../Profile/Badge";
-import { TradeInvolvement, User } from "../TradeCenter";
-import { ProfileData } from "../Tradealerts";
+import React from "react";
+import { TradeInvolvement } from "../TradeCenter";
 
 export default function AcceptGiverView(trade: TradeInvolvement) {
   const Datetime = trade.time;

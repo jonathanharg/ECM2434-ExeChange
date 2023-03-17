@@ -1,20 +1,16 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import {
   ArrowPathIcon,
-  ArrowUpRightIcon,
   CheckIcon,
   ChevronUpIcon,
 } from "@heroicons/react/24/outline";
 
-import React, { useEffect, useState } from "react";
-import { Product } from "../../Marketplace/Itemtile";
-import { Location } from "../../Profile/Badge";
-import { TradeInvolvement, User } from "../TradeCenter";
-import { ProfileData } from "../Tradealerts";
+import React from "react";
+import { TradeInvolvement } from "../TradeCenter";
 
 export default function AcceptGiverView(trade: TradeInvolvement) {
   const Datetime = trade.time;
-  const meetingtime = Datetime.split("T")[1]?.replace(":00Z", "");
+  const meetingTime = Datetime.split("T")[1]?.replace(":00Z", "");
   const meetingDay = Datetime.split("T")[0];
 
   return (
@@ -26,7 +22,9 @@ export default function AcceptGiverView(trade: TradeInvolvement) {
               <CheckIcon className="h-5 w-5 stroke-white stroke-[3]"></CheckIcon>
               <span>
                 {" "}
-                You accepted <b>{trade.receiver.username}'s</b> request!{" "}
+                You accepted <b>
+                  {trade.receiver.username}&apos;s
+                </b> request!{" "}
               </span>
               <ChevronUpIcon
                 className={`${
@@ -50,8 +48,8 @@ export default function AcceptGiverView(trade: TradeInvolvement) {
                 <div className="flex w-full flex-col items-center justify-center">
                   {trade.receiver_exchanging.length == 0 ? (
                     <div>
-                      You're giving away these items to{" "}
-                      <b>{trade.receiver.username}</b> at <b>{meetingtime}</b>{" "}
+                      You&apos;re giving away these items to{" "}
+                      <b>{trade.receiver.username}</b> at <b>{meetingTime}</b>{" "}
                       at <b> {trade.location.name}</b> on <b>{meetingDay} </b>
                       <div className="flex w-full justify-between p-2">
                         {trade.giver_giving.map((i) => (
@@ -66,8 +64,8 @@ export default function AcceptGiverView(trade: TradeInvolvement) {
                     </div>
                   ) : (
                     <div>
-                      You're trading these items with{" "}
-                      <b>{trade.receiver.username}</b> at <b>{meetingtime}</b>{" "}
+                      You&apos;re trading these items with{" "}
+                      <b>{trade.receiver.username}</b> at <b>{meetingTime}</b>{" "}
                       at <b> {trade.location.name}</b> on <b>{meetingDay} </b>
                       <div
                         className={
