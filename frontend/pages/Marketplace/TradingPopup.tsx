@@ -4,6 +4,7 @@ axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 import UserCircleIcon from "@heroicons/react/24/outline/UserCircleIcon";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { Product } from "./Itemtile";
 
 interface ProfileData {
   levelPercent: number;

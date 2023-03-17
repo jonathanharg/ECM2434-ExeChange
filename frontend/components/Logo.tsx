@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Ref } from "react";
 
-function Icon({ ...props }) {
+function Logo({ ...props }, logoRef: Ref<typeof Logo>) {
   return React.createElement(
     "svg",
     Object.assign(
@@ -11,6 +11,7 @@ function Icon({ ...props }) {
         strokeWidth: 1,
         stroke: "currentColor",
         "aria-hidden": "true",
+        ref: logoRef
       },
       props
     ),
@@ -20,5 +21,5 @@ function Icon({ ...props }) {
   );
 }
 
-const ForwardRef = React.forwardRef(Icon);
+const ForwardRef = React.forwardRef(Logo);
 export default ForwardRef;
