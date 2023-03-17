@@ -24,7 +24,7 @@ function isPastDate(date: Date) {
 }
 
 function isPostNextWeek(date: Date) {
-  return differenceInCalendarDays(date, new Date()) > 6;
+  return differenceInCalendarDays(date, new Date()) > 7;
 }
 
 function isWeekend(date: Date) {
