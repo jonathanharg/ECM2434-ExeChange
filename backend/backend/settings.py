@@ -10,13 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import json
 import os
 import sys
 from datetime import timedelta
 from pathlib import Path
 
+import yagmail
+
 # Load environment variables from the users .env file
 from dotenv import load_dotenv
+from yagmail.oauth2 import get_authorization
 
 load_dotenv()
 
@@ -224,3 +228,39 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 XP_IN_LEVEL = 100
 
 DOMAIN_NAME = "http://127.0.0.1:8000" if DEBUG is True else "http://www.exechange.co.uk"
+
+# GMAIL CREDENTIALS SETUP
+if not DEBUG:
+    GOOGLE_CLIENT_ID = os.getenv("CLIENT_ID")
+    GOOGLE_CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+    GOOGLE_PROJECT_ID = os.getenv("PROJECT_ID")
+
+    if not os.path.exists("credentials.json"):
+        GOOGLE_REFRESH_TOKEN, _, _ = get_authorization(
+            GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+        )
+
+        # generating JSON file for oauth data
+        oauth2_data = {
+            "installed": {
+                "client_id": GOOGLE_CLIENT_ID,
+                "project_id": GOOGLE_PROJECT_ID,
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://oauth2.googleapis.com/token",
+                "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                "client_secret": GOOGLE_CLIENT_SECRET,
+                "redirect_uris": ["http://localhost"],
+                "refresh_token": GOOGLE_REFRESH_TOKEN,
+            }
+        }
+
+        with open(  # pylint: disable=unspecified-encoding
+            "backend/apps/api/credentials.json", "w"
+        ) as f:
+            json.dump(oauth2_data, f)
+
+    # sender email address
+    SENDER_EMAIL_ADDRESS = "teamexechange@gmail.com"
+
+    # instantiate a new instance of yagmail
+    YAG = yagmail.SMTP(user=SENDER_EMAIL_ADDRESS, oauth2_file="credentials.json")

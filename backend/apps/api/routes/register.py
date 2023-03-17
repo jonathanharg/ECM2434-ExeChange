@@ -70,8 +70,7 @@ def register(request: HttpRequest) -> Response:
         # error in sending email
         return Response(VERIFICATION_EMAIL_ERROR)
 
-    else:
-        return Response(CREDENTIAL_ERROR)
+    return Response(CREDENTIAL_ERROR)
 
 
 REGISTRATION_ACCEPTED_VERIFICATION_SENT = {

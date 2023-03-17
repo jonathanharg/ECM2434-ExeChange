@@ -67,7 +67,7 @@ def send_verification_email(user: ExeChangeUser) -> bool:  # type: ignore
     html_link = f"<a href='{settings.DOMAIN_NAME}/verify?username={username}&code={code}'>Verify me!</a>"  # type: ignore
 
     # Send email
-    return send_user_email(user, subject, contents=[body, html_link])
+    return send_user_email(user, subject, contents=[body, html_link])  # type: ignore
 
 
 def authenticate_user(request: HttpRequest) -> ExeChangeUser | None:  # type: ignore
