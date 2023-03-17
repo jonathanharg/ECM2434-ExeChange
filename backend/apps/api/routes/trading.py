@@ -338,7 +338,13 @@ def confirm(request: HttpRequest, trade_id: int) -> Response:
         item.owner = trade.giver
         item.save()
 
-    # TODO: Update user XP, Ratio, Website wide stats abt no. trade completions
+    # TODO: Update user XP
+    trade.receiver.trades_completed += 1
+    trade.giver.trades_completed += 1
+    trade.receiver.items_received += trade.giver_giving.count
+    trade.giver.items_received += trade.receiver_exchanging.count
+    trade.receiver.items_given += trade.receiver_exchanging.count
+    trade.giver.items_received += trade.giver_giving.count
 
     trade.status = trade.TradeStatuses.COMPLETED
     trade.save()

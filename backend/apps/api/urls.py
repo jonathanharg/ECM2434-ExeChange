@@ -16,7 +16,7 @@ urlpatterns = [
     path("register", register.register),
     path("products", marketplace.marketplace),
     path("marketplace", marketplace.marketplace),
-    path("upload", upload.post),
+    path("upload", upload.upload),
     path("tags", constants.tags),
     path("locations", constants.locations),
     path("profiledata", profile.get_profile_data),

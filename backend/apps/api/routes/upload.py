@@ -19,9 +19,9 @@ from rest_framework.response import Response
 
 
 @api_view(["POST"])
-def post(request: HttpRequest) -> Response:
-    authenticated_user = authenticate_user(request)
-    if authenticated_user is None:
+def upload(request: HttpRequest) -> Response:
+    user = authenticate_user(request)
+    if user is None:
         return NOT_LOGGED_IN
 
     # We can ignore the type here since Django doesn't include it
@@ -74,12 +74,14 @@ def post(request: HttpRequest) -> Response:
 
     item = ClothingItem.objects.create(
         caption=caption_clean,
-        owner=authenticated_user,
+        owner=user,
         image=image,
         description=description,
     )
     item.full_clean()
     item.save()
+
+    user.items_uploaded += 1
 
     for tag in item_tags:
         item.tags.add(tag)

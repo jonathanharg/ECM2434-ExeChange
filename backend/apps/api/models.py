@@ -95,3 +95,13 @@ class ExeChangeUser(AbstractUser):
     current_xp = models.PositiveIntegerField(
         default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
     )
+
+    trades_completed = models.IntegerField(default=0)
+    items_given = models.PositiveIntegerField(default=0)
+    items_received = models.PositiveIntegerField(default=0)
+    items_uploaded = models.PositiveIntegerField(default=0)
+    items_removed = models.PositiveIntegerField(default=0)
+
+    @property
+    def item_ratio(self):
+        return self.items_given - self.items_received
