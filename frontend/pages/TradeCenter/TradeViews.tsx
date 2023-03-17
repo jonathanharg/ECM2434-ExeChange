@@ -292,7 +292,8 @@ export default function TradeViews({trade, profileData}:TradeAndProfileType) {
         )}
       </Disclosure>
     )}
-      {trade.status == "R" && (<Disclosure>
+      {trade.status == "R" && (
+      <Disclosure>
       {({ open }) => (
         <>
           <Disclosure.Button className="flex w-full justify-between rounded-lg bg-red-800 px-4 py-3 text-left text-sm font-medium text-white shadow hover:bg-red-600 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">

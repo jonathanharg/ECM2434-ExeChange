@@ -3,10 +3,8 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 
 import { TradeInvolvement } from "./TradeCenter";
-import RejectedGiverTradeView from "./TradeViews/RejectedGiverTradeView";
-import RejectedReceiverTradeView from "./TradeViews/RejectedReceiverTradeView";
 import axios from "axios";
-import TradeViews from "./TradeViews/TradeViews";
+import TradeViews from "./TradeViews";
 
 export type ProfileData = {
   levelPercent: number;

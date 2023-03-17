@@ -3,10 +3,10 @@ import Select, { ActionMeta } from "react-select";
 import { Tag } from "../pages/Marketplace/Itemtile";
 
 interface TagStates {
-  state: Set<Tag>;
+  state: Set<string|Tag>;
   setState:
-    | Dispatch<SetStateAction<Set<Tag>>>
-    | ((value: React.SetStateAction<Set<Tag>>) => void);
+    | Dispatch<SetStateAction<Set<Tag|string>>>
+    | ((value: React.SetStateAction<Set<Tag|string>>) => void);
 }
 
 // the TagSelect function needs a the state of search and a setter for search
@@ -16,15 +16,15 @@ export default function TagSelect({ setState, state }: TagStates) {
   // {ValueType, ActionMeta}
   function handleTag(input: readonly Tag[], meta: ActionMeta<Tag>) {
     if (meta.action === "select-option") {
-      input.map((i) => setState((state) => new Set([...state, i.value])));
+      input.map((i) => setState((state:Set<string|Tag>) => new Set([...state, i.value])));
     } else if (meta.action === "pop-value" || meta.action === "remove-value") {
       console.log(input.map((i) => i.value));
       setState(
         (state) =>
-          new Set([...state].filter((x) => x == input.map((i) => i.value)))
+          new Set([...state].filter((x) => x as unknown as string[] === input.map((i) => i.value)))
       );
     } else if (meta.action === "clear") {
-      setState(new Set());
+      setState(new Set<Tag|string>());
     }
     console.log(input);
     return state;

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Itemtile from "./Itemtile";
+import Itemtile, { Tag } from "./Itemtile";
 import { Product } from "./Itemtile";
 import TagSelect from "../../components/TagSelect";
 
 function Marketplace() {
-  const [searchState, setSearchState] = useState(new Set<string>());
+  const [searchState, setSearchState] = useState(new Set<string|Tag>());
 
   const [products, setProducts] = useState<Product[]>([]);
 
