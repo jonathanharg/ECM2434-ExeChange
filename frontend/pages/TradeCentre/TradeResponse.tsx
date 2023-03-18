@@ -11,7 +11,6 @@ import axios from "axios";
 import TimeLocation from "./TimeLocation";
 
 export default function TradeResponse(trade: TradeInvolvement) {
-  // TODO: Most of these can be changed to UseRef since were not re-rendering if their value changes!
   const [page, setPage] = useState<number>(0);
   const [products, setProducts] = useState<Product[]>([]);
   const [receiver_exchanging, setReceiverExchanging] = useState<number[]>([]);
