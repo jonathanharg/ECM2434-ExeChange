@@ -11,7 +11,7 @@ function Logo({ ...props }, logoRef: Ref<typeof Logo>) {
         strokeWidth: 1,
         stroke: "currentColor",
         "aria-hidden": "true",
-        ref: logoRef
+        ref: logoRef,
       },
       props
     ),

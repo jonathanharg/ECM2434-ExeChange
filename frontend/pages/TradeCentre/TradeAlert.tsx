@@ -2,9 +2,9 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 
 import React, { useEffect, useState } from "react";
 
-import { TradeInvolvement } from "./TradeCenter";
+import { TradeInvolvement } from "./TradeCentre";
 import axios from "axios";
-import TradeViews from "./TradeViews";
+import TradeView from "./TradeView";
 
 export type ProfileData = {
   levelPercent: number;
@@ -12,26 +12,27 @@ export type ProfileData = {
   level: number;
 };
 
-export default function TradeAlerts(trade: TradeInvolvement) {
+interface TradeAlertProps {
+  trade: TradeInvolvement;
+  rejectTrade: (id: number) => void;
+}
+
+export default function TradeAlert({ trade, rejectTrade }: TradeAlertProps) {
   const [profileData, setProfileData] = useState<ProfileData>();
-  const [rejected, setRejected] = useState(false);
 
   function fetchProfileData() {
-    setRejected((p) => !p);
     return fetch("/api/profiledata")
       .then((response) => response.json())
       .then((data) => setProfileData(data));
   }
 
   async function declineRequest() {
-    const tradeid = trade.id.toString();
-    const apiPath = "/api/trade/" + tradeid + "/reject";
-    setRejected(true);
+    const apiPath = `/api/trade/${trade.id}/reject`;
     await axios
       .post(
         apiPath,
         JSON.stringify({
-          reject: rejected,
+          reject: true,
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -41,7 +42,7 @@ export default function TradeAlerts(trade: TradeInvolvement) {
       .then((response) => {
         // TODO: Handle more responses than just OK
         if (response.data.status != "OK") {
-          return;
+          rejectTrade(trade.id);
         }
       })
       .catch((error) => {
@@ -56,7 +57,7 @@ export default function TradeAlerts(trade: TradeInvolvement) {
     <div className="w-full px-4">
       <div className="flex flex-row justify-center">
         <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-2">
-          <TradeViews trade={trade} profileData={profileData}/>
+          <TradeView trade={trade} profileData={profileData} />
         </div>
         <div className="pt-2">
           <button

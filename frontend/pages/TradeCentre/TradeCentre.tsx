@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Product } from "../Marketplace/Itemtile";
-import Tradealerts from "./Tradealerts";
+import TradeAlert from "./TradeAlert";
 
 export type User = {
   id: number;
@@ -36,11 +36,20 @@ export default function TradeCenter() {
     fetchInvolvement();
   }, []);
 
+  function rejectTrade(id: number) {
+    console.log("Function is executing");
+    setTrades(
+      trades.map((trade) =>
+        trade.id === id ? { ...trade, status: "R" } : trade
+      )
+    );
+  }
+
   return (
     <div className="w flex flex-col px-4 pt-12">
       <h2 className="pb-5 text-center text-2xl font-bold">Trades</h2>
       {trades.map((trade) => (
-        <Tradealerts key={trade.id} {...trade} />
+        <TradeAlert key={trade.id} rejectTrade={rejectTrade} trade={trade} />
       ))}
     </div>
   );

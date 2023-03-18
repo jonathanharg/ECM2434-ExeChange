@@ -10,7 +10,7 @@ axios.defaults.xsrfCookieName = "csrftoken";
 function Upload() {
   // TODO: again most of these can be use Ref since we're not rerendering on change
   const [caption, setCaption] = useState("");
-  const [searchState, setSearchState] = useState(new Set<Tag|string>());
+  const [searchState, setSearchState] = useState(new Set<Tag | string>());
   const [image, setImage] = useState<File>();
   const [file, setFile] = useState<string>();
   const [completed, setCompleted] = useState(false);

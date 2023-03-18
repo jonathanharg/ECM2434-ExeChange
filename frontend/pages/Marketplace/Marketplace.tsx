@@ -4,7 +4,7 @@ import { Product } from "./Itemtile";
 import TagSelect from "../../components/TagSelect";
 
 function Marketplace() {
-  const [searchState, setSearchState] = useState(new Set<string|Tag>());
+  const [searchState, setSearchState] = useState(new Set<string | Tag>());
 
   const [products, setProducts] = useState<Product[]>([]);
 

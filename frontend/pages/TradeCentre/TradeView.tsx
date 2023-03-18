@@ -1,8 +1,8 @@
 import { Disclosure, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpIcon, ArrowPathIcon, ArrowDownRightIcon, ArrowUpRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import React, { Dispatch, SetStateAction } from 'react';
-import { ProfileData } from './Tradealerts';
-import { TradeInvolvement } from './TradeCenter';
+import React from 'react';
+import { ProfileData } from './TradeAlert';
+import { TradeInvolvement } from './TradeCentre';
 import TradeResponse from './TradeResponse';
 
 interface TradeAndProfileType {
@@ -10,7 +10,7 @@ interface TradeAndProfileType {
     profileData: ProfileData | undefined
 }
 
-export default function TradeViews({trade, profileData}:TradeAndProfileType) {
+export default function TradeView({trade, profileData}:TradeAndProfileType) {
     const Datetime = trade.time;
     const meetingTime = Datetime?.split("T")[1]?.replace(":00Z", "");
     const meetingDay = Datetime?.split("T")[0];

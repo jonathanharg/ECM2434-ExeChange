@@ -12,7 +12,7 @@ import "./index.css";
 import Marketplace from "./pages/Marketplace/Marketplace";
 import UploadPage from "./pages/Upload/UploadPage";
 import Profile from "./pages/Profile/Profile";
-import TradeCenter from "./pages/TradeCenter/TradeCenter";
+import TradeCentre from "./pages/TradeCentre/TradeCentre";
 
 //for using nested routes check out: https://reactrouter.com/en/main/start/tutorial
 //info is under the   " nested routes " title, you pretty much need to use an <outlet> to mark
@@ -56,10 +56,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/tradecenter",
+        path: "/tradecentre",
         element: (
           <RequireAuth loginPath={"/login"}>
-            <TradeCenter />
+            <TradeCentre />
           </RequireAuth>
         ),
       },

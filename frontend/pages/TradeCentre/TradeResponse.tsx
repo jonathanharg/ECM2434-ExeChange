@@ -6,11 +6,9 @@ import {
 import React, { useEffect, useState } from "react";
 import { Product } from "../Marketplace/Itemtile";
 import DayPick from "./DayPick";
-import { TradeInvolvement } from "./TradeCenter";
+import { TradeInvolvement } from "./TradeCentre";
 import axios from "axios";
 import TimeLocation from "./TimeLocation";
-
-
 
 export default function TradeResponse(trade: TradeInvolvement) {
   // TODO: Most of these can be changed to UseRef since were not re-rendering if their value changes!
