@@ -41,8 +41,11 @@ export default function TradeAlert({ trade, rejectTrade }: TradeAlertProps) {
       )
       .then((response) => {
         // TODO: Handle more responses than just OK
-        if (response.data.status != "OK") {
+        if (response.data.status == "OK"){
           rejectTrade(trade.id);
+        } else {
+          // TODO:
+          return;
         }
       })
       .catch((error) => {
