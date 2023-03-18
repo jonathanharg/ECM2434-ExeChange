@@ -24,7 +24,7 @@ export type TradeInvolvement = {
   location: TradeLocation;
 };
 
-export default function TradeCenter() {
+export default function TradeCentre() {
   const [trades, setTrades] = useState<TradeInvolvement[]>([]);
 
   function fetchInvolvement() {

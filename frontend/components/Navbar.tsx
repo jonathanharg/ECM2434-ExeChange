@@ -33,7 +33,7 @@ export default function Navbar() {
     { name: "Home", to: "/" },
     { name: "Marketplace", to: "/marketplace" },
     isAuthenticated() && { name: "Upload", to: "/upload" },
-    isAuthenticated() && { name: "Trade Center", to: "/tradecenter" },
+    isAuthenticated() && { name: "Trade Centre", to: "/tradecentre" },
   ];
 
   return (
