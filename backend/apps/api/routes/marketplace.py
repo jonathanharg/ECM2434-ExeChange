@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view
 # HOW TO FILTER MARKETPLACE
 # Everything: /api/marketplace
 # By userID: /api/marketplace?user=42
-# By TagIDs: /api/marketplace?tag=6+8
+# By TagIDs: /api/marketplace?tags=6+8
 # By both: /api/marketplace?user=17&tags=3+8
 
 # TODO: Paginate, e.g. page=1, page=2, max no per page maybe like 20?
@@ -41,5 +41,5 @@ def marketplace(request: HttpRequest) -> JsonResponse:
                 return INVALID_USER
             queryset = queryset.filter(owner=user)
 
-    serializer = ClothingItemSerializer(queryset, many=True)
+    serializer = ClothingItemSerializer(queryset.distinct(), many=True)
     return JsonResponse(serializer.data, safe=False)

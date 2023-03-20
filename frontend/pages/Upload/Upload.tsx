@@ -10,26 +10,25 @@ axios.defaults.xsrfCookieName = "csrftoken";
 function Upload() {
   // TODO: again most of these can be use Ref since we're not rerendering on change
   const [caption, setCaption] = useState("");
-  const [searchState, setSearchState] = useState(new Set<Tag | string>());
+  const [searchState, setSearchState] = useState(new Set<Tag>());
   const [image, setImage] = useState<File>();
   const [file, setFile] = useState<string>();
   const [completed, setCompleted] = useState(false);
   const [checkedTerms, setCheckedTerms] = useState(false);
   const [checkedUnderstand, setCheckedUnderstand] = useState(false);
   const [description, setDescription] = useState("");
+  const [key, setKey] = useState<number>(0);
   const fileRef = useRef(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = {
       caption: caption,
-      tags: Array.from(searchState),
+      tags: Array.from(searchState).map((tags) => tags.id),
       image: image,
       description: description,
     };
 
-    console.log(formData);
-    console.log("Form submitted");
     await axios.post("/api/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -37,6 +36,11 @@ function Upload() {
     setCaption("");
     setCheckedTerms(false);
     setCheckedUnderstand(false);
+    setKey((k) => {
+      return k + 1;
+    });
+    setDescription("");
+    setSearchState(new Set());
   };
 
   function resetFile() {
@@ -80,7 +84,11 @@ function Upload() {
                 <label className="mb-2 block text-sm font-medium text-gray-700">
                   Add tags
                 </label>
-                <TagSelect setState={setSearchState} state={searchState} />
+                <TagSelect
+                  key={key}
+                  setState={setSearchState}
+                  state={searchState}
+                />
               </div>
               <div id="upload">
                 <label className="mb-2 block text-sm font-medium text-gray-700">

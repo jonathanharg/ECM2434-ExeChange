@@ -324,13 +324,13 @@ export default function TradeView({ trade, profileData }: TradeAndProfileType) {
                         )}
                       </div>
                     )}
-          <button
-            // onClick={handleClick}
-            className="flex w-fit items-center rounded-lg border border-gray-300 bg-stone-900 p-2.5 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
-          >
-            I'm Here!
-            <MapPinIcon className=" m-2 h-3 w-3"></MapPinIcon>
-          </button>
+                    <button
+                      // onClick={handleClick}
+                      className="flex w-fit items-center rounded-lg border border-gray-300 bg-stone-900 p-2.5 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
+                    >
+                      I'm Here!
+                      <MapPinIcon className=" m-2 h-3 w-3"></MapPinIcon>
+                    </button>
                   </div>
                 </Disclosure.Panel>
               </Transition>
