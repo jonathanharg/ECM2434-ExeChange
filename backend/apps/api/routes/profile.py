@@ -1,12 +1,14 @@
 from datetime import datetime
 
 from apps.api.authentication import authenticate_user
-from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade, Achievemnt
-from django.http import HttpRequest
+from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade, Achievement
+from django.http import HttpRequest, JsonResponse
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
+from apps.api.serializer import UserProfileDataSerializer
 
 
 @api_view(["GET"])
@@ -47,7 +49,7 @@ def trade_requests(request: HttpRequest) -> Response:
 
 
 @api_view(["GET"])
-def get_profile_data(request: HttpRequest, username: str) -> Response:
+def get_profile_data(request: HttpRequest, username: str) -> JsonResponse:
     authenticated_user = authenticate_user(request)
     
     user_object = get_object_or_404(ExeChangeUser, username= str(username))
@@ -57,14 +59,17 @@ def get_profile_data(request: HttpRequest, username: str) -> Response:
         return Response(
             {"status": "BAD_REQUEST", "message": "User credentials not correct!"}
         )
+    
+    serializer = UserProfileDataSerializer(user_object)
+    return JsonResponse(serializer.data, safe=False)
+    
+    # return Response({"id": user_object.id,
+    #                  "username": user_object.username, 
+    #                  "achievements": user_object.achievements,
+    #                  "current_xp": user_object.current_xp,
+    #                  "profile_level":user_object.profile_level})
+                    
 
-    return Response(
-        {
-            "name": user_object.username,
-            "level": user_object.profile_level,
-            "levelPercent": user_object.current_xp,
-        }
-    ) 
 
 @api_view(["GET"])
 def whose_profile(request: HttpRequest, username: str) -> Response:
@@ -216,7 +221,7 @@ def get_achievements(request: HttpRequest) -> Response:
             }
     )
 
-    achievement_object = get_object_or_404(Achievemnt)
+    achievement_object = get_object_or_404(Achievement)
 
     if authenticated_user is None:
         return Response(
