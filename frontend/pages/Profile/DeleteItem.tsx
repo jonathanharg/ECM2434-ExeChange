@@ -15,6 +15,7 @@ export function DeleteItem(product: Product) {
     e.preventDefault();
     const id = product.id
     console.log(id)
+    setOpen(false)
     await axios
       .post(
         "/api/deleteitem",
@@ -29,11 +30,10 @@ export function DeleteItem(product: Product) {
       .then((response) => {
         // TODO: Handle more responses than just OK
         if (response.data.status != "OK") {
-          return setOpen(false);
+          return ;
         }
       })
       .catch((error) => {
-        setOpen(false);
         console.log(error);
       });
   };
