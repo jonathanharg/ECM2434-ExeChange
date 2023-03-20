@@ -24,8 +24,9 @@ import Badge from "./Badge";
 import { Trade } from "./Tradealert";
 import { MyItems } from "./MyItemsProfile";
 import Achievement from "./Achievement";
-import {Reward} from "./Achievement";
+import { achievement } from "./Achievement";
 import Profilestats from "./Profilestats";
+import { ProfileData } from "./Profilestats"
 
 const locations: Location[] = [
   {
@@ -142,40 +143,23 @@ const locations: Location[] = [
   },
 ];
 
-const rewards = [{
-    id: 1,
-    text: "5 days in a row!",
-    colour: "bg-gray-800",
-},
-{
-    id: 2,
-    text: "Traded on Halloween!",
-    colour: "bg-green-800",
-},
-{
-    id: 3,
-    text: "ExeChanged 5 times!",
-    colour: "bg-red-800",
-},];
 
 function Profile() {
   let { username } = useParams();
   
   const [myProfile, setMyProfile] = useState();
   let profileTitle = whoseProfile();
-  
-  const [trades, setTrades] = useState<Trade[]>([]);
-  
-  const [achievements, setMyAchievements] = useState<Reward[]>([]);
 
-  function fetchTrades() {
-    return fetch("/api/pendingtrades")
-      .then((response) => response.json())
-      .then((data) => setTrades(data));
+  const [profileData, setProfileData] = useState<ProfileData>();
+
+  function fetchProfileData(){
+    return fetch("/api/profiledata/"+ username)
+    .then((response) => response.json())
+    .then((data) => setProfileData(data));
   }
 
   useEffect(() => {
-    fetchTrades();
+    fetchProfileData();
   }, []);
 
   function fetchWhoseProfile(){
@@ -197,12 +181,7 @@ function Profile() {
       return profileTitle;
     }
   }
-  function fetchAchievements(){
-    return fetch("api/getachievements/")
-    .then((response) => response.json())
-    .then((data) => setMyAchievements(data));
-  }
-
+  
 
   return (
     <div className="font-poppins mx-auto flex min-h-screen max-w-lg flex-col bg-white bg-cover bg-center bg-no-repeat px-4 opacity-100 lg:max-w-5xl">
@@ -211,17 +190,12 @@ function Profile() {
           <p className="font-semibold">{profileTitle}</p>
         </div>
       </div>
-      <Profilestats />
-      <div className="flex w-full flex-col px-4 pt-12">
-        {trades.map((trade) => (
-          <Tradealert key={trade.id} {...trade} />
-        ))}
-      </div>
+      <Profilestats key={profileData?.id}{...profileData}/>
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">My Achievements</p>
         <div className="flex w-full space-x-2 pt-2">
-            {achievements.map((achievement) => (
-            <Achievement key={achievement.id} {...achievement} />
+            {profileData?.achievements?.map((achievement) => (
+            <Achievement key={achievement?.id} {...achievement} />
             ))}
         </div>
       </div>
