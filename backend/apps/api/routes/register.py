@@ -48,7 +48,7 @@ def register(request: HttpRequest) -> Response:
             return Response(UNIQUE_ERROR)
 
         # on debug testing, do not need to send email.
-        if settings.DEBUG:
+        if settings.SEND_VERIFICATION_EMAIL:
             new_user.is_verified = True
             new_user.save()
             token = gen_token(new_user)

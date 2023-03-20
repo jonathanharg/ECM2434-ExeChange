@@ -35,5 +35,5 @@ def send_user_email(user: ExeChangeUser, subject: str, contents: List[str]) -> b
         return False
 
     except AttributeError:
-        print("ERROR: debug set to True, YAG is never setup!")
+        print("ERROR: YAG in settings was never set up")
         return False
