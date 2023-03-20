@@ -10,6 +10,7 @@ from django.db.utils import IntegrityError
 from django.http import HttpRequest
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 
 
 @api_view(["POST"])
@@ -45,7 +46,7 @@ def register(request: HttpRequest) -> Response:
             )
 
         except IntegrityError:
-            return Response(UNIQUE_ERROR)
+            return Response(UNIQUE_ERROR, status=HTTP_400_BAD_REQUEST)
 
         # on debug testing, do not need to send email.
         if settings.SEND_VERIFICATION_EMAIL:
@@ -54,7 +55,7 @@ def register(request: HttpRequest) -> Response:
             token = gen_token(new_user)
             return Response(
                 {
-                    "status": "OK_DEBUG",
+                    "status": "OK_NO_SEND",
                     "message": "user registration accepted",
                     "username": get_username(email_address),
                     "access": str(token.access_token),
@@ -68,9 +69,9 @@ def register(request: HttpRequest) -> Response:
             return Response(REGISTRATION_ACCEPTED_VERIFICATION_SENT)
 
         # error in sending email
-        return Response(VERIFICATION_EMAIL_ERROR)
+        return Response(VERIFICATION_EMAIL_ERROR, status=HTTP_400_BAD_REQUEST)
 
-    return Response(CREDENTIAL_ERROR)
+    return Response(CREDENTIAL_ERROR, status=HTTP_401_UNAUTHORIZED)
 
 
 REGISTRATION_ACCEPTED_VERIFICATION_SENT = {
