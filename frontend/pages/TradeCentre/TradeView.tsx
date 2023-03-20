@@ -6,6 +6,7 @@ import {
   ArrowDownRightIcon,
   ArrowUpRightIcon,
   XMarkIcon,
+  MapPinIcon,
 } from "@heroicons/react/24/outline";
 import React from "react";
 import { ProfileData } from "./TradeAlert";
@@ -30,31 +31,16 @@ export default function TradeView({ trade, profileData }: TradeAndProfileType) {
           {({ open }) => (
             <>
               <Disclosure.Button className="flex w-full justify-between rounded-lg bg-white px-4 py-3 text-left text-sm font-medium text-black shadow hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
-                {GiverPage ? (
-                  <>
-                    <ArrowDownRightIcon className="h-5 w-5 stroke-green-800 stroke-[3]"></ArrowDownRightIcon>
-                    <span>
-                      {" "}
-                      <b>
-                        {" "}
-                        Incoming trade request from {
-                          trade.receiver.username
-                        }{" "}
-                      </b>{" "}
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <ArrowUpRightIcon className="h-5 w-5 stroke-green-800 stroke-[3]"></ArrowUpRightIcon>
-                    <span>
-                      {" "}
-                      <b>
-                        {" "}
-                        You sent a trade request to {trade.giver.username}!{" "}
-                      </b>{" "}
-                    </span>
-                  </>
-                )}
+                <ArrowDownRightIcon className="h-5 w-5 stroke-green-800 stroke-[3]"></ArrowDownRightIcon>
+                <span>
+                  <b>
+                    {GiverPage ? (
+                      <>Incoming trade request from {trade.receiver.username}</>
+                    ) : (
+                      <>You sent a trade request to {trade.giver.username}!</>
+                    )}
+                  </b>
+                </span>
 
                 <ChevronUpIcon
                   className={`${
@@ -80,9 +66,8 @@ export default function TradeView({ trade, profileData }: TradeAndProfileType) {
                       {trade.giver_giving.length == 1 ? (
                         <>
                           <h3 className="text-xl font-bold text-gray-900">
-                            {" "}
-                            You requested the{" "}
-                            {trade.giver_giving.map((i) => i.caption)}{" "}
+                            You requested the
+                            {trade.giver_giving.map((i) => i.caption)}
                           </h3>
                           <div className="flex w-full justify-center p-2">
                             {trade.giver_giving.map((i) => (
@@ -109,8 +94,7 @@ export default function TradeView({ trade, profileData }: TradeAndProfileType) {
                       ) : (
                         <>
                           <h3 className="text-xl font-bold text-gray-900">
-                            {" "}
-                            You requested the following items:{" "}
+                            You requested the following items:
                           </h3>
                           <div className="flex w-full justify-between p-2">
                             {trade.giver_giving.map((i) => (
@@ -154,14 +138,12 @@ export default function TradeView({ trade, profileData }: TradeAndProfileType) {
                 <CheckIcon className="h-5 w-5 stroke-white stroke-[3]"></CheckIcon>
                 {profileData?.name == trade.giver.username && (
                   <span>
-                    {" "}
                     You accepted <b>{trade.receiver.username}&apos;s</b>{" "}
-                    request!{" "}
+                    request!
                   </span>
                 )}
                 {profileData?.name == trade.receiver.username && (
                   <span>
-                    {" "}
                     <b> {trade.giver.username} </b> accepted your trade request!
                   </span>
                 )}
@@ -342,6 +324,13 @@ export default function TradeView({ trade, profileData }: TradeAndProfileType) {
                         )}
                       </div>
                     )}
+          <button
+            // onClick={handleClick}
+            className="flex w-fit items-center rounded-lg border border-gray-300 bg-stone-900 p-2.5 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
+          >
+            I'm Here!
+            <MapPinIcon className=" m-2 h-3 w-3"></MapPinIcon>
+          </button>
                   </div>
                 </Disclosure.Panel>
               </Transition>
@@ -357,16 +346,13 @@ export default function TradeView({ trade, profileData }: TradeAndProfileType) {
                 <XMarkIcon className="h-5 w-5 stroke-white stroke-[3]"></XMarkIcon>
                 {GiverPage ? (
                   <span>
-                    {" "}
                     <b>
-                      {" "}
-                      You rejected {trade.receiver.username}&apos;s request!{" "}
-                    </b>{" "}
+                      You rejected {trade.receiver.username}&apos;s request!
+                    </b>
                   </span>
                 ) : (
                   <span>
-                    {" "}
-                    <b>{trade.giver.username} rejected your request :(</b>{" "}
+                    <b>{trade.giver.username} rejected your request :</b>
                   </span>
                 )}
                 <ChevronUpIcon
