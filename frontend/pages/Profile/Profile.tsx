@@ -20,14 +20,10 @@ import {
   LightBulbIcon,
   TicketIcon,
 } from "@heroicons/react/24/outline";
-import Tradealert from "./Tradealert";
-import { Location } from "./Badge";
-import Badge from "./Badge";
-import { Trade } from "./Tradealert";
-import Achievement from "./Achievement";
-import { achievement } from "./Achievement";
-import Profilestats from "./Profilestats";
-import { ProfileData } from "./Profilestats"
+import Badge, { Location } from "./Badge";
+import Tradealert, { Trade } from "./Tradealert";
+import Achievement, { achievement } from "./Achievement";
+import Profilestats, { ProfileData } from "./Profilestats"
 import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
 
 const locations: Location[] = [
@@ -147,7 +143,7 @@ const locations: Location[] = [
 
 
 function Profile() {
-  let { username } = useParams();
+  const { username } = useParams();
   const isAuthenticated = useIsAuthenticated();
   const auth = useAuthUser();
   const [searchState, setSearchState] = useState(new Set<string>());
