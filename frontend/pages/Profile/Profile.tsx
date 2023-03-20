@@ -205,7 +205,7 @@ function Profile() {
       </div>
       <Profilestats key={profileData?.id}{...profileData}/>
       <div className="flex w-full flex-col px-4 pt-12">
-        <p className="font-semibold text-gray-600">{(myProfile()) ? <>My Achievements</> : <>{username}'s Achievements</>}</p>
+        <p className="font-semibold text-gray-600">{(myProfile()) ? <>My Achievements</> : <>{username}&apos;s Achievements</>}</p>
         <div className="flex w-full space-x-2 pt-2">
             {profileData?.achievements?.map((achievement) => (
             <Achievement key={achievement?.id} {...achievement} />
@@ -220,7 +220,7 @@ function Profile() {
         ))}
       </div>
       <div className="flex w-full flex-col px-4 pt-12">
-      <p className="font-semibold text-gray-600">{(myProfile()) ? <>My Items</> : <>{username}'s Items</> }</p>
+      <p className="font-semibold text-gray-600">{(myProfile()) ? <>My Items</> : <>{username}&apos;s Items</> }</p>
         <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-6">
             {searchState.size != 0
             ? products.filter((product) =>
