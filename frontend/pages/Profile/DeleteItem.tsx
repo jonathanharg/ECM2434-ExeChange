@@ -8,24 +8,17 @@ axios.defaults.xsrfCookieName = "csrftoken";
 
 export function DeleteItem(product: Product) {
   const [open, setOpen] = useState(false)
-  const [checkedDelete, setCheckedDelete] = useState(false);
   const cancelButtonRef = useRef(null)
 
-  function clickHandler() {
-    setOpen(false);
-    setCheckedDelete(true);
-  }
 
   const handleSubmit = async (e) => {
-    // this function sends form data to /api/trade
     e.preventDefault();
     const id = product.id
-
+    console.log(id)
     await axios
       .post(
         "/api/deleteitem",
         JSON.stringify({
-            checkedDelete,
             id,
         }),
         {
@@ -40,6 +33,7 @@ export function DeleteItem(product: Product) {
         }
       })
       .catch((error) => {
+        setOpen(false);
         console.log(error);
       });
   };
@@ -91,7 +85,7 @@ export function DeleteItem(product: Product) {
                     <button
                     type="submit"
                     className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={() => clickHandler()}>
+                    onClick={(e) => handleSubmit(e)}>
                     Delete
                     </button>
                     <button
