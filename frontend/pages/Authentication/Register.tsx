@@ -117,17 +117,8 @@ function Register() {
         }
       )
       .then(function (response) {
-        // If response status UNIQUE_ERROR -> then show error message.
-        if (response.data.status == "UNIQUE_ERROR") {
-          console.log("You are already signed up!");
-          setGenericError(
-            // TODO: Link to Login Page
-            "You seem to be already signed up!"
-          );
-          return;
-        }
         // Sign the user in with sent codes.
-        if (response.data.status == "OK_DEBUG") {
+        if (response.data.status == "OK_NO_SEND") {
           const attemptAuth = signIn({
             token: response.data.access,
             expiresIn: 120,
@@ -140,24 +131,36 @@ function Register() {
           if (attemptAuth) {
             navigate("/");
           } else {
-            //Print error as react-auth-kit broke!
             console.log("React-auth-kit error!");
           }
         }
-        if (response.data.status != "OK") {
-          console.log("Auth error!");
-          setGenericError("An unknown authentication error occurred!");
-          return;
-        }
 
         // Registration was successful, show message to verify.
-        // TODO: Show message somewhere better to verify.
         setGenericError(
           "PLEASE VERIFY YOUR ACCOUNT, YOU WILL HAVE RECIEVED AN EMAIL!"
         );
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response) {
+          // bad request
+          if (error.response.status == 400) {
+            if (error.response.data.status == "VERIFICATION_EMAIL_ERROR") {
+              setGenericError(
+                "ERROR IN SENDING EMAIL, PLEASE TRY AGAIN LATER!"
+              );
+            }
+            if (error.response.data.status == "UNIQUE_ERROR") {
+              setGenericError(
+                "You already seem to be signed up, please try logging in!"
+              );
+            }
+          }
+          if (error.response.status == 401) {
+            if (error.response.data.status == "CREDENTIAL_ERROR") {
+              setPasswordError("Password and confirm password do not match!");
+            }
+          }
+        }
       });
 
     setEmailError("");

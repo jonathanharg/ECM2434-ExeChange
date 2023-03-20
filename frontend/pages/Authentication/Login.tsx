@@ -109,22 +109,24 @@ export default function Login() {
           navigate("/");
         } else {
           // React auth kit has broke.
-          setPasswordError("There has been an unexpected error, please try again later");
+          setPasswordError(
+            "There has been an unexpected error, please try again later"
+          );
         }
       })
       .catch((error) => {
         // Recieved an error code
-        if(error.response) {
+        if (error.response) {
           // bad request
-          if(error.response.status == 400) {
-            if(error.response.data.status == "NOT_VERIFIED") {
+          if (error.response.status == 400) {
+            if (error.response.data.status == "NOT_VERIFIED") {
               setIsVerified(false);
               return;
             }
           }
           // not authorised
-          if(error.response.status == 401) {
-            if(error.response.data.status == "NOT_AUTHENTICATED") {
+          if (error.response.status == 401) {
+            if (error.response.data.status == "NOT_AUTHENTICATED") {
               setEmailError("Incorrect username or password");
               setPasswordError("Incorrect username or password");
               return;
