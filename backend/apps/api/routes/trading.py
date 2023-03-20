@@ -275,16 +275,15 @@ def arrived(request: HttpRequest, trade_id: int) -> Response:
         # TODO: Handle this situation
         # When either one or both is late
         return Response()
-
+    
     try:
         with transaction.atomic():
-            here = bool(request.data["here"])
             if user == trade.giver:
-                trade.giver_there = here
-                first_there = trade.receiver_there
+                trade.giver_there = True
+                other_there = trade.receiver_there
             if user == trade.receiver:
-                trade.receiver_there = here
-                first_there = trade.giver_there
+                trade.receiver_there = True
+                other_there = trade.giver_there
             trade.save()
     except IntegrityError:
         return DATABASE_TRANSACTION_ERROR
@@ -294,7 +293,7 @@ def arrived(request: HttpRequest, trade_id: int) -> Response:
     return Response(
         {
             "status": "OK",
-            "message": f"You are {'not ' if not here else ''}here! And you are {'not ' if not first_there else ''}first!",
+            "other_there": other_there,
         },
         status=HTTP_200_OK,
     )
