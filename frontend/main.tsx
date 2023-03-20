@@ -13,6 +13,7 @@ import Marketplace from "./pages/Marketplace/Marketplace";
 import UploadPage from "./pages/Upload/UploadPage";
 import Profile from "./pages/Profile/Profile";
 import TradeCentre from "./pages/TradeCentre/TradeCentre";
+import Error from "./pages/Error";
 
 //for using nested routes check out: https://reactrouter.com/en/main/start/tutorial
 //info is under the   " nested routes " title, you pretty much need to use an <outlet> to mark
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Navbar />,
+    errorElement: <Error />,
     children: [
       { path: "/", element: <Hero /> },
       {

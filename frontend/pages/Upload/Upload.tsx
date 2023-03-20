@@ -76,9 +76,9 @@ function Upload() {
 
   return (
     <>
-      <div className="mt-5 md:col-span-2 md:mt-0">
+      <div className="w-full md:w-auto md:col-span-2">
         <form method="POST" onSubmit={handleSubmit}>
-          <div className="shadow sm:overflow-hidden sm:rounded-md">
+          <div className="md:shadow md:overflow-hidden md:rounded-md">
             <div className="z-50 space-y-6 bg-white px-4 py-5 sm:p-6">
               <div id="tags">
                 <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -87,7 +87,6 @@ function Upload() {
                 <TagSelect
                   key={key}
                   setState={setSearchState}
-                  state={searchState}
                 />
               </div>
               <div id="upload">
@@ -108,7 +107,7 @@ function Upload() {
                             }}
                             className=""
                           >
-                            <MinusCircleIcon className="m-auto h-5 w-5 fill-red-800 stroke-white stroke-1" />
+                            <MinusCircleIcon className="m-auto h-5 w-5 fill-red-800 stroke-white stroke-[1.5]" />
                           </button>
                         </div>
                         <img className="object-cover" src={file} />

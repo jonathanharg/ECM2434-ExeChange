@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Product } from "./Itemtile";
+import { Product, Tag } from "./Itemtile";
 import TagSelect from "../../components/TagSelect";
 import MarketplaceItem from "./MarketplaceItem";
 

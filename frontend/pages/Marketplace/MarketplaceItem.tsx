@@ -3,27 +3,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Trading } from "./TradingPopup";
 import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
+import { Product } from "./Itemtile";
 
-export type Product = {
-  id: number;
-  caption: string;
-  href: string;
-  image: string;
-  tags: Tag[];
-  owner: Owner;
-  description: string;
-};
-
-export type Owner = {
-  id: number;
-  username: string;
-};
-
-export type Tag = {
-  id: number;
-  readonly value: string;
-  label: string;
-};
 export function MarketplaceItem(product: Product) {
   const [open, setOpen] = useState(false);
   const auth = useAuthUser();

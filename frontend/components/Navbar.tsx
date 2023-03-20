@@ -1,8 +1,6 @@
 import React from "react";
 import Logo from "./Logo";
 import { Fragment, useState } from "react";
-import Upload from "../pages/Upload/Upload";
-import { usePopper } from "react-popper";
 import { Dialog, Popover, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -16,14 +14,6 @@ import { useIsAuthenticated, useAuthUser, useSignOut } from "react-auth-kit";
 
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(false);
-  const [uploadButtonReference, setUploadButtonReference] =
-    useState<HTMLButtonElement | null>(null);
-  const [uploadPopupElement, setUploadPopupElement] =
-    useState<HTMLDivElement | null>(null);
-  const { styles, attributes } = usePopper(
-    uploadButtonReference,
-    uploadPopupElement
-  );
 
   const isAuthenticated = useIsAuthenticated();
   const auth = useAuthUser();
@@ -32,7 +22,6 @@ export default function Navbar() {
   const navigation = [
     { name: "Home", to: "/" },
     { name: "Marketplace", to: "/marketplace" },
-    isAuthenticated() && { name: "Upload", to: "/upload" },
     isAuthenticated() && { name: "Trade Centre", to: "/tradecentre" },
   ];
 
@@ -258,40 +247,15 @@ export default function Navbar() {
                   {/* Upload */}
                   {isAuthenticated() && (
                     <div className="ml-4 flow-root lg:ml-6">
-                      <Popover className="relative">
-                        {() => (
-                          <>
-                            <Popover.Button
-                              ref={setUploadButtonReference}
-                              className="group -m-2 flex items-center rounded-md bg-green-800 p-2 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-800"
-                            >
-                              <ArrowUpTrayIcon
-                                className="stroke-white-800 group-hover:stroke-white-600 h-5 w-5 flex-shrink-0 stroke-2"
-                                aria-hidden="true"
-                              />
-                            </Popover.Button>
-                            <Transition
-                              as={Fragment}
-                              enter="transition ease-out duration-200"
-                              enterFrom="opacity-0 translate-y-1"
-                              enterTo="opacity-100 translate-y-0"
-                              leave="transition ease-in duration-150"
-                              leaveFrom="opacity-100 translate-y-0"
-                              leaveTo="opacity-0 translate-y-1"
-                            >
-                              <Popover.Panel
-                                ref={setUploadPopupElement}
-                                style={styles.popper}
-                                {...attributes.popper}
-                                className="w-screen min-w-max sm:mr-5 sm:max-w-xs sm:shadow-xl"
-                              >
-                                <Upload />
-                              </Popover.Panel>
-                            </Transition>
-                          </>
-                        )}
-                      </Popover>
-                      {/* END OF INSERT */}
+                      <Link
+                        to="/upload"
+                        className="group -m-2 flex items-center rounded-md bg-green-800 p-2 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-800"
+                      >
+                        <ArrowUpTrayIcon
+                          className="stroke-white-800 group-hover:stroke-white-600 h-5 w-5 flex-shrink-0 stroke-2"
+                          aria-hidden="true"
+                        />
+                      </Link>
                     </div>
                   )}
                 </div>

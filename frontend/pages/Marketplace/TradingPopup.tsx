@@ -3,7 +3,7 @@ import axios from "axios";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 import UserCircleIcon from "@heroicons/react/24/outline/UserCircleIcon";
-import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { Product } from "./Itemtile";
 
 interface ProfileData {
@@ -19,7 +19,8 @@ export function Trading(product: Product) {
   const [products, setProducts] = useState<Product[]>([]);
 
   function fetchProducts() {
-    return fetch("/api/products")
+    const url = `/api/marketplace?user=${product.owner.id}`;
+    return fetch(url)
       .then((response) => response.json())
       .then((data) => setProducts(data));
   }
@@ -50,7 +51,7 @@ export function Trading(product: Product) {
     if (giver_giving.includes(index)) {
       return (
         <CheckCircleIcon
-          className={`absolute right-0 h-6 w-6 stroke-green-800`}
+          className={`absolute right-0 h-6 w-6 fill-green-800 stroke-white stroke-[1.5]`}
         >
           {" "}
         </CheckCircleIcon>
@@ -126,31 +127,33 @@ export function Trading(product: Product) {
             </div>
           </div>
 
-          <div className="mt-5 text-xl font-bold text-gray-900">
-            Other items by {product.owner.username}...
-          </div>
-          <div className="mt-2">
-            <div className="container mx-auto grid grid-flow-dense grid-cols-4 grid-rows-2 gap-2 overflow-hidden rounded-md py-1">
-              {products
-                .filter(
-                  (i) => i.id != product.id && i.owner.id == product.owner.id
-                )
-                .map((i) => (
-                  <div
-                    key={i.id}
-                    className="relative w-full overflow-hidden rounded-md bg-gray-200 hover:opacity-75"
-                  >
-                    {showSvg(i.id)}
-                    <img
-                      draggable={false}
-                      tabIndex={1}
-                      src={i.image}
-                      onClick={() => handleExtraItems(i.id)}
-                    />
-                  </div>
-                ))}
-            </div>
-          </div>
+          {products.filter((i) => i.id != product.id).length > 1 && (
+            <>
+              <div className="mt-5 text-xl font-bold text-gray-900">
+                Other items by {product.owner.username}...
+              </div>
+              <div className="mt-2">
+                <div className="container mx-auto grid grid-flow-dense grid-cols-4 grid-rows-2 gap-2 overflow-hidden rounded-md py-1">
+                  {products
+                    .filter((i) => i.id != product.id)
+                    .map((i) => (
+                      <div
+                        key={i.id}
+                        className="relative w-full overflow-hidden rounded-md bg-gray-200 hover:opacity-75"
+                      >
+                        {showSvg(i.id)}
+                        <img
+                          draggable={false}
+                          tabIndex={1}
+                          src={i.image}
+                          onClick={() => handleExtraItems(i.id)}
+                        />
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </>
+          )}
           <form method="POST" onSubmit={handleSubmit} className="mt-2">
             <div className="">
               <label
