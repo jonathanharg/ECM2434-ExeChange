@@ -27,6 +27,7 @@ import Achievement from "./Achievement";
 import { achievement } from "./Achievement";
 import Profilestats from "./Profilestats";
 import { ProfileData } from "./Profilestats"
+import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
 
 const locations: Location[] = [
   {
@@ -146,48 +147,34 @@ const locations: Location[] = [
 
 function Profile() {
   let { username } = useParams();
-  
-  const [myProfile, setMyProfile] = useState();
-  let profileTitle = whoseProfile();
+  const isAuthenticated = useIsAuthenticated();
+  const auth = useAuthUser();
+
+  const myProfile = () => {
+    if (!isAuthenticated) {
+      return false
+    }
+
+    return auth().user == username
+  }
 
   const [profileData, setProfileData] = useState<ProfileData>();
 
   function fetchProfileData(){
-    return fetch("/api/profiledata/"+ username)
+    return fetch("/api/profile/"+ username)
     .then((response) => response.json())
     .then((data) => setProfileData(data));
   }
 
   useEffect(() => {
     fetchProfileData();
-  }, []);
-
-  function fetchWhoseProfile(){
-    return fetch("/api/whoseprofile/"+ username)
-    .then((response) => response.json())
-    .then((data) => setMyProfile(data));
-  }
-
-  useEffect(() => {
-    fetchWhoseProfile();
-  }, []);
-
-  function whoseProfile(){
-    if(myProfile == true){
-      let profileTitle = "My Profile"
-      return profileTitle;
-    }else if(myProfile == false){
-      let profileTitle = (username +"'s Profile")
-      return profileTitle;
-    }
-  }
-  
+  }, [username]);
 
   return (
     <div className="font-poppins mx-auto flex min-h-screen max-w-lg flex-col bg-white bg-cover bg-center bg-no-repeat px-4 opacity-100 lg:max-w-5xl">
       <div className="flex items-center justify-between px-1 pt-4">
         <div>
-          <p className="font-semibold">{profileTitle}</p>
+          <p className="font-semibold">{(myProfile() ? "My Profile": username)}</p>
         </div>
       </div>
       <Profilestats key={profileData?.id}{...profileData}/>
