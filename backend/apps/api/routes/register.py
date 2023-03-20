@@ -49,7 +49,7 @@ def register(request: HttpRequest) -> Response:
             return Response(UNIQUE_ERROR, status=HTTP_400_BAD_REQUEST)
 
         # on debug testing, do not need to send email.
-        if settings.SEND_VERIFICATION_EMAIL:
+        if settings.SEND_VERIFICATION_EMAIL:  # type: ignore
             new_user.is_verified = True
             new_user.save()
             token = gen_token(new_user)
