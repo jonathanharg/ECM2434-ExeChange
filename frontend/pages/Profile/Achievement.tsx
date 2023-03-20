@@ -1,18 +1,18 @@
 import React from "react";
 
 export interface ProfileData {
-  id?: number;
-  username?: string;
-  achievements?: achievement[];
-  current_xp?: number;
-  profile_level?: number;
+  id: number;
+  username: string;
+  achievements: achievement[];
+  current_xp: number;
+  profile_level: number;
 }
 
 export type achievement = {
-  id?: number;
-  text?: string;
-  colour?: string;
-  xp_achieved?: number;
+  id: number;
+  text: string;
+  colour: string;
+  xp_achieved: number;
 }
 
 function Achievement(achievement: achievement) {
