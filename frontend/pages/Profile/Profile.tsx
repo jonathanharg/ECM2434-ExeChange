@@ -194,7 +194,7 @@ function Profile() {
         ))}
       </div>
       <div className="flex w-full flex-col px-4 pt-12">
-        <MyItems />
+        <MyItems/>
       </div>
     </div>
   );
