@@ -57,7 +57,7 @@ export function MyItems() {
                 <>
                 <div className="relative">
                     <Itemtile key={product.id} {...product} />
-                    <div className="absolute top-0 right-0 bg-red-500 text-white p-2 rounded hover:bg-red-800">
+                    <div className="absolute top-0 right-0 rounded">
                         <DeleteItem key={product.id} {...product} />
                     </div>
                 </div>

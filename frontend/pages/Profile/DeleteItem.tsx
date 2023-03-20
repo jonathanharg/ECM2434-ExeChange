@@ -2,6 +2,7 @@ import React, { Fragment, useRef, useState } from "react";
 import {Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
 import { Product } from "../Marketplace/Itemtile";
+import { TrashIcon } from "@heroicons/react/24/outline";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -18,7 +19,7 @@ export function DeleteItem(product: Product) {
   const handleSubmit = async (e) => {
     // this function sends form data to /api/trade
     e.preventDefault();
-    const id = product.id 
+    const id = product.id
 
     await axios
       .post(
@@ -35,7 +36,7 @@ export function DeleteItem(product: Product) {
       .then((response) => {
         // TODO: Handle more responses than just OK
         if (response.data.status != "OK") {
-          return;
+          return setOpen(false);
         }
       })
       .catch((error) => {
@@ -76,7 +77,7 @@ export function DeleteItem(product: Product) {
                     <div className="sm:flex sm:items-start">
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                        Delete Item
+                          Delete Item
                         </Dialog.Title>
                         <div className="mt-2">
                         <p className="text-sm text-gray-500">
@@ -113,7 +114,8 @@ export function DeleteItem(product: Product) {
             onClick={() => setOpen(true)}
             ref={cancelButtonRef}
             >
-            Delete Item
+            <TrashIcon className="h-5 w-5"
+                                      aria-hidden="true"/>
         </button>
     </form>
     </>
