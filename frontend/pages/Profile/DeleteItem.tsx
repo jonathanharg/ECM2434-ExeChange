@@ -6,7 +6,12 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
-export function DeleteItem(product: Product) {
+interface DeleteItemProps {
+  product: Product;
+  deleteItem: (id: number) => void;
+}
+
+export function DeleteItem({ deleteItem, product }: DeleteItemProps) {
   const [open, setOpen] = useState(false)
   const cancelButtonRef = useRef(null)
 
@@ -15,7 +20,7 @@ export function DeleteItem(product: Product) {
     e.preventDefault();
     const id = product.id
     console.log(id)
-    setOpen(false)
+
     await axios
       .post(
         "/api/deleteitem",
@@ -29,6 +34,8 @@ export function DeleteItem(product: Product) {
       )
       .then((response) => {
         // TODO: Handle more responses than just OK
+        setOpen(false)
+        deleteItem(id)
         if (response.data.status != "OK") {
           return ;
         }

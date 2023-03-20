@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Itemtile, { Product } from "../Marketplace/Itemtile";
+import { DeleteItem } from "./DeleteItem";
 import {
   ChatBubbleLeftRightIcon,
   PowerIcon,
@@ -22,7 +24,6 @@ import Tradealert from "./Tradealert";
 import { Location } from "./Badge";
 import Badge from "./Badge";
 import { Trade } from "./Tradealert";
-import { MyItems } from "./MyItemsProfile";
 import Achievement from "./Achievement";
 import { achievement } from "./Achievement";
 import Profilestats from "./Profilestats";
@@ -149,6 +150,30 @@ function Profile() {
   let { username } = useParams();
   const isAuthenticated = useIsAuthenticated();
   const auth = useAuthUser();
+  const [searchState, setSearchState] = useState(new Set<string>());
+  const [products, setProducts] = useState<Product[]>([]);
+
+  function fetchProducts() {
+      return fetch("/api/products")
+          .then((response) => response.json())
+          .then((data) => setProducts(data));
+  }
+
+  function isSuperset(set, subset) {
+      for (const elem of subset) {
+          if (!set.has(elem)) {
+              return false;
+          }
+      }
+      return true;
+  }
+
+  function deleteItem(id : number) {
+      setProducts(
+          products.filter((product) =>
+          product.id != id)
+      );
+  }
 
   const myProfile = () => {
     if (!isAuthenticated) {
@@ -167,6 +192,7 @@ function Profile() {
   }
 
   useEffect(() => {
+    fetchProducts();
     fetchProfileData();
   }, [username]);
 
@@ -179,7 +205,7 @@ function Profile() {
       </div>
       <Profilestats key={profileData?.id}{...profileData}/>
       <div className="flex w-full flex-col px-4 pt-12">
-        <p className="font-semibold text-gray-600">My Achievements</p>
+        <p className="font-semibold text-gray-600">{(myProfile()) ? <>My Achievements</> : <>{username}'s Achievements</>}</p>
         <div className="flex w-full space-x-2 pt-2">
             {profileData?.achievements?.map((achievement) => (
             <Achievement key={achievement?.id} {...achievement} />
@@ -194,7 +220,32 @@ function Profile() {
         ))}
       </div>
       <div className="flex w-full flex-col px-4 pt-12">
-        <MyItems/>
+      <p className="font-semibold text-gray-600">{(myProfile()) ? <>My Items</> : <>{username}'s Items</> }</p>
+        <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-6">
+            {searchState.size != 0
+            ? products.filter((product) =>
+                    isSuperset(
+                    new Set(product.tags.map((i) => i.value)),
+                    searchState
+                    )
+                )
+                .map((product) => <Itemtile key={product.id} {...product} />)
+            : products.map((product) => ((myProfile()) == true ?
+              <>
+               <div className="relative">
+                   <Itemtile key={product.id} {...product} />
+                   <div className="absolute top-0 right-0 rounded">
+                       <DeleteItem key={product.id} deleteItem={deleteItem} product={product} />
+                   </div>
+               </div>
+             </>
+               : <>
+               <div className="relative">
+                   <Itemtile key={product.id} {...product} />
+               </div>
+               </>
+                ))}
+        </div>
       </div>
     </div>
   );
