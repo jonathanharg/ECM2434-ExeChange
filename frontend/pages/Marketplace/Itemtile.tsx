@@ -23,8 +23,9 @@ export type tag = {
   readonly value: string;
   label: string;
 };
-export function Itemtile(product: Product) {
-  /* , {trading}:boolean */
+
+export function Itemtile(product: Product) { 
+
   const [open, setOpen] = useState(false);
   const auth = useAuthUser();
   return (
@@ -65,7 +66,7 @@ export function Itemtile(product: Product) {
                     </button>
                     {/* if(trading) {  } */}
                     {/* ADD IF CONDITION HERE - IF TRADING then : otherwise idk not that  */}
-                    <Trading key={product.id} {...product} />
+                    <Trading key={product.id} {...product}/>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -86,7 +87,6 @@ export function Itemtile(product: Product) {
           onClick={() => setOpen(true)}
         />
       </div>
-
       <div className="mt-2 flex justify-between">
         <div>
           <h3 className="text-sm text-gray-700">

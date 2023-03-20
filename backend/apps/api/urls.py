@@ -24,5 +24,6 @@ urlpatterns = [
     path("confirmpendingtrade", profile.confirm_pending_trade),
     path("getpendingtradestatus", profile.get_pending_trade_status),
     path("removependingtrade", profile.remove_pending_trade),
+    path("deleteitem", profile.deleteImg),
     path("getachievements", profile.get_achievements),
 ]
