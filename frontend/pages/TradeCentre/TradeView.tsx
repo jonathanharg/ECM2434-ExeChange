@@ -36,7 +36,6 @@ export default function TradeView({
   const [isHere, setIsHere] = useState(false);
   const [code, setCode] = useState(0);
   const [inputcode, setInputCode] = useState("");
-  const [rejector, setRejector] = useState<string>();
 
   async function handleArrived() {
     const apiPath = `/api/trade/${trade.id}/arrived`;
@@ -74,7 +73,6 @@ export default function TradeView({
   }
   async function declineRequest() {
     const apiPath = `/api/trade/${trade.id}/reject`;
-    setRejector(profileData?.name);
     await axios
       .post(
         apiPath,
@@ -130,8 +128,8 @@ export default function TradeView({
   return (
     <div>
       {trade.status == "P" && (
-        <>
-        <Disclosure>
+        
+        <><Disclosure>
           {({ open }) => (
             <>
               <Disclosure.Button className="flex w-full justify-between rounded-lg bg-white px-4 py-3 text-left text-sm font-medium text-black shadow hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
@@ -204,16 +202,16 @@ export default function TradeView({
               </Transition>
             </>
           )}
-        </Disclosure>
-        <div className="pt-2">
-            <button
-              onClick={declineRequest}
-              className="flex h-10 w-fit items-center rounded-lg border border-gray-300 bg-red-800 p-2 text-sm font-medium text-white hover:bg-red-700 hover:text-gray-50"
-            >
-              <TrashIcon className="h-5 w-5 stroke-white stroke-[3]"></TrashIcon>
-            </button>
-          </div>
-          </>
+        </Disclosure>  
+      <div className="flex w-full flex-col items-center justify-center">
+        <button
+          onClick={declineRequest}
+          className="flex h-10 w-fit items-center rounded-lg border border-gray-300 bg-red-800 p-2 text-sm font-medium text-white hover:bg-red-700 hover:text-gray-50"
+        >
+          <TrashIcon className="h-5 w-5 stroke-white stroke-[3]"></TrashIcon>
+        </button>
+      </div>
+    </>
       )}
 
       {trade.status == "A" && (
@@ -363,7 +361,7 @@ export default function TradeView({
             </>
           )}
         </Disclosure>
-        <div className="pt-2">
+        <div className="p-2">
             <button
               onClick={declineRequest}
               className="flex h-10 w-fit items-center rounded-lg border border-gray-300 bg-red-800 p-2 text-sm font-medium text-white hover:bg-red-700 hover:text-gray-50"
@@ -377,54 +375,17 @@ export default function TradeView({
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex w-full justify-between rounded-lg bg-red-800 px-4 py-3 text-left text-sm font-medium text-white shadow hover:bg-red-600 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
+              <Disclosure.Button className="flex w-full justify-between rounded-lg bg-red-800 px-4 py-3 text-left text-sm font-medium text-white shadow hover:bg-red-800 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
                 <XMarkIcon className="h-5 w-5 stroke-white stroke-[3]"></XMarkIcon>
-                    {/* {!GiverPage && (rejector == trade.receiver.username && rejector == undefined) ? (
-                      <span>
-                        <b>You deleted your request!</b>
-                      </span>) :
-                      !GiverPage && (rejector == trade.giver.username && rejector == undefined) && (
-                         <span>
-                         <b>{trade.giver.username} deleted your request :&#40;</b>
-                        </span>
-                        )}
-                  
-                    {GiverPage && (rejector == trade.receiver.username && rejector == undefined) ?
-                      (
-                        <span>
-                          <b>{trade.receiver.username} deleted their request.</b>
-                        </span>) :
-                     
-                      GiverPage && (rejector == trade.giver.username && rejector == undefined) && (
-                           <span>
-                           <b>You deleted {trade.receiver.username}&apos;s request.</b>
-                         </span>
-                        )} */}
-                        <span>
-                        <b>The request was deleted!</b>
-                      </span>
-                    
-                    
+                    <span>
+                    <b>The request was deleted!</b>
+                  </span>
                 <ChevronUpIcon
                   className={`${
                     open ? "rotate-180 transform" : ""
-                  } h-5 w-5 stroke-[3] text-green-800`}
+                  } h-5 w-5 stroke-[3] text-red-800`}
                 />
               </Disclosure.Button>
-              <Transition
-                show={open}
-                enter="transition-opacity duration-75"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="transition-opacity duration-150"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <Disclosure.Panel
-                  static
-                  className="overflow-hidden rounded-md px-4 pt-4 pb-2 text-sm text-gray-500 shadow"
-                ></Disclosure.Panel>
-              </Transition>
             </>
           )}
         </Disclosure>
