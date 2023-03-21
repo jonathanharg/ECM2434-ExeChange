@@ -36,111 +36,97 @@ const locations: ProfileTradeLocation[] = [
     colour: "bg-yellow-400",
     name: "Lafrowda",
     icon: UserGroupIcon,
-    trades: 3,
+    trades: 0,
   },
   {
     colour: "bg-blue-500",
-    place: "Library",
+    name: "Library",
     icon: BookOpenIcon,
-    trades: 4,
+    trades: 0,
   },
   {
-    id: 3,
     colour: "bg-orange-600",
-    place: "Holland Hall",
+    name: "Holland Hall",
     icon: CameraIcon,
-    trades: 3,
+    trades: 0,
   },
   {
-    id: 4,
     colour: "bg-purple-500",
-    place: "Sports Park",
+    name: "Sports Park",
     icon: PowerIcon,
-    trades: 3,
+    trades: 0,
   },
   {
-    id: 5,
     colour: "bg-green-900",
-    place: "Forum",
+    name: "Forum",
     icon: ChatBubbleLeftRightIcon,
-    trades: 2,
+    trades: 0,
   },
   {
-    id: 6,
     colour: "bg-pink-600",
-    place: "Mardon",
+    name: "Mardon",
     icon: CloudIcon,
-    trades: 3,
+    trades: 0,
   },
   {
-    id: 7,
     colour: "bg-blue-700",
-    place: "Peter Chalk",
+    name: "Peter Chalk",
     icon: DocumentChartBarIcon,
-    trades: 3,
+    trades: 0,
   },
   {
-    id: 8,
     colour: "bg-gray-600",
-    place: "Reed Hall",
+    name: "Reed Hall",
     icon: BuildingLibraryIcon,
-    trades: 2,
+    trades: 0,
   },
   {
-    id: 9,
     colour: "bg-red-500",
-    place: "Physics Building",
+    name: "Physics Building",
     icon: RocketLaunchIcon,
-    trades: 4,
+    trades: 0,
   },
   {
-    id: 10,
     colour: "bg-teal-600",
-    place: "Queen's",
+    name: "Queen's",
     icon: NewspaperIcon,
-    trades: 3,
+    trades: 0,
   },
   {
-    id: 11,
     colour: "bg-teal-900",
-    place: "Washington Singer",
+    name: "Washington Singer",
     icon: MoonIcon,
-    trades: 3,
+    trades: 0,
   },
   {
-    id: 12,
     colour: "bg-orange-800",
-    place: "Old Library",
+    name: "Old Library",
     icon: FilmIcon,
-    trades: 5,
+    trades: 0,
   },
   {
-    id: 13,
     colour: "bg-pink-700",
-    place: "Amory",
+    name: "Amory",
     icon: BeakerIcon,
-    trades: 3,
+    trades: 0,
   },
   {
-    id: 14,
     colour: "bg-yellow-600",
-    place: "Innovation Centre",
+    name: "Innovation Centre",
     icon: LightBulbIcon,
-    trades: 4,
+    trades: 0,
   },
   {
-    id: 15,
     colour: "bg-purple-800",
-    place: "Northcott Theatre",
+    name: "Northcott Theatre",
     icon: TicketIcon,
-    trades: 3,
+    trades: 0,
   },
   {
-    id: 16,
     colour: "bg-green-400",
-    place: "East Park",
+    name: "East Park",
     icon: BuildingOffice2Icon,
-    trades: 3,
+    trades: 0,
   },
 ];
 
@@ -171,7 +157,10 @@ export type ProfileAchievement = {
   xp_achieved: number;
 };
 
-const BACKEND_DATA = { Lafrowda: 10, "Northcott Theatre": 4 };
+//const BACKEND_DATA: {[key: string]: number} = { "Lafrowda": 10, "Northcott Theatre": 4 };
+//Currently only doing the names of locations, changing the number of trade is going to be very tricky,
+//might have to leave that out
+const BACKEND_DATA = ["Lafrowda", "Holland Hall", "Library"]
 
 function Profile() {
   const { username } = useParams();
@@ -179,6 +168,10 @@ function Profile() {
   const auth = useAuthUser();
   const [searchState, setSearchState] = useState(new Set<string>());
   const [products, setProducts] = useState<Product[]>([]);
+
+  //Still not quite working
+  const myLocations: ProfileTradeLocation[] = myLocationBadges(BACKEND_DATA);
+
 
   function fetchProducts() {
     return fetch("/api/products")
@@ -207,28 +200,19 @@ function Profile() {
     return auth()!.user == username;
   };
 
-  // const locations = BACKEND_DATA.map(...)
 
-  const locations = [
-    {
-      colour: "bg-yellow-400",
-      name: "Lafrowda",
-      icon: UserGroupIcon,
-      trades: 3,
-    },
-    {
-      colour: "bg-blue-500",
-      name: "Library",
-      icon: BookOpenIcon,
-      trades: 4,
-    },
-    {
-      colour: "bg-orange-600",
-      name: "Holland Hall",
-      icon: CameraIcon,
-      trades: 3,
-    },
-  ];
+  function locationBadges(name: string){
+    return locations.filter((location) => location.name == name);
+  }
+
+
+  //I think something needs to be changed slightly with what this function actually returns,
+  //I think it might not be concatenating the arrays properly or something...
+  function myLocationBadges(names: string[]){
+    return names.map((i) => (locationBadges(i)));
+  }
+
+
 
   const [profileData, setProfileData] = useState<ProfileData>();
 
@@ -270,7 +254,7 @@ function Profile() {
 
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
-        {locations.map((location) => (
+        {myLocations.map((location) => (
           <Badge {...location} />
         ))}
       </div>
