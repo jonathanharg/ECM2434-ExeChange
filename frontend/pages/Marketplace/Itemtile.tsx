@@ -24,8 +24,7 @@ export type tag = {
   label: string;
 };
 
-export function Itemtile(product: Product) { 
-
+export function Itemtile(product: Product) {
   const [open, setOpen] = useState(false);
   const auth = useAuthUser();
   return (
@@ -66,7 +65,7 @@ export function Itemtile(product: Product) {
                     </button>
                     {/* if(trading) {  } */}
                     {/* ADD IF CONDITION HERE - IF TRADING then : otherwise idk not that  */}
-                    <Trading key={product.id} {...product}/>
+                    <Trading key={product.id} {...product} />
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

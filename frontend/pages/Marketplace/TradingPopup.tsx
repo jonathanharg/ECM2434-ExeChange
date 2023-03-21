@@ -115,7 +115,14 @@ export function Trading(product: Product) {
           {product.caption}{" "}
         </h3>
         <p className="mt-1 text-sm text-gray-500">
-          <b>Tagged by <Link to={("../profile/" + product.owner.username)}> {product.owner.username} </Link> as: </b>
+          <b>
+            Tagged by{" "}
+            <Link to={"../profile/" + product.owner.username}>
+              {" "}
+              {product.owner.username}{" "}
+            </Link>{" "}
+            as:{" "}
+          </b>
           {product.tags.map((t) => t.value).join(", ")}
         </p>
       </div>
