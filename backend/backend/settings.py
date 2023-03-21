@@ -178,6 +178,9 @@ USE_TZ = True
 
 # Hosts that Django will accept requests to
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(" ")
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "http://127.0.0.1").split(
+    " "
+)
 
 # Needed for 'debug' to be available inside templates.
 # https://docs.djangoproject.com/en/3.2/ref/templates/api/#django-template-context-processors-debug

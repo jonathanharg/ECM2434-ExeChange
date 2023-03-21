@@ -26,21 +26,23 @@ RUN poetry install --no-dev
 
 # BUILD Frontend
 FROM node:19-slim as node-base
-
-ENV NODE_ENV = "production"
+ARG CACHEBUST=1
+RUN echo "$CACHEBUST" # Force removal of cache to prevent errors
 ADD . /src
 WORKDIR /src
-RUN npm i && npm run build # TODO: Lint & Test
+RUN npm i && npm run build
 
 # SETUP Backend
 FROM python-base as production
-EXPOSE 5000
-CMD ["gunicorn", "--chdir", "backend", "backend.wsgi", "--bind=0.0.0.0:5000"]
 
+ARG CACHEBUST=1
+RUN echo "$CACHEBUST" # Force removal of cache to prevent errors
 RUN rm -rf /app/backend/staticfiles
 COPY --from=python-base $PYSETUP_PATH $PYSETUP_PATH
 COPY --from=node-base /src/frontend/dist/ /app/frontend/dist/
 COPY --from=node-base /src/backend/ /app/backend/
 WORKDIR /app
-RUN python ./backend/manage.py migrate && python ./backend/manage.py collectstatic
-# RUN python ./backend/manage.py collectstatic
+# Migration doesn't seem to work, or at least migrates the defualt DB
+RUN python ./backend/manage.py migrate && python ./backend/manage.py collectstatic --noinput
+EXPOSE 5000
+CMD ["gunicorn", "--chdir", "backend", "backend.wsgi", "--bind=0.0.0.0:5000"]
