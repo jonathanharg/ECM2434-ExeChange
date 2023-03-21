@@ -52,12 +52,17 @@ export default function TradeCentre() {
       )
     );
   }
- 
+
   return (
     <div className="w flex flex-col px-4 pt-12">
       <h2 className="pb-5 text-center text-2xl font-bold">Trades</h2>
       {trades.map((trade) => (
-        <TradeAlert key={trade.id} acceptTrade= {acceptTrade} rejectTrade={rejectTrade} trade={trade} />
+        <TradeAlert
+          key={trade.id}
+          acceptTrade={acceptTrade}
+          rejectTrade={rejectTrade}
+          trade={trade}
+        />
       ))}
     </div>
   );

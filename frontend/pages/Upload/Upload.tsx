@@ -76,18 +76,15 @@ function Upload() {
 
   return (
     <>
-      <div className="w-full md:w-auto md:col-span-2">
+      <div className="w-full md:col-span-2 md:w-auto">
         <form method="POST" onSubmit={handleSubmit}>
-          <div className="md:shadow md:overflow-hidden md:rounded-md">
+          <div className="md:overflow-hidden md:rounded-md md:shadow">
             <div className="z-50 space-y-6 bg-white px-4 py-5 sm:p-6">
               <div id="tags">
                 <label className="mb-2 block text-sm font-medium text-gray-700">
                   Add tags
                 </label>
-                <TagSelect
-                  key={key}
-                  setState={setSearchState}
-                />
+                <TagSelect key={key} setState={setSearchState} />
               </div>
               <div id="upload">
                 <label className="mb-2 block text-sm font-medium text-gray-700">

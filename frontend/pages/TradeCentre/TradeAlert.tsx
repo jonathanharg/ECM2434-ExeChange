@@ -16,10 +16,14 @@ export type ProfileData = {
 interface TradeAlertProps {
   trade: TradeInvolvement;
   rejectTrade: (id: number) => void;
-  acceptTrade: (id:number) => void;
+  acceptTrade: (id: number) => void;
 }
 
-export default function TradeAlert({ trade, rejectTrade, acceptTrade }: TradeAlertProps) {
+export default function TradeAlert({
+  trade,
+  rejectTrade,
+  acceptTrade,
+}: TradeAlertProps) {
   const [profileData, setProfileData] = useState<ProfileData>();
 
   function fetchProfileData() {
@@ -30,7 +34,7 @@ export default function TradeAlert({ trade, rejectTrade, acceptTrade }: TradeAle
 
   async function declineRequest() {
     const apiPath = `/api/trade/${trade.id}/reject`;
-    
+
     await axios
       .post(
         apiPath,
@@ -62,18 +66,27 @@ export default function TradeAlert({ trade, rejectTrade, acceptTrade }: TradeAle
   return (
     <div className="w-full px-4">
       <div className="flex flex-row justify-center">
-        <div id = "tradeAlert" className="mx-auto w-full max-w-md rounded-2xl bg-white p-2">
-          <TradeView trade={trade} profileData={profileData} acceptTrade = {acceptTrade} />
+        <div
+          id="tradeAlert"
+          className="mx-auto w-full max-w-md rounded-2xl bg-white p-2"
+        >
+          <TradeView
+            trade={trade}
+            profileData={profileData}
+            acceptTrade={acceptTrade}
+          />
         </div>
-      
-        {(<div className="pt-2">
-           <button
-            onClick={declineRequest}
-            className="flex h-10 w-fit items-center rounded-lg border border-gray-300 bg-red-800 p-2 text-sm font-medium text-white hover:bg-red-700 hover:text-gray-50"
-          >
-            <TrashIcon className="h-5 w-5 stroke-white stroke-[3]"></TrashIcon>
-          </button>
-        </div>)}
+
+        {
+          <div className="pt-2">
+            <button
+              onClick={declineRequest}
+              className="flex h-10 w-fit items-center rounded-lg border border-gray-300 bg-red-800 p-2 text-sm font-medium text-white hover:bg-red-700 hover:text-gray-50"
+            >
+              <TrashIcon className="h-5 w-5 stroke-white stroke-[3]"></TrashIcon>
+            </button>
+          </div>
+        }
       </div>
     </div>
   );

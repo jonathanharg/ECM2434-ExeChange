@@ -10,13 +10,15 @@ import { TradeInvolvement } from "./TradeCentre";
 import axios from "axios";
 import TimeLocation from "./TimeLocation";
 
-interface TradeResponseProps  {
+interface TradeResponseProps {
   trade: TradeInvolvement;
   acceptTrade: (id: number) => void;
 }
 
-
-export default function TradeResponse({trade, acceptTrade}: TradeResponseProps) {
+export default function TradeResponse({
+  trade,
+  acceptTrade,
+}: TradeResponseProps) {
   const [page, setPage] = useState<number>(0);
   const [products, setProducts] = useState<Product[]>([]);
   const [receiver_exchanging, setReceiverExchanging] = useState<number[]>([]);
@@ -24,7 +26,7 @@ export default function TradeResponse({trade, acceptTrade}: TradeResponseProps) 
   const [location, setLocation] = useState("Lafrowda");
   const [time, setTime] = useState<Date>();
   // this "time" above includes date and time, had to call it time instead of date cus that is how its defined in backend
-  
+
   function fetchProducts() {
     return fetch("/api/products")
       .then((response) => response.json())
