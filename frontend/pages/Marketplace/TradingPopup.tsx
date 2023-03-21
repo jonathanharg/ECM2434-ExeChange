@@ -3,7 +3,7 @@ import axios from "axios";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 import UserCircleIcon from "@heroicons/react/24/outline/UserCircleIcon";
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { CheckCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Product } from "./Itemtile";
 
 interface ProfileData {
@@ -17,6 +17,9 @@ export function Trading(product: Product) {
   const [profileData, setProfileData] = useState<ProfileData>();
   const [giver_giving, setGiverGiving] = useState<number[]>([product.id]); //items you're asking for. this item is default added in cause you've clicked on it
   const [products, setProducts] = useState<Product[]>([]);
+  const [showError, setShowError] = useState(false);
+  const [err, setErr] = useState<string>();
+  const [success, setSuccess] = useState<string>();
 
   function fetchProducts() {
     const url = `/api/marketplace?user=${product.owner.id}`;
@@ -80,11 +83,14 @@ export function Trading(product: Product) {
       .then((response) => {
         // TODO: Handle more responses than just OK
         if (response.data.status != "OK") {
+          setShowError(true);
+          setSuccess("Trade Sent!")
           return;
         }
       })
       .catch((error) => {
-        console.log(error);
+        setShowError(true);
+        setErr(error.response.data.message);
       });
   };
 
@@ -177,8 +183,31 @@ export function Trading(product: Product) {
               Request trade with {product.owner.username}!
             </button>
           </form>
+          <div className="pt-4">
+           <div
+          id="Error"
+          className={"md:max-w-md relative rounded-md border-2 border-red-500 bg-red-200 p-4"} 
+          hidden={!showError}
+        >
+        <div className="absolute right-2 pt-4 top-2 align-top hover:cursor-pointer">
+          <div
+            onClick={() => {
+              setShowError(false);
+            }}
+            className=""
+          >
+            <XMarkIcon className="m-auto h-5 w-5 stroke-black stroke-2" />
+          </div>
+        </div>
+        <label className="font-bold">{ err ? "Uh oh": success ? `${success}`:""}</label>
+        <br />
+        <label>{err}</label>
+        </div>
+          </div>
+
         </section>
-      </div>
+        </div>
+
     </div>
   );
 }
