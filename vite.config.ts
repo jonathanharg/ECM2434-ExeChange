@@ -15,11 +15,7 @@ export default defineConfig({
     react(),
     splitVendorChunkPlugin(),
     VitePWA({
-      strategies: "injectManifest",
-      filename: "sw.ts",
-      srcDir: "/service-worker",
       registerType: "autoUpdate",
-      injectRegister: null,
       manifest: {
         name: "ExeChange",
         short_name: "ExeChange",
@@ -43,14 +39,12 @@ export default defineConfig({
             src: "/static/mask-icon.svg",
             sizes: "150x150",
             type: "image/svg",
-            purpose: "any maskable"
+            purpose: "any maskable",
           },
-          
         ],
       },
     }),
   ],
   build: { manifest: true },
-  base: "/static/",
   root: "./frontend",
 });
