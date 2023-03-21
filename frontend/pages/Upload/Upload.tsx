@@ -10,26 +10,25 @@ axios.defaults.xsrfCookieName = "csrftoken";
 function Upload() {
   // TODO: again most of these can be use Ref since we're not rerendering on change
   const [caption, setCaption] = useState("");
-  const [searchState, setSearchState] = useState(new Set<Tag | string>());
+  const [searchState, setSearchState] = useState(new Set<Tag>());
   const [image, setImage] = useState<File>();
   const [file, setFile] = useState<string>();
   const [completed, setCompleted] = useState(false);
   const [checkedTerms, setCheckedTerms] = useState(false);
   const [checkedUnderstand, setCheckedUnderstand] = useState(false);
   const [description, setDescription] = useState("");
+  const [key, setKey] = useState<number>(0);
   const fileRef = useRef(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = {
       caption: caption,
-      tags: Array.from(searchState),
+      tags: Array.from(searchState).map((tags) => tags.id),
       image: image,
       description: description,
     };
 
-    console.log(formData);
-    console.log("Form submitted");
     await axios.post("/api/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -37,6 +36,11 @@ function Upload() {
     setCaption("");
     setCheckedTerms(false);
     setCheckedUnderstand(false);
+    setKey((k) => {
+      return k + 1;
+    });
+    setDescription("");
+    setSearchState(new Set());
   };
 
   function resetFile() {
@@ -72,15 +76,18 @@ function Upload() {
 
   return (
     <>
-      <div className="mt-5 md:col-span-2 md:mt-0">
+      <div className="w-full md:w-auto md:col-span-2">
         <form method="POST" onSubmit={handleSubmit}>
-          <div className="shadow sm:overflow-hidden sm:rounded-md">
+          <div className="md:shadow md:overflow-hidden md:rounded-md">
             <div className="z-50 space-y-6 bg-white px-4 py-5 sm:p-6">
               <div id="tags">
                 <label className="mb-2 block text-sm font-medium text-gray-700">
                   Add tags
                 </label>
-                <TagSelect setState={setSearchState} state={searchState} />
+                <TagSelect
+                  key={key}
+                  setState={setSearchState}
+                />
               </div>
               <div id="upload">
                 <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -100,7 +107,7 @@ function Upload() {
                             }}
                             className=""
                           >
-                            <MinusCircleIcon className="m-auto h-5 w-5 fill-red-800 stroke-white stroke-1" />
+                            <MinusCircleIcon className="m-auto h-5 w-5 fill-red-800 stroke-white stroke-[1.5]" />
                           </button>
                         </div>
                         <img className="object-cover" src={file} />

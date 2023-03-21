@@ -64,6 +64,7 @@ def item_request_by_user(user: ExeChangeUser, item: ClothingItem) -> bool:
     return asked_for | exchanged_for
 
 
+# TODO: CANT REQUEST IN THE PAST
 @api_view(["POST"])
 def request_trade(request: HttpRequest) -> Response:
     user = authenticate_user(request)
@@ -144,6 +145,7 @@ def reject_trade(request: HttpRequest, trade_id: int) -> Response:
     return OK
 
 
+# TODO: Can currently accept trade requests in the past
 @transaction.atomic
 @api_view(["POST"])
 def accept_trade(request: HttpRequest, trade_id: int) -> Response:
@@ -277,7 +279,7 @@ def arrived(request: HttpRequest, trade_id: int) -> Response:
         # TODO: Handle this situation
         # When either one or both is late
         return Response()
-    
+
     try:
         with transaction.atomic():
             if user == trade.giver:

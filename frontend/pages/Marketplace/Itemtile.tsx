@@ -25,7 +25,6 @@ export type Tag = {
   label: string;
 };
 export function Itemtile(product: Product) {
-  /* , {trading}:boolean */
   const [open, setOpen] = useState(false);
   const auth = useAuthUser();
   return (

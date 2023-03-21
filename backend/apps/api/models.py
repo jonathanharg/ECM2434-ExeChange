@@ -40,6 +40,7 @@ class ClothingItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     description = models.TextField(max_length=280)
+    hidden = models.BooleanField(default=True)
 
     def __str__(self) -> str:
         return self.caption
