@@ -10,7 +10,13 @@ import { TradeInvolvement } from "./TradeCentre";
 import axios from "axios";
 import TimeLocation from "./TimeLocation";
 
-export default function TradeResponse(trade: TradeInvolvement) {
+interface TradeResponseProps  {
+  trade: TradeInvolvement;
+  acceptTrade: (id: number) => void;
+}
+
+
+export default function TradeResponse({trade, acceptTrade}: TradeResponseProps) {
   const [page, setPage] = useState<number>(0);
   const [products, setProducts] = useState<Product[]>([]);
   const [receiver_exchanging, setReceiverExchanging] = useState<number[]>([]);
@@ -18,7 +24,7 @@ export default function TradeResponse(trade: TradeInvolvement) {
   const [location, setLocation] = useState("Lafrowda");
   const [time, setTime] = useState<Date>();
   // this "time" above includes date and time, had to call it time instead of date cus that is how its defined in backend
-
+  
   function fetchProducts() {
     return fetch("/api/products")
       .then((response) => response.json())
@@ -59,8 +65,7 @@ export default function TradeResponse(trade: TradeInvolvement) {
   }
 
   async function submitResponse() {
-    const tradeId = trade.id.toString();
-    const apiPath = "/api/trade/" + tradeId + "/accept";
+    const apiPath = `/api/trade/${trade.id}/accept`;
     console.log(timePicked);
     const hourMin = timePicked.split(":");
     time?.setHours(parseInt(hourMin[0] || ""), parseInt(hourMin[1] || ""));
@@ -81,7 +86,8 @@ export default function TradeResponse(trade: TradeInvolvement) {
       )
       .then((response) => {
         // TODO: Handle more responses than just OK
-        if (response.data.status != "OK") {
+        if (response.data.status == "OK") {
+          acceptTrade(trade.id);
           return;
         }
       })

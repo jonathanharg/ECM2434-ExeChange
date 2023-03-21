@@ -264,6 +264,8 @@ def arrived(request: HttpRequest, trade_id: int) -> Response:
     now = datetime.now(timezone.utc)
     time_until_trade = trade.time - now
 
+    print(time_until_trade)
+
     if time_until_trade > timedelta(minutes=10):  # more than 10 mins early
         return INVALID_TOO_EARLY
 
@@ -330,7 +332,8 @@ def confirm(request: HttpRequest, trade_id: int) -> Response:
     ):
         return INVALID_TRADE_CONFIRMATION
 
-    if request.data.confirmation_code != trade.confirmation_code:
+
+    if request.data['confirmation_code'] != trade.confirmation_code:
         return INCORRECT_TRADE_CONFIRMATION_CODE
 
     for item in trade.giver_giving.all():
@@ -344,10 +347,10 @@ def confirm(request: HttpRequest, trade_id: int) -> Response:
     # TODO: Update user XP
     trade.receiver.trades_completed += 1
     trade.giver.trades_completed += 1
-    trade.receiver.items_received += trade.giver_giving.count
-    trade.giver.items_received += trade.receiver_exchanging.count
-    trade.receiver.items_given += trade.receiver_exchanging.count
-    trade.giver.items_received += trade.giver_giving.count
+    trade.receiver.items_received += trade.giver_giving.count()
+    trade.giver.items_received += trade.receiver_exchanging.count()
+    trade.receiver.items_given += trade.receiver_exchanging.count()
+    trade.giver.items_received += trade.giver_giving.count()
 
     trade.status = trade.TradeStatuses.COMPLETED
     trade.save()
