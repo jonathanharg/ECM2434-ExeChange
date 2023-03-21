@@ -290,9 +290,12 @@ export default function TradeView({
                         </div>
                       ))}
                     </div>
-                    {trade.receiver_exchanging.length == 0 ? (<p className="p-1">
+                    {trade.receiver_exchanging.length == 0 && profileData?.name == trade.giver.username ? (<p className="p-1">
                       {" "}
                       You're <b> giving away </b> this item.{" "}
+                    </p>) : trade.receiver_exchanging.length == 0 && profileData?.name == trade.receiver.username ? (<p className="p-1">
+                      {" "}
+                      You're <b> getting </b> this item in return for nothing.{" "}
                     </p>) : (
                       <div className="flex justify-center">
                         <ArrowPathIcon className="h-10 w-10 stroke-[3] text-green-800"></ArrowPathIcon>

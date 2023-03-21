@@ -138,6 +138,7 @@ export function Trading(product: Product) {
               <div className="mt-5 text-xl font-bold text-gray-900">
                 Other items by {product.owner.username}...
               </div>
+              <p> You can trade <b> multiple </b> items. <b> click </b> to select</p>
               <div className="mt-2">
                 <div className="container mx-auto grid grid-flow-dense grid-cols-4 grid-rows-2 gap-2 overflow-hidden rounded-md py-1">
                   {products
