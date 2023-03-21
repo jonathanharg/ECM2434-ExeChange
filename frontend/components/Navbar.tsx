@@ -46,12 +46,16 @@ export default function Navbar() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   const fetchNotifications = () => {
+    if(!isAuthenticated()) {
+      return;
+    }
+
     return fetch("/api/getnotifications")
       .then((response) => response.json())
       .then((data) => setNotifications(data.notifications));
   };
 
-  // fetching notifications every 5 seconds
+  // fetching notifications every 5 seconds when a user is logged in
   // notifications are also checked when bell icon is clicked
   useEffect(() => {
     const interval = setInterval(() => {
@@ -61,8 +65,8 @@ export default function Navbar() {
     return () => {
       clearInterval(interval);
     };
-  }, []);
-  
+  }, [isAuthenticated]);
+
   return (
     <>
       <div className="bg-white">
@@ -263,6 +267,8 @@ export default function Navbar() {
                   )}
 
                   {/* Notifications */}
+                  {isAuthenticated() && (
+                    <>
                   <div className="ml-4 flow-root lg:ml-6">
                     <Popover className="relative">
                       {() => (
@@ -295,6 +301,8 @@ export default function Navbar() {
                       )}
                     </Popover>
                   </div>
+                  </>
+                  )}
 
                   {/* Search */}
                   <div className="flex lg:ml-6">
