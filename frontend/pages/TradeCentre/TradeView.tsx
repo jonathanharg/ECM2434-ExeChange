@@ -230,7 +230,7 @@ export default function TradeView({
 
                       <p className="text-xl text-gray-600">
                         {" "}
-                        <b> {trade.location.name} </b>{" "}
+                        <b> {trade.location?.name} </b>{" "}
                       </p>
 
                       <p className="text-xl text-gray-600">
@@ -244,14 +244,7 @@ export default function TradeView({
                       </p>
                     </div>
 
-                    <p
-                      className={
-                        trade.receiver_exchanging.length == 0 ? " " : "hidden"
-                      }
-                    >
-                      {" "}
-                      You're <b> giving away </b> this item.{" "}
-                    </p>
+    
                     <div
                       className={
                         trade.giver_giving.length == 1
@@ -268,9 +261,14 @@ export default function TradeView({
                         </div>
                       ))}
                     </div>
+                    { trade.receiver_exchanging.length == 0 ? (<p className="p-1">
+                      {" "}
+                      You're <b> giving away </b> this item.{" "}
+                    </p>): (     
                     <div className="flex justify-center">
                       <ArrowPathIcon className="h-10 w-10 stroke-[3] text-green-800"></ArrowPathIcon>
-                    </div>
+                    </div>)}
+               
                     <div
                       className={
                         trade.receiver_exchanging.length == 1
@@ -288,12 +286,12 @@ export default function TradeView({
                       ))}
                     </div>
 
-                    <div className="p-2">
+                    <div className="justify-center">
                       {!isHere ? (
                         <>
                           <button
                             onClick={() => handleArrived()}
-                            className="flex w-fit items-center rounded-lg border border-gray-300 bg-stone-900 p-2.5 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
+                            className="flex w-fit items-center rounded-lg border border-gray-300 bg-stone-900 p-4 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
                           >
                             I'm Here!
                           </button>

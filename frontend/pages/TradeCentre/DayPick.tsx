@@ -51,6 +51,7 @@ export default function DayPick({ day, setDay }: DayPickerDateState) {
       <style> {css}</style>
       <DayPicker
         mode="single"
+        required
         selected={day}
         onSelect={setDay}
         fromDate={new Date()}

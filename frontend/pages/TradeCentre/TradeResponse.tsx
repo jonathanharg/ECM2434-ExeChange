@@ -107,13 +107,11 @@ export default function TradeResponse({
             : "hidden"
         }
       >
-        {trade.giver_giving.length == 1 ? (
-          <>
             <h3 className="text-xl font-bold text-gray-900">
               {" "}
-              Request for: {trade.giver_giving.map((i) => i.caption)}{" "}
+              {trade.giver_giving.length == 1 ? `Request for ${trade.giver_giving.map((i) => i.caption)}` : "items requested"}
             </h3>
-            <div className="flex w-full justify-center p-2">
+            <div className={trade.giver_giving.length == 1 ? "flex w-full justify-center p-2": "flex w-full justify-between p-2"}>
               {trade.giver_giving.map((i) => (
                 <div
                   key={i.id}
@@ -128,30 +126,6 @@ export default function TradeResponse({
                 <b> Message from {trade.receiver.username}: </b> {trade.message}
               </p>
             </div>
-          </>
-        ) : (
-          <>
-            <h3 className="text-xl font-bold text-gray-900">
-              {" "}
-              Items requested:{" "}
-            </h3>
-            <div className="flex w-full justify-between p-2">
-              {trade.giver_giving.map((i) => (
-                <div
-                  key={i.id}
-                  className="relative w-1/4 overflow-hidden rounded-lg font-bold text-gray-900 hover:opacity-75"
-                >
-                  <img draggable={false} tabIndex={1} src={i.image} />
-                </div>
-              ))}
-            </div>
-            <div className={trade.message === "" ? "hidden" : " "}>
-              <p className="pt-2 text-sm text-gray-500">
-                <b> Message from {trade.receiver.username}: </b> {trade.message}
-              </p>
-            </div>
-          </>
-        )}
         <div className="flex items-center justify-center p-2">
           <button
             onClick={handleClick}
@@ -169,6 +143,7 @@ export default function TradeResponse({
             : "hidden"
         }
       >
+        {/* TODO: filter by backend instead  */}
         {products.filter((i) => i.owner.id == trade.receiver.id).length > 0 ? (
           <>
             <h3 className="pb-2 text-xl font-bold text-gray-900">
@@ -276,7 +251,7 @@ export default function TradeResponse({
       <div
         className={
           page == 3
-            ? "flex h-full  flex-col items-center overflow-hidden rounded-lg p-4"
+            ? "flex h-full flex-col items-center overflow-hidden rounded-lg p-4"
             : "hidden"
         }
       >
