@@ -11,7 +11,6 @@ import { AuthProvider, RequireAuth } from "react-auth-kit";
 import "./index.css";
 import Marketplace from "./pages/Marketplace/Marketplace";
 import UploadPage from "./pages/Upload/UploadPage";
-import Dev from "./pages/Dev";
 
 import Profile from "./pages/Profile/Profile";
 
@@ -52,29 +51,19 @@ const router = createBrowserRouter([
         path: "/upload",
         element: <UploadPage />,
       },
-      {
-        path: "/dev",
-        element: <Dev />,
-      },
     ],
   },
 ]);
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.ts', { scope: '/' })
-  })
-}
-
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <AuthProvider
-      authType={"cookie"}
-      authName={"_auth"}
-      cookieDomain={window.location.hostname}
-      cookieSecure={window.location.protocol === "https:"} //should this be http for now ?
-    >
+  <AuthProvider
+    authType={"cookie"}
+    authName={"_auth"}
+    cookieDomain={window.location.hostname}
+    cookieSecure={window.location.protocol === "https:"} //should this be http for now ?
+  >
+    <React.StrictMode>
       <RouterProvider router={router} />
-    </AuthProvider>
-  </React.StrictMode>
+    </React.StrictMode>
+  </AuthProvider>
 );
