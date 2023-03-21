@@ -32,33 +32,7 @@ export default function TradeAlert({
       .then((data) => setProfileData(data));
   }
 
-  async function declineRequest() {
-    const apiPath = `/api/trade/${trade.id}/reject`;
-
-    await axios
-      .post(
-        apiPath,
-        JSON.stringify({
-          reject: true,
-        }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        // TODO: Handle more responses than just OK
-        if (response.data.status == "OK") {
-          rejectTrade(trade.id);
-        } else {
-          // TODO:
-          return;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+  
 
   useEffect(() => {
     fetchProfileData();
@@ -74,19 +48,10 @@ export default function TradeAlert({
             trade={trade}
             profileData={profileData}
             acceptTrade={acceptTrade}
+            rejectTrade = {rejectTrade}
           />
         </div>
 
-        {
-          <div className="pt-2">
-            <button
-              onClick={declineRequest}
-              className="flex h-10 w-fit items-center rounded-lg border border-gray-300 bg-red-800 p-2 text-sm font-medium text-white hover:bg-red-700 hover:text-gray-50"
-            >
-              <TrashIcon className="h-5 w-5 stroke-white stroke-[3]"></TrashIcon>
-            </button>
-          </div>
-        }
       </div>
     </div>
   );
