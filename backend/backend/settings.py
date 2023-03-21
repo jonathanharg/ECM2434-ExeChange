@@ -227,7 +227,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 XP_IN_LEVEL = 100
 
-DOMAIN_NAME = "http://127.0.0.1:8000" if DEBUG is True else "http://www.exechange.co.uk"
+DOMAIN_NAME = "http://127.0.0.1:8000" if DEBUG is True else "https://www.exechange.co.uk"
 
 # GMAIL CREDENTIALS SETUP
 SEND_VERIFICATION_EMAIL = os.getenv("SEND_VERIFICATION_EMAIL") == "True"
