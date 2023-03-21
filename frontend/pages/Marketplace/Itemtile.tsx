@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { Link } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Trading } from "./TradingPopup";
 import { useAuthUser } from "react-auth-kit";
@@ -92,9 +93,10 @@ export function Itemtile(product: Product) {
             <a href={product.href}>{product.caption}</a>
           </h3>
           <h6>
-            <a href="#" className="mt-1 text-xs text-gray-700">
-              {product.owner.username}
-            </a>
+          <Link to={"../profile/" + product.owner.username}>
+              {" "}
+              {product.owner.username}{" "}
+            </Link>
           </h6>
           <p className="mt-1 text-sm text-gray-500">
             {product.tags.map((t) => t.value).join(", ")}
