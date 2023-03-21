@@ -1,9 +1,8 @@
 import React from "react";
 
-export interface Location {
-  id: number;
+export type ProfileTradeLocation = {
   colour: string;
-  place: string;
+  name: string;
   icon: React.ForwardRefExoticComponent<
     React.SVGProps<SVGSVGElement> & {
       title?: string | undefined;
@@ -13,7 +12,7 @@ export interface Location {
   trades: number;
 }
 
-function Badge(location: Location) {
+function Badge(location: ProfileTradeLocation) {
   const thiscolour =
     "h-12 w-12 " + location.colour + " rounded-full flex items-center";
 
@@ -29,7 +28,7 @@ function Badge(location: Location) {
           </div>
         </div>
         <div className="flex h-full w-6/12 items-start">
-          <p className="my-auto text-lg font-semibold">{location.place}</p>
+          <p className="my-auto text-lg font-semibold">{location.name}</p>
         </div>
         <div className="flex h-full w-4/12 items-end justify-end">
           <button className="float-right my-auto flex rounded-md bg-green-800 px-5 py-1 font-medium text-white">

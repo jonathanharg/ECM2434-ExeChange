@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { Link } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Trading } from "./TradingPopup";
 import { useAuthUser } from "react-auth-kit";
@@ -24,8 +25,7 @@ export type tag = {
   label: string;
 };
 
-export function Itemtile(product: Product) { 
-
+export function Itemtile(product: Product) {
   const [open, setOpen] = useState(false);
   const auth = useAuthUser();
   return (
@@ -66,7 +66,7 @@ export function Itemtile(product: Product) {
                     </button>
                     {/* if(trading) {  } */}
                     {/* ADD IF CONDITION HERE - IF TRADING then : otherwise idk not that  */}
-                    <Trading key={product.id} {...product}/>
+                    <Trading key={product.id} {...product} />
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -93,9 +93,10 @@ export function Itemtile(product: Product) {
             <a href={product.href}>{product.caption}</a>
           </h3>
           <h6>
-            <a href="#" className="mt-1 text-xs text-gray-700">
-              {product.owner.username}
-            </a>
+          <Link to={"../profile/" + product.owner.username}>
+              {" "}
+              {product.owner.username}{" "}
+            </Link>
           </h6>
           <p className="mt-1 text-sm text-gray-500">
             {product.tags.map((t) => t.value).join(", ")}

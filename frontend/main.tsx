@@ -13,7 +13,7 @@ import Marketplace from "./pages/Marketplace/Marketplace";
 import UploadPage from "./pages/Upload/UploadPage";
 
 import Profile from "./pages/Profile/Profile";
-
+import PrivacyPolicy from "./pages/Help/PrivacyPolicy";
 
 //for using nested routes check out: https://reactrouter.com/en/main/start/tutorial
 //info is under the   " nested routes " title, you pretty much need to use an <outlet> to mark
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
           <RequireAuth loginPath={"/login"}>
             <Profile />
           </RequireAuth>
-        )
+        ),
       },
       {
         path: "/profile/:username",
@@ -58,11 +58,19 @@ const router = createBrowserRouter([
         loader: ({ params }) => {
           return null;
         },
-        action: ({ params }) => {}
+        action: ({ params }) => {},
       },
       {
         path: "/upload",
         element: <UploadPage />,
+      },
+      {
+        path: "/support",
+        element: <PrivacyPolicy />,
+        children: [{
+          path: "/support/privacy-policy",
+          element: <PrivacyPolicy />,
+        },],
       },
     ],
   },

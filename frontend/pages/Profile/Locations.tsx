@@ -20,17 +20,17 @@ import {
 import Itemtile, { Product } from "../Marketplace/Itemtile";
 import { DeleteItem } from "./DeleteItem";
 import { ProfileData } from "./Profilestats"
+import Badge, { ProfileTradeLocation } from "./Badge";
 
-const locations: Location[] = [
+
+const locations: ProfileTradeLocation[] = [
     {
-      id: 1,
       colour: "bg-yellow-400",
-      place: "Lafrowda",
+      name: "Lafrowda",
       icon: UserGroupIcon,
       trades: 3,
     },
     {
-      id: 2,
       colour: "bg-blue-500",
       place: "Library",
       icon: BookOpenIcon,
@@ -136,44 +136,15 @@ const locations: Location[] = [
     },
   ];
 
-export function Locations(profileData: ProfileData) {
-    const [searchState, setSearchState] = useState(new Set<string>());
-
-    const myLocations = profileData.locations;
-
-    function isSuperset(set, subset) {
-        for (const elem of subset) {
-            if (!set.has(elem)) {
-                return false;
-            }
-        }
-        return true;
-    }
+export function Locations({locations}: {locations: ProfileTradeLocation[]}) {
 
     return (
         <>
-        <p className="font-semibold text-gray-600">My Items</p>
-        <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-6">
-            {searchState.size != 0
-            ? locations
-                .filter((product) =>
-                    isSuperset(
-                    new Set(product.tags.map((i) => i.value)),
-                    searchState
-                    )
-                )
-                .map((product) => <Itemtile key={product.id} {...product} />)
-            : locations.map((product) => (
-                <>
-                <div className="relative">
-                    <Itemtile key={product.id} {...product} />
-                    <div className="absolute top-0 right-0 rounded">
-                        <DeleteItem key={product.id} {...product} />
-                    </div>
-                </div>
-                </>
-                ))}
-        </div>
+        {
+          locations.map(location => (
+            <Badge {...location} />
+          ))
+        }
         </>
     )
 }
