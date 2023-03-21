@@ -31,7 +31,7 @@ export default function TradeView({
 }: TradeViewProps) {
   const Datetime = trade.time;
   const meetingTime = Datetime?.split("T")[1]?.replace(":00Z", "");
-  const meetingDay = Datetime?.split("T")[0];
+  const meetingDay = Datetime?.split("T")[0]?.split("-")[2] + " / " + Datetime?.split("T")[0]?.split("-")[1]  ;
   const GiverPage = profileData?.name == trade.giver.username;
   const [isHere, setIsHere] = useState(false);
   const [code, setCode] = useState(0);
