@@ -256,7 +256,7 @@ export default function TradeResponse({
       </div>
       <div
         className={page == 3
-          ? "flex h-full flex-col items-center overflow-hidden rounded-lg p-4"
+          ? "flex h-full flex-col items-center overflow-visible rounded-lg p-4"
           : "hidden"}
       >
         <h3 className="text-xl font-bold text-gray-900">

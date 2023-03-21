@@ -181,7 +181,7 @@ export default function TradeView({
               >
                 <Disclosure.Panel
                   static
-                  className="overflow-hidden rounded-md px-4 pt-4 pb-2 text-sm text-gray-500 shadow"
+                  className="overflow-visible rounded-md px-4 pt-4 pb-2 text-sm text-gray-500 shadow"
                 >
                   {!GiverPage && (
                     <div className="flex w-full flex-col items-center justify-center">
