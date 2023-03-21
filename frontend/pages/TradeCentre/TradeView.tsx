@@ -138,34 +138,40 @@ export default function TradeView({
                 >
                   {!GiverPage && (
                     <div className="flex w-full flex-col items-center justify-center">
-                        <>
-                          <h3 className="text-xl font-bold text-gray-900">
-                        
-                            {trade.giver_giving.length == 1 ? `You requested the ${trade.giver_giving.map((i) => i.caption)}` : "You requested these items "}
-                        
-                          </h3>
-                          <div className={trade.giver_giving.length == 1 ? "flex w-full justify-center p-2": "flex w-full justify-between p-2"}>
-                            {trade.giver_giving.map((i) => (
-                              <div
-                                key={i.id}
-                                className="relative w-1/4 overflow-hidden rounded-lg font-bold text-gray-900 hover:opacity-75"
-                              >
-                                <img
-                                  draggable={false}
-                                  tabIndex={1}
-                                  src={i.image}
-                                />
-                              </div>
-                            ))}
-                          </div>
-                          <div
-                            className={trade.message === "" ? "hidden" : " "}
-                          >
-                            <p className="pt-2 text-sm text-gray-500">
-                              <b> You said: </b> {trade.message}
-                            </p>
-                          </div>
-                        </>
+                      <>
+                        <h3 className="text-xl font-bold text-gray-900">
+                          {trade.giver_giving.length == 1
+                            ? `You requested the ${trade.giver_giving.map(
+                                (i) => i.caption
+                              )}`
+                            : "You requested these items "}
+                        </h3>
+                        <div
+                          className={
+                            trade.giver_giving.length == 1
+                              ? "flex w-full justify-center p-2"
+                              : "flex w-full justify-between p-2"
+                          }
+                        >
+                          {trade.giver_giving.map((i) => (
+                            <div
+                              key={i.id}
+                              className="relative w-1/4 overflow-hidden rounded-lg font-bold text-gray-900 hover:opacity-75"
+                            >
+                              <img
+                                draggable={false}
+                                tabIndex={1}
+                                src={i.image}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                        <div className={trade.message === "" ? "hidden" : " "}>
+                          <p className="pt-2 text-sm text-gray-500">
+                            <b> You said: </b> {trade.message}
+                          </p>
+                        </div>
+                      </>
                     </div>
                   )}
 
@@ -244,7 +250,6 @@ export default function TradeView({
                       </p>
                     </div>
 
-    
                     <div
                       className={
                         trade.giver_giving.length == 1
@@ -261,14 +266,17 @@ export default function TradeView({
                         </div>
                       ))}
                     </div>
-                    { trade.receiver_exchanging.length == 0 ? (<p className="p-1">
-                      {" "}
-                      You're <b> giving away </b> this item.{" "}
-                    </p>): (     
-                    <div className="flex justify-center">
-                      <ArrowPathIcon className="h-10 w-10 stroke-[3] text-green-800"></ArrowPathIcon>
-                    </div>)}
-               
+                    {trade.receiver_exchanging.length == 0 ? (
+                      <p className="p-1">
+                        {" "}
+                        You're <b> giving away </b> this item.{" "}
+                      </p>
+                    ) : (
+                      <div className="flex justify-center">
+                        <ArrowPathIcon className="h-10 w-10 stroke-[3] text-green-800"></ArrowPathIcon>
+                      </div>
+                    )}
+
                     <div
                       className={
                         trade.receiver_exchanging.length == 1

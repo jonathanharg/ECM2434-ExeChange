@@ -107,25 +107,33 @@ export default function TradeResponse({
             : "hidden"
         }
       >
-            <h3 className="text-xl font-bold text-gray-900">
-              {" "}
-              {trade.giver_giving.length == 1 ? `Request for ${trade.giver_giving.map((i) => i.caption)}` : "items requested"}
-            </h3>
-            <div className={trade.giver_giving.length == 1 ? "flex w-full justify-center p-2": "flex w-full justify-between p-2"}>
-              {trade.giver_giving.map((i) => (
-                <div
-                  key={i.id}
-                  className="relative w-1/4 overflow-hidden rounded-lg font-bold text-gray-900 hover:opacity-75"
-                >
-                  <img draggable={false} tabIndex={1} src={i.image} />
-                </div>
-              ))}
+        <h3 className="text-xl font-bold text-gray-900">
+          {" "}
+          {trade.giver_giving.length == 1
+            ? `Request for ${trade.giver_giving.map((i) => i.caption)}`
+            : "items requested"}
+        </h3>
+        <div
+          className={
+            trade.giver_giving.length == 1
+              ? "flex w-full justify-center p-2"
+              : "flex w-full justify-between p-2"
+          }
+        >
+          {trade.giver_giving.map((i) => (
+            <div
+              key={i.id}
+              className="relative w-1/4 overflow-hidden rounded-lg font-bold text-gray-900 hover:opacity-75"
+            >
+              <img draggable={false} tabIndex={1} src={i.image} />
             </div>
-            <div className={trade.message === "" ? "hidden" : " "}>
-              <p className="pt-2 text-sm text-gray-500">
-                <b> Message from {trade.receiver.username}: </b> {trade.message}
-              </p>
-            </div>
+          ))}
+        </div>
+        <div className={trade.message === "" ? "hidden" : " "}>
+          <p className="pt-2 text-sm text-gray-500">
+            <b> Message from {trade.receiver.username}: </b> {trade.message}
+          </p>
+        </div>
         <div className="flex items-center justify-center p-2">
           <button
             onClick={handleClick}
