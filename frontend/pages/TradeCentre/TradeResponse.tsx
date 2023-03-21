@@ -9,7 +9,7 @@ import DayPick from "./DayPick";
 import { TradeInvolvement } from "./TradeCentre";
 import axios from "axios";
 import TimeLocation from "./TimeLocation";
-
+import Error from "./Error";
 interface TradeResponseProps {
   trade: TradeInvolvement;
   acceptTrade: (id: number) => void;
@@ -25,6 +25,7 @@ export default function TradeResponse({
   const [timePicked, setTimePicked] = useState("9:30");
   const [location, setLocation] = useState("Lafrowda");
   const [time, setTime] = useState<Date>();
+  const [err, setErrmsg] = useState<string>();
   // this "time" above includes date and time, had to call it time instead of date cus that is how its defined in backend
 
   function fetchProducts() {
@@ -88,44 +89,47 @@ export default function TradeResponse({
       )
       .then((response) => {
         // TODO: Handle more responses than just OK
+
         if (response.data.status == "OK") {
           acceptTrade(trade.id);
           return;
         }
+        if (response.status == 400) {
+          console.log(response.data.message);
+          
+        }
       })
       .catch((error) => {
-        console.log(error);
+        setErrmsg(error.response.data.message);      
       });
   }
 
   return (
-    <div className="flex w-full items-center justify-center">
+    <><div className="flex w-full items-center justify-center">
       <div
-        className={
-          page == 0
-            ? "flex w-full flex-col items-center justify-center"
-            : "hidden"
-        }
+        className={page == 0
+          ? "flex w-full flex-col items-center justify-center"
+          : "hidden"}
       >
-            <h3 className="text-xl font-bold text-gray-900">
-              {" "}
-              {trade.giver_giving.length == 1 ? `Request for ${trade.giver_giving.map((i) => i.caption)}` : "items requested"}
-            </h3>
-            <div className={trade.giver_giving.length == 1 ? "flex w-full justify-center p-2": "flex w-full justify-between p-2"}>
-              {trade.giver_giving.map((i) => (
-                <div
-                  key={i.id}
-                  className="relative w-1/4 overflow-hidden rounded-lg font-bold text-gray-900 hover:opacity-75"
-                >
-                  <img draggable={false} tabIndex={1} src={i.image} />
-                </div>
-              ))}
+        <h3 className="text-xl font-bold text-gray-900">
+          {" "}
+          {trade.giver_giving.length == 1 ? `Request for ${trade.giver_giving.map((i) => i.caption)}` : "items requested"}
+        </h3>
+        <div className={trade.giver_giving.length == 1 ? "flex w-full justify-center p-2" : "flex w-full justify-between p-2"}>
+          {trade.giver_giving.map((i) => (
+            <div
+              key={i.id}
+              className="relative w-1/4 overflow-hidden rounded-lg font-bold text-gray-900 hover:opacity-75"
+            >
+              <img draggable={false} tabIndex={1} src={i.image} />
             </div>
-            <div className={trade.message === "" ? "hidden" : " "}>
-              <p className="pt-2 text-sm text-gray-500">
-                <b> Message from {trade.receiver.username}: </b> {trade.message}
-              </p>
-            </div>
+          ))}
+        </div>
+        <div className={trade.message === "" ? "hidden" : " "}>
+          <p className="pt-2 text-sm text-gray-500">
+            <b> Message from {trade.receiver.username}: </b> {trade.message}
+          </p>
+        </div>
         <div className="flex items-center justify-center p-2">
           <button
             onClick={handleClick}
@@ -137,11 +141,9 @@ export default function TradeResponse({
         </div>
       </div>
       <div
-        className={
-          page == 1
-            ? "flex flex-col items-center overflow-hidden rounded-lg p-4"
-            : "hidden"
-        }
+        className={page == 1
+          ? "flex flex-col items-center overflow-hidden rounded-lg p-4"
+          : "hidden"}
       >
         {/* TODO: filter by backend instead  */}
         {products.filter((i) => i.owner.id == trade.receiver.id).length > 0 ? (
@@ -166,8 +168,7 @@ export default function TradeResponse({
                       draggable={false}
                       tabIndex={1}
                       src={i.image}
-                      onClick={() => handleExtraItems(i.id)}
-                    />
+                      onClick={() => handleExtraItems(i.id)} />
                   </div>
                 ))}
             </div>
@@ -213,11 +214,9 @@ export default function TradeResponse({
         </div>
       </div>
       <div
-        className={
-          page == 2
-            ? "flex flex-col items-center overflow-hidden rounded-lg p-4"
-            : "hidden"
-        }
+        className={page == 2
+          ? "flex flex-col items-center overflow-hidden rounded-lg p-4"
+          : "hidden"}
       >
         <h3 className="text-xl font-bold text-gray-900">
           Pick the day you&apos;d like to trade.
@@ -249,11 +248,9 @@ export default function TradeResponse({
         </div>
       </div>
       <div
-        className={
-          page == 3
-            ? "flex h-full flex-col items-center overflow-hidden rounded-lg p-4"
-            : "hidden"
-        }
+        className={page == 3
+          ? "flex h-full flex-col items-center overflow-hidden rounded-lg p-4"
+          : "hidden"}
       >
         <h3 className="text-xl font-bold text-gray-900">
           Pick the time and location you&apos;d like to trade at
@@ -263,8 +260,7 @@ export default function TradeResponse({
           selected={location}
           setSelected={setLocation}
           time={timePicked}
-          setTime={setTimePicked}
-        />
+          setTime={setTimePicked} />
 
         <div className="grid w-full grid-cols-3 p-2 ">
           <div className="justify-left">
@@ -289,5 +285,10 @@ export default function TradeResponse({
         </div>
       </div>
     </div>
+    <div className= {!err ?" hidden" : "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"} role="alert">
+        <strong className="font-bold">Uh oh!</strong>
+        <span className="block sm:inline">{" "}{err}</span>
+        </div>
+    </>
   );
 }
