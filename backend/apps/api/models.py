@@ -73,6 +73,12 @@ class Achievement(models.Model):
         default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
     )
     # field representing xp received when achievement unlocked -> PositiveIntegerField
+    
+class Location(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
 
 class ExeChangeUser(AbstractUser):
     profile_level = models.PositiveIntegerField(
