@@ -7,7 +7,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.status import HTTP_401_UNAUTHORIZED
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def get_user_notifications(request: HttpRequest) -> Response:
     """
     Filter all notification based on a user from token in request
@@ -16,27 +17,28 @@ def get_user_notifications(request: HttpRequest) -> Response:
 
     if authenticated_user is None:
         return Response(NOT_LOGGED_IN, status=HTTP_401_UNAUTHORIZED)
-    
+
     # get all notifications for user
     user_notifications = Notification.objects.filter(user=authenticated_user)
 
     res = []
     for notification in user_notifications:
-        res.append({
-            "id": notification.id,
-            "notification_type": str(notification.notification_type),
-            "text": str(notification.text),
-            "link": "127",
+        res.append(
+            {
+                "id": notification.id,
+                "notification_type": str(notification.notification_type),
+                "text": str(notification.text),
+                "link": str(notification.link),
             }
         )
 
-    return Response({
-        "status": "OK",
-        "message": "Successfully retrieved notifications",
-        "notifications": res,
-    })
+    return Response(
+        {
+            "status": "OK",
+            "message": "Successfully retrieved notifications",
+            "notifications": res,
+        }
+    )
 
-NOT_LOGGED_IN = {
-    "status": "NOT_LOGGED_IN",
-    "message": "User is not logged in"
-}
+
+NOT_LOGGED_IN = {"status": "NOT_LOGGED_IN", "message": "User is not logged in"}

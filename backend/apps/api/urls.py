@@ -1,13 +1,13 @@
 from apps.api.routes import (
     login,
     marketplace,
+    notify,
     profile,
     register,
     status,
     tags,
     trading,
     upload,
-    notify,
 )
 from django.urls import path
 

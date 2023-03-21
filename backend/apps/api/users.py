@@ -1,9 +1,31 @@
 # type: ignore
 from apps.api.models import ExeChangeUser, Notification, NotificationType
+from django.conf import settings
 
-from backend.settings import XP_IN_LEVEL
 
-def create_user_notification(user: ExeChangeUser, notification_type: NotificationType) -> Notification | None:
+def create_notification_link(
+    user: ExeChangeUser, notification_type: NotificationType
+) -> str:
+    """
+    Generate link for a notification based on user and notification_type
+    """
+    if notification_type == NotificationType.TRADE:
+        link = settings.DOMAIN_NAME + "/tradecentre"
+    elif (
+        notification_type == NotificationType.ACHIEVEMENT_UNLOCKED
+        or notification_type == NotificationType.LOCATION_UNLOCKED
+        or notification_type == NotificationType.LEVEL_UP
+    ):
+        link = settings.DOMAIN_NAME + "/profile"
+    else:
+        raise ValueError("Type given to create link is not correct!")
+
+    return link
+
+
+def create_user_notification(
+    user: ExeChangeUser, notification_type: NotificationType
+) -> Notification | None:
     """
     Create a new notification
 
@@ -14,9 +36,14 @@ def create_user_notification(user: ExeChangeUser, notification_type: Notificatio
     Returns:
         Notification: The notification object created if successful
     """
-    # TODO forming link to part of ExeChange required
     try:
-        new_notification = Notification.objects.create(user=user, text=notification_type.label, notification_type=notification_type, link="127")
+        link = create_notification_link(user, notification_type)
+        new_notification = Notification.objects.create(
+            user=user,
+            text=notification_type.label,
+            notification_type=notification_type,
+            link=link,
+        )
     except ValueError as e:
         print("ERROR: type given is not correct, check models.py")
         print(f"More info: {e}")
@@ -47,9 +74,9 @@ def update_user_xp(user: ExeChangeUser, xp_to_add: int) -> int | None:
 
     new_xp = user.current_xp + xp_to_add
 
-    while new_xp > XP_IN_LEVEL:
+    while new_xp > settings.XP_IN_LEVEL:
         update_user_level(user)
-        new_xp = new_xp - XP_IN_LEVEL
+        new_xp = new_xp - settings.XP_IN_LEVEL
 
     user.current_xp = new_xp
     user.save()
