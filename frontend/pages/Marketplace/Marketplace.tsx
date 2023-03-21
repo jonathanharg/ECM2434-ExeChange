@@ -31,12 +31,6 @@ function Marketplace() {
     <div className="bg-white">
       <div className="mx-auto max-w-2xl py-4 px-6 lg:max-w-7xl">
         <div className="mx-auto mb-6 max-w-2xl">
-          <label
-            htmlFor="countries"
-            className="mb-2 block text-sm font-medium text-gray-400 dark:text-green-800"
-          >
-            Search by tag
-          </label>
           <TagSelect setState={setSearchState} />
         </div>
         <div className="grid grid-cols-2 gap-y-4 gap-x-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

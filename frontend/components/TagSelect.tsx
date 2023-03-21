@@ -27,6 +27,7 @@ export default function TagSelect({ setState }: TagStates) {
     <Select
       isMulti
       options={tags}
+      placeholder="Search..."
       styles={{
         input: (base) => ({
           ...base,
@@ -39,7 +40,7 @@ export default function TagSelect({ setState }: TagStates) {
         ...theme,
         colors: {
           ...theme.colors,
-          text: "#dc2626",
+          text: "#374151",
           primary25: "#dcfce7",
           primary: "#166534",
         },
