@@ -379,27 +379,30 @@ export default function TradeView({
             <>
               <Disclosure.Button className="flex w-full justify-between rounded-lg bg-red-800 px-4 py-3 text-left text-sm font-medium text-white shadow hover:bg-red-600 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
                 <XMarkIcon className="h-5 w-5 stroke-white stroke-[3]"></XMarkIcon>
-                    {!GiverPage && (rejector == trade.receiver.username || rejector == undefined) && (
+                    {/* {!GiverPage && (rejector == trade.receiver.username && rejector == undefined) ? (
                       <span>
                         <b>You deleted your request!</b>
-                      </span>)}
-                      {!GiverPage && (rejector == trade.giver.username || rejector == undefined) && (
+                      </span>) :
+                      !GiverPage && (rejector == trade.giver.username && rejector == undefined) && (
                          <span>
                          <b>{trade.giver.username} deleted your request :&#40;</b>
                         </span>
                         )}
                   
-                    {GiverPage && (rejector == trade.receiver.username || rejector == undefined) &&
+                    {GiverPage && (rejector == trade.receiver.username && rejector == undefined) ?
                       (
                         <span>
                           <b>{trade.receiver.username} deleted their request.</b>
-                        </span>)}
+                        </span>) :
                      
-                      {GiverPage && (rejector == trade.giver.username || rejector == undefined) && (
+                      GiverPage && (rejector == trade.giver.username && rejector == undefined) && (
                            <span>
                            <b>You deleted {trade.receiver.username}&apos;s request.</b>
                          </span>
-                        )}
+                        )} */}
+                        <span>
+                        <b>The request was deleted!</b>
+                      </span>
                     
                     
                 <ChevronUpIcon
