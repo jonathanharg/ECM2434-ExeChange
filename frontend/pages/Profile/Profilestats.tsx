@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 
@@ -18,8 +18,6 @@ export type achievement = {
 };
 
 function Profilestats(profileData: ProfileData) {
-  let { username } = useParams();
-
   return (
     <div className="flex items-center justify-between px-4 pt-12">
       <UserCircleIcon className="h-32 w-32" />

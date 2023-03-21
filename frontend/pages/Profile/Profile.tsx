@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Itemtile, { Product } from "../Marketplace/Itemtile";
-import { DeleteItem } from "./DeleteItem";
 import {
   ChatBubbleLeftRightIcon,
   PowerIcon,
@@ -20,22 +19,15 @@ import {
   LightBulbIcon,
   TicketIcon,
 } from "@heroicons/react/24/outline";
-import Badge, { Location } from "./Badge";
-import Tradealert, { Trade } from "./Tradealert";
 import Achievement, { achievement } from "./Achievement";
 import Profilestats, { ProfileData } from "./Profilestats";
 
 import Tradealert from "./Tradealert";
-import { Location } from "./Badge";
 import Badge from "./Badge";
 import { Trade } from "./Tradealert";
-import { MyItems } from "./MyItemsProfile";
-import Achievement from "./Achievement";
-import { achievement } from "./Achievement";
-import Profilestats from "./Profilestats";
-import { ProfileData } from "./Profilestats";
 import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
 import { Locations } from "./Locations";
+import DeleteItem from "./DeleteItem";
 
 function Profile() {
   const { username } = useParams();
@@ -135,7 +127,44 @@ function Profile() {
         <Locations locations={locations} />
       </div>
       <div className="flex w-full flex-col px-4 pt-12">
-        <MyItems />
+        <div className="flex w-full flex-col px-4 pt-12">
+          <p className="font-semibold text-gray-600">
+            {myProfile() ? <>My Items</> : <>{username}&apos;s Items</>}
+          </p>
+          <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-6">
+            {searchState.size != 0
+              ? products
+                  .filter((product) =>
+                    isSuperset(
+                      new Set(product.tags.map((i) => i.value)),
+                      searchState
+                    )
+                  )
+                  .map((product) => <Itemtile key={product.id} {...product} />)
+              : products.map((product) =>
+                  myProfile() == true ? (
+                    <>
+                      <div className="relative">
+                        <Itemtile key={product.id} {...product} />
+                        <div className="absolute top-0 right-0 rounded">
+                          <DeleteItem
+                            key={product.id}
+                            deleteItem={deleteItem}
+                            product={product}
+                          />
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="relative">
+                        <Itemtile key={product.id} {...product} />
+                      </div>
+                    </>
+                  )
+                )}
+          </div>
+        </div>
       </div>
     </div>
   );

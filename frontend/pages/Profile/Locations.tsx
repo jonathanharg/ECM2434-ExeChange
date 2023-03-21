@@ -17,9 +17,6 @@ import {
   LightBulbIcon,
   TicketIcon,
 } from "@heroicons/react/24/outline";
-import Itemtile, { Product } from "../Marketplace/Itemtile";
-import { DeleteItem } from "./DeleteItem";
-import { ProfileData } from "./Profilestats";
 import Badge, { ProfileTradeLocation } from "./Badge";
 
 const locations: ProfileTradeLocation[] = [
