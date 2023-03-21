@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 interface Notification {
-    notification_type: string,
-    text: string,
-    link: string,
+  notification_type: string;
+  text: string;
+  link: string;
 }
 
 function SingleNotification(notification: Notification) {
@@ -15,33 +15,39 @@ function SingleNotification(notification: Notification) {
     </div>
   );
 }
+export default SingleNotification;
 
-function NotificationBox() {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+// function NotificationBox() {
+//   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-    const fetchNotification = () => {
-    return fetch("/api/getnotifications")
-      .then((response) => response.json())
-      .then((data) => setNotifications(data.notifications))
-  };
+//   const fetchNotifications = () => {
+//     return fetch("/api/getnotifications")
+//       .then((response) => response.json())
+//       .then((data) => setNotifications(data.notifications));
+//   };
 
-  useEffect(() => {
-    fetchNotification();
-  }, []);
+//   useEffect(() => {
+//     fetchNotifications();
+//   }, []);
 
-  // Checking notifications every 10 seconds
-  setInterval(() => {
-    fetchNotification();
-  }, 10000);
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       fetchNotifications();
+//     }, 5000);
 
-  return (
-    <div>
-      <ul>
-        {notifications.map((notification) => (
-          <SingleNotification {...notification}/>
-        ))}
-      </ul>
-    </div>
-  );
-}
-export default NotificationBox;
+//     return () => {
+//       clearInterval(interval);
+//     };
+//   }, []);
+
+//   return (
+//     <div>
+//       <ul>
+//         {notifications.map((notification) => (
+//           <SingleNotification {...notification} />
+//         ))}
+//       </ul>
+//     </div>
+//   );
+// }
+// export default NotificationBox;

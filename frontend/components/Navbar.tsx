@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "./Logo";
 import { Fragment, useState } from "react";
 import Upload from "../pages/Upload/Upload";
-import NotificationBox from "./NotificationBox";
+import SingleNotification from "./NotificationBox";
 import { usePopper } from "react-popper";
 import { Dialog, Popover, Transition } from "@headlessui/react";
 import {
@@ -23,6 +23,12 @@ const navigation = [
   { name: "Upload", to: "/upload" },
 ];
 
+interface Notification {
+  notification_type: string;
+  text: string;
+  link: string;
+}
+
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(false);
   const [uploadButtonReference, setUploadButtonReference] = useState();
@@ -36,6 +42,27 @@ export default function Navbar() {
   const auth = useAuthUser();
   const signOut = useSignOut();
 
+  // Notifications
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  const fetchNotifications = () => {
+    return fetch("/api/getnotifications")
+      .then((response) => response.json())
+      .then((data) => setNotifications(data.notifications));
+  };
+
+  // fetching notifications every 5 seconds
+  // notifications are also checked when bell icon is clicked
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchNotifications();
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+  
   return (
     <>
       <div className="bg-white">
@@ -244,6 +271,7 @@ export default function Navbar() {
                             <BellIcon
                               className="h-6 w-6 text-gray-400 hover:text-gray-500"
                               aria-hidden="true"
+                              onClick={() => fetchNotifications()}
                             />
                           </Popover.Button>
                           <Transition
@@ -256,7 +284,11 @@ export default function Navbar() {
                             leaveTo="opacity-0 translate-y-1"
                           >
                             <Popover.Panel className="w-screen min-w-max sm:mr-5 sm:max-w-xs sm:shadow-xl">
-                              <NotificationBox />
+                              <ul>
+                                {notifications.map((notification) => (
+                                  <SingleNotification {...notification} />
+                                ))}
+                              </ul>
                             </Popover.Panel>
                           </Transition>
                         </>
