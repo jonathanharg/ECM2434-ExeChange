@@ -2,6 +2,7 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   CheckCircleIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import { Product } from "../Marketplace/Itemtile";
@@ -9,7 +10,7 @@ import DayPick from "./DayPick";
 import { TradeInvolvement } from "./TradeCentre";
 import axios from "axios";
 import TimeLocation from "./TimeLocation";
-import Error from "./Error";
+
 interface TradeResponseProps {
   trade: TradeInvolvement;
   acceptTrade: (id: number) => void;
@@ -26,6 +27,7 @@ export default function TradeResponse({
   const [location, setLocation] = useState("Lafrowda");
   const [time, setTime] = useState<Date>();
   const [err, setErrmsg] = useState<string>();
+  const [showError, setShowError] = useState(false);
   // this "time" above includes date and time, had to call it time instead of date cus that is how its defined in backend
 
   function fetchProducts() {
@@ -94,12 +96,9 @@ export default function TradeResponse({
           acceptTrade(trade.id);
           return;
         }
-        if (response.status == 400) {
-          console.log(response.data.message);
-          
-        }
       })
       .catch((error) => {
+        setShowError(true);
         setErrmsg(error.response.data.message);      
       });
   }
@@ -293,10 +292,25 @@ export default function TradeResponse({
         </div>
       </div>
     </div>
-    <div className= {!err ?" hidden" : "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"} role="alert">
-        <strong className="font-bold">Uh oh!</strong>
-        <span className="block sm:inline">{" "}{err}</span>
+    <div
+      id="Error"
+      className="md:max-w-md relative rounded-md border-2 border-red-500 bg-red-200 p-4" 
+      hidden={!showError}
+    >
+      <div className="absolute right-2 top-2 align-top hover:cursor-pointer">
+        <div
+          onClick={() => {
+            setShowError(false);
+          }}
+          className=""
+        >
+          <XMarkIcon className="m-auto h-5 w-5 stroke-black stroke-2" />
         </div>
+      </div>
+      <label className="font-bold">Uh oh</label>
+      <br />
+      <label>{err}</label>
+    </div>
     </>
   );
 }
