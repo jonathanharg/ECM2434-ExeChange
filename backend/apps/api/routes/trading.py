@@ -32,7 +32,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
 
-def valid_trade_time(time: datetime | None) -> bool:
+def is_invalid_trade_time(time: datetime | None) -> bool:
     now = datetime.now(timezone.utc)
     TRADING_HOURS = [9, 10, 11, 12, 13, 14, 15, 16]
 
@@ -40,6 +40,7 @@ def valid_trade_time(time: datetime | None) -> bool:
     in_hours = time.hour in TRADING_HOURS
     in_past = time <= now
     within_a_week = (time - now) < timedelta(days=7, hours=12)
+    is_today = time.date == now.date
     weekend = time.weekday() > 4  # Index of weekdays starting a Monday: 0, 4 is Friday
     return (
         (time is None)
@@ -47,7 +48,8 @@ def valid_trade_time(time: datetime | None) -> bool:
         | (not half_past)
         | (in_past)
         | (not within_a_week)
-        | weekend
+        | (weekend)
+        | (is_today)
     )
 
 
@@ -145,7 +147,6 @@ def reject_trade(request: HttpRequest, trade_id: int) -> Response:
     return OK
 
 
-# TODO: Can currently accept trade requests in the past
 @transaction.atomic
 @api_view(["POST"])
 def accept_trade(request: HttpRequest, trade_id: int) -> Response:
@@ -191,6 +192,23 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
 
         if item_request_by_user(user, item):
             return ITEM_ALREADY_REQUESTED
+        
+    try:
+        location = Location.objects.get(name=data["location"])
+    except Location.DoesNotExist:
+        return INVALID_LOCATION
+
+    try:
+        time = parse_datetime(data["time"])
+    except (ValueError, TypeError):
+        return INVALID_TIME
+
+    if not is_invalid_trade_time(time):
+        return INVALID_TIME
+
+    time = time.replace(
+        second=0, microsecond=0
+    )  # ignore anything less than minutes
 
     try:
         with transaction.atomic():
@@ -211,23 +229,6 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
                 trade.status = trade.TradeStatuses.REJECTED
                 trade.save()
                 return ITEM_ALREADY_ACCEPTED
-
-            try:
-                location = Location.objects.get(name=data["location"])
-            except Location.DoesNotExist:
-                return INVALID_LOCATION
-
-            try:
-                time = parse_datetime(data["time"])
-            except (ValueError, TypeError):
-                return INVALID_TIME
-
-            if not valid_trade_time(time):
-                return INVALID_TIME
-
-            time = time.replace(
-                second=0, microsecond=0
-            )  # ignore anything less than minutes
 
             trade.receiver_exchanging.set(receiver_exchanging)
             trade.location = location

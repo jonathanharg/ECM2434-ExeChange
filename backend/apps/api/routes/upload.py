@@ -13,11 +13,12 @@ from apps.api.responses import (
     UPLOAD_ACCEPTED,
 )
 from django.http import HttpRequest
+from django.db.models import Q
 from PIL import Image, ImageOps, UnidentifiedImageError
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-
+# TODO: Don't upload duplicated items
 @api_view(["POST"])
 def upload(request: HttpRequest) -> Response:
     user = authenticate_user(request)
@@ -41,6 +42,11 @@ def upload(request: HttpRequest) -> Response:
     # Replace multiple successive spaces with a single space
     caption_clean = re.sub(r"\s\s+", " ", caption_alphanumeric)
     caption_no_whitespace = re.sub(r"\s+", "", caption_alphanumeric)
+
+    if ClothingItem.objects.filter(Q(caption=caption) & Q(owner=user)).exists():
+        # If a user uploads with a duplicate caption, ignore it.
+        # Probably a resent request
+        return Response()
 
     if (len(caption_clean) > 100) | (len(caption_no_whitespace) < 5):
         return INVALID_UPLOAD_CAPTION
