@@ -1,21 +1,6 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
-
-export type ProfileData = {
-  id: number;
-  username: string;
-  achievements: achievement[];
-  current_xp: number;
-  profile_level: number;
-};
-
-export type achievement = {
-  id: number;
-  text: string;
-  colour: string;
-  xp_achieved: number;
-};
+import { ProfileData } from "./Profile";
 
 function Profilestats(profileData: ProfileData) {
   return (

@@ -1,16 +1,5 @@
 import React from "react";
-
-export type ProfileTradeLocation = {
-  colour: string;
-  name: string;
-  icon: React.ForwardRefExoticComponent<
-    React.SVGProps<SVGSVGElement> & {
-      title?: string | undefined;
-      titleId?: string | undefined;
-    }
-  >;
-  trades: number;
-};
+import { ProfileTradeLocation } from "./Profile";
 
 function Badge(location: ProfileTradeLocation) {
   const thiscolour =

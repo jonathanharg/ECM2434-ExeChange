@@ -1,21 +1,7 @@
 import React from "react";
+import { ProfileAchievement } from "./Profile";
 
-export interface ProfileData {
-  id: number;
-  username: string;
-  achievements: achievement[];
-  current_xp: number;
-  profile_level: number;
-}
-
-export type achievement = {
-  id: number;
-  text: string;
-  colour: string;
-  xp_achieved: number;
-};
-
-function Achievement(achievement: achievement) {
+function Achievement(achievement: ProfileAchievement) {
   const format =
     "font-ligth flex w-32 rounded-full " +
     achievement?.colour +

@@ -62,7 +62,7 @@ const router = createBrowserRouter([
       {
         path: "/upload",
         element: <UploadPage />,
-      }
+      },
     ],
   },
 ]);
