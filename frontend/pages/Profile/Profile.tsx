@@ -25,24 +25,6 @@ import Tradealert, { Trade } from "./Tradealert";
 import Achievement, { achievement } from "./Achievement";
 import Profilestats, { ProfileData } from "./Profilestats";
 
-import {
-  ChatBubbleLeftRightIcon,
-  PowerIcon,
-  CameraIcon,
-  UserGroupIcon,
-  BookOpenIcon,
-  CloudIcon,
-  DocumentChartBarIcon,
-  BuildingLibraryIcon,
-  RocketLaunchIcon,
-  NewspaperIcon,
-  BuildingOffice2Icon,
-  FilmIcon,
-  MoonIcon,
-  BeakerIcon,
-  LightBulbIcon,
-  TicketIcon,
-} from "@heroicons/react/24/outline";
 
 import Tradealert from "./Tradealert";
 import { Location } from "./Badge";
