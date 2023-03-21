@@ -74,3 +74,20 @@ class ExeChangeUser(AbstractUser):
     current_xp = models.PositiveIntegerField(
         default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
     )
+
+
+class NotificationType(models.TextChoices):
+    TRADE = 'TR', 'Trade Alert!'
+    LEVEL_UP = 'LVL', 'Level Up!'
+    LOCATION_UNLOCKED = 'LOC', 'New location unlocked!'
+    ACHIEVEMENT_UNLOCKED = 'ACHV', 'New achievement unlocked!'
+
+
+class Notification(models.Model):
+    text = models.CharField(max_length=255)
+
+    notification_type = models.CharField(max_length=50, choices=NotificationType.choices)
+
+    link = models.CharField(max_length=255, default=None)
+
+    user = models.ForeignKey(ExeChangeUser, on_delete=models.CASCADE)

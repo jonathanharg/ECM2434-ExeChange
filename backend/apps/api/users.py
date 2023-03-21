@@ -1,7 +1,28 @@
 # type: ignore
-from apps.api.models import ExeChangeUser
+from apps.api.models import ExeChangeUser, Notification, NotificationType
 
 from backend.settings import XP_IN_LEVEL
+
+def create_user_notification(user: ExeChangeUser, notification_type: NotificationType) -> Notification | None:
+    """
+    Create a new notification
+
+    Args:
+        user (ExeChangeUser): User to notify
+        type (NotificationType): Type of notification
+
+    Returns:
+        Notification: The notification object created if successful
+    """
+    # TODO forming link to part of ExeChange required
+    try:
+        new_notification = Notification.objects.create(user=user, text=notification_type.label, notification_type=notification_type)
+    except ValueError as e:
+        print("ERROR: type given is not correct, check models.py")
+        print(f"More info: {e}")
+        new_notification = None
+
+    return new_notification
 
 
 def update_user_level(user: ExeChangeUser) -> int | None:
