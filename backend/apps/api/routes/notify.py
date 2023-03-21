@@ -12,7 +12,6 @@ def get_user_notification(request: HttpRequest) -> Response:
     """
     Filter all notification based on a user from token in request
     """
-
     authenticated_user = authenticate_user(request)
 
     if authenticated_user is None:
@@ -21,9 +20,15 @@ def get_user_notification(request: HttpRequest) -> Response:
     # get all notifications for user
     user_notifications = Notification.objects.filter(user=authenticated_user)
 
-    # TODO: return a dictionary of user_notifications that can be read from the frontend
+    res = {}
+    for notification in user_notifications:
+        res.update({str(notification.id):str(notification.text)})
 
-    pass
+    return Response({
+        "status": "OK",
+        "message": "Successfully retrieved notifications",
+        "notifications": res,
+    })
 
 NOT_LOGGED_IN = {
     "status": "NOT_LOGGED_IN",
