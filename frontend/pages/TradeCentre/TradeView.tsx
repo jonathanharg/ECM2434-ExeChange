@@ -30,12 +30,14 @@ export default function TradeView({
   rejectTrade
 }: TradeViewProps) {
   const Datetime = trade.time;
-  const meetingTime = Datetime?.split("T")[1]?.replace(":00Z", "");
+  const meetingTime = Datetime?.split("T")[1]?.replace("Z", "");
   const meetingDay = Datetime?.split("T")[0]?.split("-")[2] + " / " + Datetime?.split("T")[0]?.split("-")[1]  ;
   const GiverPage = profileData?.name == trade.giver.username;
   const [isHere, setIsHere] = useState(false);
   const [code, setCode] = useState(0);
   const [inputcode, setInputCode] = useState("");
+  const [err, setErrmsg] = useState<string>();
+  const [showError, setShowError] = useState(false);
 
   async function handleArrived() {
     const apiPath = `/api/trade/${trade.id}/arrived`;
@@ -52,6 +54,8 @@ export default function TradeView({
         }
       })
       .catch((error) => {
+        setShowError(true);
+        setErrmsg(error.response.data.message);
         console.log(error);
       });
   }
@@ -68,6 +72,8 @@ export default function TradeView({
         }
       })
       .catch((error) => {
+        setShowError(true);
+        setErrmsg(error.response.data.message);
         console.log(error);
       });
   }
@@ -94,6 +100,8 @@ export default function TradeView({
         }
       })
       .catch((error) => {
+        setShowError(true);
+        setErrmsg(error.response.data.message);
         console.log(error);
       });
   }
@@ -115,6 +123,7 @@ export default function TradeView({
       .then((response) => {
         // TODO: Handle more responses than just OK
         if (response.data.status == "OK") {
+
           console.log(response.data);
         } else {
           // TODO:
@@ -122,6 +131,8 @@ export default function TradeView({
         }
       })
       .catch((error) => {
+        setShowError(true);
+        setErrmsg(error.response.data.message); 
         console.log(error);
       });
   }
@@ -328,7 +339,7 @@ export default function TradeView({
                         </>
                       ) : isHere &&
                         profileData?.name == trade.giver.username ? (
-                        <div className="w-full px-3 md:w-1/2">
+                        <div className="w-full">
                           <label
                             className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-700"
                             htmlFor="grid-last-name"
@@ -341,21 +352,47 @@ export default function TradeView({
                             id="grid-last-name"
                             type="text"
                             placeholder="Doe" />
+                            <div className="flex p-2 justify-center">
                           <button
                             onClick={() => handleSendConfirmationCode()}
                             className="flex w-fit items-center rounded-lg border border-gray-300 bg-stone-900 p-2.5 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
                           >
                             Send
                           </button>
+                          </div>
                         </div>
                       ) : (
                         isHere &&
-                        profileData?.name == trade.receiver.username && (
+                        profileData?.name == trade.receiver.username && code !== 0 ? (
                           <p className="pt-2 text-sm text-gray-500">
                             The confirmation code is {code}
                           </p>
+                        ): isHere &&
+                        profileData?.name == trade.receiver.username && code == 0 &&(
+                          <p className="pt-2 text-sm text-gray-500">
+                            The other trader isn't here yet! <b>Refresh</b> and <b> Try again</b> when they are. 
+                          </p>
                         )
                       )}
+                    </div>
+                    <div
+                      id="Error"
+                      className="md:max-w-md relative rounded-md border-2 border-red-500 bg-red-200 p-4" 
+                      hidden={!showError}
+                    >
+                      <div className="absolute right-2 top-2 align-top hover:cursor-pointer">
+                        <div
+                          onClick={() => {
+                            setShowError(false);
+                          }}
+                          className=""
+                        >
+                          <XMarkIcon className="m-auto h-5 w-5 stroke-black stroke-2" />
+                        </div>
+                      </div>
+                      <label className="font-bold">Uh oh</label>
+                      <br />
+                      <label>{err}</label>
                     </div>
                   </div>
                 </Disclosure.Panel>

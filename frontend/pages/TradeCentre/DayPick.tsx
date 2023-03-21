@@ -56,7 +56,7 @@ export default function DayPick({ day, setDay }: DayPickerDateState) {
         onSelect={setDay}
         fromDate={new Date()}
         components={{ Row: OnlyThisWeek }}
-        disabled={[isPastDate, isPostNextWeek, isWeekend]}
+        disabled={[new Date(), isPastDate, isPostNextWeek, isWeekend]}
         showOutsideDays
         modifiersClassNames={{
           selected: "my-selected",
