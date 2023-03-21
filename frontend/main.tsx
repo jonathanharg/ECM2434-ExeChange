@@ -10,7 +10,7 @@ import { AuthProvider, RequireAuth } from "react-auth-kit";
 
 import "./index.css";
 import Marketplace from "./pages/Marketplace/Marketplace";
-import UploadPage from "./pages/Upload/UploadPage";
+import Upload from "./pages/Upload/Upload";
 import Profile from "./pages/Profile/Profile";
 import TradeCentre from "./pages/TradeCentre/TradeCentre";
 import Error from "./pages/Error";
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
         path: "/upload",
         element: (
           <RequireAuth loginPath={"/login"}>
-            <UploadPage />
+            <Upload />
           </RequireAuth>
         ),
       },

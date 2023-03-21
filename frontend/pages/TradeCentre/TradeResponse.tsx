@@ -113,9 +113,17 @@ export default function TradeResponse({
       >
         <h3 className="text-xl font-bold text-gray-900">
           {" "}
-          {trade.giver_giving.length == 1 ? `Request for ${trade.giver_giving.map((i) => i.caption)}` : "items requested"}
+          {trade.giver_giving.length == 1
+            ? `Request for ${trade.giver_giving.map((i) => i.caption)}`
+            : "items requested"}
         </h3>
-        <div className={trade.giver_giving.length == 1 ? "flex w-full justify-center p-2" : "flex w-full justify-between p-2"}>
+        <div
+          className={
+            trade.giver_giving.length == 1
+              ? "flex w-full justify-center p-2"
+              : "flex w-full justify-between p-2"
+          }
+        >
           {trade.giver_giving.map((i) => (
             <div
               key={i.id}

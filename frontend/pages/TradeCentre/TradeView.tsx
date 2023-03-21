@@ -276,7 +276,6 @@ export default function TradeView({
                       </p>
                     </div>
 
-
                     <div
                       className={trade.giver_giving.length == 1
                         ? "flex w-full justify-center p-2"

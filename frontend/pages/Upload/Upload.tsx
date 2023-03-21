@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { ArrowUpTrayIcon, DocumentPlusIcon } from "@heroicons/react/24/outline";
+import axios, { AxiosError } from "axios";
+import { ArrowUpTrayIcon, DocumentPlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import TagSelect from "../../components/TagSelect";
 import { Tag } from "../Marketplace/Itemtile";
 import { MinusCircleIcon } from "@heroicons/react/20/solid";
+import { useAuthUser } from "react-auth-kit";
+import { useNavigate } from "react-router";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
 function Upload() {
-  // TODO: again most of these can be use Ref since we're not rerendering on change
   const [caption, setCaption] = useState("");
   const [searchState, setSearchState] = useState(new Set<Tag>());
   const [image, setImage] = useState<File>();
@@ -19,6 +20,9 @@ function Upload() {
   const [description, setDescription] = useState("");
   const [key, setKey] = useState<number>(0);
   const fileRef = useRef(null);
+  const [showError, setShowError] = useState(false)
+  const [errorTitle, setErrorTitle] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,19 +32,37 @@ function Upload() {
       image: image,
       description: description,
     };
+    setShowError(false)
 
     await axios.post("/api/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
+    }).then(response => {
+      console.log("Response")
+      console.log(response)
+      setImage(undefined);
+      setCaption("");
+      setCheckedTerms(false);
+      setCheckedUnderstand(false);
+      setKey((k) => {
+        return k + 1;
+      });
+      setDescription("");
+      setSearchState(new Set());
+    }).catch((err: Error | AxiosError) => {
+      console.log("Caught Error")
+      console.log(err)
+      if (axios.isAxiosError(err)) {
+        const title = err.response?.data?.status?.split("_").join(" ") ?? "Unknown Error"
+        const message = err.response?.data?.message ?? "Please report this to your nearest ExeChange developer!"
+        setErrorTitle(title)
+        setErrorMessage(message)
+      } else {
+        setErrorTitle("An unknown error occurred!")
+        setErrorMessage("Check your internet connection. If you're connected to the internet, please report this to your nearest ExeChange developer!")
+      }
+      setShowError(true)
+      window.scrollTo(0,0)
     });
-    setImage(undefined);
-    setCaption("");
-    setCheckedTerms(false);
-    setCheckedUnderstand(false);
-    setKey((k) => {
-      return k + 1;
-    });
-    setDescription("");
-    setSearchState(new Set());
   };
 
   function resetFile() {
@@ -75,20 +97,47 @@ function Upload() {
   }, []);
 
   return (
-    <>
-      <div className="w-full md:col-span-2 md:w-auto">
+    <div className="flex items-center justify-center">
+      <div className="w-full md:col-span-2 md:w-auto"> 
         <form method="POST" onSubmit={handleSubmit}>
-          <div className="md:overflow-hidden md:rounded-md md:shadow">
-            <div className="z-50 space-y-6 bg-white px-4 py-5 sm:p-6">
-              <div id="tags">
+          <div className="md:overflow-hidden">
+            <div className="z-50 space-y-6 bg-white px-4 py-5 sm:p-6 ">
+              <div
+                id="Error"
+                className="md:max-w-md relative rounded-md border-2 border-red-500 bg-red-200 p-4" 
+                hidden={!showError}
+              >
+                <div className="absolute right-2 top-2 align-top hover:cursor-pointer">
+                  <div
+                    onClick={() => {
+                      setShowError(false);
+                    }}
+                    className=""
+                  >
+                    <XMarkIcon className="m-auto h-5 w-5 stroke-black stroke-2" />
+                  </div>
+                </div>
+                <label className="font-bold">{errorTitle}</label>
+                <br />
+                <label>{errorMessage}</label>
+              </div>
+              <div id="Caption">
                 <label className="mb-2 block text-sm font-medium text-gray-700">
-                  Add tags
+                  Caption Your Item
                 </label>
-                <TagSelect key={key} setState={setSearchState} />
+                <input
+                  required
+                  onChange={(e) => {
+                    setCaption(e.target.value);
+                  }}
+                  value={caption}
+                  className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-green-800 focus:outline-none focus:ring-green-800 sm:text-sm"
+                  placeholder="Caption"
+                />
               </div>
               <div id="upload">
                 <label className="mb-2 block text-sm font-medium text-gray-700">
-                  Upload Image
+                  Upload an Image
                 </label>
                 <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                   <div className="content-center space-y-1 px-4 text-center">
@@ -118,7 +167,7 @@ function Upload() {
                           htmlFor="file-upload"
                           className="relative cursor-pointer rounded-md bg-white font-medium text-green-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-green-700 focus-within:ring-offset-2 hover:text-green-700"
                         >
-                          <span>Upload a file!</span>
+                          <span>Upload</span>
                           <input
                             ref={fileRef}
                             id="file-upload"
@@ -140,68 +189,59 @@ function Upload() {
                   </div>
                 </div>
               </div>
-              <div id="Caption">
-                <label className="mb-2 block text-sm font-medium text-gray-700">
-                  Caption Image
-                </label>
-                <input
-                  required
-                  onChange={(e) => {
-                    setCaption(e.target.value);
-                  }}
-                  value={caption}
-                  className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-green-800 focus:outline-none focus:ring-green-800 sm:text-sm"
-                  placeholder="Caption"
-                />
-              </div>
+
               <div>
                 <label
                   htmlFor="message"
                   className="mb-2 block text-sm font-medium text-gray-900"
                 >
-                  Item description
+                  Give a Description
                 </label>
                 <textarea
                   required
                   id="message"
                   className="row-span-4 block w-full rounded-lg border border-gray-300  p-2.5 text-sm text-gray-900 focus:border-green-800 focus:ring-green-700"
-                  placeholder="Be descriptive... but not more descriptive than a tweet"
+                  placeholder="Be descriptive... but not more descriptive than a tweet!"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 ></textarea>
               </div>
-              <div className="max-w-md text-left">
-                <div>
-                  <input
-                    required
-                    id="link-checkbox"
-                    type="checkbox"
-                    value=""
-                    checked={checkedTerms}
-                    onChange={() => {
-                      setCheckedTerms(!checkedTerms);
-                    }}
-                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-800 focus:ring-2 focus:ring-green-500 "
-                  />
-                  <label
-                    htmlFor="link-checkbox"
-                    className="ml-2 text-sm font-medium text-gray-900"
-                  >
-                    I agree with the{" "}
-                    <a href="#" className="text-green-800 hover:underline ">
-                      Terms & Conditions
-                    </a>{" "}
-                    and the{" "}
-                    <a href="#" className="text-green-800 hover:underline ">
-                      Privacy Policy
-                    </a>
-                    .
-                  </label>{" "}
-                </div>
+              <div id="tags">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Add some Tags
+                </label>
+                <TagSelect key={key} setState={setSearchState} />
+              </div>
+              <div className="md:max-w-md text-left">
+                <input
+                  required
+                  id="checked-terms"
+                  type="checkbox"
+                  value=""
+                  checked={checkedTerms}
+                  onChange={() => {
+                    setCheckedTerms(!checkedTerms);
+                  }}
+                  className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-800 focus:ring-2 focus:ring-green-500 "
+                />
+                <label
+                  htmlFor="checked-terms"
+                  className="ml-2 text-sm font-medium text-gray-900"
+                >
+                  I agree with the{" "}
+                  <a href="#" className="text-green-800 hover:underline ">
+                    Terms & Conditions
+                  </a>{" "}
+                  and the{" "}
+                  <a href="#" className="text-green-800 hover:underline ">
+                    Privacy Policy
+                  </a>
+                  .
+                </label>{" "}
                 <div className="mt-4">
                   <input
                     required
-                    id="link-checkbox"
+                    id="checked-understand"
                     type="checkbox"
                     value=""
                     checked={checkedUnderstand}
@@ -211,7 +251,7 @@ function Upload() {
                     className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-800 focus:ring-2 focus:ring-green-500"
                   />
                   <label
-                    htmlFor="link-checkbox"
+                    htmlFor="checked-understand"
                     className="ml-2 text-sm font-medium text-gray-900"
                   >
                     I understand that uploading my item means I am willing
@@ -222,7 +262,7 @@ function Upload() {
               </div>
             </div>
 
-            <div className="bg-gray-100 px-4 py-3 text-right sm:px-6">
+            <div className="px-4 py-3 text-right sm:px-6">
               <button
                 type="submit"
                 className="inline-flex justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
@@ -233,7 +273,7 @@ function Upload() {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 
