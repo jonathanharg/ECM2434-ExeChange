@@ -10,6 +10,7 @@ import {
   ClockIcon,
   CalendarDaysIcon,
   TrashIcon,
+  MinusCircleIcon,
 } from "@heroicons/react/24/outline";
 import axios from "axios";
 import React, { FormEvent, useState } from "react";
@@ -139,8 +140,16 @@ export default function TradeView({
   return (
     <div>
       {trade.status == "P" && (
-        
-        <><Disclosure>
+        <div className="relative h-auto w-full">
+          <div className="absolute -right-2 -top-5 mb-5">
+          <button
+            onClick={declineRequest}
+            className="" >
+            <MinusCircleIcon className="m-auto h-8 w-8 fill-red-800 stroke-white stroke-[2]" />
+          </button>
+          </div>
+     
+        <Disclosure>
           {({ open }) => (
             <>
               <Disclosure.Button className="flex w-full justify-between rounded-lg bg-white px-4 py-3 text-left text-sm font-medium text-black shadow hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
@@ -214,15 +223,10 @@ export default function TradeView({
             </>
           )}
         </Disclosure>  
-      <div className="flex w-full flex-col items-center justify-center">
-        <button
-          onClick={declineRequest}
-          className="flex h-10 w-fit items-center rounded-lg border border-gray-300 bg-red-800 p-2 text-sm font-medium text-white hover:bg-red-700 hover:text-gray-50"
-        >
-          <TrashIcon className="h-5 w-5 stroke-white stroke-[3]"></TrashIcon>
-        </button>
-      </div>
-    </>
+     
+      
+      
+    </div>
       )}
 
       {trade.status == "A" && (
