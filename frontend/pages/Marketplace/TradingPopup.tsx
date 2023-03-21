@@ -95,7 +95,7 @@ export function Trading(product: Product) {
   };
 
   return (
-    <div className="grid w-full grid-cols-1 items-start gap-y-8 gap-x-6 sm:grid-cols-12 lg:gap-x-8">
+    <div className={"grid w-full grid-cols-1 items-start gap-y-8 gap-x-6 sm:grid-cols-12 lg:gap-x-8"}>
       <div className="overflow-hidden rounded-lg sm:col-span-4 lg:col-span-5">
         <div className="aspect-w-2 aspect-h-3 mt-2 overflow-hidden rounded-lg bg-gray-100 sm:col-span-4 lg:col-span-5">
           <img src={product.image} className=" object-cover object-center" />
@@ -133,7 +133,7 @@ export function Trading(product: Product) {
             </div>
           </div>
 
-          {products.filter((i) => i.id != product.id).length > 1 && (
+          {products.filter((i) => i.id != product.id).length >= 1 && (
             <>
               <div className="mt-5 text-xl font-bold text-gray-900">
                 Other items by {product.owner.username}...
@@ -160,7 +160,7 @@ export function Trading(product: Product) {
               </div>
             </>
           )}
-          <form method="POST" onSubmit={handleSubmit} className="mt-2">
+          <form method="POST" onSubmit={handleSubmit} className={profileData?.name != product.owner.username ? "mt-2": "hidden"}>
             <div className="">
               <label
                 htmlFor="message"
