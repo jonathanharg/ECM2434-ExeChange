@@ -7,8 +7,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.status import HTTP_401_UNAUTHORIZED
 
-@api_view(['POST'])
-def get_user_notification(request: HttpRequest) -> Response:
+@api_view(['GET'])
+def get_user_notifications(request: HttpRequest) -> Response:
     """
     Filter all notification based on a user from token in request
     """
@@ -20,9 +20,15 @@ def get_user_notification(request: HttpRequest) -> Response:
     # get all notifications for user
     user_notifications = Notification.objects.filter(user=authenticated_user)
 
-    res = {}
+    res = []
     for notification in user_notifications:
-        res.update({str(notification.id):str(notification.text)})
+        res.append({
+            "id": notification.id,
+            "notification_type": str(notification.notification_type),
+            "text": str(notification.text),
+            "link": "127",
+            }
+        )
 
     return Response({
         "status": "OK",

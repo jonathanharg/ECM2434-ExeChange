@@ -7,6 +7,7 @@ from apps.api.routes import (
     tags,
     trading,
     upload,
+    notify,
 )
 from django.urls import path
 
@@ -23,4 +24,5 @@ urlpatterns = [
     path("confirmpendingtrade", profile.confirm_pending_trade),
     path("getpendingtradestatus", profile.get_pending_trade_status),
     path("removependingtrade", profile.remove_pending_trade),
+    path("getnotifications", notify.get_user_notifications),
 ]

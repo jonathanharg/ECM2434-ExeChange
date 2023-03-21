@@ -16,7 +16,7 @@ def create_user_notification(user: ExeChangeUser, notification_type: Notificatio
     """
     # TODO forming link to part of ExeChange required
     try:
-        new_notification = Notification.objects.create(user=user, text=notification_type.label, notification_type=notification_type)
+        new_notification = Notification.objects.create(user=user, text=notification_type.label, notification_type=notification_type, link="127")
     except ValueError as e:
         print("ERROR: type given is not correct, check models.py")
         print(f"More info: {e}")
