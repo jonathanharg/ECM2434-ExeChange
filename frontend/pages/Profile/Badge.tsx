@@ -10,7 +10,7 @@ export type ProfileTradeLocation = {
     }
   >;
   trades: number;
-}
+};
 
 function Badge(location: ProfileTradeLocation) {
   const thiscolour =

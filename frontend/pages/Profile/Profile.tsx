@@ -25,7 +25,6 @@ import Tradealert, { Trade } from "./Tradealert";
 import Achievement, { achievement } from "./Achievement";
 import Profilestats, { ProfileData } from "./Profilestats";
 
-
 import Tradealert from "./Tradealert";
 import { Location } from "./Badge";
 import Badge from "./Badge";
@@ -34,12 +33,9 @@ import { MyItems } from "./MyItemsProfile";
 import Achievement from "./Achievement";
 import { achievement } from "./Achievement";
 import Profilestats from "./Profilestats";
-import { ProfileData } from "./Profilestats"
+import { ProfileData } from "./Profilestats";
 import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
 import { Locations } from "./Locations";
-
-
-
 
 function Profile() {
   const { username } = useParams();
@@ -72,8 +68,8 @@ function Profile() {
       return false;
     }
 
-    return auth()!.user == username
-  }
+    return auth()!.user == username;
+  };
 
   const locations = [
     {
@@ -93,8 +89,8 @@ function Profile() {
       name: "Holland Hall",
       icon: CameraIcon,
       trades: 3,
-    }
-  ]
+    },
+  ];
 
   const [profileData, setProfileData] = useState<ProfileData>();
 
@@ -136,11 +132,11 @@ function Profile() {
 
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
-        <Locations locations={locations}/>
+        <Locations locations={locations} />
       </div>
       <div className="flex w-full flex-col px-4 pt-12">
-        <MyItems/>
-        </div>
+        <MyItems />
+      </div>
     </div>
   );
 }

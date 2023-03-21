@@ -67,10 +67,12 @@ const router = createBrowserRouter([
       {
         path: "/support",
         element: <PrivacyPolicy />,
-        children: [{
-          path: "/support/privacy-policy",
-          element: <PrivacyPolicy />,
-        },],
+        children: [
+          {
+            path: "/support/privacy-policy",
+            element: <PrivacyPolicy />,
+          },
+        ],
       },
     ],
   },

@@ -93,7 +93,7 @@ export function Itemtile(product: Product) {
             <a href={product.href}>{product.caption}</a>
           </h3>
           <h6>
-          <Link to={"../profile/" + product.owner.username}>
+            <Link to={"../profile/" + product.owner.username}>
               {" "}
               {product.owner.username}{" "}
             </Link>
