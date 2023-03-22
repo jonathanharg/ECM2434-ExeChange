@@ -47,7 +47,7 @@ class ClothingItem(models.Model):
 
 
 class Trade(models.Model):
-    def generate_confirmation_code(self):
+    def generate_confirmation_code():
         return random.randint(1000, 9999)
 
     class TradeStatuses(models.TextChoices):

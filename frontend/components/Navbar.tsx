@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { usePopper } from "react-popper";
 import Logo from "./Logo";
 import { Fragment, useState } from "react";
 import SingleNotification from "./Notification";
@@ -44,7 +45,8 @@ export default function Navbar() {
   // fetching notifications every 5 seconds when a user is logged in
   // notifications are also checked when bell icon is clicked
   useEffect(() => {
-    const interval = setInterval(() => {
+    const interval = setInterval(() => { // if two people use the site it will literally break it if we leave this in 
+
       fetchNotifications();
     }, 5000);
 
@@ -271,7 +273,10 @@ export default function Navbar() {
                         <Popover className="relative">
                           {() => (
                             <>
-                              <Popover.Button>
+                              <Popover.Button
+                                className={`group inline-flex items-center rounded-md px-3 py-2 text-base font-medium text-white hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+                              >
+                                
                                 <BellIcon
                                   className="h-6 w-6 text-gray-400 hover:text-gray-500"
                                   aria-hidden="true"
@@ -287,18 +292,20 @@ export default function Navbar() {
                                 leaveFrom="opacity-100 translate-y-0"
                                 leaveTo="opacity-0 translate-y-1"
                               >
-                                <Popover.Panel className="w-screen min-w-max sm:mr-5 sm:max-w-xs sm:shadow-xl">
+                                <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-3xl">
                                   <ul>
                                     {notifications.map((notification) => (
                                       <SingleNotification {...notification} />
                                     ))}
                                   </ul>
+                                  <div className="bg-gray-500 rounded-md overflow-hidden text-sm text-center"> here is a div for reference </div>
                                 </Popover.Panel>
                               </Transition>
                             </>
                           )}
                         </Popover>
                       </div>
+
                     </>
                   )}
 
