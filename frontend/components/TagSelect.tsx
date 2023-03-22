@@ -1,26 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Select from "react-select";
-import { tag } from "../pages/Marketplace/Itemtile";
-import PropTypes from "prop-types";
+import { Tag } from "../pages/Marketplace/Itemtile";
 
-// the TagSelect function needs a the state of search and a setter for search
-export default function TagSelect({ setState, state }) {
-  const [tags, setTags] = useState<tag[]>([]);
+interface TagStates {
+  setState:
+    | Dispatch<SetStateAction<Set<Tag>>>
+    | ((value: React.SetStateAction<Set<Tag>>) => void);
+}
 
-  function handleTag(e, meta) {
-    if (meta.action === "select-option") {
-      e.map((i) => setState((state) => new Set([...state, i.value])));
-    } else if (meta.action === "pop-value" || meta.action === "remove-value") {
-      console.log(e.map((i) => i.value));
-      setState(
-        (state) => new Set([...state].filter((x) => x == e.map((i) => i.value)))
-      );
-    } else if (meta.action === "clear") {
-      setState(new Set());
-    }
-    console.log(e);
-    return state;
-  }
+export default function TagSelect({ setState }: TagStates) {
+  const [tags, setTags] = useState<Tag[]>([]);
 
   function fetchTags() {
     return fetch("/api/tags")
@@ -38,6 +27,7 @@ export default function TagSelect({ setState, state }) {
     <Select
       isMulti
       options={tags}
+      placeholder="Search..."
       styles={{
         input: (base) => ({
           ...base,
@@ -50,19 +40,16 @@ export default function TagSelect({ setState, state }) {
         ...theme,
         colors: {
           ...theme.colors,
-          text: "#dc2626",
+          text: "#374151",
           primary25: "#dcfce7",
           primary: "#166534",
         },
       })}
       className="basic-multi-select"
       classNamePrefix="select"
-      onChange={(e, actionMeta) => handleTag(e, actionMeta)}
+      onChange={(input) => {
+        setState(new Set(input));
+      }}
     />
   );
 }
-
-TagSelect.propTypes = {
-  setState: PropTypes.func.isRequired,
-  state: PropTypes.object,
-};

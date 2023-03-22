@@ -93,7 +93,7 @@ function Register() {
     }
   }, [confirmPassword]);
 
-  const handlesubmit = async (e) => {
+  const handlesubmit = async (e: React.FormEvent) => {
     // this function sends form data to /api/register
     e.preventDefault();
 

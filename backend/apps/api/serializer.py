@@ -1,19 +1,62 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import ClothingItem
+from .models import ClothingItem, Trade
 
 
-class UserSerializer(serializers.ModelSerializer):
+class MinimalUserSerializer(serializers.ModelSerializer):
+    # item_ratio = serializers.ReadOnlyField()
     class Meta:
         model = get_user_model()
         fields = ["id", "username"]
 
 
 class ClothingItemSerializer(serializers.ModelSerializer):
-    owner = UserSerializer()
+    owner = MinimalUserSerializer()
 
     class Meta:
         model = ClothingItem
         depth = 1
-        fields = ["caption", "tags", "owner", "id", "image", "created_at", "updated_at"]
+        fields = [
+            "id",
+            "owner",
+            "caption",
+            "image",
+            "tags",
+            "description",
+            "created_at",
+            "updated_at",
+        ]
+
+
+class MinimalTradeClothingItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClothingItem
+        depth = 1
+        fields = [
+            "id",
+            "caption",
+            "image",
+        ]
+
+
+class TradeSerializer(serializers.ModelSerializer):
+    giver = MinimalUserSerializer()
+    receiver = MinimalUserSerializer()
+    giver_giving = MinimalTradeClothingItemSerializer(many=True)
+    receiver_exchanging = MinimalTradeClothingItemSerializer(many=True)
+
+    class Meta:
+        model = Trade
+        depth = 1
+        fields = [
+            "id",
+            "status",
+            "giver",
+            "receiver",
+            "giver_giving",
+            "receiver_exchanging",
+            "message",
+            "location",
+            "time",
+        ]

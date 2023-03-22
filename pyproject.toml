@@ -73,7 +73,7 @@ ignore="apps/api/migrations"
 max-line-length = 125
 
 [tool.pylint.messages_control]
-disable = ["missing-docstring", "invalid-name", "imported-auth-user", "too-many-return-statements"]
+disable = ["missing-docstring", "invalid-name", "imported-auth-user", "too-many-return-statements", "too-many-branches"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "backend.settings"
