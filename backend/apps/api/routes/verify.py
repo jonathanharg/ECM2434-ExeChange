@@ -38,7 +38,7 @@ def verify(request: HttpRequest) -> Response:
                 "status": "OK",
                 "message": "user verified",
                 "username": user_to_verify.username,
-                "token": str(token.access_token),
+                "access": str(token.access_token),
                 "refresh": str(token),
             }
         )
