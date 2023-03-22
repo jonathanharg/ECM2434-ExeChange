@@ -239,7 +239,7 @@ if SEND_VERIFICATION_EMAIL:
     elif str(GOOGLE_PROJECT_ID) == "NONE":
         print("ERROR: need to set google project id")
     else:
-        if not os.path.exists("credentials.json"):
+        if not os.path.exists("/app/credentials.json"):
             GOOGLE_REFRESH_TOKEN, _, _ = get_authorization(
                 GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
             )
@@ -259,7 +259,7 @@ if SEND_VERIFICATION_EMAIL:
             }
 
             with open(  # pylint: disable=unspecified-encoding
-                "credentials.json", "w"
+                "/app/credentials.json", "w"
             ) as f:
                 json.dump(oauth2_data, f)
 
@@ -268,4 +268,4 @@ if SEND_VERIFICATION_EMAIL:
         SEND_FROM = "team@exechange.co.uk"
 
         # instantiate a new instance of yagmail
-        YAG = yagmail.SMTP(user={USER: SEND_FROM}, oauth2_file="credentials.json")
+        YAG = yagmail.SMTP(user={USER: SEND_FROM}, oauth2_file="/app/credentials.json")
