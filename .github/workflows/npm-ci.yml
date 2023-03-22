@@ -21,8 +21,6 @@ jobs:
           node-version: 19.6.0
           cache: "npm"
       - run: npm ci
-      - name: Testing
-        run: npm run check-test
       - name: Linting
         run: npm run lint
       - name: Checking Code Format

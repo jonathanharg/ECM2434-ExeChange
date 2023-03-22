@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import Logo from "./Logo";
 import { Fragment, useState } from "react";
-import Upload from "../pages/Upload/Upload";
 import SingleNotification from "./Notification";
-import { usePopper } from "react-popper";
 import { Dialog, Popover, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -17,12 +15,6 @@ import {
 import { Link, Outlet } from "react-router-dom";
 import { useIsAuthenticated, useAuthUser, useSignOut } from "react-auth-kit";
 
-const navigation = [
-  { name: "Home", to: "/" },
-  { name: "Marketplace", to: "/marketplace" },
-  { name: "Upload", to: "/upload" },
-];
-
 interface Notification {
   notification_type: string;
   text: string;
@@ -31,12 +23,6 @@ interface Notification {
 
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(false);
-  const [uploadButtonReference, setUploadButtonReference] = useState();
-  const [uploadPopupElement, setUploadPopupElement] = useState();
-  const { styles, attributes } = usePopper(
-    uploadButtonReference,
-    uploadPopupElement
-  );
 
   const isAuthenticated = useIsAuthenticated();
   const auth = useAuthUser();
@@ -66,6 +52,12 @@ export default function Navbar() {
       clearInterval(interval);
     };
   }, [isAuthenticated]);
+
+  const navigation = [
+    { name: "Home", to: "/" },
+    { name: "Marketplace", to: "/marketplace" },
+    isAuthenticated() && { name: "Trade Centre", to: "/tradecentre" },
+  ];
 
   return (
     <>
@@ -114,17 +106,20 @@ export default function Navbar() {
                   {/* Links */}
 
                   <div className="space-y-6 border-t border-gray-200 py-6 px-4">
-                    {navigation.map((page) => (
-                      <div key={page.name} className="flow-root">
-                        <Link
-                          to={page.to}
-                          className="-m-2 block p-2 font-medium text-gray-900"
-                          onClick={() => setOpenMenu(false)}
-                        >
-                          {page.name}
-                        </Link>
-                      </div>
-                    ))}
+                    {navigation.map(
+                      (page) =>
+                        page != false && (
+                          <div key={page.name} className="flow-root">
+                            <Link
+                              to={page.to}
+                              className="-m-2 block p-2 font-medium text-gray-900"
+                              onClick={() => setOpenMenu(false)}
+                            >
+                              {page.name}
+                            </Link>
+                          </div>
+                        )
+                    )}
                   </div>
                   {!isAuthenticated() && (
                     <div className="space-y-6 border-t border-gray-200 py-6 px-4">
@@ -158,7 +153,7 @@ export default function Navbar() {
                         >
                           <UserCircleIcon className="block h-auto w-5 flex-shrink-0" />
                           <span className="ml-3 block font-medium text-gray-900">
-                            {auth().user}
+                            {auth()?.user}
                           </span>
                         </Link>
                       </div>
@@ -205,15 +200,18 @@ export default function Navbar() {
                 {/* Flyout menus */}
                 <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
                   <div className="flex h-full space-x-8">
-                    {navigation.map((page) => (
-                      <Link
-                        key={page.name}
-                        to={page.to}
-                        className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                      >
-                        {page.name}
-                      </Link>
-                    ))}
+                    {navigation.map(
+                      (page) =>
+                        page != false && (
+                          <Link
+                            key={page.name}
+                            to={page.to}
+                            className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                          >
+                            {page.name}
+                          </Link>
+                        )
+                    )}
                   </div>
                 </Popover.Group>
                 <div className="ml-auto flex items-center">
@@ -259,7 +257,7 @@ export default function Navbar() {
                         >
                           <UserCircleIcon className="block h-auto w-5 flex-shrink-0" />
                           <span className="ml-3 block text-sm font-medium">
-                            {auth().user}
+                            {auth()?.user}
                           </span>
                         </Link>
                       </div>
@@ -321,40 +319,15 @@ export default function Navbar() {
                   {/* Upload */}
                   {isAuthenticated() && (
                     <div className="ml-4 flow-root lg:ml-6">
-                      <Popover className="relative">
-                        {() => (
-                          <>
-                            <Popover.Button
-                              ref={setUploadButtonReference}
-                              className="group -m-2 flex items-center rounded-md bg-green-800 p-2 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-800"
-                            >
-                              <ArrowUpTrayIcon
-                                className="stroke-white-800 group-hover:stroke-white-600 h-5 w-5 flex-shrink-0 stroke-2"
-                                aria-hidden="true"
-                              />
-                            </Popover.Button>
-                            <Transition
-                              as={Fragment}
-                              enter="transition ease-out duration-200"
-                              enterFrom="opacity-0 translate-y-1"
-                              enterTo="opacity-100 translate-y-0"
-                              leave="transition ease-in duration-150"
-                              leaveFrom="opacity-100 translate-y-0"
-                              leaveTo="opacity-0 translate-y-1"
-                            >
-                              <Popover.Panel
-                                ref={setUploadPopupElement}
-                                style={styles.popper}
-                                {...attributes.popper}
-                                className="w-screen min-w-max sm:mr-5 sm:max-w-xs sm:shadow-xl"
-                              >
-                                <Upload />
-                              </Popover.Panel>
-                            </Transition>
-                          </>
-                        )}
-                      </Popover>
-                      {/* END OF INSERT */}
+                      <Link
+                        to="/upload"
+                        className="group -m-2 flex items-center rounded-md bg-green-800 p-2 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-800"
+                      >
+                        <ArrowUpTrayIcon
+                          className="stroke-white-800 group-hover:stroke-white-600 h-5 w-5 flex-shrink-0 stroke-2"
+                          aria-hidden="true"
+                        />
+                      </Link>
                     </div>
                   )}
                 </div>

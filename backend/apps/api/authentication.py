@@ -1,4 +1,9 @@
+import random
+import string
+
+from apps.api.emails import send_user_email
 from apps.api.models import ExeChangeUser
+from django.conf import settings
 from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.authentication import (
@@ -33,6 +38,36 @@ def get_username(email: str) -> str:
     """
     username = email.split("@")[0]
     return username
+
+
+def gen_unique_code() -> str:
+    chars = string.ascii_letters + string.digits
+
+    res = ""
+
+    n = random.randint(10, 15)
+    for _ in range(n):
+        res += random.choice(chars)
+
+    return res
+
+
+def send_verification_email(user: ExeChangeUser) -> bool:  # type: ignore
+    """
+    This function will take an unverified user object and send an email to the email associated with the user
+    containing a link that will successfully verify the user onclick.
+    """
+
+    # Generate link to send
+    username = user.username
+    code = user.verification_code
+
+    subject = "ExeChange Verification"
+    body = f" Hello {username}!\n\nWelcome to ExeChange, clearly you heard the rumours, Big things are coming and if you click the below link, you will be a part of it...\n\n"  # pylint: disable=line-too-long
+    html_link = f"<a href='{settings.DOMAIN_NAME}/verify?username={username}&code={code}'>Verify me!</a>"  # type: ignore
+
+    # Send email
+    return send_user_email(user, subject, contents=[body, html_link])  # type: ignore
 
 
 def authenticate_user(request: HttpRequest) -> ExeChangeUser | None:  # type: ignore

@@ -18,16 +18,16 @@ import {
   TicketIcon,
 } from "@heroicons/react/24/outline";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
-import Tradealert from "./Tradealert";
+import Tradealert from "../../components/Tradealert";
 import { Location } from "./Badge";
 import Badge from "./Badge";
-import { Trade } from "./Tradealert";
+import { Trade } from "../../components/Tradealert";
 
-interface ProfileData {
+type ProfileData = {
   levelPercent: number;
   name: string;
   level: number;
-}
+};
 
 const locations: Location[] = [
   {

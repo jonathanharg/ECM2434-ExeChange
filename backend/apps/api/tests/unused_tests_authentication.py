@@ -5,7 +5,7 @@ authentication.py test file!
 import ast
 
 import pytest
-from apps.api.authentication import gen_token
+from apps.api.authentication import gen_token, gen_unique_code, get_username
 from apps.api.models import ExeChangeUser
 from django.contrib.auth import authenticate
 from django.test import TestCase
@@ -27,6 +27,16 @@ def test_user_authenticate() -> None:
 def test_user_not_authenticated() -> None:
     ExeChangeUser.objects.create_user("test_user", "test@test.com", "testpassword")
     assert authenticate(username="test_user", password="WRONG_PASSWORD") is None
+
+
+def test_get_username() -> None:
+    test_email = "hf123@exeter.ac.uk"
+    assert get_username(test_email) == "hf123"
+
+
+def test_gen_unique_code() -> None:
+    code = gen_unique_code()
+    assert code is not None
 
 
 class RequestTests(TestCase):

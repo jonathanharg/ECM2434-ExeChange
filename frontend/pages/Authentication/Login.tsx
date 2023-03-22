@@ -32,6 +32,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [isVerified, setIsVerified] = useState(true);
 
   const messages = [
     "Go for a walk, that may help jog your memory.",
@@ -75,10 +76,14 @@ export default function Login() {
     }
   }, [password]);
 
-  const handleSubmit = async (e) => {
+  function resendEmail() {
+    if (!isVerified) {
+      navigate("/resendverify?username=" + user.split("@")[0]);
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     // this function sends form data to /api/login
-    // Zod validation for email, password, and password matching
-    //https://zod.dev/
     e.preventDefault();
 
     if (!EmailValidation.success || !PasswordValidation.success) {
@@ -91,33 +96,43 @@ export default function Login() {
         withCredentials: true,
       })
       .then((response) => {
-        // TODO: Handle more responses than just OK
-        if (response.data.status != "OK") {
-          setEmailError("Incorrect username or password");
-          setPasswordError("Incorrect username or password");
-          console.log("Incorrect username or password!");
-          return;
-        }
-
         const attemptAuth = signIn({
           token: response.data.access,
           expiresIn: 120,
           tokenType: "Bearer",
-          authState: { user: response.data.username }, // state passed in cannot be called user, hence const email = user.
+          authState: { user: response.data.username },
           // refreshToken: response.data.refresh,
           // refreshTokenExpireIn: 1440,
         });
 
         if (attemptAuth) {
-          console.log("User logged in!");
           navigate("/");
         } else {
-          //Print error as react-auth-kit broke!
-          console.log("React-auth-kit error!");
+          // React auth kit has broke.
+          setPasswordError(
+            "There has been an unexpected error, please try again later"
+          );
         }
       })
       .catch((error) => {
-        console.log(error);
+        // Recieved an error code
+        if (error.response) {
+          // bad request
+          if (error.response.status == 400) {
+            if (error.response.data.status == "NOT_VERIFIED") {
+              setIsVerified(false);
+              return;
+            }
+          }
+          // not authorised
+          if (error.response.status == 401) {
+            if (error.response.data.status == "NOT_AUTHENTICATED") {
+              setEmailError("Incorrect username or password");
+              setPasswordError("Incorrect username or password");
+              return;
+            }
+          }
+        }
       });
   };
 
@@ -152,7 +167,7 @@ export default function Login() {
                 className={
                   emailError
                     ? "block w-full rounded-lg border border-red-500 bg-red-50 p-2.5 text-sm text-red-900 placeholder-red-700 focus:border-red-500 focus:ring-red-500 dark:border-red-500 dark:bg-gray-700 dark:text-red-500 dark:placeholder-red-500"
-                    : "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    : "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-700 focus:ring-green-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-green-700 dark:focus:ring-green-700"
                 }
                 placeholder="you@exeter.ac.uk"
                 onChange={(e) => setUser(e.target.value)}
@@ -188,7 +203,7 @@ export default function Login() {
                 className={
                   passwordError
                     ? "block w-full rounded-lg border border-red-500 bg-red-50 p-2.5 text-sm text-red-900 placeholder-red-700 focus:border-red-500 focus:ring-red-500 dark:border-red-500 dark:bg-gray-700 dark:text-red-500 dark:placeholder-red-500"
-                    : "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    : "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-700 focus:ring-green-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-green-700 dark:focus:ring-green-700"
                 }
                 placeholder="•••••••••"
                 onChange={(e) => setPassword(e.target.value)}
@@ -246,6 +261,17 @@ export default function Login() {
                 Log in
               </button>
             </div>
+            {isVerified ? (
+              <></>
+            ) : (
+              <div>
+                <br />
+                <p>You have not yet verified your account!</p>
+                <a onClick={() => resendEmail()} className="cursor-pointer">
+                  Click here to resend verification email!
+                </a>
+              </div>
+            )}
           </form>
         </div>
       </div>
