@@ -219,7 +219,7 @@ export default function TradeResponse({
             <div className="justify-right">
               <button
                 onClick={handleClick}
-                className="flex w-fit items-center rounded-lg border border-gray-300 bg-stone-900 p-2 pl-6 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
+                className="flex w-fit items-center lg:m-10 rounded-lg border border-gray-300 bg-stone-900 p-2 pl-6 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
               >
                 Next
                 <ArrowRightIcon className="m-2 h-3 w-3 stroke-2"></ArrowRightIcon>

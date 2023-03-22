@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import axios from "axios";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -12,7 +12,12 @@ interface ProfileData {
   level: number;
 }
 
-export function Trading(product: Product) {
+interface TradingProps {
+  product: Product;
+  setOpen: Dispatch<React.SetStateAction<boolean>>
+}
+
+export function Trading({product, setOpen}:TradingProps) {
   const [requestMessage, setRequestMessage] = useState("");
   const [profileData, setProfileData] = useState<ProfileData>();
   const [giver_giving, setGiverGiving] = useState<number[]>([product.id]); //items you're asking for. this item is default added in cause you've clicked on it
@@ -82,9 +87,9 @@ export function Trading(product: Product) {
       )
       .then((response) => {
         // TODO: Handle more responses than just OK
-        if (response.data.status != "OK") {
-          setShowError(true);
-          setSuccess("Trade Sent!");
+        if (response.data.status == "OK") {
+          setOpen(false);
+          setRequestMessage(" ");
           return;
         }
       })
@@ -206,7 +211,8 @@ export function Trading(product: Product) {
             <div
               id="Error"
               className={
-                "relative rounded-md border-2 border-red-500 bg-red-200 p-4 md:max-w-md"
+                "relative rounded-md border-2 border-red-500 bg-red-200 p-4 md:max-w-md" 
+                
               }
               hidden={!showError}
             >
@@ -221,7 +227,7 @@ export function Trading(product: Product) {
                 </div>
               </div>
               <label className="font-bold">
-                {err ? "Uh oh" : success ? `${success}` : ""}
+                {"Uh oh"}
               </label>
               <br />
               <label>{err}</label>
