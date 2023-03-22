@@ -199,7 +199,7 @@ function Profile() {
         if(tradeLocations[i]?.name == currLocation.name) {
           const locationProp: LocationProps = {
             location: currLocation,
-            locationSVG: tradeLocations[i]?.icon,
+            locationSVG: tradeLocations[i],
           }
           profileLocations.push(locationProp);
           break;
