@@ -132,4 +132,3 @@ class Notification(models.Model):
     link = models.CharField(max_length=255, default=None)
 
     user = models.ForeignKey(ExeChangeUser, on_delete=models.CASCADE)
-

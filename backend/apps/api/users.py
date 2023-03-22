@@ -3,55 +3,6 @@ from apps.api.models import ExeChangeUser, Notification, NotificationType
 from django.conf import settings
 
 
-def create_notification_link(
-    user: ExeChangeUser, notification_type: NotificationType
-) -> str:
-    """
-    Generate link for a notification based on user and notification_type
-    """
-    if notification_type == NotificationType.TRADE:
-        link = settings.DOMAIN_NAME + "/tradecentre"
-    elif (
-        notification_type == NotificationType.ACHIEVEMENT_UNLOCKED
-        or notification_type == NotificationType.LOCATION_UNLOCKED
-        or notification_type == NotificationType.LEVEL_UP
-    ):
-        link = settings.DOMAIN_NAME + "/profile"
-    else:
-        raise ValueError("Type given to create link is not correct!")
-
-    return link
-
-
-def create_user_notification(
-    user: ExeChangeUser, notification_type: NotificationType
-) -> Notification | None:
-    """
-    Create a new notification
-
-    Args:
-        user (ExeChangeUser): User to notify
-        type (NotificationType): Type of notification
-
-    Returns:
-        Notification: The notification object created if successful
-    """
-    try:
-        link = create_notification_link(user, notification_type)
-        new_notification = Notification.objects.create(
-            user=user,
-            text=notification_type.label,
-            notification_type=notification_type,
-            link=link,
-        )
-    except ValueError as e:
-        print("ERROR: type given is not correct, check models.py")
-        print(f"More info: {e}")
-        new_notification = None
-
-    return new_notification
-
-
 def update_user_level(user: ExeChangeUser) -> int | None:  # type: ignore
     if user is None:
         return None
