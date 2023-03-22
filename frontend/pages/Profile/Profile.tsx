@@ -204,10 +204,10 @@ function Profile() {
       <Profilestats key={profileData?.id} {...profileData} />
 
       <div className="flex w-full flex-col px-4 pt-12">
-        <p className="font-semibold text-gray-600">Location Badges</p>
+        <p className="font-bold text-lg text-gray-600">Location Badges</p>
         {locationsEmpty() ? (
-          <p className="font-semibold text-gray-600">
-            You have not unlocked any locations! <br /> Complete a trade to
+          <p className="text-md text-gray-600 mt-2 ">
+            You have not unlocked any locations yet. <br /> <b>Complete a trade</b> to
             unlock new locations!
           </p>
         ) : (
