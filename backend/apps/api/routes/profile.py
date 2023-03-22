@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from apps.api.authentication import authenticate_user
-from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade, Achievement
+from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade, Achievement, Location
 from django.http import HttpRequest, JsonResponse
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
@@ -281,4 +281,29 @@ def get_achievements(request: HttpRequest) -> Response:
             "colour": achievement_object.colour,
         }
     ) 
-    
+
+@api_view(["POST"])
+def get_locations(request: HttpRequest) -> Response:
+    authenticated_user = authenticate_user(request)
+
+    if authenticated_user is None:
+        return Response(
+            {
+                "status": "BAD_REQEUST",
+                "message": "User credentials are not correct!",
+            }
+    )
+
+    Location_object = get_object_or_404(Location)
+
+    if authenticated_user is None:
+        return Response(
+            {"status": "BAD_REQUEST", "message": "User credentials not correct!"}
+        )
+
+    return Response(
+        {
+            "name": Location_object.name,
+            "trades": Location_object.trades,
+        }
+    ) 

@@ -26,9 +26,6 @@ import Badge from "./Badge";
 import Achievement from "./Achievement";
 
 // API: locations: ["Lafrowda":4, "Birks": 10]
-
-// Profile.tsx, turn into [{name:"Lafrowda", trades: 4, color: ""...}, ...]
-
 // Displayed by Locations.tsx
 
 const locations: ProfileTradeLocation[] = [
@@ -146,6 +143,7 @@ export type ProfileData = {
   id: number;
   username: string;
   achievements: ProfileAchievement[];
+  locations:ProfileLocations[];
   current_xp: number;
   profile_level: number;
 };
@@ -157,10 +155,14 @@ export type ProfileAchievement = {
   xp_achieved: number;
 };
 
+export type ProfileLocations = {
+  name: string;
+  trades: number;
+};
+
 //const BACKEND_DATA: {[key: string]: number} = { "Lafrowda": 10, "Northcott Theatre": 4 };
 //Currently only doing the names of locations, changing the number of trade is going to be very tricky,
 //might have to leave that out
-const BACKEND_DATA = ["Lafrowda", "Holland Hall", "Library"]
 
 function Profile() {
   const { username } = useParams();
@@ -168,10 +170,6 @@ function Profile() {
   const auth = useAuthUser();
   const [searchState, setSearchState] = useState(new Set<string>());
   const [products, setProducts] = useState<Product[]>([]);
-
-  //Still not quite working
-  const myLocations: ProfileTradeLocation[][] = myLocationBadges(BACKEND_DATA);
-
 
   function fetchProducts() {
     return fetch("/api/products")
@@ -200,15 +198,15 @@ function Profile() {
     return auth()!.user == username;
   };
 
-  function locationBadges(name: string){
+  /* function locationBadges(name: string){
     return locations.filter((location) => location.name == name);
   }
 
-  //I think something needs to be changed slightly with what this function actually returns,
-  //I think it might not be concatenating the arrays properly or something...
+  I think something needs to be changed slightly with what this function actually returns,
+  I think it might not be concatenating the arrays properly or something...
   function myLocationBadges(names: string[]){
     return names.map((location) => (locationBadges(location)));
-  }
+  } */
 
   const [profileData, setProfileData] = useState<ProfileData>();
 
@@ -216,6 +214,11 @@ function Profile() {
     return fetch("/api/profile/" + username)
       .then((response) => response.json())
       .then((data) => setProfileData(data));
+  }
+
+  function LinkLocationToBadge(location: ProfileLocations) {
+    
+    return
   }
 
   useEffect(() => {
@@ -250,7 +253,7 @@ function Profile() {
 
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
-        {myLocations.map((myLocations) => (
+        {profileData?.locations?.map((location) => (
           <Badge {...myLocations} />
         ))}
       </div>

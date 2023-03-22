@@ -76,6 +76,9 @@ class Achievement(models.Model):
     
 class Location(models.Model):
     name = models.CharField(max_length=20, unique=True)
+    trades = models.PositiveIntegerField(
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
+    )
 
     def __str__(self) -> str:
         return self.name
@@ -91,5 +94,6 @@ class ExeChangeUser(AbstractUser):
     )
     
     achievements = models.ManyToManyField(Achievement, blank=True)
+    locations = models.ManyToManyField(Location, blank=True)
 
 
