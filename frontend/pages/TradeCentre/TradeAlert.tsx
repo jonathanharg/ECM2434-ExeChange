@@ -1,11 +1,7 @@
-import { TrashIcon } from "@heroicons/react/24/outline";
-
-import React, { isValidElement, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { TradeInvolvement } from "./TradeCentre";
-import axios from "axios";
 import TradeView from "./TradeView";
-import { allowedNodeEnvironmentFlags } from "process";
 
 export type ProfileData = {
   levelPercent: number;
@@ -40,7 +36,7 @@ export default function TradeAlert({
       <div className="flex flex-row justify-center">
         <div
           id="tradeAlert"
-          className="mx-auto w-full max-w-md rounded-2xl bg-white my-2"
+          className="mx-auto my-2 w-full max-w-md rounded-2xl bg-white"
         >
           <TradeView
             trade={trade}

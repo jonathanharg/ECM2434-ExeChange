@@ -1,4 +1,3 @@
-import { readlink } from "fs";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Product } from "../Marketplace/Itemtile";
@@ -58,14 +57,29 @@ export default function TradeCentre() {
   return (
     <div className="w flex flex-col px-4 pt-6">
       <h2 className="pb-2 text-center text-2xl font-bold">Your Trades</h2>
-      {trades.length > 0 ? trades.map((trade) => (
-        <TradeAlert
-          key={trade.id}
-          acceptTrade={acceptTrade}
-          rejectTrade={rejectTrade}
-          trade={trade}
-        />
-      )): (<><p className="text-2xl text-center text-gray-600 font-bold mt-24 mb-2">You&apos;ve got no trades</p><p className="text-gray-600 text-center text-lg">Head to the <Link to="/marketplace" className="font-bold">Marketplace</Link> and make some trades!</p></>)}
+      {trades.length > 0 ? (
+        trades.map((trade) => (
+          <TradeAlert
+            key={trade.id}
+            acceptTrade={acceptTrade}
+            rejectTrade={rejectTrade}
+            trade={trade}
+          />
+        ))
+      ) : (
+        <>
+          <p className="mt-24 mb-2 text-center text-2xl font-bold text-gray-600">
+            You&apos;ve got no trades
+          </p>
+          <p className="text-center text-lg text-gray-600">
+            Head to the{" "}
+            <Link to="/marketplace" className="font-bold">
+              Marketplace
+            </Link>{" "}
+            and make some trades!
+          </p>
+        </>
+      )}
     </div>
   );
 }

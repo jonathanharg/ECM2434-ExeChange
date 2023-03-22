@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ArrowPathIcon from "@heroicons/react/24/outline/ArrowPathIcon";
-import { Link } from "react-router-dom";
 
 function Hero() {
   const [status, setStatus] = useState({ message: "Loading..." });

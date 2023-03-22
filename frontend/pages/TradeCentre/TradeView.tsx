@@ -9,12 +9,10 @@ import {
   MapPinIcon,
   ClockIcon,
   CalendarDaysIcon,
-  TrashIcon,
-  MinusCircleIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import axios from "axios";
-import React, { FormEvent, Fragment, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { ProfileData } from "./TradeAlert";
 import { TradeInvolvement } from "./TradeCentre";
 import TradeResponse from "./TradeResponse";
@@ -291,7 +289,7 @@ export default function TradeView({
                       </div>
                       <div className="grid grid-cols-2 justify-between ">
                         <div className="mt-4">
-                        <button
+                          <button
                             type="button"
                             className="inline-flex justify-center rounded-md border border-transparent bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                             onClick={closeModal}
@@ -300,7 +298,6 @@ export default function TradeView({
                           </button>
                         </div>
                         <div className="justify-right mt-3 pl-[6rem]">
-
                           <button
                             type="button"
                             className="mr-6 inline-flex justify-center rounded-md border border-transparent bg-red-800 px-4 py-2 text-sm font-medium text-white hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
@@ -416,13 +413,13 @@ export default function TradeView({
                         profileData?.name == trade.giver.username ? (
                           <p className="p-1">
                             {" "}
-                            You're <b> giving away </b> this item.{" "}
+                            You&apos;re <b> giving away </b> this item.{" "}
                           </p>
                         ) : trade.receiver_exchanging.length == 0 &&
                           profileData?.name == trade.receiver.username ? (
                           <p className="p-1">
                             {" "}
-                            You're <b> getting </b> this item in return for
+                            You&apos;re <b> getting </b> this item in return for
                             nothing.{" "}
                           </p>
                         ) : (
@@ -459,7 +456,7 @@ export default function TradeView({
                                 onClick={() => handleArrived()}
                                 className="flex w-fit items-center rounded-lg border border-gray-300 bg-stone-900 p-4 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
                               >
-                                I'm Here!
+                                I&apos;m Here!
                               </button>
                             </>
                           ) : isHere &&
@@ -498,8 +495,9 @@ export default function TradeView({
                             profileData?.name == trade.receiver.username &&
                             code == 0 && (
                               <p className="pt-2 text-sm text-gray-500">
-                                The other trader isn't here yet! <b>Refresh</b>{" "}
-                                and <b> Try again</b> when they are.
+                                The other trader isn&apos;t here yet!{" "}
+                                <b>Refresh</b> and <b> Try again</b> when they
+                                are.
                               </p>
                             )
                           )}
@@ -569,7 +567,7 @@ export default function TradeView({
                       </div>
                       <div className="grid grid-cols-2 justify-between ">
                         <div className="mt-4">
-                        <button
+                          <button
                             type="button"
                             className="inline-flex justify-center rounded-md border border-transparent bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                             onClick={closeModal}
@@ -578,7 +576,6 @@ export default function TradeView({
                           </button>
                         </div>
                         <div className="justify-right mt-3 pl-[6rem]">
-
                           <button
                             type="button"
                             className="mr-6 inline-flex justify-center rounded-md border border-transparent bg-red-800 px-4 py-2 text-sm font-medium text-white hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"

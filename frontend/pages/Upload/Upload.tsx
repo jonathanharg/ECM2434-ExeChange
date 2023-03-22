@@ -8,8 +8,6 @@ import {
 import TagSelect from "../../components/TagSelect";
 import { Tag } from "../Marketplace/Itemtile";
 import { MinusCircleIcon } from "@heroicons/react/20/solid";
-import { useAuthUser } from "react-auth-kit";
-import { useNavigate } from "react-router";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 

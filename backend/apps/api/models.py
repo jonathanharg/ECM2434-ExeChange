@@ -49,6 +49,7 @@ class ClothingItem(models.Model):
 class Trade(models.Model):
     def generate_confirmation_code():
         return random.randint(1000, 9999)
+
     class TradeStatuses(models.TextChoices):
         PENDING = "P", _("Pending")  # No reply yet from giver
         REJECTED = "R", _("Rejected")  # Either giver/receiver declines/withdraws

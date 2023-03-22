@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import axios from "axios";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -14,17 +14,16 @@ interface ProfileData {
 
 interface TradingProps {
   product: Product;
-  setOpen: Dispatch<React.SetStateAction<boolean>>
+  setOpen: Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function Trading({product, setOpen}:TradingProps) {
+export function Trading({ product, setOpen }: TradingProps) {
   const [requestMessage, setRequestMessage] = useState("");
   const [profileData, setProfileData] = useState<ProfileData>();
   const [giver_giving, setGiverGiving] = useState<number[]>([product.id]); //items you're asking for. this item is default added in cause you've clicked on it
   const [products, setProducts] = useState<Product[]>([]);
   const [showError, setShowError] = useState(false);
   const [err, setErr] = useState<string>();
-  const [success, setSuccess] = useState<string>();
 
   function fetchProducts() {
     const url = `/api/marketplace?user=${product.owner.id}`;
@@ -211,8 +210,7 @@ export function Trading({product, setOpen}:TradingProps) {
             <div
               id="Error"
               className={
-                "relative rounded-md border-2 border-red-500 bg-red-200 p-4 md:max-w-md" 
-                
+                "relative rounded-md border-2 border-red-500 bg-red-200 p-4 md:max-w-md"
               }
               hidden={!showError}
             >
@@ -226,9 +224,7 @@ export function Trading({product, setOpen}:TradingProps) {
                   <XMarkIcon className="m-auto h-5 w-5 stroke-black stroke-2" />
                 </div>
               </div>
-              <label className="font-bold">
-                {"Uh oh"}
-              </label>
+              <label className="font-bold">{"Uh oh"}</label>
               <br />
               <label>{err}</label>
             </div>
