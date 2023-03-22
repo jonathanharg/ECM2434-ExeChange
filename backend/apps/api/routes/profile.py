@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from apps.api.authentication import authenticate_user
-from django.http import HttpRequest, JsonResponse
+from django.http import Http404, HttpRequest, JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.status import (

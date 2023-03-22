@@ -4,9 +4,7 @@ import { TradeInvolvement } from "./TradeCentre";
 import TradeView from "./TradeView";
 
 export type ProfileData = {
-  levelPercent: number;
-  name: string;
-  level: number;
+  username:string;
 };
 
 interface TradeAlertProps {

@@ -24,6 +24,7 @@ import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
 import DeleteItem from "./DeleteItem";
 import Badge from "./Badge";
 import Achievement from "./Achievement";
+import { number } from "zod";
 
 // API: locations: ["Lafrowda":4, "Birks": 10]
 // Displayed by Locations.tsx
@@ -127,18 +128,6 @@ import Achievement from "./Achievement";
 //   },
 // ];
 
-export type ProfileTradeLocation = {
-  [x: string]: any;
-  colour: string;
-  name: string;
-  icon: React.ForwardRefExoticComponent<
-    React.SVGProps<SVGSVGElement> & {
-      title?: string | undefined;
-      titleId?: string | undefined;
-    }
-  >;
-  trades: number;
-};
 
 export type ProfileData = {
   id: number;
@@ -147,7 +136,7 @@ export type ProfileData = {
   level: number;
   username: string;
   achievements: ProfileAchievement[];
-  locations: ProfileLocations[];
+  locations: { [name: string]: number }; 
   current_xp: number;
   profile_level: number;
 };
@@ -207,21 +196,6 @@ function Profile() {
     return auth()!.user == username;
   };
 
-  /* function locationBadges(name: string){
-    return locations.filter((location) => location.name == name);
-  }
-
-  I think something needs to be changed slightly with what this function actually returns,
-  I think it might not be concatenating the arrays properly or something...
-  function myLocationBadges(names: string[]){
-    return names.map((location) => (locationBadges(location)));
-  } */
-
-  
-
-/*   function LinkLocationToBadge(location: ProfileLocations) {
-    return;
-  } */
 
   useEffect(() => {
     fetchProducts();
@@ -255,9 +229,11 @@ function Profile() {
 
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
-        {profileData?.locations?.map((location) => (
+        <button className="font-ligth flex w-32 rounded-full bg-green-800 px-4 py-2 text-white">{profileData?.locations[0]}</button>
+        {/* {profileData?.locations?.map((location) => (
           <Badge {...location} />
-        ))}
+        ))} */}
+        
       </div>
       <div className="flex w-full flex-col px-4 pt-12">
         <div className="flex w-full flex-col px-4 pt-12">
@@ -279,13 +255,6 @@ function Profile() {
                     <>
                       <div className="relative">
                         <Itemtile key={product.id} {...product} />
-                        {/* <div className="absolute top-0 right-0 rounded">
-                          <DeleteItem
-                            key={product.id}
-                            deleteItem={deleteItem}
-                            product={product}
-                          />
-                        </div> */}
                       </div>
                     </>
                   ) : (
