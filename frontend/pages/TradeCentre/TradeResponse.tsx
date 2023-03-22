@@ -61,7 +61,7 @@ export default function TradeResponse({
     if (receiver_exchanging.includes(index)) {
       return (
         <CheckCircleIcon
-          className={`absolute right-0 h-6 w-6 stroke-green-800`}
+          className={`absolute right-0 h-6 w-6 fill-green-800 stroke-white stroke-[1.5]`}
         >
           {" "}
         </CheckCircleIcon>
@@ -140,12 +140,12 @@ export default function TradeResponse({
               <b> Message from {trade.receiver.username}: </b> {trade.message}
             </p>
           </div>
-          <div className="flex items-center justify-center p-2">
+          <div className="flex items-center justify-center p-2 mt-4">
             <button
               onClick={handleClick}
-              className="flex w-fit items-center rounded-lg border border-gray-300 bg-stone-900 p-2.5 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
+              className="flex w-fit items-center rounded-lg pl-5 border border-gray-300 bg-stone-900 p-2.5 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
             >
-              Pick the items you would like in ExeChange
+              Continue with ExeChange
               <ArrowRightIcon className=" m-2 h-3 w-3"></ArrowRightIcon>
             </button>
           </div>
@@ -216,7 +216,7 @@ export default function TradeResponse({
               </button>
             </div>
             <div className="justify-center"> </div>
-            <div className="justify-right ml-8">
+            <div className="justify-right">
               <button
                 onClick={handleClick}
                 className="flex w-fit items-center rounded-lg border border-gray-300 bg-stone-900 p-2 pl-6 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
@@ -252,7 +252,7 @@ export default function TradeResponse({
               </button>
             </div>
             <div className="justify-center"> </div>
-            <div className="justify-right ml-8">
+            <div className="justify-right">
               <button
                 onClick={handleClick}
                 className="flex w-fit items-center  rounded-lg border  border-gray-300 bg-stone-900 p-2 pl-6 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
@@ -292,10 +292,10 @@ export default function TradeResponse({
               </button>
             </div>
             <div className="justify-center"> </div>
-            <div className="justify-right -ml-2 ">
+            <div className="justify-right -ml-6 ">
               <button
                 onClick={submitResponse}
-                className="flex w-fit items-center  rounded-lg border  border-gray-300 bg-stone-900 p-2 pl-6 text-sm font-medium text-white hover:bg-stone-700 hover:text-gray-50"
+                className="flex w-fit items-center  rounded-lg border  border-gray-300 bg-green-800 p-2 pl-6 text-sm font-medium text-white hover:bg-green-600 hover:text-gray-50"
               >
                 ExeChange!
                 <ArrowRightIcon className="m-2 h-3 w-3 stroke-2"></ArrowRightIcon>

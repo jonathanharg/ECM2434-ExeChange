@@ -109,11 +109,11 @@ export function Trading(product: Product) {
           {product.caption}{" "}
         </h3>
         <p className="mt-1 text-sm text-gray-500">
-          <b>Tagged by {product.owner.username} as: </b>
+          <b>Tagged: </b>
           {product.tags.map((t) => t.value).join(", ")}
         </p>
         <p className="pt-1 text-sm text-gray-500">
-          <b>Described as: </b> {product.description}
+          <b>Description: </b> {product.description}
         </p>
       </div>
       <div className="sm:col-span-8 lg:col-span-7">

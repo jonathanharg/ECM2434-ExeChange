@@ -11,6 +11,7 @@ import {
   CalendarDaysIcon,
   TrashIcon,
   MinusCircleIcon,
+  XCircleIcon,
 } from "@heroicons/react/24/outline";
 import axios from "axios";
 import React, { FormEvent, Fragment, useState } from "react";
@@ -154,9 +155,9 @@ export default function TradeView({
       {trade.status == "P" && (
         <>
           <div className="relative h-auto w-full">
-            <div className="absolute -right-2 -top-5 mb-5">
+            <div className="absolute -right-3 -top-3 mb-5">
               <button onClick={openModal} className="">
-                <MinusCircleIcon className="m-auto h-8 w-8 fill-red-800 stroke-white stroke-[2]" />
+                <XCircleIcon className="m-auto h-7 w-7 fill-red-800 stroke-white stroke-[2]" />
               </button>
             </div>
             <Disclosure>
@@ -290,21 +291,22 @@ export default function TradeView({
                       </div>
                       <div className="grid grid-cols-2 justify-between ">
                         <div className="mt-4">
-                          <button
-                            type="button"
-                            className="inline-flex justify-center rounded-md border border-transparent bg-red-800 px-4 py-2 text-sm font-medium text-white hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
-                            onClick={declineRequest}
-                          >
-                            Confirm
-                          </button>
-                        </div>
-                        <div className="justify-right mt-3 pl-[6rem]">
-                          <button
+                        <button
                             type="button"
                             className="inline-flex justify-center rounded-md border border-transparent bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                             onClick={closeModal}
                           >
                             Cancel
+                          </button>
+                        </div>
+                        <div className="justify-right mt-3 pl-[6rem]">
+
+                          <button
+                            type="button"
+                            className="mr-6 inline-flex justify-center rounded-md border border-transparent bg-red-800 px-4 py-2 text-sm font-medium text-white hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                            onClick={declineRequest}
+                          >
+                            Delete
                           </button>
                         </div>
                       </div>
@@ -322,7 +324,7 @@ export default function TradeView({
           <div className="relative h-auto w-full">
             <div className="absolute -right-2 -top-5 mb-5">
               <button onClick={openModal} className="">
-                <MinusCircleIcon className="m-auto h-8 w-8 fill-red-800 stroke-white stroke-[2]" />
+                <XCircleIcon className="m-auto h-7 w-7 fill-red-800 stroke-white stroke-[2]" />
               </button>
             </div>
             <Disclosure>
@@ -425,7 +427,7 @@ export default function TradeView({
                           </p>
                         ) : (
                           <div className="flex justify-center">
-                            <ArrowPathIcon className="h-10 w-10 stroke-[3] text-green-800"></ArrowPathIcon>
+                            <ArrowPathIcon className="h-10 w-10 stroke-[2.5] text-green-800"></ArrowPathIcon>
                           </div>
                         )}
 
@@ -474,7 +476,7 @@ export default function TradeView({
                                 className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 py-3 px-4 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
                                 id="grid-last-name"
                                 type="text"
-                                placeholder="Doe"
+                                placeholder="XXXX"
                               />
                               <div className="flex justify-center p-2">
                                 <button
@@ -567,21 +569,22 @@ export default function TradeView({
                       </div>
                       <div className="grid grid-cols-2 justify-between ">
                         <div className="mt-4">
-                          <button
-                            type="button"
-                            className="inline-flex justify-center rounded-md border border-transparent bg-red-800 px-4 py-2 text-sm font-medium text-white hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
-                            onClick={declineRequest}
-                          >
-                            Confirm
-                          </button>
-                        </div>
-                        <div className="justify-right mt-3 pl-[6rem]">
-                          <button
+                        <button
                             type="button"
                             className="inline-flex justify-center rounded-md border border-transparent bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                             onClick={closeModal}
                           >
                             Cancel
+                          </button>
+                        </div>
+                        <div className="justify-right mt-3 pl-[6rem]">
+
+                          <button
+                            type="button"
+                            className="mr-6 inline-flex justify-center rounded-md border border-transparent bg-red-800 px-4 py-2 text-sm font-medium text-white hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                            onClick={declineRequest}
+                          >
+                            Delete
                           </button>
                         </div>
                       </div>

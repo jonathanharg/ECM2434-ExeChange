@@ -36,11 +36,11 @@ export default function TradeAlert({
     fetchProfileData();
   }, []);
   return (
-    <div className="w-full px-4">
+    <div className="w-full">
       <div className="flex flex-row justify-center">
         <div
           id="tradeAlert"
-          className="mx-auto w-full max-w-md rounded-2xl bg-white p-2"
+          className="mx-auto w-full max-w-md rounded-2xl bg-white my-2"
         >
           <TradeView
             trade={trade}
