@@ -10,6 +10,12 @@ class MinimalUserSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = ["id", "username"]
 
+class UserProfileDataSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = get_user_model()
+        depth = 1
+        fields = ["id", "username", "achievements", "current_xp", "profile_level"]
 
 class ClothingItemSerializer(serializers.ModelSerializer):
     owner = MinimalUserSerializer()

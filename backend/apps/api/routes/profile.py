@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from apps.api.authentication import authenticate_user
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -10,16 +10,23 @@ from rest_framework.status import (
 )
 
 from apps.api.models import ClothingItem, Achievement
+from apps.api.models import ExeChangeUser
+from apps.api.serializer import UserProfileDataSerializer
 
 
 @api_view(["GET"])
-def get_profile_data(request: HttpRequest) -> Response:
+def get_profile_data(request: HttpRequest, username: str) -> Response:
     authenticated_user = authenticate_user(request)
 
     if authenticated_user is None:
         return Response(
             {"status": "BAD_REQUEST", "message": "User credentials not correct!"}
         )
+    user_object = get_object_or_404(ExeChangeUser, username= str(username))
+
+    serializer = UserProfileDataSerializer(user_object)
+    return JsonResponse(serializer.data, safe=False)
+
 
 @api_view(["POST"])
 def deleteImg(request: HttpRequest) -> Response:

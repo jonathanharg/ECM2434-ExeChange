@@ -1,13 +1,4 @@
-<<<<<<< HEAD
-import React, { Fragment, useState } from "react";
-import { Transition } from "@headlessui/react";
-import { Listbox } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import { Link, Outlet } from "react-router-dom";
-import Calendar from "react-calendar";
-=======
-import React, { Dispatch, useEffect, useState } from "react";
->>>>>>> origin/trading-sucks
+import React, { Dispatch, Fragment, useEffect, useState } from "react";
 import axios from "axios";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";

@@ -15,7 +15,6 @@ urlpatterns = [
     path("status", status.status),
     path("login", login.login),
     path("register", register.register),
-    path("products", marketplace.marketplace),
     path("profile/<str:username>", profile.get_profile_data),
     path("deleteitem", profile.deleteImg),
     path("getachievements", profile.get_achievements),

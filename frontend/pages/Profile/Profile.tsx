@@ -175,7 +175,9 @@ function Profile() {
   const [products, setProducts] = useState<Product[]>([]);
 
   function fetchProducts() {
-    return fetch("/api/products")
+
+    const url = ("/api/marketplace?user="+profileData?.id)
+    return fetch(url)
       .then((response) => response.json())
       .then((data) => setProducts(data));
   }
