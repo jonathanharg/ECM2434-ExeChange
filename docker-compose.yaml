@@ -8,6 +8,7 @@ services:
     volumes:
       - static-content:/app/backend/staticfiles
       - media:/app/backend/media
+      - ${PWD}/credentials.json:/app/credentials.json:rw
 
   nginx:
     image: nginx:1.23.3

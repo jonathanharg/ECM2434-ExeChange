@@ -63,7 +63,7 @@ def send_verification_email(user: ExeChangeUser) -> bool:  # type: ignore
     code = user.verification_code
 
     subject = "ExeChange Verification"
-    body = f" Hello {username}! Welcome to ExeChange, clearly you heard the rumours, Big things are coming and if you click the below link, you will be a part of it..."  # pylint: disable=line-too-long
+    body = f" Hello {username}!\n\nWelcome to ExeChange, clearly you heard the rumours, Big things are coming and if you click the below link, you will be a part of it...\n\n"  # pylint: disable=line-too-long
     html_link = f"<a href='{settings.DOMAIN_NAME}/verify?username={username}&code={code}'>Verify me!</a>"  # type: ignore
 
     # Send email
