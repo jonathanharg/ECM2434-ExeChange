@@ -143,7 +143,11 @@ export function Trading({product, setOpen}:TradingProps) {
           </div>
 
           {products.filter((i) => i.id != product.id).length >= 1 && (
-            <div className={ profileData?.name != product.owner.username ? "":"hidden" }>
+            <div
+              className={
+                profileData?.name != product.owner.username ? "" : "hidden"
+              }
+            >
               <div className="mt-5 text-xl font-bold text-gray-900">
                 Other items by {product.owner.username}...
               </div>

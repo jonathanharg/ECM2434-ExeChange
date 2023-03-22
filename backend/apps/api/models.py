@@ -47,6 +47,8 @@ class ClothingItem(models.Model):
 
 
 class Trade(models.Model):
+    def generate_confirmation_code():
+        return random.randint(1000, 9999)
     class TradeStatuses(models.TextChoices):
         PENDING = "P", _("Pending")  # No reply yet from giver
         REJECTED = "R", _("Rejected")  # Either giver/receiver declines/withdraws
@@ -80,7 +82,7 @@ class Trade(models.Model):
     giver_there = models.BooleanField(default=False)
     receiver_there = models.BooleanField(default=False)
     confirmation_code = models.PositiveSmallIntegerField(
-        default=random.randint(1000, 9999), editable=False
+        default=generate_confirmation_code, editable=False
     )
     requested_at = models.DateTimeField(auto_now_add=True)
     accepted_at = models.DateTimeField(blank=True, null=True)
@@ -88,6 +90,10 @@ class Trade(models.Model):
 
 
 class ExeChangeUser(AbstractUser):
+    is_verified = models.BooleanField(default=False)
+
+    verification_code = models.CharField(max_length=50, default=None)
+
     profile_level = models.PositiveIntegerField(
         default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
     )

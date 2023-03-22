@@ -12,11 +12,12 @@ from apps.api.responses import (
     NOT_LOGGED_IN,
     UPLOAD_ACCEPTED,
 )
-from django.http import HttpRequest
 from django.db.models import Q
+from django.http import HttpRequest
 from PIL import Image, ImageOps, UnidentifiedImageError
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
 
 # TODO: Don't upload duplicated items
 @api_view(["POST"])

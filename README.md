@@ -123,3 +123,9 @@ docker-compose up --build --force-recreate
 ├── package.json            Node/NPM package settings
 └── pyproject.toml          Python/Poetry package settings
 ```
+
+## Setting up email verification
+
+If you have not already create new credentials on Google Cloud Console, and enable the GMAIL API. Then, in your .env file input your google_client_id, google_secret and project id.
+
+Now set `SEND_VERIFICATION_EMAIL` to `True` in your .env, and start the server. On server start you will find that it asks you to go to a link, follow this link and the google cloud services will do the rest, it may give you a warning that the app is unverified, if this is the case you can click advanced, and continue. You will be redirected to a localhost uri, paste this into your terminal where prompted. Now a credentials.json file will have been generated for you, so on server restart you will not have to follow this process again.

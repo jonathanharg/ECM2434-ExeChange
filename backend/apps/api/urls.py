@@ -7,6 +7,7 @@ from apps.api.routes import (
     status,
     trading,
     upload,
+    verify,
 )
 from django.urls import path
 
@@ -26,4 +27,6 @@ urlpatterns = [
     path("trade/<int:trade_id>/accept", trading.accept_trade),
     path("trade/<int:trade_id>/arrived", trading.arrived),
     path("trade/<int:trade_id>/confirm", trading.confirm),
+    path("verify", verify.verify),
+    path("resendverify", verify.resend_verify),
 ]
