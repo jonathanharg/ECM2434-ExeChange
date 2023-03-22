@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { usePopper } from "react-popper";
 import Logo from "./Logo";
 import { Fragment, useState } from "react";
 import SingleNotification from "./Notification";
