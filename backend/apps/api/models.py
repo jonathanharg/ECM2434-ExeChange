@@ -93,7 +93,7 @@ class Trade(models.Model):
 class ExeChangeUser(AbstractUser):
     is_verified = models.BooleanField(default=False)
 
-    verification_code = models.CharField(max_length=50, default=None)
+    verification_code = models.CharField(max_length=50, default="1234")
 
     profile_level = models.PositiveIntegerField(
         default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
