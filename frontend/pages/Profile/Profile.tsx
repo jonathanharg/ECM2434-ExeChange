@@ -136,7 +136,7 @@ export type ProfileData = {
   level: number;
   username: string;
   achievements: ProfileAchievement[];
-  locations: { [name: string]: number }; 
+  locations: {[name: string]:number}; // dict type
   current_xp: number;
   profile_level: number;
 };
@@ -161,11 +161,15 @@ function Profile() {
   const [searchState, setSearchState] = useState(new Set<string>());
   const [products, setProducts] = useState<Product[]>([]);
   const [profileData, setProfileData] = useState<ProfileData>();
+  const [locations, setLocations] = useState<ProfileLocations[]>([]);
 
   function fetchProfileData() {
     return fetch("/api/profile/" + username)
       .then((response) => response.json())
-      .then((data) => setProfileData(data));
+      .then((data) => {
+        setProfileData(data);
+        setLocations(getLocations(data.locations));
+      });
   }
 
   function fetchProducts() {
@@ -186,6 +190,19 @@ function Profile() {
 
   function deleteItem(id: number) {
     setProducts(products.filter((product) => product.id != id));
+  }
+
+  function getLocations(locations: any) {
+    const profileLocations: ProfileLocations[] = [];
+    for(const key in locations) {
+      const curr: ProfileLocations = {
+        name: key,
+        trades: locations[key],
+      };
+      profileLocations.push(curr);
+    }
+
+    return profileLocations;
   }
 
   const myProfile = () => {
@@ -230,9 +247,11 @@ function Profile() {
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
         <button className="font-ligth flex w-32 rounded-full bg-green-800 px-4 py-2 text-white">{profileData?.locations[0]}</button>
-        {/* {profileData?.locations?.map((location) => (
-          <Badge {...location} />
-        ))} */}
+        {
+          locations.map((location) => {
+            <Badge {...location}/>
+          })
+        }
         
       </div>
       <div className="flex w-full flex-col px-4 pt-12">
