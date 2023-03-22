@@ -11,6 +11,7 @@ from rest_framework.decorators import api_view
 # By TagIDs: /api/marketplace?tags=6+8
 # By both: /api/marketplace?user=17&tags=3+8
 
+
 @api_view(["GET"])
 def marketplace(request: HttpRequest) -> JsonResponse:
     # Start off querying all items

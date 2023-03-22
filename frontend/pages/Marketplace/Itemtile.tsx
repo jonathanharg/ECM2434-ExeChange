@@ -63,7 +63,11 @@ export function Itemtile(product: Product) {
                       <span className="sr-only">Close</span>
                       <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
-                    <Trading key={product.id} {...product} />
+                    <Trading
+                      key={product.id}
+                      product={product}
+                      setOpen={setOpen}
+                    />
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

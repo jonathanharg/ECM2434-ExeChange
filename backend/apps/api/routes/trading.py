@@ -270,7 +270,9 @@ def arrived(request: HttpRequest, trade_id: int) -> Response:
         return INVALID_TOO_EARLY
 
     if time_until_trade > timedelta(minutes=9):
-        print("ACHIEVEMENT: User has achieved the 'Early Bird Catches the Word' achievement")
+        print(
+            "ACHIEVEMENT: User has achieved the 'Early Bird Catches the Word' achievement"
+        )
 
     if time_until_trade < timedelta(minutes=-10):
         print("You're too late to the trade")
