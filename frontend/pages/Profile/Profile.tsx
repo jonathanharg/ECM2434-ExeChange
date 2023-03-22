@@ -3,24 +3,17 @@ import { useParams } from "react-router-dom";
 import Itemtile, { Product } from "../Marketplace/Itemtile";
 import Profilestats from "./Profilestats";
 import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
-import DeleteItem from "./DeleteItem";
 import Badge from "./Badge";
 import Achievement from "./Achievement";
-import { number } from "zod";
 import {
   ChatBubbleLeftRightIcon,
   PowerIcon,
   CameraIcon,
   UserGroupIcon,
   BookOpenIcon,
-  CloudIcon,
   DocumentChartBarIcon,
   BuildingLibraryIcon,
-  RocketLaunchIcon,
   NewspaperIcon,
-  BuildingOffice2Icon,
-  FilmIcon,
-  MoonIcon,
   BeakerIcon,
   LightBulbIcon,
   TicketIcon,

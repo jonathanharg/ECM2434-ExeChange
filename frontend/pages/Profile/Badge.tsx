@@ -19,7 +19,14 @@ import {
   BeakerIcon,
   LightBulbIcon,
   TicketIcon,
+  MapPinIcon,
+  
+
 } from "@heroicons/react/24/outline";
+
+
+
+
 
 function Badge(locationProp: LocationProps) {
   console.log("HELKJFALKD");
@@ -29,6 +36,9 @@ function Badge(locationProp: LocationProps) {
       <div className="flex h-12 w-full">
         <div className="h-full w-2/12">
           <div className={`flex h-12 w-12 items-center rounded-full ${locationProp.locationSVG.color}`}>
+            {React.createElement(MapPinIcon, {
+              className: "stroke-white m-auto w-10 h-10",
+            })}
           </div>
         </div>
         <div className="flex h-full w-6/12 items-start">
