@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import ClothingItem
-from .models import Achievement
+from .models import Achievement, ClothingItem
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -19,8 +18,8 @@ class ClothingItemSerializer(serializers.ModelSerializer):
         depth = 1
         fields = ["caption", "tags", "owner", "id", "image", "created_at", "updated_at"]
 
+
 class UserProfileDataSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = get_user_model()
         depth = 1

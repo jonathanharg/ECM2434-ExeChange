@@ -143,7 +143,7 @@ export type ProfileData = {
   id: number;
   username: string;
   achievements: ProfileAchievement[];
-  locations:ProfileLocations[];
+  locations: ProfileLocations[];
   current_xp: number;
   profile_level: number;
 };
@@ -217,8 +217,7 @@ function Profile() {
   }
 
   function LinkLocationToBadge(location: ProfileLocations) {
-    
-    return
+    return;
   }
 
   useEffect(() => {

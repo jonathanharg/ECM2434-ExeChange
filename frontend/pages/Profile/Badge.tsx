@@ -4,9 +4,9 @@ import { ProfileTradeLocation, ProfileLocations } from "./Profile";
 interface LocationProps {
   location: ProfileLocations;
   locationSVG: ProfileTradeLocation;
-};
+}
 
-function Badge({location, locationSVG}: LocationProps) {
+function Badge({ location, locationSVG }: LocationProps) {
   const thiscolour =
     "h-12 w-12 " + locationSVG.colour + " rounded-full flex items-center";
 

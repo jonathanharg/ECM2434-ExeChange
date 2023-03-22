@@ -1,4 +1,10 @@
-from apps.api.models import ClothingItem, ExeChangeUser, ItemTag, PendingTrade, Achievement
+from apps.api.models import (
+    Achievement,
+    ClothingItem,
+    ExeChangeUser,
+    ItemTag,
+    PendingTrade,
+)
 from django.contrib import admin
 
 admin.site.register(ExeChangeUser)

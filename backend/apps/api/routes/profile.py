@@ -1,7 +1,14 @@
 from datetime import datetime
 
 from apps.api.authentication import authenticate_user
-from apps.api.models import ClothingItem, ExeChangeUser, PendingTrade, Achievement, Location
+from apps.api.models import (
+    Achievement,
+    ClothingItem,
+    ExeChangeUser,
+    Location,
+    PendingTrade,
+)
+from apps.api.serializer import UserProfileDataSerializer
 from django.http import HttpRequest, JsonResponse
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
@@ -12,8 +19,6 @@ from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_401_UNAUTHORIZED,
 )
-
-from apps.api.serializer import UserProfileDataSerializer
 
 
 @api_view(["GET"])
@@ -56,16 +61,17 @@ def trade_requests(request: HttpRequest) -> Response:
 @api_view(["GET"])
 def get_profile_data(request: HttpRequest, username: str) -> JsonResponse:
     authenticated_user = authenticate_user(request)
-    
+
     if authenticated_user is None:
         return Response(
             {"status": "BAD_REQUEST", "message": "User credentials not correct!"}
         )
-    
-    user_object = get_object_or_404(ExeChangeUser, username= str(username))
-    
+
+    user_object = get_object_or_404(ExeChangeUser, username=str(username))
+
     serializer = UserProfileDataSerializer(user_object)
     return JsonResponse(serializer.data, safe=False)
+
 
 @api_view(["POST"])
 def confirm_pending_trade(request: HttpRequest) -> Response:
@@ -187,7 +193,7 @@ def remove_pending_trade(request: HttpRequest) -> Response:
         )
     except Http404:
         return Response({"status": "BAD"})
-    
+
 
 @api_view(["POST"])
 def deleteImg(request: HttpRequest) -> Response:
@@ -198,23 +204,20 @@ def deleteImg(request: HttpRequest) -> Response:
             status=HTTP_401_UNAUTHORIZED,
         )
 
-    if "id" not in request.data :
+    if "id" not in request.data:
         return Response(
             INVALID_SUBMISSION,
             status=HTTP_400_BAD_REQUEST,
         )
     idObj = request.data["id"]
 
-    try:    
+    try:
         item = ClothingItem.objects.get(id=idObj)
     except Http404:
         return Response(ITEM_NOT_FOUND)
-    
+
     if authenticated_user != item.owner:
-        return Response(
-            INVALID_OWNER,
-            status=HTTP_401_UNAUTHORIZED
-        )
+        return Response(INVALID_OWNER, status=HTTP_401_UNAUTHORIZED)
     try:
         item.delete()
     except ValueError:
@@ -224,7 +227,8 @@ def deleteImg(request: HttpRequest) -> Response:
         OK,
         status=HTTP_200_OK,
     )
-    
+
+
 ITEM_NOT_FOUND = {
     "status": "ITEM_NOT_FOUND",
     "message": "couldn't match given ID to existing object ID's",
@@ -255,6 +259,7 @@ OK = {
     "message": "Image removed",
 }
 
+
 @api_view(["POST"])
 def get_achievements(request: HttpRequest) -> Response:
     authenticated_user = authenticate_user(request)
@@ -265,7 +270,7 @@ def get_achievements(request: HttpRequest) -> Response:
                 "status": "BAD_REQEUST",
                 "message": "User credentials are not correct!",
             }
-    )
+        )
 
     achievement_object = get_object_or_404(Achievement)
 
@@ -280,7 +285,8 @@ def get_achievements(request: HttpRequest) -> Response:
             "text": achievement_object.text,
             "colour": achievement_object.colour,
         }
-    ) 
+    )
+
 
 @api_view(["POST"])
 def get_locations(request: HttpRequest) -> Response:
@@ -292,7 +298,7 @@ def get_locations(request: HttpRequest) -> Response:
                 "status": "BAD_REQEUST",
                 "message": "User credentials are not correct!",
             }
-    )
+        )
 
     Location_object = get_object_or_404(Location)
 
@@ -306,4 +312,4 @@ def get_locations(request: HttpRequest) -> Response:
             "name": Location_object.name,
             "trades": Location_object.trades,
         }
-    ) 
+    )

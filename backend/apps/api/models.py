@@ -64,16 +64,18 @@ class PendingTrade(models.Model):
         default=None,
     )
 
+
 class Achievement(models.Model):
     text = models.CharField(max_length=100)
     # field representing text -> charField
-    colour = models.CharField(max_length = 100)
+    colour = models.CharField(max_length=100)
     # field representing color -> charField
     xp_recieved = models.PositiveIntegerField(
         default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
     )
     # field representing xp received when achievement unlocked -> PositiveIntegerField
-    
+
+
 class Location(models.Model):
     name = models.CharField(max_length=20, unique=True)
     trades = models.PositiveIntegerField(
@@ -82,6 +84,7 @@ class Location(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
 
 class ExeChangeUser(AbstractUser):
     profile_level = models.PositiveIntegerField(
@@ -92,8 +95,6 @@ class ExeChangeUser(AbstractUser):
     current_xp = models.PositiveIntegerField(
         default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
     )
-    
+
     achievements = models.ManyToManyField(Achievement, blank=True)
     locations = models.ManyToManyField(Location, blank=True)
-
-
