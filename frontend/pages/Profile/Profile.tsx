@@ -140,10 +140,10 @@ export type ProfileTradeLocation = {
 };
 
 export type ProfileData = {
+  id: number;
   levelPercent: number;
   name: string;
   level: number;
-  id: number;
   username: string;
   achievements: ProfileAchievement[];
   locations: ProfileLocations[];
@@ -173,10 +173,16 @@ function Profile() {
   const auth = useAuthUser();
   const [searchState, setSearchState] = useState(new Set<string>());
   const [products, setProducts] = useState<Product[]>([]);
+  const [profileData, setProfileData] = useState<ProfileData>();
+
+  function fetchProfileData() {
+    return fetch("/api/profile/" + username)
+      .then((response) => response.json())
+      .then((data) => setProfileData(data));
+  }
 
   function fetchProducts() {
-
-    const url = ("/api/marketplace?user="+profileData?.id)
+    const url = `/api/marketplace?username=${username}`
     return fetch(url)
       .then((response) => response.json())
       .then((data) => setProducts(data));
@@ -213,13 +219,7 @@ function Profile() {
     return names.map((location) => (locationBadges(location)));
   } */
 
-  const [profileData, setProfileData] = useState<ProfileData>();
-
-  function fetchProfileData() {
-    return fetch("/api/profile/" + username)
-      .then((response) => response.json())
-      .then((data) => setProfileData(data));
-  }
+  
 
 /*   function LinkLocationToBadge(location: ProfileLocations) {
     return;
