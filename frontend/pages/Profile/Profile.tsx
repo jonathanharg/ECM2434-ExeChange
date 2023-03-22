@@ -212,7 +212,7 @@ function Profile() {
         </p>
         <div className="flex w-full space-x-2 pt-2">
           {acheivementsEmpty() ?(
-            <p className="font-semibold text-gray-600">You have no achievements yet!</p>
+            <p className="font-semibold text-gray-600">You have no achievements yet! <br />Start trading items to gain achievements...</p>
           ) : (
             <div>
             {profileData?.achievements?.map((achievement) => (
@@ -235,7 +235,7 @@ function Profile() {
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
         {locationsEmpty() ? (
-          <p className="font-semibold text-gray-600">You have not unlocked any locations!!</p>
+          <p className="font-semibold text-gray-600">You have not unlocked any locations! <br /> Complete a trade to unlock new locations!</p>
         ) : (
           <div>
           {
@@ -249,7 +249,6 @@ function Profile() {
       </div>
 
       <div className="flex w-full flex-col px-4 pt-12">
-        <div className="flex w-full flex-col px-4 pt-12">
           <p className="font-semibold text-gray-600">
             {myProfile() ? <>My Items</> : <>{username}&apos;s Items</>}
           </p>
@@ -280,7 +279,6 @@ function Profile() {
                 )}
           </div>
         </div>
-      </div>
     </div>
   );
 }
