@@ -312,8 +312,8 @@ export default function TradeView({
         <div className="relative h-auto w-full">
         <div className="absolute -right-2 -top-5 mb-5">
           <button onClick={openModal} className="">
-                <MinusCircleIcon className="m-auto h-8 w-8 fill-red-800 stroke-white stroke-[2]" />
-              </button>
+              <MinusCircleIcon className="m-auto h-8 w-8 fill-red-800 stroke-white stroke-[2]" />
+            </button>
         </div>
           <Disclosure>
             {({ open }) => (

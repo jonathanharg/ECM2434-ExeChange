@@ -138,7 +138,7 @@ export function Trading(product: Product) {
           </div>
 
           {products.filter((i) => i.id != product.id).length >= 1 && (
-            <>
+            <div className={ profileData?.name != product.owner.username ? "":"hidden" }>
               <div className="mt-5 text-xl font-bold text-gray-900">
                 Other items by {product.owner.username}...
               </div>
@@ -167,7 +167,7 @@ export function Trading(product: Product) {
                     ))}
                 </div>
               </div>
-            </>
+            </div>
           )}
           <form
             method="POST"
