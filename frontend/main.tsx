@@ -87,6 +87,10 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
       },
+      {
+        path: "/support",
+        element: <Hero />,
+      },
     ],
   },
 ]);

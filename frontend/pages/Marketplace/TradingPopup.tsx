@@ -128,10 +128,11 @@ export function Trading({ product, setOpen }: TradingProps) {
             <div className="flex w-9/12 items-center">
               <div className="flex w-10/12 flex-col pl-4 leading-none">
                 <p className="text-sm font-bold">
-                <Link to={"../profile/" + product.owner.username}>
-                  {" "}
-                  {product.owner.username}{" "}
-                </Link></p>
+                  <Link to={"../profile/" + product.owner.username}>
+                    {" "}
+                    {product.owner.username}{" "}
+                  </Link>
+                </p>
                 <p className="pt-1 text-sm font-light text-gray-800">
                   Level {profileData?.level}
                 </p>
