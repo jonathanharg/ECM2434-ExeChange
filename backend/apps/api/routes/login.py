@@ -1,6 +1,6 @@
 from apps.api.authentication import gen_token, get_username
 from apps.api.models import NotificationType
-from apps.api.users import create_user_notification
+from apps.api.notifications import create_user_notification
 from django.contrib.auth import authenticate
 from django.http import HttpRequest
 from rest_framework.decorators import api_view

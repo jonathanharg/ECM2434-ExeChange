@@ -1,5 +1,4 @@
 from apps.api.models import ExeChangeUser, Notification, NotificationType
-from apps.api.users import create_notification_link
 from apps.api.emails import send_user_email
 from django.conf import settings
 
