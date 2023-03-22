@@ -75,13 +75,13 @@ const tradeLocations: ProfileTradeLocation[] = [
     color: "bg-blue-300",
     name: "Sanctuary",
     icon: BuildingLibraryIcon,
-  }
+  },
 ];
 
 export type LocationProps = {
   location: ProfileLocation;
   locationSVG: ProfileTradeLocation;
-}
+};
 
 export type ProfileData = {
   id: number;
@@ -145,7 +145,7 @@ function Profile() {
     setProducts(products.filter((product) => product.id != id));
   }
 
-  function getLocations(locations: {[name: string]:number}) {
+  function getLocations(locations: { [name: string]: number }) {
     const profileLocations: LocationProps[] = [];
     for (const key in locations) {
       const currLocation: ProfileLocation = {
@@ -153,12 +153,12 @@ function Profile() {
         trades: locations[key],
       };
 
-      for(let i = 0; i < tradeLocations.length; i++) {
-        if(tradeLocations[i]?.name == currLocation.name) {
+      for (let i = 0; i < tradeLocations.length; i++) {
+        if (tradeLocations[i]?.name == currLocation.name) {
           const locationProp: LocationProps = {
             location: currLocation,
             locationSVG: tradeLocations[i],
-          }
+          };
           profileLocations.push(locationProp);
           break;
         }
@@ -202,83 +202,54 @@ function Profile() {
         </div>
       </div>
       <Profilestats key={profileData?.id} {...profileData} />
-      <div className="flex w-full flex-col px-4 pt-12">
-        <p className="font-semibold text-gray-600">
-          {myProfile() ? (
-            <>My Achievements</>
-          ) : (
-            <>{username}&apos;s Achievements</>
-          )}
-        </p>
-        <div className="flex w-full space-x-2 pt-2">
-          {acheivementsEmpty() ?(
-            <p className="font-semibold text-gray-600">You have no achievements yet! <br />Start trading items to gain achievements...</p>
-          ) : (
-            <div>
-            {profileData?.achievements?.map((achievement) => (
-              <Achievement key={achievement?.id} {...achievement} />
-            ))}
-            </div>
-          )
-
-          }
-        </div>
-      </div>
-
-      {/* <div className="flex w-full flex-col px-4 pt-12">
-        <p className="font-semibold text-gray-600">Location Badges</p>
-        {locations.map((location) => {
-          <Badge {...location} />;
-        })}
-      </div> */}
 
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
         {locationsEmpty() ? (
-          <p className="font-semibold text-gray-600">You have not unlocked any locations! <br /> Complete a trade to unlock new locations!</p>
+          <p className="font-semibold text-gray-600">
+            You have not unlocked any locations! <br /> Complete a trade to
+            unlock new locations!
+          </p>
         ) : (
           <div>
-          {
-            locations.map((location) => (
+            {locations.map((location) => (
               <Badge {...location} />
-            ))
-          }
+            ))}
           </div>
         )}
-        
       </div>
 
       <div className="flex w-full flex-col px-4 pt-12">
-          <p className="font-semibold text-gray-600">
-            {myProfile() ? <>My Items</> : <>{username}&apos;s Items</>}
-          </p>
-          <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-6">
-            {searchState.size != 0
-              ? products
-                  .filter((product) =>
-                    isSuperset(
-                      new Set(product.tags.map((i) => i.value)),
-                      searchState
-                    )
+        <p className="font-semibold text-gray-600">
+          {myProfile() ? <>My Items</> : <>{username}&apos;s Items</>}
+        </p>
+        <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-6">
+          {searchState.size != 0
+            ? products
+                .filter((product) =>
+                  isSuperset(
+                    new Set(product.tags.map((i) => i.value)),
+                    searchState
                   )
-                  .map((product) => <Itemtile key={product.id} {...product} />)
-              : products.map((product) =>
-                  myProfile() == true ? (
-                    <>
-                      <div className="relative">
-                        <Itemtile key={product.id} {...product} />
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="relative">
-                        <Itemtile key={product.id} {...product} />
-                      </div>
-                    </>
-                  )
-                )}
-          </div>
+                )
+                .map((product) => <Itemtile key={product.id} {...product} />)
+            : products.map((product) =>
+                myProfile() == true ? (
+                  <>
+                    <div className="relative">
+                      <Itemtile key={product.id} {...product} />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="relative">
+                      <Itemtile key={product.id} {...product} />
+                    </div>
+                  </>
+                )
+              )}
         </div>
+      </div>
     </div>
   );
 }

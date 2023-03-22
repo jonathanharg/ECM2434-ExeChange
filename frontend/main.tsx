@@ -66,10 +66,6 @@ const router = createBrowserRouter([
             <Profile />
           </RequireAuth>
         ),
-        loader: ({ params }) => {
-          return null;
-        },
-        action: ({ params }) => {},
       },
       {
         path: "/upload",
