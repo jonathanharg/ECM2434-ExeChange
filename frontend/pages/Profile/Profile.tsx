@@ -180,7 +180,7 @@ function Profile() {
       .then((data) => setProducts(data));
   }
 
-  function isSuperset(set, subset) {
+  function isSuperset(set: Set<string>, subset: Set<string>) {
     for (const elem of subset) {
       if (!set.has(elem)) {
         return false;
@@ -219,9 +219,9 @@ function Profile() {
       .then((data) => setProfileData(data));
   }
 
-  function LinkLocationToBadge(location: ProfileLocations) {
+/*   function LinkLocationToBadge(location: ProfileLocations) {
     return;
-  }
+  } */
 
   useEffect(() => {
     fetchProducts();
@@ -253,12 +253,12 @@ function Profile() {
         </div>
       </div>
 
-      <div className="flex w-full flex-col px-4 pt-12">
+     {/*  <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
         {profileData?.locations?.map((location) => (
           <Badge {...myLocations} />
         ))}
-      </div>
+      </div> */}
       <div className="flex w-full flex-col px-4 pt-12">
         <div className="flex w-full flex-col px-4 pt-12">
           <p className="font-semibold text-gray-600">

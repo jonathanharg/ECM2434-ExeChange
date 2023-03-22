@@ -1,11 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-<<<<<<< HEAD
-from .models import Achievement, ClothingItem
-=======
-from .models import ClothingItem, Trade
->>>>>>> origin/trading-sucks
+from .models import ClothingItem, Trade, Achievement
 
 
 class MinimalUserSerializer(serializers.ModelSerializer):
@@ -21,16 +17,6 @@ class ClothingItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClothingItem
         depth = 1
-<<<<<<< HEAD
-        fields = ["caption", "tags", "owner", "id", "image", "created_at", "updated_at"]
-
-
-class UserProfileDataSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        depth = 1
-        fields = ["id", "username", "achievements", "current_xp", "profile_level"]
-=======
         fields = [
             "id",
             "owner",
@@ -74,4 +60,3 @@ class TradeSerializer(serializers.ModelSerializer):
             "location",
             "time",
         ]
->>>>>>> origin/trading-sucks
