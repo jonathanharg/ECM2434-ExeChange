@@ -21,7 +21,7 @@ NOT_LOGGED_IN = Response(
 INVALID_TRADE_REQUEST = Response(
     {
         "status": "INVALID_TRADE_REQUEST",
-        "message": "Please include a valid giver and giver_giving.",  # TODO: Make this more user friendly
+        "message": "Please include a valid trade users.",
     },
     status=HTTP_400_BAD_REQUEST,
 )
@@ -29,7 +29,7 @@ INVALID_TRADE_REQUEST = Response(
 INVALID_TRADE_ACCEPT = Response(
     {
         "status": "INVALID_TRADE_ACCEPT",
-        "message": "Please include a valid receiver exchanging, date, time and location.",  # TODO: Make this more user friendly
+        "message": "Please include a valid receiver exchanging, date, time and location.",
     },
     status=HTTP_400_BAD_REQUEST,
 )

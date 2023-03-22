@@ -19,7 +19,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 
-# TODO: Don't upload duplicated items
 @api_view(["POST"])
 def upload(request: HttpRequest) -> Response:
     user = authenticate_user(request)

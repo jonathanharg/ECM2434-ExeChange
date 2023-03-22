@@ -1,10 +1,5 @@
-from datetime import datetime
-
 from apps.api.authentication import authenticate_user
-from apps.api.models import ClothingItem, ExeChangeUser
 from django.http import HttpRequest
-from django.http.response import Http404
-from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 

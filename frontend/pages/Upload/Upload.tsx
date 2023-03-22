@@ -287,13 +287,14 @@ function Upload() {
                 disabled={uploading}
                 className="inline-flex justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
-                { uploading ? (<div
-                className="inline-block mr-2 h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                role="status"
-              ></div>) : 
-                (<ArrowUpTrayIcon className="mr-2 h-4 w-4" />)
-
-                }
+                {uploading ? (
+                  <div
+                    className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                    role="status"
+                  ></div>
+                ) : (
+                  <ArrowUpTrayIcon className="mr-2 h-4 w-4" />
+                )}
                 Upload
               </button>
             </div>

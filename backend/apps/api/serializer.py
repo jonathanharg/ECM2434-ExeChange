@@ -29,7 +29,6 @@ class ClothingItemSerializer(serializers.ModelSerializer):
         ]
 
 
-# TODO: Minimize this so only the needed data is sent
 class MinimalTradeClothingItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClothingItem
@@ -41,7 +40,6 @@ class MinimalTradeClothingItemSerializer(serializers.ModelSerializer):
         ]
 
 
-# TODO: Update
 class TradeSerializer(serializers.ModelSerializer):
     giver = MinimalUserSerializer()
     receiver = MinimalUserSerializer()

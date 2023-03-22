@@ -66,7 +66,6 @@ def item_request_by_user(user: ExeChangeUser, item: ClothingItem) -> bool:
     return asked_for | exchanged_for
 
 
-# TODO: CANT REQUEST IN THE PAST
 @api_view(["POST"])
 def request_trade(request: HttpRequest) -> Response:
     user = authenticate_user(request)
@@ -139,7 +138,7 @@ def reject_trade(request: HttpRequest, trade_id: int) -> Response:
         return TRADE_NOT_FOUND
 
     # user must confirm the rejection with the key value "reject": True in request data
-    if ("reject" not in request.data) | (request.data["reject"] != True):
+    if ("reject" not in request.data) | (not request.data["reject"]):
         return CONFIRM_TRADE_REJECT
 
     trade.status = Trade.TradeStatuses.REJECTED
@@ -271,12 +270,10 @@ def arrived(request: HttpRequest, trade_id: int) -> Response:
         return INVALID_TOO_EARLY
 
     if time_until_trade > timedelta(minutes=9):
-        print("TODO: User has achieved the 'Early Bird Catches the Word' achievement")
+        print("ACHIEVEMENT: User has achieved the 'Early Bird Catches the Word' achievement")
 
     if time_until_trade < timedelta(minutes=-10):
-        print("TODO: The user is too late! PERMA BAN THEM")
-        # TODO: Handle this situation
-        # When either one or both is late
+        print("You're too late to the trade")
         return Response()
 
     try:
@@ -290,8 +287,6 @@ def arrived(request: HttpRequest, trade_id: int) -> Response:
             trade.save()
     except IntegrityError:
         return DATABASE_TRANSACTION_ERROR
-
-    # TODO: Notify Trade other user that X has arrived
 
     return Response(
         {
@@ -344,7 +339,7 @@ def confirm(request: HttpRequest, trade_id: int) -> Response:
         item.owner = trade.giver
         item.save()
 
-    # TODO: Update user XP
+    # XP Update user XP HERE
     trade.receiver.trades_completed += 1
     trade.giver.trades_completed += 1
     trade.receiver.items_received += trade.giver_giving.count()
