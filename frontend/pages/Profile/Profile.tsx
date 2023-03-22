@@ -28,106 +28,107 @@ import Achievement from "./Achievement";
 // API: locations: ["Lafrowda":4, "Birks": 10]
 // Displayed by Locations.tsx
 
-const locations: ProfileTradeLocation[] = [
-  {
-    colour: "bg-yellow-400",
-    name: "Lafrowda",
-    icon: UserGroupIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-blue-500",
-    name: "Library",
-    icon: BookOpenIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-orange-600",
-    name: "Holland Hall",
-    icon: CameraIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-purple-500",
-    name: "Sports Park",
-    icon: PowerIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-green-900",
-    name: "Forum",
-    icon: ChatBubbleLeftRightIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-pink-600",
-    name: "Mardon",
-    icon: CloudIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-blue-700",
-    name: "Peter Chalk",
-    icon: DocumentChartBarIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-gray-600",
-    name: "Reed Hall",
-    icon: BuildingLibraryIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-red-500",
-    name: "Physics Building",
-    icon: RocketLaunchIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-teal-600",
-    name: "Queen's",
-    icon: NewspaperIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-teal-900",
-    name: "Washington Singer",
-    icon: MoonIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-orange-800",
-    name: "Old Library",
-    icon: FilmIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-pink-700",
-    name: "Amory",
-    icon: BeakerIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-yellow-600",
-    name: "Innovation Centre",
-    icon: LightBulbIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-purple-800",
-    name: "Northcott Theatre",
-    icon: TicketIcon,
-    trades: 0,
-  },
-  {
-    colour: "bg-green-400",
-    name: "East Park",
-    icon: BuildingOffice2Icon,
-    trades: 0,
-  },
-];
+// const locations: ProfileTradeLocation[] = [
+//   {
+//     colour: "bg-yellow-400",
+//     name: "Lafrowda",
+//     icon: UserGroupIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-blue-500",
+//     name: "Library",
+//     icon: BookOpenIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-orange-600",
+//     name: "Holland Hall",
+//     icon: CameraIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-purple-500",
+//     name: "Sports Park",
+//     icon: PowerIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-green-900",
+//     name: "Forum",
+//     icon: ChatBubbleLeftRightIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-pink-600",
+//     name: "Mardon",
+//     icon: CloudIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-blue-700",
+//     name: "Peter Chalk",
+//     icon: DocumentChartBarIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-gray-600",
+//     name: "Reed Hall",
+//     icon: BuildingLibraryIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-red-500",
+//     name: "Physics Building",
+//     icon: RocketLaunchIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-teal-600",
+//     name: "Queen's",
+//     icon: NewspaperIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-teal-900",
+//     name: "Washington Singer",
+//     icon: MoonIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-orange-800",
+//     name: "Old Library",
+//     icon: FilmIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-pink-700",
+//     name: "Amory",
+//     icon: BeakerIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-yellow-600",
+//     name: "Innovation Centre",
+//     icon: LightBulbIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-purple-800",
+//     name: "Northcott Theatre",
+//     icon: TicketIcon,
+//     trades: 0,
+//   },
+//   {
+//     colour: "bg-green-400",
+//     name: "East Park",
+//     icon: BuildingOffice2Icon,
+//     trades: 0,
+//   },
+// ];
 
 export type ProfileTradeLocation = {
+  [x: string]: any;
   colour: string;
   name: string;
   icon: React.ForwardRefExoticComponent<
@@ -163,9 +164,6 @@ export type ProfileLocations = {
   trades: number;
 };
 
-//const BACKEND_DATA: {[key: string]: number} = { "Lafrowda": 10, "Northcott Theatre": 4 };
-//Currently only doing the names of locations, changing the number of trade is going to be very tricky,
-//might have to leave that out
 
 function Profile() {
   const { username } = useParams();
@@ -249,18 +247,18 @@ function Profile() {
           )}
         </p>
         <div className="flex w-full space-x-2 pt-2">
-          {profileData?.achievements?.map((achievement) => (
-            <Achievement key={achievement?.id} {...achievement} />
-          ))}
+            {profileData?.achievements?.map((achievement) => (
+              <Achievement key={achievement?.id} {...achievement} />
+            ))}  
         </div>
       </div>
 
-     {/*  <div className="flex w-full flex-col px-4 pt-12">
+      <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
         {profileData?.locations?.map((location) => (
-          <Badge {...myLocations} />
+          <Badge {...location} />
         ))}
-      </div> */}
+      </div>
       <div className="flex w-full flex-col px-4 pt-12">
         <div className="flex w-full flex-col px-4 pt-12">
           <p className="font-semibold text-gray-600">
