@@ -5,14 +5,17 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Hero from "./pages/Hero/Hero";
 import Login from "./pages/Authentication/Login";
 import Register from "./pages/Authentication/Register";
+import Verify from "./pages/Authentication/Verify";
+import ResendVerify from "./pages/Authentication/ResendVerify";
 import Navbar from "./components/Navbar";
 import { AuthProvider, RequireAuth } from "react-auth-kit";
 
 import "./index.css";
 import Marketplace from "./pages/Marketplace/Marketplace";
-import UploadPage from "./pages/Upload/UploadPage";
-
+import Upload from "./pages/Upload/Upload";
 import Profile from "./pages/Profile/Profile";
+import TradeCentre from "./pages/TradeCentre/TradeCentre";
+import Error from "./pages/Error";
 
 //for using nested routes check out: https://reactrouter.com/en/main/start/tutorial
 //info is under the   " nested routes " title, you pretty much need to use an <outlet> to mark
@@ -21,6 +24,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Navbar />,
+    errorElement: <Error />,
     children: [
       { path: "/", element: <Hero /> },
       {
@@ -30,6 +34,14 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/verify",
+        element: <Verify />,
+      },
+      {
+        path: "/resendverify",
+        element: <ResendVerify />,
       },
       {
         path: "/marketplace",
@@ -61,21 +73,33 @@ const router = createBrowserRouter([
       },
       {
         path: "/upload",
-        element: <UploadPage />,
+        element: (
+          <RequireAuth loginPath={"/login"}>
+            <Upload />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: "/tradecentre",
+        element: (
+          <RequireAuth loginPath={"/login"}>
+            <TradeCentre />
+          </RequireAuth>
+        ),
       },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <AuthProvider
-    authType={"cookie"}
-    authName={"_auth"}
-    cookieDomain={window.location.hostname}
-    cookieSecure={window.location.protocol === "https:"} //should this be http for now ?
-  >
-    <React.StrictMode>
+  <React.StrictMode>
+    <AuthProvider
+      authType={"cookie"}
+      authName={"_auth"}
+      cookieDomain={window.location.hostname}
+      cookieSecure={window.location.protocol === "https:"} //should this be http for now ?
+    >
       <RouterProvider router={router} />
-    </React.StrictMode>
-  </AuthProvider>
+    </AuthProvider>
+  </React.StrictMode>
 );

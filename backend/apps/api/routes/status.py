@@ -11,12 +11,6 @@ def status(request: HttpRequest) -> Response:
         "<h1>Wow! This code is so good!</h1>",
         "Exeter is Changing...",
         "Exchange with ExeChange",
-        "Made by Vihan",
-        "Made by Jonathan",
-        "Made by Maddie",
-        "Made by Gabby",
-        "Made by Oggy",
-        "Made by Harry",
         "This is so gamefied!",
         "Loading...",
         "Who put this here?",
@@ -35,6 +29,15 @@ def status(request: HttpRequest) -> Response:
         "Ring ring!",
         "🩳 🔄 👕  👉👈🥺",
         "♻️",
+        "EVERYTHING is EXECHANGEing",
+        "Wow it's a deal!",
+        '"The measure of intelligence is the ability to ExeChange." - Albert Einstein',
+        '"We are the ExeChange that we seek" - Barack Obama',
+        "Moving in silence, big things coming.",
+        "Only the real ones know",
+        "\"The world's ExeChanging. It's time we ExeChange, too.\" - Spider-Man",
+        "Do you want to develop our app?",
+        "Come trade with Alice & Bob!",
     ]
     data = {"status": "OK", "message": {random.choice(WELCOME_MESSAGES)}}
     return Response(data)

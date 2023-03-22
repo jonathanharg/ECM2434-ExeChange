@@ -140,6 +140,9 @@ export type ProfileTradeLocation = {
 };
 
 export type ProfileData = {
+  levelPercent: number;
+  name: string;
+  level: number;
   id: number;
   username: string;
   achievements: ProfileAchievement[];

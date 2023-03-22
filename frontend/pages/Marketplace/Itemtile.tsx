@@ -5,21 +5,22 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Trading } from "./TradingPopup";
 import { useAuthUser } from "react-auth-kit";
 
-export interface Product {
+export type Product = {
   id: number;
   caption: string;
   href: string;
   image: string;
-  tags: tag[];
-  owner: owner;
-}
+  tags: Tag[];
+  owner: Owner;
+  description: string;
+};
 
-export type owner = {
+export type Owner = {
   id: number;
   username: string;
 };
 
-export type tag = {
+export type Tag = {
   id: number;
   readonly value: string;
   label: string;
@@ -64,9 +65,11 @@ export function Itemtile(product: Product) {
                       <span className="sr-only">Close</span>
                       <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
-                    {/* if(trading) {  } */}
-                    {/* ADD IF CONDITION HERE - IF TRADING then : otherwise idk not that  */}
-                    <Trading key={product.id} {...product} />
+                    <Trading
+                      key={product.id}
+                      product={product}
+                      setOpen={setOpen}
+                    />
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -82,7 +85,7 @@ export function Itemtile(product: Product) {
           className={
             auth()
               ? "h-full w-full object-cover object-center"
-              : "blur-lg lg:h-full lg:w-full"
+              : "pointer-events-none blur-lg lg:h-full lg:w-full"
           }
           onClick={() => setOpen(true)}
         />

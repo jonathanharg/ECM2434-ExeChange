@@ -1,92 +1,92 @@
+<<<<<<< HEAD
 import React, { Fragment, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { Listbox } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { Link, Outlet } from "react-router-dom";
 import Calendar from "react-calendar";
+=======
+import React, { Dispatch, useEffect, useState } from "react";
+>>>>>>> origin/trading-sucks
 import axios from "axios";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
+import UserCircleIcon from "@heroicons/react/24/outline/UserCircleIcon";
+import { CheckCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Product } from "./Itemtile";
 
-const locations = [
-  {
-    id: 1,
-    locationName: "Lafrowda",
-  },
-  {
-    id: 2,
-    locationName: "Forum",
-  },
-  {
-    id: 3,
-    locationName: "Holland Hall",
-  },
-  {
-    id: 4,
-    locationName: "Sanctuary",
-  },
-  {
-    id: 5,
-    locationName: "Business School",
-  },
-];
+interface ProfileData {
+  levelPercent: number;
+  name: string;
+  level: number;
+}
 
-const times = [
-  { id: 1, time: "09:00" },
-  { id: 2, time: "09:30" },
-  { id: 3, time: "10:00" },
-  { id: 4, time: "10:30" },
-  { id: 5, time: "11:00" },
-  { id: 6, time: "11:30" },
-  { id: 7, time: "12:00" },
-  { id: 8, time: "12:30" },
-  { id: 9, time: "13:00" },
-  { id: 10, time: "13:30" },
-  { id: 11, time: "14:00" },
-  { id: 12, time: "14:30" },
-  { id: 13, time: "15:00" },
-  { id: 14, time: "15:30" },
-  { id: 15, time: "16:00" },
-  { id: 16, time: "16:30" },
-  { id: 17, time: "17:00" },
-];
+interface TradingProps {
+  product: Product;
+  setOpen: Dispatch<React.SetStateAction<boolean>>;
+}
 
-export function Trading(product: Product) {
-  const [selectedDates, onDatesChange] = useState(new Date());
-  const [selectedLocation, setSelectedLocation] = useState(locations[0]);
-  const [selectedTime, setSelectedTime] = useState(times[0]);
-  // const [profileData, setProfileData] = useState<typeof ProfileData>();
+export function Trading({ product, setOpen }: TradingProps) {
+  const [requestMessage, setRequestMessage] = useState("");
+  const [profileData, setProfileData] = useState<ProfileData>();
+  const [giver_giving, setGiverGiving] = useState<number[]>([product.id]); //items you're asking for. this item is default added in cause you've clicked on it
+  const [products, setProducts] = useState<Product[]>([]);
+  const [showError, setShowError] = useState(false);
+  const [err, setErr] = useState<string>();
 
-  // function fetchProfileData() {
-  //   return fetch("/api/profiledata")
-  //     .then((response) => response.json())
-  //     .then((data) => setProfileData(data));
-  // }
-
-  // useEffect(() => {
-  //   fetchProfileData();
-  // }, []);
-
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
+  function fetchProducts() {
+    const url = `/api/marketplace?user=${product.owner.id}`;
+    return fetch(url)
+      .then((response) => response.json())
+      .then((data) => setProducts(data));
   }
-  const handleSubmit = async (e) => {
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  function fetchProfileData() {
+    return fetch("/api/profiledata")
+      .then((response) => response.json())
+      .then((data) => setProfileData(data));
+  }
+
+  useEffect(() => {
+    fetchProfileData();
+  }, []);
+
+  function handleExtraItems(index: number) {
+    if (giver_giving.includes(index)) {
+      setGiverGiving(giver_giving.filter((i) => i !== index));
+    } else {
+      setGiverGiving([...giver_giving, index]);
+    }
+  }
+
+  function showSvg(index: number) {
+    if (giver_giving.includes(index)) {
+      return (
+        <CheckCircleIcon
+          className={`absolute right-0 h-6 w-6 fill-green-800 stroke-white stroke-[1.5]`}
+        >
+          {" "}
+        </CheckCircleIcon>
+      );
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     // this function sends form data to /api/trade
     e.preventDefault();
-
-    const productOwnerId = product.owner.id;
-    const itemId = product.id;
-
+    const giver = product.owner.id; // person you are asking for item from
+    const message = requestMessage;
     await axios
       .post(
-        "/api/trade",
+        "/api/trade/new",
         JSON.stringify({
-          productOwnerId,
-          selectedDates,
-          selectedTime,
-          selectedLocation,
-          itemId,
+          giver,
+          giver_giving, //[] of itemIds
+          message,
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -95,17 +95,24 @@ export function Trading(product: Product) {
       )
       .then((response) => {
         // TODO: Handle more responses than just OK
-        if (response.data.status != "OK") {
+        if (response.data.status == "OK") {
+          setOpen(false);
+          setRequestMessage(" ");
           return;
         }
       })
       .catch((error) => {
-        console.log(error);
+        setShowError(true);
+        setErr(error.response.data.message);
       });
   };
 
   return (
-    <div className="grid w-full grid-cols-1 items-start gap-y-8 gap-x-6 sm:grid-cols-12 lg:gap-x-8">
+    <div
+      className={
+        "grid w-full grid-cols-1 items-start gap-y-8 gap-x-6 sm:grid-cols-12 lg:gap-x-8"
+      }
+    >
       <div className="overflow-hidden rounded-lg sm:col-span-4 lg:col-span-5">
         <div className="aspect-w-2 aspect-h-3 mt-2 overflow-hidden rounded-lg bg-gray-100 sm:col-span-4 lg:col-span-5">
           <img src={product.image} className=" object-cover object-center" />
@@ -115,194 +122,122 @@ export function Trading(product: Product) {
           {product.caption}{" "}
         </h3>
         <p className="mt-1 text-sm text-gray-500">
-          <b>
-            Tagged by{" "}
-            <Link to={"../profile/" + product.owner.username}>
-              {" "}
-              {product.owner.username}{" "}
-            </Link>{" "}
-            as:{" "}
-          </b>
+          <b>Tagged: </b>
           {product.tags.map((t) => t.value).join(", ")}
+        </p>
+        <p className="pt-1 text-sm text-gray-500">
+          <b>Description: </b> {product.description}
         </p>
       </div>
       <div className="sm:col-span-8 lg:col-span-7">
         <section aria-labelledby="options-heading">
-          <form method="POST" onSubmit={handleSubmit} className="">
-            {/*Location drop down menu*/}
-            <Listbox value={selectedLocation} onChange={setSelectedLocation}>
-              {({ open }) => (
-                <>
-                  <Listbox.Label className="block py-2 text-sm font-bold text-gray-700">
-                    Select trade location
-                  </Listbox.Label>
-                  <div className="relative">
-                    <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-[#1d8d35] focus:outline-none focus:ring-1 focus:ring-[#1d8d35]  sm:text-sm">
-                      <span className="flex items-center">
-                        <span className="ml-3 block truncate">
-                          {selectedLocation.locationName}
-                        </span>
-                      </span>
-                      <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                        <ChevronUpDownIcon
-                          className="h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
-                      </span>
-                    </Listbox.Button>
-                    <Transition
-                      show={open}
-                      as={Fragment}
-                      leave="transition ease-in duration-100"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
-                    >
-                      <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                        {locations.map((location) => (
-                          <Listbox.Option
-                            key={location.id}
-                            className={({ active }) =>
-                              classNames(
-                                active
-                                  ? "bg-[#17742b] text-white"
-                                  : "text-gray-900",
-                                "relative cursor-default select-none py-2 pl-3 pr-9"
-                              )
-                            }
-                            value={location}
-                          >
-                            {({ selected, active }) => (
-                              <>
-                                <div className="flex items-center">
-                                  <span
-                                    className={classNames(
-                                      selected
-                                        ? "font-semibold"
-                                        : "font-normal",
-                                      "ml-3 block truncate"
-                                    )}
-                                  >
-                                    {location.locationName}
-                                  </span>
-                                </div>
-                                {selected ? (
-                                  <span
-                                    className={classNames(
-                                      active ? "text-white" : "text-[#17742b]",
-                                      "absolute inset-y-0 right-0 flex items-center pr-4"
-                                    )}
-                                  >
-                                    <CheckIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  </span>
-                                ) : null}
-                              </>
-                            )}
-                          </Listbox.Option>
-                        ))}
-                      </Listbox.Options>
-                    </Transition>
-                  </div>
-                </>
-              )}
-            </Listbox>
+          <div className="flex items-center justify-between px-4 pt-3">
+            <UserCircleIcon className="h-16 w-16" />
+            <div className="flex w-9/12 items-center">
+              <div className="flex w-10/12 flex-col pl-4 leading-none">
+                <p className="text-sm font-bold">{product.owner.username}</p>
+                <p className="pt-1 text-sm font-light text-gray-800">
+                  Level {profileData?.level}
+                </p>
+                <div className="mb-1 text-base font-medium text-green-700 dark:text-green-500"></div>
+                <div className="mb-4 h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
+                  <div
+                    className="h-2.5 rounded-full bg-green-600 dark:bg-green-500"
+                    style={{ width: profileData?.levelPercent + "%" }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-            {/*Time picker*/}
-
-            <Listbox value={selectedTime} onChange={setSelectedTime}>
-              {({ open }) => (
-                <>
-                  <Listbox.Label className="mt-[1rem] block py-2 text-sm font-bold text-gray-700">
-                    Select time
-                  </Listbox.Label>
-                  <div className="relative">
-                    <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-[#1d8d35]  focus:outline-none focus:ring-1 focus:ring-[#1d8d35] sm:text-sm">
-                      <span className="flex items-center">
-                        <span className="ml-3 block truncate">
-                          {selectedTime.time}
-                        </span>
-                      </span>
-                      <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                        <ChevronUpDownIcon
-                          className="h-5 w-5 text-gray-400"
-                          aria-hidden="true"
+          {products.filter((i) => i.id != product.id).length >= 1 && (
+            <div
+              className={
+                profileData?.name != product.owner.username ? "" : "hidden"
+              }
+            >
+              <div className="mt-5 text-xl font-bold text-gray-900">
+                Other items by {product.owner.username}...
+              </div>
+              <p className="pt-1 text-sm text-gray-500">
+                {" "}
+                You can trade <b> multiple </b> items at once. <b> Click </b> to
+                select.
+              </p>
+              <div className="mt-2">
+                <div className="container mx-auto grid grid-flow-dense grid-cols-4 grid-rows-2 gap-2 overflow-hidden rounded-md py-1">
+                  {products
+                    .filter((i) => i.id != product.id)
+                    .map((i) => (
+                      <div
+                        key={i.id}
+                        className="relative w-full overflow-hidden rounded-md bg-gray-200 hover:opacity-75"
+                      >
+                        {showSvg(i.id)}
+                        <img
+                          draggable={false}
+                          tabIndex={1}
+                          src={i.image}
+                          onClick={() => handleExtraItems(i.id)}
                         />
-                      </span>
-                    </Listbox.Button>
-                    <Transition
-                      show={open}
-                      as={Fragment}
-                      leave="transition ease-in duration-100"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
-                    >
-                      <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                        {times.map((time) => (
-                          <Listbox.Option
-                            key={time.id}
-                            className={({ active }) =>
-                              classNames(
-                                active
-                                  ? "bg-green-700 text-white"
-                                  : "text-gray-900",
-                                "relative cursor-default select-none py-2 pl-3 pr-9"
-                              )
-                            }
-                            value={time}
-                          >
-                            {({ selected, active }) => (
-                              <>
-                                <div className="flex items-center">
-                                  <span
-                                    className={classNames(
-                                      selected
-                                        ? "font-semibold"
-                                        : "font-normal",
-                                      "ml-3 block truncate"
-                                    )}
-                                  >
-                                    {time.time}
-                                  </span>
-                                </div>
-                                {selected ? (
-                                  <span
-                                    className={classNames(
-                                      active ? "text-white" : "text-green-800",
-                                      "absolute inset-y-0 right-0 flex items-center pr-4"
-                                    )}
-                                  >
-                                    <CheckIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  </span>
-                                ) : null}
-                              </>
-                            )}
-                          </Listbox.Option>
-                        ))}
-                      </Listbox.Options>
-                    </Transition>
-                  </div>
-                </>
-              )}
-            </Listbox>
-            <div className="ml-7 mt-[1.75rem]">
-              <Calendar
-                onChange={onDatesChange}
-                value={selectedDates}
-                minDate={new Date()}
-              />
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          )}
+          <form
+            method="POST"
+            onSubmit={handleSubmit}
+            className={
+              profileData?.name != product.owner.username ? "mt-2" : "hidden"
+            }
+          >
+            <div className="">
+              <label
+                htmlFor="message"
+                className="mb-2 block text-sm font-medium text-gray-900"
+              >
+                Write a message with your request!
+              </label>
+              <textarea
+                id="message"
+                value={requestMessage}
+                onChange={(e) => setRequestMessage(e.target.value)}
+                className="row-span-4 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-800 focus:ring-green-800"
+                placeholder="Here, you can let the trader know when you're free or discuss any other details about your request..."
+              ></textarea>
             </div>
             <button
               type="submit"
-              className="mt-[3rem] flex w-full items-center justify-center rounded-md border border-transparent bg-[#17742b] py-3 px-8 text-base font-bold text-white hover:bg-[#17742b] focus:outline-none focus:ring-2 focus:ring-[#1d8d35] focus:ring-offset-2"
+              className="mt-[1rem] flex w-full items-center justify-center rounded-md border border-transparent bg-[#17742b] py-3 px-8 text-base font-bold text-white hover:bg-[#17742b] focus:outline-none focus:ring-2 focus:ring-[#1d8d35] focus:ring-offset-2"
             >
               Request trade with {product.owner.username}!
             </button>
           </form>
+          <div className="pt-4">
+            <div
+              id="Error"
+              className={
+                "relative rounded-md border-2 border-red-500 bg-red-200 p-4 md:max-w-md"
+              }
+              hidden={!showError}
+            >
+              <div className="absolute right-2 top-2 pt-4 align-top hover:cursor-pointer">
+                <div
+                  onClick={() => {
+                    setShowError(false);
+                  }}
+                  className=""
+                >
+                  <XMarkIcon className="m-auto h-5 w-5 stroke-black stroke-2" />
+                </div>
+              </div>
+              <label className="font-bold">{"Uh oh"}</label>
+              <br />
+              <label>{err}</label>
+            </div>
+          </div>
         </section>
       </div>
     </div>

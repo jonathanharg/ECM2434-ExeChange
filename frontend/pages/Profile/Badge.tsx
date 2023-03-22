@@ -5,6 +5,18 @@ interface LocationProps {
   location: ProfileLocations;
   locationSVG: ProfileTradeLocation;
 }
+export type Location = {
+  id: number;
+  colour: string;
+  place: string;
+  icon: React.ForwardRefExoticComponent<
+    React.SVGProps<SVGSVGElement> & {
+      title?: string | undefined;
+      titleId?: string | undefined;
+    }
+  >;
+  trades: number;
+};
 
 function Badge({ location, locationSVG }: LocationProps) {
   const thiscolour =
