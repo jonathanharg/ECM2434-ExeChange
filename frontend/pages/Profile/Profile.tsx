@@ -170,7 +170,7 @@ function Profile() {
   const [products, setProducts] = useState<Product[]>([]);
 
   //Still not quite working
-  const myLocations: ProfileTradeLocation[] = myLocationBadges(BACKEND_DATA);
+  const myLocations: ProfileTradeLocation[][] = myLocationBadges(BACKEND_DATA);
 
 
   function fetchProducts() {
@@ -200,19 +200,15 @@ function Profile() {
     return auth()!.user == username;
   };
 
-
   function locationBadges(name: string){
     return locations.filter((location) => location.name == name);
   }
 
-
   //I think something needs to be changed slightly with what this function actually returns,
   //I think it might not be concatenating the arrays properly or something...
   function myLocationBadges(names: string[]){
-    return names.map((i) => (locationBadges(i)));
+    return names.map((location) => (locationBadges(location)));
   }
-
-
 
   const [profileData, setProfileData] = useState<ProfileData>();
 
@@ -254,8 +250,8 @@ function Profile() {
 
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
-        {myLocations.map((location) => (
-          <Badge {...location} />
+        {myLocations.map((myLocations) => (
+          <Badge {...myLocations} />
         ))}
       </div>
       <div className="flex w-full flex-col px-4 pt-12">
