@@ -197,7 +197,6 @@ function Profile() {
             locationSVG: tradeLocations[i]?.icon,
           }
           profileLocations.push(locationProp);
-          break;
         }
       }
     }
@@ -252,8 +251,8 @@ function Profile() {
         })}
       </div> */}
 
-      <div>
-        <p>Location Badges</p>
+      <div className="flex w-full flex-col px-4 pt-12">
+        <p className="font-semibold text-gray-600">Location Badges</p>
         {
           locations.map((location) => (
             <Badge {...location} />
