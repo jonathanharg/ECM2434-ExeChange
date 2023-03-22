@@ -35,7 +35,7 @@ export default function TradeView({
     Datetime?.split("T")[0]?.split("-")[2] +
     " / " +
     Datetime?.split("T")[0]?.split("-")[1];
-  const GiverPage = profileData?.name == trade.giver.username;
+  const GiverPage = profileData?.username == trade.giver.username;
   const [isHere, setIsHere] = useState(false);
   const [code, setCode] = useState(0);
   const [inputcode, setInputCode] = useState("");
@@ -60,7 +60,7 @@ export default function TradeView({
         if (response.data.status == "OK") {
           setIsHere(!isHere);
           console.log(isHere);
-          if (profileData?.name == trade.receiver.username) {
+          if (profileData?.username == trade.receiver.username) {
             getCode();
           }
         }
@@ -329,13 +329,13 @@ export default function TradeView({
                 <>
                   <Disclosure.Button className="flex w-full justify-between rounded-lg bg-green-700 px-4 py-3 text-left text-sm font-medium text-white shadow hover:bg-green-600 focus:outline-none focus-visible:ring focus-visible:ring-gray-100 focus-visible:ring-opacity-75">
                     <CheckIcon className="h-5 w-5 stroke-white stroke-[3]"></CheckIcon>
-                    {profileData?.name == trade.giver.username && (
+                    {profileData?.username == trade.giver.username && (
                       <span>
                         You accepted <b>{trade.receiver.username}&apos;s</b>{" "}
                         request!
                       </span>
                     )}
-                    {profileData?.name == trade.receiver.username && (
+                    {profileData?.username == trade.receiver.username && (
                       <span>
                         <b> {trade.giver.username} </b> accepted your trade
                         request!
@@ -410,13 +410,13 @@ export default function TradeView({
                           ))}
                         </div>
                         {trade.receiver_exchanging.length == 0 &&
-                        profileData?.name == trade.giver.username ? (
+                        profileData?.username == trade.giver.username ? (
                           <p className="p-1">
                             {" "}
                             You&apos;re <b> giving away </b> this item.{" "}
                           </p>
                         ) : trade.receiver_exchanging.length == 0 &&
-                          profileData?.name == trade.receiver.username ? (
+                          profileData?.username == trade.receiver.username ? (
                           <p className="p-1">
                             {" "}
                             You&apos;re <b> getting </b> this item in return for
@@ -460,7 +460,7 @@ export default function TradeView({
                               </button>
                             </>
                           ) : isHere &&
-                            profileData?.name == trade.giver.username ? (
+                            profileData?.username == trade.giver.username ? (
                             <div className="w-full">
                               <label
                                 className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-700"
@@ -485,14 +485,14 @@ export default function TradeView({
                               </div>
                             </div>
                           ) : isHere &&
-                            profileData?.name == trade.receiver.username &&
+                            profileData?.username == trade.receiver.username &&
                             code !== 0 ? (
                             <p className="pt-2 text-sm text-gray-500">
                               The confirmation code is {code}
                             </p>
                           ) : (
                             isHere &&
-                            profileData?.name == trade.receiver.username &&
+                            profileData?.username == trade.receiver.username &&
                             code == 0 && (
                               <p className="pt-2 text-sm text-gray-500">
                                 The other trader isn&apos;t here yet!{" "}
