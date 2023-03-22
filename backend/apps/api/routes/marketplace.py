@@ -1,7 +1,7 @@
-from django.conf import settings
 from apps.api.models import ClothingItem, ExeChangeUser, ItemTag
 from apps.api.responses import INVALID_TAG, INVALID_USER
 from apps.api.serializer import ClothingItemSerializer
+from django.conf import settings
 from django.http import HttpRequest, JsonResponse
 from rest_framework.decorators import api_view
 

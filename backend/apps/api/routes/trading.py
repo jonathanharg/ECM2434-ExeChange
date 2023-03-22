@@ -192,7 +192,7 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
 
         if item_request_by_user(user, item):
             return ITEM_ALREADY_REQUESTED
-        
+
     try:
         location = Location.objects.get(name=data["location"])
     except Location.DoesNotExist:
@@ -206,9 +206,7 @@ def accept_trade(request: HttpRequest, trade_id: int) -> Response:
     if not is_invalid_trade_time(time):
         return INVALID_TIME
 
-    time = time.replace(
-        second=0, microsecond=0
-    )  # ignore anything less than minutes
+    time = time.replace(second=0, microsecond=0)  # ignore anything less than minutes
 
     try:
         with transaction.atomic():
@@ -335,8 +333,7 @@ def confirm(request: HttpRequest, trade_id: int) -> Response:
     ):
         return INVALID_TRADE_CONFIRMATION
 
-
-    if request.data['confirmation_code'] != trade.confirmation_code:
+    if request.data["confirmation_code"] != trade.confirmation_code:
         return INCORRECT_TRADE_CONFIRMATION_CODE
 
     for item in trade.giver_giving.all():

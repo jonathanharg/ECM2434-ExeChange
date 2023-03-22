@@ -1,20 +1,19 @@
-# type: ignore
 from apps.api.models import ExeChangeUser
 
 from backend.settings import XP_IN_LEVEL
 
 
-def update_user_level(user: ExeChangeUser) -> int | None:
+def update_user_level(user: ExeChangeUser) -> int | None:  # type: ignore
     if user is None:
         return None
 
     user.profile_level = user.profile_level + 1
     user.save()
 
-    return user.profile_level
+    return user.profile_level  # type: ignore
 
 
-def update_user_xp(user: ExeChangeUser, xp_to_add: int) -> int | None:
+def update_user_xp(user: ExeChangeUser, xp_to_add: int) -> int | None:  # type: ignore
     """
     Takes an authenticated user, and updates the xp of that user.
 
@@ -33,4 +32,4 @@ def update_user_xp(user: ExeChangeUser, xp_to_add: int) -> int | None:
     user.current_xp = new_xp
     user.save()
 
-    return user.current_xp
+    return user.current_xp  # type: ignore
