@@ -245,11 +245,20 @@ function Profile() {
         </div>
       </div>
 
-      <div className="flex w-full flex-col px-4 pt-12">
+      {/* <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
         {locations.map((location) => {
           <Badge {...location} />;
         })}
+      </div> */}
+
+      <div>
+        <p>Location Badges</p>
+        {
+          locations.map((location) => (
+            <Badge {...location} />
+          ))
+        }
       </div>
 
       <div className="flex w-full flex-col px-4 pt-12">
