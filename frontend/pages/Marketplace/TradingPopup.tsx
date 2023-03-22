@@ -196,7 +196,7 @@ export function Trading({product, setOpen}:TradingProps) {
                 id="message"
                 value={requestMessage}
                 onChange={(e) => setRequestMessage(e.target.value)}
-                className="row-span-4 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                className="row-span-4 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-800 focus:ring-green-800"
                 placeholder="Here, you can let the trader know when you're free or discuss any other details about your request..."
               ></textarea>
             </div>
