@@ -6,29 +6,19 @@ interface LocationProps {
   locationSVG: ProfileTradeLocation;
 }
 export type Location = {
-  id: number;
-  colour: string;
   place: string;
-  icon: React.ForwardRefExoticComponent<
-    React.SVGProps<SVGSVGElement> & {
-      title?: string | undefined;
-      titleId?: string | undefined;
-    }
-  >;
   trades: number;
 };
 
 function Badge({ location, locationSVG }: LocationProps) {
-  const thiscolour =
-    "h-12 w-12 " + locationSVG.colour + " rounded-full flex items-center";
 
   return (
     <div className="flex w-full flex-col space-y-2 pt-2">
       <div className="flex h-12 w-full">
         <div className="h-full w-2/12">
-          <div className={thiscolour}>
+          <div className="h-12 w-12 bg-green-700 rounded-full flex items-center">
             {/* {location.icon} */}
-            {React.createElement(locationSVG.icon, {
+            {React.createElement(locationSVG.BuildingOffice2Icon, {
               className: "stroke-white m-auto w-10 h-10",
             })}
           </div>
