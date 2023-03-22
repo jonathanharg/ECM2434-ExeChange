@@ -84,7 +84,7 @@ export function Trading(product: Product) {
         // TODO: Handle more responses than just OK
         if (response.data.status != "OK") {
           setShowError(true);
-          setSuccess("Trade Sent!")
+          setSuccess("Trade Sent!");
           return;
         }
       })
@@ -95,7 +95,11 @@ export function Trading(product: Product) {
   };
 
   return (
-    <div className={"grid w-full grid-cols-1 items-start gap-y-8 gap-x-6 sm:grid-cols-12 lg:gap-x-8"}>
+    <div
+      className={
+        "grid w-full grid-cols-1 items-start gap-y-8 gap-x-6 sm:grid-cols-12 lg:gap-x-8"
+      }
+    >
       <div className="overflow-hidden rounded-lg sm:col-span-4 lg:col-span-5">
         <div className="aspect-w-2 aspect-h-3 mt-2 overflow-hidden rounded-lg bg-gray-100 sm:col-span-4 lg:col-span-5">
           <img src={product.image} className=" object-cover object-center" />
@@ -138,7 +142,11 @@ export function Trading(product: Product) {
               <div className="mt-5 text-xl font-bold text-gray-900">
                 Other items by {product.owner.username}...
               </div>
-              <p className="text-sm text-gray-500 pt-1"> You can trade <b> multiple </b> items at once. <b> Click </b> to select.</p>
+              <p className="pt-1 text-sm text-gray-500">
+                {" "}
+                You can trade <b> multiple </b> items at once. <b> Click </b> to
+                select.
+              </p>
               <div className="mt-2">
                 <div className="container mx-auto grid grid-flow-dense grid-cols-4 grid-rows-2 gap-2 overflow-hidden rounded-md py-1">
                   {products
@@ -161,7 +169,13 @@ export function Trading(product: Product) {
               </div>
             </>
           )}
-          <form method="POST" onSubmit={handleSubmit} className={profileData?.name != product.owner.username ? "mt-2": "hidden"}>
+          <form
+            method="POST"
+            onSubmit={handleSubmit}
+            className={
+              profileData?.name != product.owner.username ? "mt-2" : "hidden"
+            }
+          >
             <div className="">
               <label
                 htmlFor="message"
@@ -185,30 +199,32 @@ export function Trading(product: Product) {
             </button>
           </form>
           <div className="pt-4">
-           <div
-          id="Error"
-          className={"md:max-w-md relative rounded-md border-2 border-red-500 bg-red-200 p-4"} 
-          hidden={!showError}
-        >
-        <div className="absolute right-2 pt-4 top-2 align-top hover:cursor-pointer">
-          <div
-            onClick={() => {
-              setShowError(false);
-            }}
-            className=""
-          >
-            <XMarkIcon className="m-auto h-5 w-5 stroke-black stroke-2" />
+            <div
+              id="Error"
+              className={
+                "relative rounded-md border-2 border-red-500 bg-red-200 p-4 md:max-w-md"
+              }
+              hidden={!showError}
+            >
+              <div className="absolute right-2 top-2 pt-4 align-top hover:cursor-pointer">
+                <div
+                  onClick={() => {
+                    setShowError(false);
+                  }}
+                  className=""
+                >
+                  <XMarkIcon className="m-auto h-5 w-5 stroke-black stroke-2" />
+                </div>
+              </div>
+              <label className="font-bold">
+                {err ? "Uh oh" : success ? `${success}` : ""}
+              </label>
+              <br />
+              <label>{err}</label>
+            </div>
           </div>
-        </div>
-        <label className="font-bold">{ err ? "Uh oh": success ? `${success}`:""}</label>
-        <br />
-        <label>{err}</label>
-        </div>
-          </div>
-
         </section>
-        </div>
-
+      </div>
     </div>
   );
 }

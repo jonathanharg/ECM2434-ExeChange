@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios, { AxiosError } from "axios";
-import { ArrowUpTrayIcon, DocumentPlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowUpTrayIcon,
+  DocumentPlusIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import TagSelect from "../../components/TagSelect";
 import { Tag } from "../Marketplace/Itemtile";
 import { MinusCircleIcon } from "@heroicons/react/20/solid";
@@ -20,9 +24,9 @@ function Upload() {
   const [description, setDescription] = useState("");
   const [key, setKey] = useState<number>(0);
   const fileRef = useRef(null);
-  const [showError, setShowError] = useState(false)
-  const [errorTitle, setErrorTitle] = useState("")
-  const [errorMessage, setErrorMessage] = useState("")
+  const [showError, setShowError] = useState(false);
+  const [errorTitle, setErrorTitle] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,37 +36,45 @@ function Upload() {
       image: image,
       description: description,
     };
-    setShowError(false)
+    setShowError(false);
 
-    await axios.post("/api/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    }).then(response => {
-      console.log("Response")
-      console.log(response)
-      setImage(undefined);
-      setCaption("");
-      setCheckedTerms(false);
-      setCheckedUnderstand(false);
-      setKey((k) => {
-        return k + 1;
+    await axios
+      .post("/api/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((response) => {
+        console.log("Response");
+        console.log(response);
+        setImage(undefined);
+        setCaption("");
+        setCheckedTerms(false);
+        setCheckedUnderstand(false);
+        setKey((k) => {
+          return k + 1;
+        });
+        setDescription("");
+        setSearchState(new Set());
+      })
+      .catch((err: Error | AxiosError) => {
+        console.log("Caught Error");
+        console.log(err);
+        if (axios.isAxiosError(err)) {
+          const title =
+            err.response?.data?.status?.split("_").join(" ") ?? "Unknown Error";
+          const message =
+            err.response?.data?.message ??
+            "Please report this to your nearest ExeChange developer!";
+          setErrorTitle(title);
+          setErrorMessage(message);
+        } else {
+          setErrorTitle("An unknown error occurred!");
+          setErrorMessage(
+            "Check your internet connection. If you're connected to the internet, please report this to your nearest ExeChange developer!"
+          );
+        }
+        setShowError(true);
+        window.scrollTo(0, 0);
       });
-      setDescription("");
-      setSearchState(new Set());
-    }).catch((err: Error | AxiosError) => {
-      console.log("Caught Error")
-      console.log(err)
-      if (axios.isAxiosError(err)) {
-        const title = err.response?.data?.status?.split("_").join(" ") ?? "Unknown Error"
-        const message = err.response?.data?.message ?? "Please report this to your nearest ExeChange developer!"
-        setErrorTitle(title)
-        setErrorMessage(message)
-      } else {
-        setErrorTitle("An unknown error occurred!")
-        setErrorMessage("Check your internet connection. If you're connected to the internet, please report this to your nearest ExeChange developer!")
-      }
-      setShowError(true)
-      window.scrollTo(0,0)
-    });
   };
 
   function resetFile() {
@@ -98,13 +110,13 @@ function Upload() {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="w-full md:col-span-2 md:w-auto"> 
+      <div className="w-full md:col-span-2 md:w-auto">
         <form method="POST" onSubmit={handleSubmit}>
           <div className="md:overflow-hidden">
             <div className="z-50 space-y-6 bg-white px-4 py-5 sm:p-6 ">
               <div
                 id="Error"
-                className="md:max-w-md relative rounded-md border-2 border-red-500 bg-red-200 p-4" 
+                className="relative rounded-md border-2 border-red-500 bg-red-200 p-4 md:max-w-md"
                 hidden={!showError}
               >
                 <div className="absolute right-2 top-2 align-top hover:cursor-pointer">
@@ -212,7 +224,7 @@ function Upload() {
                 </label>
                 <TagSelect key={key} setState={setSearchState} />
               </div>
-              <div className="md:max-w-md text-left">
+              <div className="text-left md:max-w-md">
                 <input
                   required
                   id="checked-terms"

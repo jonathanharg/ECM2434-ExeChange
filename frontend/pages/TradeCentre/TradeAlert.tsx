@@ -32,8 +32,6 @@ export default function TradeAlert({
       .then((data) => setProfileData(data));
   }
 
-  
-
   useEffect(() => {
     fetchProfileData();
   }, []);
@@ -48,10 +46,9 @@ export default function TradeAlert({
             trade={trade}
             profileData={profileData}
             acceptTrade={acceptTrade}
-            rejectTrade = {rejectTrade}
+            rejectTrade={rejectTrade}
           />
         </div>
-
       </div>
     </div>
   );
