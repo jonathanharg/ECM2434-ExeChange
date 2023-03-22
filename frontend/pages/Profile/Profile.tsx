@@ -113,6 +113,11 @@ const tradeLocations: ProfileTradeLocation[] = [
     name: "East Park",
     icon: BuildingOffice2Icon,
   },
+  {
+    color: "bg-blue-300",
+    name: "Sanctuary",
+    icon: BuildingLibraryIcon,
+  }
 ];
 
 export type LocationProps = {
@@ -197,12 +202,10 @@ function Profile() {
             locationSVG: tradeLocations[i]?.icon,
           }
           profileLocations.push(locationProp);
+          break;
         }
       }
     }
-
-
-
     return profileLocations;
   }
 
