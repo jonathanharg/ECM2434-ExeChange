@@ -40,7 +40,7 @@ const tradeLocations: ProfileTradeLocation[] = [
   },
   {
     color: "bg-blue-500",
-    name: "Library",
+    name: "Harrison",
     icon: BookOpenIcon,
   },
   {
@@ -49,19 +49,9 @@ const tradeLocations: ProfileTradeLocation[] = [
     icon: CameraIcon,
   },
   {
-    color: "bg-purple-500",
-    name: "Sports Park",
-    icon: PowerIcon,
-  },
-  {
     color: "bg-green-900",
     name: "Forum",
     icon: ChatBubbleLeftRightIcon,
-  },
-  {
-    color: "bg-pink-600",
-    name: "Mardon",
-    icon: CloudIcon,
   },
   {
     color: "bg-blue-700",
@@ -69,29 +59,9 @@ const tradeLocations: ProfileTradeLocation[] = [
     icon: DocumentChartBarIcon,
   },
   {
-    color: "bg-gray-600",
-    name: "Reed Hall",
-    icon: BuildingLibraryIcon,
-  },
-  {
-    color: "bg-red-500",
-    name: "Physics Building",
-    icon: RocketLaunchIcon,
-  },
-  {
     color: "bg-teal-600",
-    name: "Queen's",
+    name: "Business School",
     icon: NewspaperIcon,
-  },
-  {
-    color: "bg-teal-900",
-    name: "Washington Singer",
-    icon: MoonIcon,
-  },
-  {
-    color: "bg-orange-800",
-    name: "Old Library",
-    icon: FilmIcon,
   },
   {
     color: "bg-pink-700",
@@ -100,18 +70,13 @@ const tradeLocations: ProfileTradeLocation[] = [
   },
   {
     color: "bg-yellow-600",
-    name: "Innovation Centre",
+    name: "SWIOT",
     icon: LightBulbIcon,
   },
   {
     color: "bg-purple-800",
     name: "Northcott Theatre",
     icon: TicketIcon,
-  },
-  {
-    color: "bg-green-400",
-    name: "East Park",
-    icon: BuildingOffice2Icon,
   },
   {
     color: "bg-blue-300",
