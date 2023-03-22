@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 from itertools import chain
 
 from apps.api.authentication import authenticate_user
+from apps.api.users import update_user_xp
 from apps.api.models import ClothingItem, ExeChangeUser, Location, Trade
 from apps.api.responses import (
     CONFIRM_TRADE_REJECT,
@@ -341,13 +342,16 @@ def confirm(request: HttpRequest, trade_id: int) -> Response:
         item.owner = trade.giver
         item.save()
 
-    # XP Update user XP HERE
     trade.receiver.trades_completed += 1
     trade.giver.trades_completed += 1
     trade.receiver.items_received += trade.giver_giving.count()
     trade.giver.items_received += trade.receiver_exchanging.count()
     trade.receiver.items_given += trade.receiver_exchanging.count()
     trade.giver.items_received += trade.giver_giving.count()
+
+    # Updating XP
+    update_user_xp(trade.receiver, 50)
+    update_user_xp(trade.giver, 50)
 
     trade.status = trade.TradeStatuses.COMPLETED
     trade.save()
