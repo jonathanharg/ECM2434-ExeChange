@@ -31,17 +31,9 @@ def login(request: HttpRequest) -> Response:
     )
 
     if user is not None:
-<<<<<<< HEAD
-        create_user_notification(
-            user=user, notification_type=NotificationType.ACHIEVEMENT_UNLOCKED
-        )
-
-        print("LOG IN SUCCESSFULL!")
-=======
         # if the user is not verified, return an error.
         if not user.is_verified:  # type: ignore
             return Response(NOT_VERIFIED, status=HTTP_400_BAD_REQUEST)
->>>>>>> dev
 
         # User is verified
         # Creating JWT Access token
