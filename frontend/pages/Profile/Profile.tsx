@@ -279,13 +279,13 @@ function Profile() {
                     <>
                       <div className="relative">
                         <Itemtile key={product.id} {...product} />
-                        <div className="absolute top-0 right-0 rounded">
+                        {/* <div className="absolute top-0 right-0 rounded">
                           <DeleteItem
                             key={product.id}
                             deleteItem={deleteItem}
                             product={product}
                           />
-                        </div>
+                        </div> */}
                       </div>
                     </>
                   ) : (

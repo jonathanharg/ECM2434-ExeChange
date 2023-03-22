@@ -13,6 +13,17 @@ from apps.api.models import ClothingItem, Achievement
 from apps.api.models import ExeChangeUser
 from apps.api.serializer import UserProfileDataSerializer
 
+@api_view(["GET"])
+def get_my_profile_data(request: HttpRequest) -> Response:
+    authenticated_user = authenticate_user(request)
+
+    if authenticated_user is None:
+        return Response(
+            {"status": "BAD_REQUEST", "message": "User credentials not correct!"}
+        )
+    
+    serializer = UserProfileDataSerializer(authenticated_user)
+    return JsonResponse(serializer.data, safe=False)
 
 @api_view(["GET"])
 def get_profile_data(request: HttpRequest, username: str) -> Response:

@@ -22,7 +22,7 @@ urlpatterns = [
     path("upload", upload.upload),
     path("tags", constants.tags),
     path("locations", constants.locations),
-    path("profiledata", profile.get_profile_data),
+    path("profiledata", profile.get_my_profile_data),
     path("trade/new", trading.request_trade),
     path("trade/all", trading.get_trades),
     path("trade/<int:trade_id>/reject", trading.reject_trade),
