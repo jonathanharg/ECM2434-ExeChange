@@ -25,9 +25,11 @@ function Upload() {
   const [showError, setShowError] = useState(false);
   const [errorTitle, setErrorTitle] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setUploading(true);
     const formData = {
       caption: caption,
       tags: Array.from(searchState).map((tags) => tags.id),
@@ -43,6 +45,7 @@ function Upload() {
       .then((response) => {
         console.log("Response");
         console.log(response);
+        setUploading(false);
         setImage(undefined);
         setCaption("");
         setCheckedTerms(false);
@@ -54,6 +57,7 @@ function Upload() {
         setSearchState(new Set());
       })
       .catch((err: Error | AxiosError) => {
+        setUploading(false);
         console.log("Caught Error");
         console.log(err);
         if (axios.isAxiosError(err)) {
@@ -137,6 +141,7 @@ function Upload() {
                 </label>
                 <input
                   required
+                  readOnly={uploading}
                   onChange={(e) => {
                     setCaption(e.target.value);
                   }}
@@ -183,6 +188,7 @@ function Upload() {
                             id="file-upload"
                             name="file-upload"
                             type="file"
+                            readOnly={uploading}
                             className="sr-only"
                             onChange={(e) => {
                               handleImage(e);
@@ -210,6 +216,7 @@ function Upload() {
                 <textarea
                   required
                   id="message"
+                  readOnly={uploading}
                   className="row-span-4 block w-full rounded-lg border border-gray-300  p-2.5 text-sm text-gray-900 focus:border-green-800 focus:ring-green-700"
                   placeholder="Be descriptive... but not more descriptive than a tweet!"
                   value={description}
@@ -227,6 +234,7 @@ function Upload() {
                   required
                   id="checked-terms"
                   type="checkbox"
+                  readOnly={uploading}
                   value=""
                   checked={checkedTerms}
                   onChange={() => {
@@ -254,6 +262,7 @@ function Upload() {
                     id="checked-understand"
                     type="checkbox"
                     value=""
+                    readOnly={uploading}
                     checked={checkedUnderstand}
                     onChange={() => {
                       setCheckedUnderstand(!checkedUnderstand);
@@ -275,9 +284,17 @@ function Upload() {
             <div className="px-4 py-3 text-right sm:px-6">
               <button
                 type="submit"
+                disabled={uploading}
                 className="inline-flex justify-center rounded-md border border-transparent bg-green-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
-                <ArrowUpTrayIcon className="mr-2 h-4 w-4" /> Upload
+                { uploading ? (<div
+                className="inline-block mr-2 h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                role="status"
+              ></div>) : 
+                (<ArrowUpTrayIcon className="mr-2 h-4 w-4" />)
+
+                }
+                Upload
               </button>
             </div>
           </div>
