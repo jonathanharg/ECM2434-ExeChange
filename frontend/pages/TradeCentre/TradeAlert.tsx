@@ -4,7 +4,7 @@ import { TradeInvolvement } from "./TradeCentre";
 import TradeView from "./TradeView";
 
 export type ProfileData = {
-  username:string;
+  username: string;
 };
 
 interface TradeAlertProps {

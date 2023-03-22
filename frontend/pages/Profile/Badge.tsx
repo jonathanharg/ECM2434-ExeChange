@@ -1,24 +1,16 @@
 import React from "react";
-import { ProfileTradeLocation, ProfileLocations } from "./Profile";
+import { ProfileTradeLocation,ProfileLocation, LocationProps} from "./Profile";
 
-interface LocationProps {
-  location: ProfileLocations;
-  locationSVG: ProfileTradeLocation;
-}
-export type Location = {
-  place: string;
-  trades: number;
-};
-
-function Badge({ location, locationSVG }: LocationProps) {
-
+function Badge(locationProp: LocationProps) {
+  console.log("HELKJFALKD");
+  console.log("TESTSTLAIJDFA: ", locationProp.location.name);
   return (
     <div className="flex w-full flex-col space-y-2 pt-2">
       <div className="flex h-12 w-full">
         <div className="h-full w-2/12">
-          <div className="h-12 w-12 bg-green-700 rounded-full flex items-center">
+          <div className="flex h-12 w-12 items-center rounded-full bg-green-700">
             {/* {location.icon} */}
-            {React.createElement(locationSVG.BuildingOffice2Icon, {
+            {React.createElement(locationSVG.icon, {
               className: "stroke-white m-auto w-10 h-10",
             })}
           </div>
