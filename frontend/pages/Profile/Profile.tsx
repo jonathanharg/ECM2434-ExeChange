@@ -175,6 +175,18 @@ function Profile() {
     return auth()!.user == username;
   };
 
+  const acheivementsEmpty = () => {
+    if (profileData?.achievements.length == 0) {
+      return true;
+    }
+  };
+
+  const locationsEmpty = () => {
+    if (locations.length == 0) {
+      return true;
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
     fetchProfileData();
@@ -199,9 +211,17 @@ function Profile() {
           )}
         </p>
         <div className="flex w-full space-x-2 pt-2">
-          {profileData?.achievements?.map((achievement) => (
-            <Achievement key={achievement?.id} {...achievement} />
-          ))}
+          {acheivementsEmpty() ?(
+            <p className="font-semibold text-gray-600">You have no achievements yet!</p>
+          ) : (
+            <div>
+            {profileData?.achievements?.map((achievement) => (
+              <Achievement key={achievement?.id} {...achievement} />
+            ))}
+            </div>
+          )
+
+          }
         </div>
       </div>
 
@@ -214,11 +234,18 @@ function Profile() {
 
       <div className="flex w-full flex-col px-4 pt-12">
         <p className="font-semibold text-gray-600">Location Badges</p>
-        {
-          locations.map((location) => (
-            <Badge {...location} />
-          ))
-        }
+        {locationsEmpty() ? (
+          <p className="font-semibold text-gray-600">You have not unlocked any locations!!</p>
+        ) : (
+          <div>
+          {
+            locations.map((location) => (
+              <Badge {...location} />
+            ))
+          }
+          </div>
+        )}
+        
       </div>
 
       <div className="flex w-full flex-col px-4 pt-12">
