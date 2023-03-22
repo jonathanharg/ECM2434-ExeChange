@@ -14,6 +14,7 @@ python-dotenv = "^0.21.1"
 djangorestframework-simplejwt = "^5.2.2"
 pillow = "^9.4.0"
 psycopg2 = "^2.9.5"
+yagmail = "^0.15.293"
 
 
 [tool.poetry.group.dev.dependencies]

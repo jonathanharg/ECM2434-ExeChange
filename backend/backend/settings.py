@@ -10,13 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import json
 import os
 import sys
 from datetime import timedelta
 from pathlib import Path
 
+import yagmail
+
 # Load environment variables from the users .env file
 from dotenv import load_dotenv
+from yagmail.oauth2 import get_authorization
 
 load_dotenv()
 
@@ -44,6 +48,7 @@ if SECRET_KEY == DEFAULT_SECRET_KEY:
     print(
         "If you are running in production stop the server IMMEDIATELY and set the SECRET_KEY using an environment variable!"
     )
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
@@ -214,3 +219,53 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Custom setting values
 
 XP_IN_LEVEL = 100
+
+DOMAIN_NAME = (
+    "http://127.0.0.1:8000" if DEBUG is True else "https://www.exechange.co.uk"
+)
+
+# GMAIL CREDENTIALS SETUP
+SEND_VERIFICATION_EMAIL = os.getenv("SEND_VERIFICATION_EMAIL") == "True"
+
+if SEND_VERIFICATION_EMAIL:
+    GOOGLE_CLIENT_ID = os.getenv("CLIENT_ID", "NONE")
+    GOOGLE_CLIENT_SECRET = os.getenv("CLIENT_SECRET", "NONE")
+    GOOGLE_PROJECT_ID = os.getenv("PROJECT_ID", "NONE")
+
+    if str(GOOGLE_CLIENT_ID) == "NONE":
+        print("ERROR: need to set google client id")
+    elif str(GOOGLE_CLIENT_SECRET) == "NONE":
+        print("ERROR: need to set google client secret")
+    elif str(GOOGLE_PROJECT_ID) == "NONE":
+        print("ERROR: need to set google project id")
+    else:
+        if not os.path.exists("/app/credentials.json"):
+            GOOGLE_REFRESH_TOKEN, _, _ = get_authorization(
+                GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+            )
+
+            # generating JSON file for oauth data
+            oauth2_data = {
+                "installed": {
+                    "client_id": GOOGLE_CLIENT_ID,
+                    "project_id": GOOGLE_PROJECT_ID,
+                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                    "token_uri": "https://oauth2.googleapis.com/token",
+                    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                    "client_secret": GOOGLE_CLIENT_SECRET,
+                    "redirect_uris": ["http://localhost"],
+                    "refresh_token": GOOGLE_REFRESH_TOKEN,
+                }
+            }
+
+            with open(  # pylint: disable=unspecified-encoding
+                "/app/credentials.json", "w"
+            ) as f:
+                json.dump(oauth2_data, f)
+
+        # sender email address
+        USER = "teamexechange@gmail.com"
+        SEND_FROM = "team@exechange.co.uk"
+
+        # instantiate a new instance of yagmail
+        YAG = yagmail.SMTP(user={USER: SEND_FROM}, oauth2_file="/app/credentials.json")

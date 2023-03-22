@@ -117,38 +117,50 @@ function Register() {
         }
       )
       .then(function (response) {
-        // If response status UNIQUE_ERROR -> then show error message.
-        if (response.data.status == "UNIQUE_ERROR") {
-          console.log("You are already signed up!");
-          setGenericError(
-            // TODO: Link to Login Page
-            "You seem to be already signed up!"
-          );
-          return;
-        }
-        if (response.data.status != "OK") {
-          console.log("Auth error!");
-          setGenericError("An unknown authentication error occurred!");
-          return;
-        }
-        // SIGN UP WAS SUCCESSFUL -> proceed to 'sign the user in' by using the tokens returned to them
-        // from the django register view !
+        // Sign the user in with sent codes.
+        if (response.data.status == "OK_NO_SEND") {
+          const attemptAuth = signIn({
+            token: response.data.access,
+            expiresIn: 120,
+            tokenType: "Bearer",
+            authState: { user: response.data.username }, // state passed in cannot be called user, hence const email = user.
+            // refreshToken: response.data.refresh,
+            // refreshTokenExpireIn: 1440,
+          });
 
-        const attemptAuth = signIn({
-          token: response.data.access,
-          expiresIn: 120,
-          tokenType: "bearer",
-          authState: { user: response.data.username },
-          // TODO: refresh tokens working !
-        });
-        if (attemptAuth) {
-          //Registered user has been successfully signed in!
-          console.log("User logged in!");
-          navigate("/");
+          if (attemptAuth) {
+            navigate("/");
+          } else {
+            console.log("React-auth-kit error!");
+          }
         }
+
+        // Registration was successful, show message to verify.
+        setGenericError(
+          "PLEASE VERIFY YOUR ACCOUNT, YOU WILL HAVE RECIEVED AN EMAIL!"
+        );
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response) {
+          // bad request
+          if (error.response.status == 400) {
+            if (error.response.data.status == "VERIFICATION_EMAIL_ERROR") {
+              setGenericError(
+                "ERROR IN SENDING EMAIL, PLEASE TRY AGAIN LATER!"
+              );
+            }
+            if (error.response.data.status == "UNIQUE_ERROR") {
+              setGenericError(
+                "You already seem to be signed up, please try logging in!"
+              );
+            }
+          }
+          if (error.response.status == 401) {
+            if (error.response.data.status == "CREDENTIAL_ERROR") {
+              setPasswordError("Password and confirm password do not match!");
+            }
+          }
+        }
       });
 
     setEmailError("");
