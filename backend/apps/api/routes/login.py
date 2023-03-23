@@ -30,7 +30,7 @@ def login(request: HttpRequest) -> Response:
 
     if user is not None:
         # if the user is not verified, return an error.
-        if not user.is_verified:  # type: ignore
+        if not user.is_verified and not user.is_superuser:  # type: ignore
             return Response(NOT_VERIFIED, status=HTTP_400_BAD_REQUEST)
 
         # User is verified

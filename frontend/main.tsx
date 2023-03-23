@@ -16,6 +16,8 @@ import Upload from "./pages/Upload/Upload";
 import Profile from "./pages/Profile/Profile";
 import TradeCentre from "./pages/TradeCentre/TradeCentre";
 import Error from "./pages/Error";
+import TermsOfUse from "./pages/Support/TermsOfUse";
+import PrivacyPolicy from "./pages/Support/PrivacyPolicy";
 
 //for using nested routes check out: https://reactrouter.com/en/main/start/tutorial
 //info is under the   " nested routes " title, you pretty much need to use an <outlet> to mark
@@ -60,6 +62,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/profile/:username",
+        element: (
+          <RequireAuth loginPath={"/login"}>
+            <Profile />
+          </RequireAuth>
+        ),
+      },
+      {
         path: "/upload",
         element: (
           <RequireAuth loginPath={"/login"}>
@@ -74,6 +84,18 @@ const router = createBrowserRouter([
             <TradeCentre />
           </RequireAuth>
         ),
+      },
+      {
+        path: "/support",
+        element: <Hero />,
+      },
+      {
+        path: "/termsofuse",
+        element: <TermsOfUse />,
+      },
+      {
+        path: "/privacypolicy",
+        element: <PrivacyPolicy />,
       },
     ],
   },

@@ -23,6 +23,7 @@ from apps.api.responses import (
     TRADERS_NOT_THERE,
 )
 from apps.api.serializer import TradeSerializer
+from apps.api.users import update_user_xp
 from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.http import HttpRequest, JsonResponse
@@ -341,13 +342,16 @@ def confirm(request: HttpRequest, trade_id: int) -> Response:
         item.owner = trade.giver
         item.save()
 
-    # XP Update user XP HERE
     trade.receiver.trades_completed += 1
     trade.giver.trades_completed += 1
     trade.receiver.items_received += trade.giver_giving.count()
     trade.giver.items_received += trade.receiver_exchanging.count()
     trade.receiver.items_given += trade.receiver_exchanging.count()
     trade.giver.items_received += trade.giver_giving.count()
+
+    # Updating XP
+    update_user_xp(trade.receiver, 50)
+    update_user_xp(trade.giver, 50)
 
     trade.status = trade.TradeStatuses.COMPLETED
     trade.save()
@@ -368,11 +372,11 @@ def get_trades(request: HttpRequest) -> Response:
         "time"
     )
     active_trades = trades.exclude(
-        Q(status=Trade.TradeStatuses.ACCEPTED) | Q(status=Trade.TradeStatuses.REJECTED)
+        Q(status=Trade.TradeStatuses.ACCEPTED)
+        | Q(status=Trade.TradeStatuses.REJECTED)
+        | Q(status=Trade.TradeStatuses.COMPLETED)
     ).order_by("requested_at")
-    # rejected_trades = trades.filter(status=Trade.TradeStatuses.REJECTED).order_by(
-    #     "requested_at"
-    # )
+
     trades_serializer = TradeSerializer(
         list(chain(accepted_trades, active_trades)), many=True
     )

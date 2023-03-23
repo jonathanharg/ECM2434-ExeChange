@@ -5,6 +5,7 @@ axios.defaults.xsrfCookieName = "csrftoken";
 import UserCircleIcon from "@heroicons/react/24/outline/UserCircleIcon";
 import { CheckCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Product } from "./Itemtile";
+import { Link } from "react-router-dom";
 
 interface ProfileData {
   levelPercent: number;
@@ -126,7 +127,12 @@ export function Trading({ product, setOpen }: TradingProps) {
             <UserCircleIcon className="h-16 w-16" />
             <div className="flex w-9/12 items-center">
               <div className="flex w-10/12 flex-col pl-4 leading-none">
-                <p className="text-sm font-bold">{product.owner.username}</p>
+                <p className="text-sm font-bold">
+                  <Link to={"../profile/" + product.owner.username}>
+                    {" "}
+                    {product.owner.username}{" "}
+                  </Link>
+                </p>
                 <p className="pt-1 text-sm font-light text-gray-800">
                   Level {profileData?.level}
                 </p>

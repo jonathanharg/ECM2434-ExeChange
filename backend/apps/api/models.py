@@ -47,7 +47,7 @@ class ClothingItem(models.Model):
 
 
 class Trade(models.Model):
-    def generate_confirmation_code(self):
+    def generate_confirmation_code():  # pylint: disable=no-method-argument
         return random.randint(1000, 9999)
 
     class TradeStatuses(models.TextChoices):
@@ -90,6 +90,17 @@ class Trade(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class Achievement(models.Model):
+    text = models.CharField(max_length=100)
+    # field representing text -> charField
+    colour = models.CharField(max_length=100)
+    # field representing color -> charField
+    xp_recieved = models.PositiveIntegerField(
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
+    )
+    # field representing xp received when achievement unlocked -> PositiveIntegerField
+
+
 class ExeChangeUser(AbstractUser):
     is_verified = models.BooleanField(default=False)
 
@@ -104,6 +115,7 @@ class ExeChangeUser(AbstractUser):
         default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
     )
 
+    achievements = models.ManyToManyField(Achievement, blank=True)
     trades_completed = models.IntegerField(default=0)
     items_given = models.PositiveIntegerField(default=0)
     items_received = models.PositiveIntegerField(default=0)

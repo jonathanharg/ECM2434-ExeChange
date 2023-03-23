@@ -17,6 +17,7 @@ export default function Navbar() {
 
   const isAuthenticated = useIsAuthenticated();
   const auth = useAuthUser();
+  //const currentUserPath = "/profile/" + auth().user;
   const signOut = useSignOut();
 
   const navigation = [
@@ -113,7 +114,7 @@ export default function Navbar() {
                     <div className="space-y-6 border-t border-gray-200 py-6 px-4">
                       <div className="flow-root">
                         <Link
-                          to="/profile"
+                          to={"/profile/" + auth()?.user}
                           className="-m-2 flex items-center p-2"
                           onClick={() => setOpenMenu(false)}
                         >
@@ -218,7 +219,7 @@ export default function Navbar() {
                       />
                       <div className="hidden lg:ml-6 lg:flex">
                         <Link
-                          to="/profile"
+                          to={"/profile/" + auth()?.user}
                           className="flex items-center text-gray-700 hover:text-gray-800"
                         >
                           <UserCircleIcon className="block h-auto w-5 flex-shrink-0" />

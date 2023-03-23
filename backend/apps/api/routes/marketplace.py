@@ -42,5 +42,13 @@ def marketplace(request: HttpRequest) -> JsonResponse:
                 return INVALID_USER
             queryset = queryset.filter(owner=user)
 
+        if "username" in request.query_params:
+            username = request.query_params["username"]
+            try:
+                user = ExeChangeUser.objects.get(username=username)
+            except (ExeChangeUser.DoesNotExist, ValueError) as _:
+                return INVALID_USER
+            queryset = queryset.filter(owner=user)
+
     serializer = ClothingItemSerializer(queryset.distinct(), many=True)
     return JsonResponse(serializer.data, safe=False)

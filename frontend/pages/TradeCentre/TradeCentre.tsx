@@ -57,7 +57,7 @@ export default function TradeCentre() {
   return (
     <div className="w flex flex-col px-4 pt-6">
       <h2 className="pb-2 text-center text-2xl font-bold">Your Trades</h2>
-      {trades.length > 0 ? (
+      {trades.length >= 1 ? (
         trades.map((trade) => (
           <TradeAlert
             key={trade.id}

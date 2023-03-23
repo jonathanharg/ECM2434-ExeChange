@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 from rest_framework import serializers
 
-from .models import ClothingItem, Trade
+from .models import ClothingItem, Location, Trade
 
 
 class MinimalUserSerializer(serializers.ModelSerializer):
@@ -9,6 +10,34 @@ class MinimalUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ["id", "username"]
+
+
+class UserProfileDataSerializer(serializers.ModelSerializer):
+    locations = serializers.SerializerMethodField("get_trade_locations")
+
+    def get_trade_locations(self, obj):
+        locations = {}
+        for location in Location.objects.all():
+            count = Trade.objects.filter(
+                Q(location=location)
+                & Q(status=Trade.TradeStatuses.COMPLETED)
+                & (Q(receiver=obj) | Q(giver=obj))
+            ).count()
+            if count > 0:
+                locations[location.name] = count
+        return locations
+
+    class Meta:
+        model = get_user_model()
+        depth = 1
+        fields = [
+            "id",
+            "username",
+            "achievements",
+            "current_xp",
+            "profile_level",
+            "locations",
+        ]
 
 
 class ClothingItemSerializer(serializers.ModelSerializer):
