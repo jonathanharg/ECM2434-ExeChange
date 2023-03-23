@@ -372,11 +372,11 @@ def get_trades(request: HttpRequest) -> Response:
         "time"
     )
     active_trades = trades.exclude(
-        Q(status=Trade.TradeStatuses.ACCEPTED) | Q(status=Trade.TradeStatuses.REJECTED)
+        Q(status=Trade.TradeStatuses.ACCEPTED)
+        | Q(status=Trade.TradeStatuses.REJECTED)
+        | Q(status=Trade.TradeStatuses.COMPLETED)
     ).order_by("requested_at")
-    # rejected_trades = trades.filter(status=Trade.TradeStatuses.REJECTED).order_by(
-    #     "requested_at"
-    # )
+    
     trades_serializer = TradeSerializer(
         list(chain(accepted_trades, active_trades)), many=True
     )
