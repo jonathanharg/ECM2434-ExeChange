@@ -1,8 +1,5 @@
-import React, { Fragment, useRef, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import React from "react";
 import axios from "axios";
-import { Product } from "../Marketplace/Itemtile";
-import { TrashIcon } from "@heroicons/react/24/outline";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 

@@ -4,10 +4,8 @@ import Itemtile, { Product } from "../Marketplace/Itemtile";
 import Profilestats from "./Profilestats";
 import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
 import Badge from "./Badge";
-import Achievement from "./Achievement";
 import {
   ChatBubbleLeftRightIcon,
-  PowerIcon,
   CameraIcon,
   UserGroupIcon,
   BookOpenIcon,
@@ -111,7 +109,7 @@ function Profile() {
   const { username } = useParams();
   const isAuthenticated = useIsAuthenticated();
   const auth = useAuthUser();
-  const [searchState, setSearchState] = useState(new Set<string>());
+  const [searchState, setSearchState] = useState(new Set<string>()); // eslint-disable-line
   const [products, setProducts] = useState<Product[]>([]);
   const [profileData, setProfileData] = useState<ProfileData>();
   const [locations, setLocations] = useState<LocationProps[]>([]);
@@ -142,6 +140,7 @@ function Profile() {
   }
 
   function deleteItem(id: number) {
+    // eslint-disable-line
     setProducts(products.filter((product) => product.id != id));
   }
 
@@ -172,10 +171,11 @@ function Profile() {
       return false;
     }
 
-    return auth()!.user == username;
+    return auth()!.user == username; // eslint-disable-line
   };
 
   const acheivementsEmpty = () => {
+    // eslint-disable-line
     if (profileData?.achievements.length == 0) {
       return true;
     }
@@ -204,16 +204,16 @@ function Profile() {
       <Profilestats key={profileData?.id} {...profileData} />
 
       <div className="flex w-full flex-col px-4 pt-12">
-        <p className="font-bold text-lg text-gray-600">Location Badges</p>
+        <p className="text-lg font-bold text-gray-600">Location Badges</p>
         {locationsEmpty() ? (
-          <p className="text-md text-gray-600 mt-2 ">
-            You have not unlocked any locations yet. <br /> <b>Complete a trade</b> to
-            unlock new locations!
+          <p className="text-md mt-2 text-gray-600 ">
+            You have not unlocked any locations yet. <br />{" "}
+            <b>Complete a trade</b> to unlock new locations!
           </p>
         ) : (
           <div>
             {locations.map((location) => (
-              <Badge {...location} />
+              <Badge key={location.location.name} {...location} />
             ))}
           </div>
         )}

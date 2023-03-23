@@ -1,4 +1,4 @@
-import React, { Dispatch, Fragment, useEffect, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import axios from "axios";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
