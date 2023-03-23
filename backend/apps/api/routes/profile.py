@@ -1,6 +1,8 @@
-from django.shortcuts import get_object_or_404
 from apps.api.authentication import authenticate_user
+from apps.api.models import Achievement, ClothingItem, ExeChangeUser
+from apps.api.serializer import UserProfileDataSerializer
 from django.http import Http404, HttpRequest, JsonResponse
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -9,9 +11,6 @@ from rest_framework.status import (
     HTTP_401_UNAUTHORIZED,
 )
 
-from apps.api.models import ClothingItem, Achievement
-from apps.api.models import ExeChangeUser
-from apps.api.serializer import UserProfileDataSerializer
 
 @api_view(["GET"])
 def get_my_profile_data(request: HttpRequest) -> Response:
@@ -21,9 +20,10 @@ def get_my_profile_data(request: HttpRequest) -> Response:
         return Response(
             {"status": "BAD_REQUEST", "message": "User credentials not correct!"}
         )
-    
+
     serializer = UserProfileDataSerializer(authenticated_user)
     return JsonResponse(serializer.data, safe=False)
+
 
 @api_view(["GET"])
 def get_profile_data(request: HttpRequest, username: str) -> Response:
@@ -33,7 +33,7 @@ def get_profile_data(request: HttpRequest, username: str) -> Response:
         return Response(
             {"status": "BAD_REQUEST", "message": "User credentials not correct!"}
         )
-    user_object = get_object_or_404(ExeChangeUser, username= str(username))
+    user_object = get_object_or_404(ExeChangeUser, username=str(username))
 
     serializer = UserProfileDataSerializer(user_object)
     return JsonResponse(serializer.data, safe=False)

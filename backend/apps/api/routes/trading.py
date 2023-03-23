@@ -2,7 +2,6 @@ from datetime import datetime, timedelta, timezone
 from itertools import chain
 
 from apps.api.authentication import authenticate_user
-from apps.api.users import update_user_xp
 from apps.api.models import ClothingItem, ExeChangeUser, Location, Trade
 from apps.api.responses import (
     CONFIRM_TRADE_REJECT,
@@ -24,6 +23,7 @@ from apps.api.responses import (
     TRADERS_NOT_THERE,
 )
 from apps.api.serializer import TradeSerializer
+from apps.api.users import update_user_xp
 from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.http import HttpRequest, JsonResponse

@@ -1,4 +1,11 @@
-from apps.api.models import ClothingItem, ExeChangeUser, ItemTag, Location, Trade, Achievement
+from apps.api.models import (
+    Achievement,
+    ClothingItem,
+    ExeChangeUser,
+    ItemTag,
+    Location,
+    Trade,
+)
 from django.contrib import admin
 
 
