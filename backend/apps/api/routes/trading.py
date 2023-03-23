@@ -376,7 +376,7 @@ def get_trades(request: HttpRequest) -> Response:
         | Q(status=Trade.TradeStatuses.REJECTED)
         | Q(status=Trade.TradeStatuses.COMPLETED)
     ).order_by("requested_at")
-    
+
     trades_serializer = TradeSerializer(
         list(chain(accepted_trades, active_trades)), many=True
     )
