@@ -14,7 +14,7 @@ poetry install                              # Installs packages for python/djang
 npm install                                 # Installs packages for typescript/vite/react frontend
 ```
 
-4. :bangbang: Before running anything **copy** `.env.example` to `.env` and change any relevant settings. :bangbang:
+5. :bangbang: Before running anything **copy** `.env.example` to `.env` and change any relevant settings. :bangbang:
 
 > Windows can encounter some issues installing Poetry, therefore if you are not intending to contribute towards it is recommended to run ExeChange using [docker](#running-production-with-docker).
 
@@ -129,3 +129,30 @@ docker-compose up --build --force-recreate
 If you have not already create new credentials on Google Cloud Console, and enable the GMAIL API. Then, in your .env file input your google_client_id, google_secret and project id.
 
 Now set `SEND_VERIFICATION_EMAIL` to `True` in your .env, and start the server. On server start you will find that it asks you to go to a link, follow this link and the google cloud services will do the rest, it may give you a warning that the app is unverified, if this is the case you can click advanced, and continue. You will be redirected to a localhost uri, paste this into your terminal where prompted. Now a credentials.json file will have been generated for you, so on server restart you will not have to follow this process again.
+
+## Contributions
+### Sprint 1
+**General setup**: Jonathan
+**AWS / Dockerisation:** Jonathan
+**Logging in / registration backend**: Harry
+**Token authentication frontend / backend:** Harry
+**Front-end Logging in / registration:** Vihan (& Harry)
+**Marketplace frontend:** Gabby & Maddie
+**Marketplace backend:** Jonathan & Vihan
+**Upload frontend / backend**: Jonathan & Vihan
+**Trade request frontend:** Augustijn & Gabby
+**Trade request backend:** Harry & Maddie
+**Profile frontend:** Maddie (& Harry)
+**Profile backend:** Maddie & Harry
+**Navbar:** Augustijn & Jonathan
+
+### Sprint 2
+**Trading:** Jonathan & Vihan
+**Email Verification:** Harry
+**Profile:** Augustijn & Maddie
+**Profile Location Badges:** Harry & Jonathan & Gabby
+**Profile Routing:** Gabby
+**HTTPS / NGNIX:** Jonathan
+**SMTP / Cloudflare:** Jonathan
+**Legal Work:** Augustijn
+**Marketplace Improvements:** Vihan & Jonathan
