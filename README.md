@@ -133,26 +133,46 @@ Now set `SEND_VERIFICATION_EMAIL` to `True` in your .env, and start the server. 
 ## Contributions
 ### Sprint 1
 **General setup**: Jonathan
+
 **AWS / Dockerisation:** Jonathan
+
 **Logging in / registration backend**: Harry
+
 **Token authentication frontend / backend:** Harry
+
 **Front-end Logging in / registration:** Vihan (& Harry)
+
 **Marketplace frontend:** Gabby & Maddie
+
 **Marketplace backend:** Jonathan & Vihan
+
 **Upload frontend / backend**: Jonathan & Vihan
+
 **Trade request frontend:** Augustijn & Gabby
+
 **Trade request backend:** Harry & Maddie
+
 **Profile frontend:** Maddie (& Harry)
+
 **Profile backend:** Maddie & Harry
+
 **Navbar:** Augustijn & Jonathan
 
 ### Sprint 2
 **Trading:** Jonathan & Vihan
+
 **Email Verification:** Harry
+
 **Profile:** Augustijn & Maddie
+
 **Profile Location Badges:** Harry & Jonathan & Gabby
+
 **Profile Routing:** Gabby
+
 **HTTPS / NGNIX:** Jonathan
+
 **SMTP / Cloudflare:** Jonathan
+
 **Legal Work:** Augustijn
+
 **Marketplace Improvements:** Vihan & Jonathan
