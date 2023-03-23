@@ -139,24 +139,24 @@ function Profile() {
     return true;
   }
 
-  function deleteItem(id: number) {
-    // eslint-disable-line
-    setProducts(products.filter((product) => product.id != id));
-  }
-
   function getLocations(locations: { [name: string]: number }) {
     const profileLocations: LocationProps[] = [];
     for (const key in locations) {
       const currLocation: ProfileLocation = {
         name: key,
-        trades: locations[key],
+        trades: locations[key] || 0, // 0 on undefined behaviour
       };
 
       for (let i = 0; i < tradeLocations.length; i++) {
         if (tradeLocations[i]?.name == currLocation.name) {
+          const undefinedLocation: ProfileTradeLocation = {
+            color: "default",
+            name: "default",
+            icon: BookOpenIcon,
+          }; //undefined behaviour
           const locationProp: LocationProps = {
             location: currLocation,
-            locationSVG: tradeLocations[i],
+            locationSVG: tradeLocations[i] || undefinedLocation,
           };
           profileLocations.push(locationProp);
           break;
@@ -172,13 +172,6 @@ function Profile() {
     }
 
     return auth()!.user == username; // eslint-disable-line
-  };
-
-  const acheivementsEmpty = () => {
-    // eslint-disable-line
-    if (profileData?.achievements.length == 0) {
-      return true;
-    }
   };
 
   const locationsEmpty = () => {
