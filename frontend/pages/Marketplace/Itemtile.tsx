@@ -1,30 +1,32 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { Link } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Trading } from "./TradingPopup";
 import { useAuthUser } from "react-auth-kit";
 
-export interface Product {
+export type Product = {
   id: number;
   caption: string;
   href: string;
   image: string;
-  tags: tag[];
-  owner: owner;
-}
+  tags: Tag[];
+  owner: Owner;
+  description: string;
+};
 
-export type owner = {
+export type Owner = {
   id: number;
   username: string;
 };
 
-export type tag = {
+export type Tag = {
   id: number;
   readonly value: string;
   label: string;
 };
+
 export function Itemtile(product: Product) {
-  /* , {trading}:boolean */
   const [open, setOpen] = useState(false);
   const auth = useAuthUser();
   return (
@@ -63,9 +65,11 @@ export function Itemtile(product: Product) {
                       <span className="sr-only">Close</span>
                       <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
-                    {/* if(trading) {  } */}
-                    {/* ADD IF CONDITION HERE - IF TRADING then : otherwise idk not that  */}
-                    <Trading key={product.id} {...product} />
+                    <Trading
+                      key={product.id}
+                      product={product}
+                      setOpen={setOpen}
+                    />
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -81,21 +85,21 @@ export function Itemtile(product: Product) {
           className={
             auth()
               ? "h-full w-full object-cover object-center"
-              : "blur-lg lg:h-full lg:w-full"
+              : "pointer-events-none blur-lg lg:h-full lg:w-full"
           }
           onClick={() => setOpen(true)}
         />
       </div>
-
       <div className="mt-2 flex justify-between">
         <div>
           <h3 className="text-sm text-gray-700">
             <a href={product.href}>{product.caption}</a>
           </h3>
           <h6>
-            <a href="#" className="mt-1 text-xs text-gray-700">
-              {product.owner.username}
-            </a>
+            <Link to={"../profile/" + product.owner.username}>
+              {" "}
+              {product.owner.username}{" "}
+            </Link>
           </h6>
           <p className="mt-1 text-sm text-gray-500">
             {product.tags.map((t) => t.value).join(", ")}

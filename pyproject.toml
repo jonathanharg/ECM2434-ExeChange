@@ -14,6 +14,7 @@ python-dotenv = "^0.21.1"
 djangorestframework-simplejwt = "^5.2.2"
 pillow = "^9.4.0"
 psycopg2 = "^2.9.5"
+yagmail = "^0.15.293"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -72,7 +73,7 @@ ignore="apps/api/migrations"
 max-line-length = 125
 
 [tool.pylint.messages_control]
-disable = ["missing-docstring", "invalid-name", "imported-auth-user", "too-many-return-statements"]
+disable = ["missing-docstring", "invalid-name", "imported-auth-user", "too-many-return-statements", "too-many-branches"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "backend.settings"
