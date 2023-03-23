@@ -8,6 +8,7 @@ import {
 import TagSelect from "../../components/TagSelect";
 import { Tag } from "../Marketplace/Itemtile";
 import { MinusCircleIcon } from "@heroicons/react/20/solid";
+import { Link } from "react-router-dom";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -247,13 +248,21 @@ function Upload() {
                   className="ml-2 text-sm font-medium text-gray-900"
                 >
                   I agree with the{" "}
-                  <a href="#" className="text-green-800 hover:underline ">
-                    Terms & Conditions
-                  </a>{" "}
+                  <Link
+                    className="text-green-800 hover:underline "
+                    to={"../termsofuse"}
+                  >
+                    {" "}
+                    Terms of Use
+                  </Link>{" "}
                   and the{" "}
-                  <a href="#" className="text-green-800 hover:underline ">
+                  <Link
+                    className="text-green-800 hover:underline "
+                    to={"../privacypolicy"}
+                  >
+                    {" "}
                     Privacy Policy
-                  </a>
+                  </Link>
                   .
                 </label>{" "}
                 <div className="mt-4">
