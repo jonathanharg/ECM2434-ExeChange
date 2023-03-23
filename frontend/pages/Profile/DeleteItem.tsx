@@ -15,7 +15,7 @@ export function DeleteItem({ deleteItem, product }: DeleteItemProps) {
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const id = product.id;
     console.log(id);

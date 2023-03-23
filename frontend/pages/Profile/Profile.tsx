@@ -82,15 +82,15 @@ export type LocationProps = {
 };
 
 export type ProfileData = {
-  id: number;
-  levelPercent: number;
-  name: string;
-  level: number;
-  username: string;
-  achievements: ProfileAchievement[];
-  locations: { [name: string]: number }; // dict type
-  current_xp: number;
-  profile_level: number;
+  id?: number;
+  levelPercent?: number;
+  name?: string;
+  level?: number;
+  username?: string;
+  achievements?: ProfileAchievement[];
+  locations?: { [name: string]: number }; // dict type
+  current_xp?: number;
+  profile_level?: number;
 };
 
 export type ProfileAchievement = {
